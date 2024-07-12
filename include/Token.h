@@ -13,7 +13,6 @@ public:
     ~Token();
 
     friend std::ostream& operator<<(std::ostream& os, const Token& token);
-
 public:
     TokenType type;
     std::string lexeme;
