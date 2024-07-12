@@ -1,7 +1,5 @@
-# Cpp Template project  
-This is a template for basic c++ project using cmake, google test and vcpkg
-
-Note: In future I might want to add a crossplatform.
+# Source-to-source compiler 
+... 
 
 ## Project Structure
 
