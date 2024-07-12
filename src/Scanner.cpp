@@ -1,5 +1,6 @@
 #include "Scanner.h"
 
+
 std::vector<Token> Scanner::scanTokens() {
   // @NOTE: Do we want to reset the vector every time?
 
@@ -7,16 +8,19 @@ std::vector<Token> Scanner::scanTokens() {
   while (!isAtEnd()) {
     // We are at the beginning of the next lexeme
     start = current;
-    this.scanToken();
+    scanToken();
   }
   
-  tokens.push_back(new Token(EOF, "", "", line));
+  tokens.emplace_back(TokenType::END_OF_FILE, "", "", line);
+
   return tokens;
 }
+
 
 bool Scanner::isAtEnd() const {
   return current >= source.length();
 }
+
 
 void Scanner::scanToken() {
   char c = advance();
@@ -59,26 +63,40 @@ void Scanner::scanToken() {
     case '\n':
       line++;
       break;
-
-    default:
-      std::cerr << "Error: Unexpected character '" << c << "' at line " << line << "\n";
-      ErrorHandler::error(line, "invalid character");
+    case '"':
+      stringLiteral();
       break;
+    default:
+      if (isDigit(c)) {
+        numberLiteral();
+      }
+      else if(isAlpha(c)) {
+        identifier();
+      } 
+      else {
+        std::cerr << "Error: Unexpected character '" << c << "' at line " << line << "\n";
+        ErrorHandler::error(line, "invalid character");
+        break;
+      }
   }
 }
+
 
 char Scanner::advance() {
   return source[current++];
 }
 
+
 void Scanner::addToken(TokenType type) {
   addToken(type, "");
 }
+
 
 void Scanner::addToken(TokenType type, const std::string& literal) {
   std::string text = source.substr(start, current - start);
   tokens.push_back(Token(type, text, literal, line));
 }
+
 
 bool Scanner::match(char expected) {
   if(isAtEnd()) return false;
@@ -88,7 +106,80 @@ bool Scanner::match(char expected) {
   return true;
 }
 
+
 char Scanner::peek() const {
   if (isAtEnd()) return '\0';
   return source[current];
+}
+
+
+char Scanner::peekNext() const {
+  if (current + 1 >= source.length()) return '\0';
+  return source[current + 1];
+}
+
+
+void Scanner::stringLiteral() {
+  while (peek() != '"' && !isAtEnd()) {
+    if (peek() == '\n') line++;
+      advance();
+    }
+
+    if (isAtEnd()) {
+      ErrorHandler::error(line, "Unterminated string.");
+      return;
+    }
+
+    // The closing ".
+    advance();
+
+    // Trim the surrounding quotes.
+    std::string value = source.substr(start + 1, current - start - 1); // @NOTE: Is this correct?
+    addToken(TokenType::STRING, value);
+}
+
+
+void Scanner::numberLiteral() {
+  while (isDigit(peek())) advance();
+
+  // Look for a fractional part.
+  if (peek() == '.' && isDigit(peekNext())) {
+    // Consume the "."
+    advance();
+
+    while (isDigit(peek())) advance();
+  }
+
+  double value;
+  std::stringstream ss(source.substr(start, current - start + 1));
+  ss >> value;
+  addToken(TokenType::NUMBER, ss.str());
+}
+
+
+bool Scanner::isDigit(char c) const {
+   return c >= '0' && c <= '9';
+}
+
+
+bool Scanner::isAlpha(char c) const {
+    return (c >= 'a' && c <= 'z') ||
+           (c >= 'A' && c <= 'Z') ||
+            c == '_';
+}
+
+bool Scanner::isAlphanumeric(char c) const {
+  return isAlpha(c) || isDigit(c);
+}
+
+
+void Scanner::identifier() {
+  while (isAlphanumeric(peek())) advance();
+  
+  std::string text = source.substr(start, current - start + 1);
+  TokenType type = keywords.at(text);
+  
+  // If the identifier is not a keyword, it is an identifier
+  
+  addToken(TokenType::IDENTIFIER);
 }

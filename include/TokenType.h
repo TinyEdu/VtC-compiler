@@ -4,6 +4,7 @@
 
 #include <map>
 #include <string>
+#include <unordered_map>
 
 
 enum class TokenType {
@@ -21,11 +22,12 @@ enum class TokenType {
     IDENTIFIER, STRING, NUMBER,
 
     // Keywords.
-    AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
+    AND, CLASS, ELSE, FALSE, DEF, FOR, IF, NIL, OR,
     PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
 
     END_OF_FILE
 };
+
 
 const std::map<TokenType, std::string> tokenTypeMap = {
     // Single-character tokens.
@@ -61,7 +63,7 @@ const std::map<TokenType, std::string> tokenTypeMap = {
     {TokenType::CLASS, "CLASS"},
     {TokenType::ELSE, "ELSE"},
     {TokenType::FALSE, "FALSE"},
-    {TokenType::FUN, "FUN"},
+    {TokenType::DEF, "DEF"},
     {TokenType::FOR, "FOR"},
     {TokenType::IF, "IF"},
     {TokenType::NIL, "NIL"},
@@ -75,6 +77,26 @@ const std::map<TokenType, std::string> tokenTypeMap = {
     {TokenType::WHILE, "WHILE"},
 
     {TokenType::END_OF_FILE, "END_OF_FILE"}
+};
+
+
+const std::unordered_map<std::string, TokenType> keywords = {
+    {"and", TokenType::AND},
+    {"class", TokenType::CLASS},
+    {"else", TokenType::ELSE},
+    {"false", TokenType::FALSE},
+    {"for", TokenType::FOR},
+    {"def", TokenType::DEF},
+    {"if", TokenType::IF},
+    {"nil", TokenType::NIL},
+    {"or", TokenType::OR},
+    {"print", TokenType::PRINT},
+    {"return", TokenType::RETURN},
+    {"super", TokenType::SUPER},
+    {"this", TokenType::THIS},
+    {"true", TokenType::TRUE},
+    {"var", TokenType::VAR},
+    {"while", TokenType::WHILE}
 };
 
 #endif // TOKENTYPE_H
