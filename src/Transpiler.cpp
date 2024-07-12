@@ -1,15 +1,25 @@
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <memory>
+#include <vector>
+
+#include "Scanner.h"
+#include "Token.h"
 #include "Transpiler.h"
 
+// @NOTE: Temporary solution
+// Define the static member variable
+bool Transpiler::hadError = false;
 
 Transpiler::Transpiler() {
-
+    hadError = true;
 }
-
 
 Transpiler::~Transpiler() {
 
 }
-
 
 void Transpiler::runFile(const char* file) {
     std::ifstream fileStream(file);
@@ -23,9 +33,11 @@ void Transpiler::runFile(const char* file) {
     buffer << fileStream.rdbuf();
 
     Transpiler::run(buffer.str());
+
+    if (hadError) {
+        exit(65);
+    }
 }
-
-
 
 void Transpiler::runPrompt() {
     std::string line;
@@ -43,10 +55,18 @@ void Transpiler::runPrompt() {
         }
         else {
             Transpiler::run(line);
+            hadError = false;
         }
     }
 }
 
 void Transpiler::run(std::string source) {
     std::cout << source << "\n";
+
+    std::unique_ptr<Scanner> scanner = std::make_unique<Scanner>(source);
+    std::vector<Token> tokens = scanner->scanTokens();
+
+    for (Token token : tokens) {
+        std::cout << token << "\n";
+    }
 }
