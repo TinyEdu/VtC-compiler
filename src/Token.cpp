@@ -9,6 +9,15 @@ Token::~Token() {}
 
 
 std::ostream& operator<<(std::ostream& os, const Token& token) {
-    os << tokenTypeMap.at(token.type) << " " << token.lexeme << " " << token.literal << " " << token.line;
+    const int typeWidth = 15;
+    const int lexemeWidth = 15;
+    const int literalWidth = 15;
+    const int lineWidth = 5;
+
+    os << std::left << std::setw(typeWidth) << tokenTypeMap.at(token.type)
+       << std::left << std::setw(lexemeWidth) << token.lexeme
+       << std::left << std::setw(literalWidth) << token.literal
+       << std::left << std::setw(lineWidth) << token.line;
+
     return os;
 }

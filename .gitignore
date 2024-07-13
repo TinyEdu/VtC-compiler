@@ -2,6 +2,7 @@
 build/*
 tests/Testing/*
 Testing/
+.vscode/
 
 # Prerequisites
 *.d

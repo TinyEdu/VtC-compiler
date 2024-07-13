@@ -61,12 +61,17 @@ void Transpiler::runPrompt() {
 }
 
 void Transpiler::run(std::string source) {
+    std::cout << "Source code: \n";
+    std::cout << std::string(15, '_') << "\n";
     std::cout << source << "\n";
+    std::cout << std::string(15, '_') << "\n";
 
-    std::unique_ptr<Scanner> scanner = std::make_unique<Scanner>(source);
-    std::vector<Token> tokens = scanner->scanTokens();
+    Scanner scanner(source);
+    std::vector<Token> tokens = scanner.scanTokens();
 
     for (Token token : tokens) {
         std::cout << token << "\n";
     }
+
+    std::cout << std::string(15, '_') << "\n";
 }

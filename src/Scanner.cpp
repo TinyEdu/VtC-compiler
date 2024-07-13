@@ -24,60 +24,46 @@ bool Scanner::isAtEnd() const {
 
 void Scanner::scanToken() {
   char c = advance();
-  switch (c) {
-    case '(': addToken(TokenType::LEFT_PAREN); break;
-    case ')': addToken(TokenType::RIGHT_PAREN); break;
-    case '{': addToken(TokenType::LEFT_BRACE); break;
-    case '}': addToken(TokenType::RIGHT_BRACE); break;
-    case ',': addToken(TokenType::COMMA); break;
-    case '.': addToken(TokenType::DOT); break;
-    case '-': addToken(TokenType::MINUS); break;
-    case '+': addToken(TokenType::PLUS); break;
-    case ';': addToken(TokenType::SEMICOLON); break;
-    case '*': addToken(TokenType::STAR); break;
-    case '!':
-      addToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
-      break;
-    case '=':
-      addToken(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
-      break;
-    case '<':
-      addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
-      break;
-    case '>':
-      addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
-      break;
-    case '/':
-      if (match('/')) {
-        // A comment goes until the end of the line
-        while (peek() != '\n' && !isAtEnd()) advance();
-      } else {
-        addToken(TokenType::SLASH);
-      }
-      break;
-    case ' ':
-    case '\r':
-    case '\t':
-      // Ignore whitespaces
-      break;
-    case '\n':
-      line++;
-      break;
-    case '"':
-      stringLiteral();
-      break;
-    default:
-      if (isDigit(c)) {
-        numberLiteral();
-      }
-      else if(isAlpha(c)) {
-        identifier();
-      } 
-      else {
-        std::cerr << "Error: Unexpected character '" << c << "' at line " << line << "\n";
-        ErrorHandler::error(line, "invalid character");
-        break;
-      }
+
+  // Ignore if is a comment or whitespaces
+  // // \n \r \t ' '
+  if ((c == '\r' || c == '\t' || c == ' ') ||
+      (c == '/' && peek() == '/')) /* do nothing */;
+  
+  // New line
+  else if(c == '\n') line ++;
+
+  // Single character tokens
+  // () {} , . - + ; *
+  else if (c == '(') addToken(TokenType::LEFT_PAREN);
+  else if (c == ')') addToken(TokenType::RIGHT_PAREN);
+  else if (c == '{') addToken(TokenType::LEFT_BRACE);
+  else if (c == '}') addToken(TokenType::RIGHT_BRACE);
+  else if (c == ',') addToken(TokenType::COMMA);
+  else if (c == '.') addToken(TokenType::DOT);
+  else if (c == '-') addToken(TokenType::MINUS);
+  else if (c == '+') addToken(TokenType::PLUS);
+  else if (c == ';') addToken(TokenType::SEMICOLON);
+  else if (c == '*') addToken(TokenType::STAR);
+  else if (c == '/') addToken(TokenType::SLASH);
+
+  // Double character tokens with '=' and comparision logic
+  // != == <= >= = < >
+  else if (c == '!') addToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
+  else if (c == '=') addToken(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
+  else if (c == '<') addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+  else if (c == '>') addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
+
+  // Literals
+  // "string"    123    my_variable_identifier   special words
+  else if (c == '"') stringLiteral();
+  else if (isDigit(c)) numberLiteral();
+  else if (isAlpha(c)) identifier();
+  
+  // If nothing matches, throw an error
+  else {
+    std::cerr << "Error: Unexpected character '" << c << "' at line " << line << "\n";
+    ErrorHandler::error(line, "invalid character");
   }
 }
 
@@ -163,10 +149,11 @@ bool Scanner::isDigit(char c) const {
 
 
 bool Scanner::isAlpha(char c) const {
-    return (c >= 'a' && c <= 'z') ||
-           (c >= 'A' && c <= 'Z') ||
-            c == '_';
+    return ((c >= 'a' && c <= 'z') ||
+            (c >= 'A' && c <= 'Z') ||
+             c == '_');
 }
+
 
 bool Scanner::isAlphanumeric(char c) const {
   return isAlpha(c) || isDigit(c);
@@ -176,10 +163,15 @@ bool Scanner::isAlphanumeric(char c) const {
 void Scanner::identifier() {
   while (isAlphanumeric(peek())) advance();
   
-  std::string text = source.substr(start, current - start + 1);
-  TokenType type = keywords.at(text);
+  std::string text = source.substr(start, current - start);
+  TokenType type;
   
+  if (auto search = keywords.find(text); search != keywords.end()) {  // There was a keyword found
+    type = search->second;
+  } else {  // No keyword found --> it is an identifier
+    type = TokenType::IDENTIFIER;
+  }
+
   // If the identifier is not a keyword, it is an identifier
-  
-  addToken(TokenType::IDENTIFIER);
+  addToken(type);
 }
