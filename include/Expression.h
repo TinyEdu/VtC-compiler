@@ -1,78 +1,66 @@
 #include "Token.h"
-#include "any"
+#include <any>
+#include <string>
 
-// Forward declaration
-template<typename R>
+// Forward declaration of Visitor class
 class Visitor;
 
-
-template<typename R>
 class Expression {
 public:
-    virtual ~Expression() = default;
-    virtual R accept(Visitor<R>* visitor) = 0;
+    Expression() = default;
+    virtual ~Expression()= default;
+    virtual std::any accept(Visitor* visitor) = 0;
 };
 
-
-template<typename R>
-class Binary : public Expression<R> {
+class Binary : public Expression {
 public:
-    Binary(Expression<R>* left, Token op, Expression<R>* right) : left(left), op(op), right(right) {}
-    R accept(Visitor<R>* visitor) override {
-        return visitor->visit(this);
-    }
+    Binary(Expression* left, Token op, Expression* right) : left(left), op(op), right(right) {}
 
-    Expression<R>* left;
+    std::any accept(Visitor* visitor) override;
+
+    Expression* left;
     Token op;
-    Expression<R>* right;
+    Expression* right;
 };
 
-
-template<typename R>
-class Grouping : public Expression<R> {
+class Grouping : public Expression {
 public:
-    Grouping(Expression<R>* expression) : expression(expression) {}
-    R accept(Visitor<R>* visitor) override {
-        return visitor->visit(this);
-    }
+    Grouping(Expression* expression) : expression(expression) {}
 
-    Expression<R>* expression;
+    std::any accept(Visitor* visitor) override;
+
+    Expression* expression;
 };
 
-
-template<typename R>
-class Literal : public Expression<R> {
+class Literal : public Expression {
 public:
-    Literal(R value) : value(value) {}
-    R accept(Visitor<R>* visitor) override {
-        return visitor->visit(this);
+    Literal(std::string value) : value(value) {}
+
+    std::any accept(Visitor* visitor) override;
+
+    template<typename V>
+    V getValue() {
+        return std::any_cast<V>(value);
     }
 
-    R value;
+    std::any value;
 };
 
-
-template<typename R>
-class Unary : public Expression<R> {
+class Unary : public Expression {
 public:
-    Unary(Token op, Expression<R>* right) : op(op), right(right) {}
-    R accept(Visitor<R>* visitor) override {
-        return visitor->visit(this);
-    }
+    Unary(Token op, Expression* right) : op(op), right(right) {}
+
+    std::any accept(Visitor* visitor) override;
 
     Token op;
-    Expression<R>* right;
+    Expression* right;
 };
 
-
-
-
-template<typename R>
+// Include the Visitor class definition
 class Visitor {
 public:
-    virtual R visit(class Binary<R>* expr) = 0;
-    virtual R visit(class Grouping<R>* expr) = 0;
-    virtual R visit(class Literal<R>* expr) = 0;
-    virtual R visit(class Unary<R>* expr) = 0;
+    virtual std::any visit(Binary* expr) = 0;
+    virtual std::any visit(Grouping* expr) = 0;
+    virtual std::any visit(Literal* expr) = 0;
+    virtual std::any visit(Unary* expr) = 0;
 };
-
