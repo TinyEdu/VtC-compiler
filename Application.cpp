@@ -6,10 +6,18 @@
 
 int main(int argc, char* argv[]) {
   std::cout << "Running compiler...\n";
+  AstPrinter printer;
+  Binary<std::string>* expression = new Binary<std::string>(new Literal<std::string>("1"), Token(TokenType::PLUS, "+", " ", 1), new Literal<std::string>("2"));
+  Expression<std::string>* expr = new Binary<std::string>(
+    new Unary<std::string>(Token(TokenType::MINUS, "-", " ", 1), new Literal<std::string>("123")),
+    Token(TokenType::STAR, "*", " ", 1),
+    new Grouping<std::string>(new Literal<std::string>("45"))
+  );
 
-  Expression<int>* expression = new Binary<int>(new Literal<int>(1), Token(TokenType::PLUS, "+", nullptr, 1), new Literal<int>(2));
+  std::cout << printer.print(expr) << "\n";
 
-
+  return 1;  
+  
   if (argc > 2) {
     std::cerr << "Error: Wrong input amount.\n";
     return 65;  // https://man.freebsd.org/cgi/man.cgi?query=sysexits&apropos=0&sektion=0&manpath=FreeBSD+4.3-RELEASE&format=html

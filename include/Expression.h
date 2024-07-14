@@ -43,13 +43,14 @@ public:
 template<typename R>
 class Literal : public Expression<R> {
 public:
-    Literal(std::any value) : value(value) {}
+    Literal(R value) : value(value) {}
     R accept(Visitor<R>* visitor) override {
         return visitor->visit(this);
     }
 
-    std::any value;
+    R value;
 };
+
 
 template<typename R>
 class Unary : public Expression<R> {
