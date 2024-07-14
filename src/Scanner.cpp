@@ -87,7 +87,7 @@ void Scanner::addToken(TokenType type, const std::string& literal) {
 bool Scanner::match(char expected) {
   if(isAtEnd()) return false;
   if(source[current] != expected) return false;
-  
+
   current++;
   return true;
 }
