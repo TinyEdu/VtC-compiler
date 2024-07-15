@@ -1,10 +1,12 @@
+#ifndef AST_PRINTER_H
+#define AST_PRINTER_H
 #include <string>
+#include <Visitor.h>
 
-
-class AstPrinter : public Visitor {
+class AstPrinter : public VisitorT<std::string> {
 public:
-    std::any print(Expression* expr) {
-        return expr->accept(this);
+    std::string print(Expression* expr) {
+        return this->visiting(expr);
     }
 
     std::any visit(Binary* expr) {
@@ -25,22 +27,14 @@ public:
 
     template<typename T>
     std::string parenthesize(std::string name, T* expr) {
-        std::any r = expr->accept(this);
-        if(r.type() == typeid(std::string)) {
-            return "(" + name + " " + std::any_cast<std::string>(r) + ")";
-        }
-        return "";
+        return "(" + name + " " + visiting(expr) + ")"; 
     }
 
 
     template<typename T>
     std::string parenthesize(std::string name, T* expr1, T* expr2) {
-        std::any r1 = expr1->accept(this);
-        std::any r2 = expr2->accept(this);
-
-        if(r1.type() == typeid(std::string) && r2.type() == typeid(std::string)) {
-            return "(" + std::any_cast<std::string>(r1) + " " + name + " " + std::any_cast<std::string>(r2) + ")";
-        }
-        return "";
+        return "(" + visiting(expr1) + " " + name + " " + visiting(expr2) + ")"; 
    }
 };
+
+#endif // AST_PRINTER_H

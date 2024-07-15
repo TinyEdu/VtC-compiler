@@ -6,8 +6,8 @@
 
 int main(int argc, char* argv[]) {
   std::cout << "Running compiler...\n";
-
   AstPrinter printer;
+
   Binary* expression = new Binary(new Literal("1"), Token(TokenType::PLUS, "+", " ", 1), new Literal("2"));
   Expression* expr = new Binary(
     new Unary(Token(TokenType::MINUS, "-", " ", 1), new Literal("123")),
@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     new Grouping(new Literal("45"))
   );
 
-  std::cout << std::any_cast<std::string>(printer.print(expr)) << "\n";
+  std::cout << printer.print(expr) << "\n";
 
   return 1;
 
