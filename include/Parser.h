@@ -1,5 +1,6 @@
 #include <vector>
 #include "Token.h"
+#include "Expression.h"
 
 /*
 expression     → equality ;
@@ -24,14 +25,20 @@ public:
 
     std::vector<Token> tokens;
     int current = 0;
-    
+private:
+    Expression* expression();
+    Expression* equality();
+    Expression* comparison();
+    Expression* term();
+    Expression* factor();
+    Expression* unary();
+    Expression* primary();
+private:
+    Token previous();
+    bool match(std::vector<TokenType> types);
+    Token advance();
+    bool check(TokenType type);
+    bool isAtEnd();
+    Token peek();
 };
 
-Parser::Parser(std::vector<Token> tokens)
-    : tokens(tokens)
-{
-}
-
-Parser::~Parser()
-{
-}
