@@ -154,7 +154,7 @@ void Scanner::numberLiteral() {
   }
 
   double value;
-  std::stringstream ss(source.substr(start, current - start + 1));
+  std::stringstream ss(source.substr(start, current - start));
   ss >> value;
   addToken(TokenType::NUMBER, ss.str());
 }

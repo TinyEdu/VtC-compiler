@@ -1,5 +1,6 @@
 #include "Parser.h"
 
+
 Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
 
 Parser::~Parser() {}
@@ -8,9 +9,8 @@ Expression* Parser::expression() {
   try {
     return equality();
   } catch (const ParseError& e) {
-    // Handle the error, maybe log it or propagate further
     std::cerr << "Parse error: " << e.what() << std::endl;
-    return nullptr;  // Or handle it in a way that makes sense for your application
+    return nullptr;
   }
 }
 
@@ -64,13 +64,11 @@ Expression* Parser::factor() {
 }
 
 Expression* Parser::unary() {
-  Expression* expr = primary();
   if (match({TokenType::BANG, TokenType::MINUS})) {
     Token op = previous();
     Expression* right = unary();
     return new Unary(op, right);
   }
-
   return primary();
 }
 
@@ -88,9 +86,7 @@ Expression* Parser::primary() {
 
   if (match({TokenType::LEFT_PAREN})) {
     Expression* expr = expression();
-    if (!match({TokenType::RIGHT_PAREN})) {
-      throw ParseError("Expect ')' after expression.");
-    }
+    consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
     return new Grouping(expr);
   }
 
@@ -171,8 +167,7 @@ Expression* Parser::parse() {
   try {
     return expression();
   } catch (const ParseError& e) {
-    // Handle the error, maybe log it or propagate further
     std::cerr << "Parse error: " << e.what() << std::endl;
-    return nullptr;  // Or handle it in a way that makes sense for your application
+    return nullptr;
   }
 }
