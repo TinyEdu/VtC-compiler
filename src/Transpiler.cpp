@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
-#include <memory>
 #include <vector>
 
 #include "Scanner.h"
@@ -14,68 +14,64 @@
 bool Transpiler::hadError = false;
 
 Transpiler::Transpiler() {
-    hadError = true;
+  hadError = true;
 }
 
-Transpiler::~Transpiler() {
-
-}
+Transpiler::~Transpiler() {}
 
 void Transpiler::runFile(const char* file) {
-    std::ifstream fileStream(file);
+  std::ifstream fileStream(file);
 
-    if(!fileStream.is_open()) {
-        std::cerr << "Error: Could not open file " << file << "\n";
-        exit(74);
-    }
+  if (!fileStream.is_open()) {
+    std::cerr << "Error: Could not open file " << file << "\n";
+    exit(74);
+  }
 
-    std::stringstream buffer;
-    buffer << fileStream.rdbuf();
+  std::stringstream buffer;
+  buffer << fileStream.rdbuf();
 
-    Transpiler::run(buffer.str());
+  Transpiler::run(buffer.str());
 
-    if (hadError) {
-        exit(65);
-    }
+  if (hadError) {
+    exit(65);
+  }
 }
 
 void Transpiler::runPrompt() {
-    std::string line;
+  std::string line;
 
-    for(;;) {
-        std::cout << ">> ";
-        std::getline(std::cin, line);
+  for (;;) {
+    std::cout << ">> ";
+    std::getline(std::cin, line);
 
-        if (std::cin.eof()) {
-            std::clog << "Ending REPL compilation...\n";
-            break;
-        }
-        else if (line.empty()) {
-            continue;  // If the file is empty, skip it
-        }
-        else {
-            Transpiler::run(line);
-            hadError = false;
-        }
+    if (std::cin.eof()) {
+      std::clog << "Ending REPL compilation...\n";
+      break;
+    } else if (line.empty()) {
+      continue;  // If the file is empty, skip it
+    } else {
+      Transpiler::run(line);
+      hadError = false;
     }
+  }
 }
 
 void Transpiler::run(std::string source) {
-    std::cout << "Source code: \n";
-    std::cout << std::string(15, '_') << "\n";
-    std::cout << source << "\n";
-    std::cout << std::string(15, '_') << "\n";
+  std::cout << "Source code: \n";
+  std::cout << std::string(15, '_') << "\n";
+  std::cout << source << "\n";
+  std::cout << std::string(15, '_') << "\n";
 
-    Scanner scanner(source);
-    std::vector<Token> tokens = scanner.scanTokens();
+  Scanner scanner(source);
+  std::vector<Token> tokens = scanner.scanTokens();
 
-    Parser parser(tokens);
-    Expression* expression = parser.parse();
+  Parser parser(tokens);
+  Expression* expression = parser.parse();
 
-    AstPrinter printer;
-    std::cout << printer.print(expression) << "\n";
+  AstPrinter printer;
+  std::cout << printer.print(expression) << "\n";
 
-    // for (Token token : tokens) std::cout << token << "\n";
+  // for (Token token : tokens) std::cout << token << "\n";
 
-    std::cout << std::string(15, '_') << "\n";
+  std::cout << std::string(15, '_') << "\n";
 }

@@ -6,28 +6,55 @@
 #include <string>
 #include <unordered_map>
 
-
 enum class TokenType {
-    // Single-character tokens.
-    LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
-    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,
+  // Single-character tokens.
+  LEFT_PAREN,
+  RIGHT_PAREN,
+  LEFT_BRACE,
+  RIGHT_BRACE,
+  COMMA,
+  DOT,
+  MINUS,
+  PLUS,
+  SEMICOLON,
+  SLASH,
+  STAR,
 
-    // One or two character tokens.
-    BANG, BANG_EQUAL,
-    EQUAL, EQUAL_EQUAL,
-    GREATER, GREATER_EQUAL,
-    LESS, LESS_EQUAL,
+  // One or two character tokens.
+  BANG,
+  BANG_EQUAL,
+  EQUAL,
+  EQUAL_EQUAL,
+  GREATER,
+  GREATER_EQUAL,
+  LESS,
+  LESS_EQUAL,
 
-    // Literals.
-    IDENTIFIER, STRING, NUMBER,
+  // Literals.
+  IDENTIFIER,
+  STRING,
+  NUMBER,
 
-    // Keywords.
-    AND, CLASS, ELSE, FALSE, DEF, FOR, IF, NIL, OR,
-    PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+  // Keywords.
+  AND,
+  CLASS,
+  ELSE,
+  FALSE,
+  DEF,
+  FOR,
+  IF,
+  NIL,
+  OR,
+  PRINT,
+  RETURN,
+  SUPER,
+  THIS,
+  TRUE,
+  VAR,
+  WHILE,
 
-    END_OF_FILE
+  END_OF_FILE
 };
-
 
 const std::map<TokenType, std::string> tokenTypeMap = {
     // Single-character tokens.
@@ -76,27 +103,16 @@ const std::map<TokenType, std::string> tokenTypeMap = {
     {TokenType::VAR, "VAR"},
     {TokenType::WHILE, "WHILE"},
 
-    {TokenType::END_OF_FILE, "END_OF_FILE"}
-};
-
+    {TokenType::END_OF_FILE, "END_OF_FILE"}};
 
 const std::unordered_map<std::string, TokenType> keywords = {
-    {"and", TokenType::AND},
-    {"class", TokenType::CLASS},
-    {"else", TokenType::ELSE},
-    {"false", TokenType::FALSE},
-    {"for", TokenType::FOR},
-    {"def", TokenType::DEF},
-    {"if", TokenType::IF},
-    {"nil", TokenType::NIL},
-    {"or", TokenType::OR},
-    {"print", TokenType::PRINT},
-    {"return", TokenType::RETURN},
-    {"super", TokenType::SUPER},
-    {"this", TokenType::THIS},
-    {"true", TokenType::TRUE},
-    {"var", TokenType::VAR},
-    {"while", TokenType::WHILE}
-};
+    {"and", TokenType::AND},       {"class", TokenType::CLASS},
+    {"else", TokenType::ELSE},     {"false", TokenType::FALSE},
+    {"for", TokenType::FOR},       {"def", TokenType::DEF},
+    {"if", TokenType::IF},         {"nil", TokenType::NIL},
+    {"or", TokenType::OR},         {"print", TokenType::PRINT},
+    {"return", TokenType::RETURN}, {"super", TokenType::SUPER},
+    {"this", TokenType::THIS},     {"true", TokenType::TRUE},
+    {"var", TokenType::VAR},       {"while", TokenType::WHILE}};
 
-#endif // TOKENTYPE_H
+#endif  // TOKENTYPE_H
