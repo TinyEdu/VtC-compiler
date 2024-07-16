@@ -17,7 +17,6 @@ void ErrorHandler::report(int line, const std::string& where, const std::string&
 
 bool ErrorHandler::hadError() {
     return true;
-
 }
 
 bool ErrorHandler::hadRuntimeError() {

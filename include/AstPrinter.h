@@ -18,7 +18,20 @@ public:
     }
 
     std::any visit(Literal* expr) {
-        return expr->getValue<std::string>();
+        auto value = expr->getValue();
+        std::any result = std::visit([](auto&& arg) -> std::any {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, bool>) {
+                return arg ? "true" : "false";
+            } else if constexpr (std::is_same_v<T, double>) {
+                return std::to_string(arg);
+            } else if constexpr (std::is_same_v<T, int>) {
+                return std::to_string(arg);
+            } else if constexpr (std::is_same_v<T, std::string>) {
+                return arg;
+            }
+        }, value);
+        return std::any_cast<std::string>(result);
     }
 
     std::any visit(Unary* expr) {

@@ -5,9 +5,11 @@
 #include <memory>
 #include <vector>
 
-#include "Scanner.h"
-#include "Token.h"
 
+#include "Token.h"
+#include "Scanner.h"
+#include "Parser.h"
+#include "AstPrinter.h"
 
 class Transpiler {
 public:

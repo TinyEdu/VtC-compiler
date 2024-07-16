@@ -69,9 +69,13 @@ void Transpiler::run(std::string source) {
     Scanner scanner(source);
     std::vector<Token> tokens = scanner.scanTokens();
 
-    for (Token token : tokens) {
-        std::cout << token << "\n";
-    }
+    Parser parser(tokens);
+    Expression* expression = parser.parse();
+
+    AstPrinter printer;
+    std::cout << printer.print(expression) << "\n";
+
+    // for (Token token : tokens) std::cout << token << "\n";
 
     std::cout << std::string(15, '_') << "\n";
 }

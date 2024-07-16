@@ -1,6 +1,13 @@
 #include <vector>
+#include <stdexcept>
 #include "Token.h"
 #include "Expression.h"
+
+class ParseError : public std::runtime_error
+{   
+public:
+    ParseError(std::string message) : std::runtime_error(message) {}
+};
 
 /*
 expression     → equality ;
@@ -40,5 +47,11 @@ private:
     bool check(TokenType type);
     bool isAtEnd();
     Token peek();
+    Token consume(TokenType type, std::string message);
+    ParseError error(Token token, std::string message);
+    void synchronize();
+
+public:
+    Expression* parse();
 };
 

@@ -11,8 +11,15 @@ Parser::~Parser()
 
 
 Expression* Parser::expression() {
-    return equality();
+    try {
+        return equality();
+    } catch (const ParseError& e) {
+        // Handle the error, maybe log it or propagate further
+        std::cerr << "Parse error: " << e.what() << std::endl;
+        return nullptr;  // Or handle it in a way that makes sense for your application
+    }
 }
+
 
 Expression* Parser::equality() {
     Expression* expr = comparison();
@@ -85,12 +92,15 @@ Expression* Parser::primary() {
 
     if (match({TokenType::LEFT_PAREN})) {
         Expression* expr = expression();
-        match({TokenType::RIGHT_PAREN});
+        if (!match({TokenType::RIGHT_PAREN})) {
+            throw ParseError("Expect ')' after expression.");
+        }
         return new Grouping(expr);
     }
 
-    return nullptr;
+    throw ParseError("Expect expression.");
 }
+
 
 Token Parser::previous() {
   return tokens[current - 1];
@@ -122,4 +132,48 @@ bool Parser::isAtEnd() {
 
 Token Parser::peek() {
   return tokens[current];
+}
+
+Token Parser::consume(TokenType type, std::string message) {
+    if (check(type)) return advance();
+    throw error(peek(), message);
+}
+
+ParseError Parser::error(Token token, std::string message) {
+    std::cerr << "[line " << token.line << "] Error" << message << std::endl;
+    return ParseError(message);
+}
+
+void Parser::synchronize() {
+    advance();
+
+    while (!isAtEnd()) {
+        if (previous().type == TokenType::SEMICOLON) return;
+
+        switch (peek().type) {
+            case TokenType::CLASS:
+            case TokenType::DEF:
+            case TokenType::VAR:
+            case TokenType::FOR:
+            case TokenType::IF:
+            case TokenType::WHILE:
+            case TokenType::PRINT:
+            case TokenType::RETURN:
+                return;
+            default:
+                break;
+        }
+
+        advance();
+    }
+}
+
+Expression* Parser::parse() {
+    try {
+        return expression();
+    } catch (const ParseError& e) {
+        // Handle the error, maybe log it or propagate further
+        std::cerr << "Parse error: " << e.what() << std::endl;
+        return nullptr;  // Or handle it in a way that makes sense for your application
+    }
 }

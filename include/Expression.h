@@ -4,6 +4,9 @@
 #include "Token.h"
 #include <any>
 #include <string>
+#include <typeinfo>
+#include <variant>
+
 
 // Forward declaration of Visitor class
 class Visitor;
@@ -33,18 +36,25 @@ public:
     Expression* expression;
 };
 
-// @TODO maybe change to a template class
+
 class Literal : public Expression {
 public:
+    Literal(bool value);
+    Literal(double value);
+    Literal(int value);
     Literal(std::string value);
+
+    enum class Type {
+        BOOL,
+        DOUBLE,
+        INT,
+        STRING
+    };
+    Type type;
     std::any accept(Visitor* visitor) override;
 
-    template<typename V>
-    V getValue() {
-        return std::any_cast<V>(value);
-    }
-
     std::any value;
+    std::variant<bool, double, int, std::string> getValue();
 };
 
 class Unary : public Expression {
