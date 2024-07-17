@@ -1,20 +1,14 @@
-#include <fstream>
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include "Scanner.h"
-#include "Token.h"
 #include "Transpiler.h"
 
 // @NOTE: Temporary solution
 // Define the static member variable
 bool Transpiler::hadError = false;
+bool Transpiler::hadRuntimeError = false;
 
 Transpiler::Transpiler() {
-  hadError = true;
+  interpreter = Interpreter();
+  hadRuntimeError = false;
+  hadError = false;
 }
 
 Transpiler::~Transpiler() {}

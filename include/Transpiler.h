@@ -9,6 +9,8 @@
 #include "Parser.h"
 #include "Scanner.h"
 #include "Token.h"
+#include "Interpreter.h"
+
 
 class Transpiler {
  public:
@@ -17,8 +19,10 @@ class Transpiler {
 
  public:
   static bool hadError;
+  static bool hadRuntimeError;
 
  public:
+  static Interpreter interpreter;
   static void runFile(const char* file);
   static void runPrompt();
 
