@@ -2,6 +2,8 @@
 #include "AstPrinter.h"
 #include "Expression.h"
 #include "Transpiler.h"
+#include "Interpreter.h"
+
 
 int main(int argc, char* argv[]) {
   std::cout << "Running compiler...\n";
