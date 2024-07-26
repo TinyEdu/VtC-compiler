@@ -45,50 +45,29 @@ class Unary : public Expression {
   Expression* right;
 };
 
-#include <memory>
-#include <typeinfo>
-#include <string>
-#include <stdexcept>
-#include <type_traits>
+
+enum Type {STRING, INT, DOUBLE, BOOL};
 
 class Literal : public Expression {
-public:
-    template<typename T>
-    Literal(T value) : valueHolder(std::make_shared<ValueHolder<T>>(value)) {}
+ public:
+    Literal(void* value);
+    Literal(bool value);
+    Literal(std::string value);
+    Literal(int value);
+    Literal(double value);
 
-    template<typename T>
-    T getValue() const {
-        if (auto ptr = std::dynamic_pointer_cast<ValueHolder<T>>(valueHolder)) {
-            return ptr->value;
-        } else {
-            throw std::bad_cast();
-        }
-    }
+    Literal(Type type, std::any value);
+    
+    std::any accept(Visitor* visitor);
+    std::any getValue();
 
-    std::type_info const& getType() const {
-        return valueHolder->getType();
-    }
+    std::any value; 
+    Type type;
 
-    std::any accept(Visitor* visitor) override;
+    // overloading functions
+    // in "Expression.cpp"
+}; 
 
-private:
-    struct BaseValueHolder {
-        virtual ~BaseValueHolder() = default;
-        virtual std::type_info const& getType() const = 0;
-    };
-
-    template<typename T>
-    struct ValueHolder : BaseValueHolder {
-        ValueHolder(T value) : value(value) {}
-        T value;
-
-        std::type_info const& getType() const override {
-            return typeid(T);
-        }
-    };
-
-    std::shared_ptr<BaseValueHolder> valueHolder;
-};
 
 
 #endif  // EXPRESSION_H

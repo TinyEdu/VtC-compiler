@@ -15,47 +15,84 @@ std::any Grouping::accept(Visitor* visitor) {
   return visitor->visit(this);
 }
 
-Literal::Literal(bool value) {
-  this->value = value;
-  type = Type::BOOL;
-}
-
-Literal::Literal(double value) {
-  this->value = value;
-  type = Type::DOUBLE;
-}
-
-Literal::Literal(int value) {
-  this->value = value;
-  type = Type::INT;
-}
-
-Literal::Literal(std::string value) : value(value) {
-  this->value = value;
-  type = Type::STRING;
-}
-
-std::any Literal::accept(Visitor* visitor) {
-  return visitor->visit(this);
-}
-
-std::variant<bool, double, int, std::string> Literal::getValue() {
-  if (type == Type::BOOL) {
-    return std::any_cast<bool>(value);
-  } else if (type == Type::DOUBLE) {
-    return std::any_cast<double>(value);
-  } else if (type == Type::INT) {
-    return std::any_cast<int>(value);
-  } else if (type == Type::STRING) {
-    return std::any_cast<std::string>(value);
-  }
-
-  // Optionally, throw an exception if type is not handled
-  throw std::bad_any_cast();
-}
-
 Unary::Unary(Token op, Expression* right) : op(op), right(right) {}
 
 std::any Unary::accept(Visitor* visitor) {
   return visitor->visit(this);
+}
+
+
+Literal::Literal(void* value) {
+
+}
+
+Literal::Literal(bool value) {
+  type = Type::BOOL;
+  value = value;
+}
+
+Literal::Literal(std::string value) {
+  type = Type::STRING;
+  value = value;
+}
+
+Literal::Literal(int value) {
+  type = Type::INT;
+  value = value;
+}
+
+Literal::Literal(double value) {
+  type = Type::DOUBLE;
+  value = value;
+}
+
+Literal::Literal(Type type, std::any value) {
+  type = type;
+  value = value;
+}
+
+std::any Literal::getValue() {
+  return value;
+}
+
+Literal* operator+(const Literal& other) {
+  if (this->type == Type::BOOL || other.type == Type::BOOL) throw std::invalid_argument("Literal operation. Wrong types"); 
+  if (this->type == Type::STRING ^ other.type == Type::STRING) throw std::invalid_argument("Literal wrong string adding");
+
+  Literal* result;
+  if (this->type == Type::DOUBLE || other->type == Type::DOUBLE) {
+    double value = std::any_cast<double>(this->getValue() + std::any_cast<double>(other.getValue()));
+    result = new Literal(Type::DOUBLE, value);
+  } 
+  else if (this->type == Type::INT && this->type == Type::INT) {
+    int value = std::any_cast<int>(this->getValue() + std::any_cast<int>(other.getValue()));
+    result = new Literal(Type::INT, value);
+  }
+  else {
+    std::cout << "SOMETHING IS OFF + Literal.\n";
+  }
+  return result;
+}
+Literal* operator-(const Literal& other) {
+
+}
+
+Literal* operator*(const Literal& other) {
+
+}
+
+Literal* operator/(const Literal& other) {
+
+}
+
+bool operator<(const Literal& l1, const Literal& l2) {
+
+}
+
+bool operator>(const Literal& l1, const Literal& l2) {
+
+}
+
+bool operator==(const Literal& l1, const Literal& l2) {
+
 }
