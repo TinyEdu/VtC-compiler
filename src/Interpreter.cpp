@@ -14,7 +14,7 @@ void Interpreter::interpret(Expression* expr) {
 
 
 std::any Interpreter::visit(Literal* expr) {
-    return expr->value;
+    return expr->getValue();
 }
 
 std::any Interpreter::visit(Grouping* expr) {

@@ -16,7 +16,7 @@ class AstPrinter : public VisitorT<std::string> {
   }
 
   std::any visit(Literal* expr) {
-    return std::any_cast<std::string>(expr->getValue());
+    return expr->getValue();
   }
 
   std::any visit(Unary* expr) {

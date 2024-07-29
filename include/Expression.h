@@ -49,25 +49,46 @@ class Unary : public Expression {
 enum Type {STRING, INT, DOUBLE, BOOL};
 
 class Literal : public Expression {
- public:
+public:
     Literal(void* value);
     Literal(bool value);
-    Literal(std::string value);
+    Literal(const std::string& value);
     Literal(int value);
     Literal(double value);
-
     Literal(Type type, std::any value);
-    
+
     std::any accept(Visitor* visitor);
+
     std::any getValue();
 
-    std::any value; 
+    template<typename T>
+    T getValue() const;
+
+private:
+    std::any value;
     Type type;
 
-    // overloading functions
-    // in "Expression.cpp"
-}; 
+    friend Literal* operator+(const Literal& lhs, const Literal& rhs);    
+    friend Literal* operator-(const Literal& lhs, const Literal& rhs);
+    friend Literal* operator/(const Literal& lhs, const Literal& rhs);
+    friend Literal* operator*(const Literal& lhs, const Literal& rhs);
+    friend bool operator==(const Literal& lhs, const Literal& rhs);
+    friend bool operator>(const Literal& lhs, const Literal& rhs);
+    friend bool operator<(const Literal& lhs, const Literal& rhs);
+    friend Literal* operator!(const Literal& lhs);
+};
 
+Literal* operator+(const Literal& lhs, const Literal& rhs);
+Literal* operator-(const Literal& lhs, const Literal& rhs);
+Literal* operator/(const Literal& lhs, const Literal& rhs);
+Literal* operator*(const Literal& lhs, const Literal& rhs);
+bool operator==(const Literal& lhs, const Literal& rhs);
+bool operator>(const Literal& lhs, const Literal& rhs);
+bool operator<(const Literal& lhs, const Literal& rhs);
+Literal* operator!(const Literal& lhs);
 
-
+template<typename T>
+T Literal::getValue() const {
+    return std::any_cast<T>(value);
+}
 #endif  // EXPRESSION_H
