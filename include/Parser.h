@@ -1,8 +1,18 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <stdexcept>
 #include <vector>
 #include <iostream>
-#include "Expression.h"
+
 #include "Token.h"
+
+class Expression;
+
+class Binary;
+class Grouping;
+class Literal;
+class Unary;
 
 class ParseError : public std::runtime_error {
  public:
@@ -40,3 +50,5 @@ class Parser {
  public:
   Expression* parse();
 };
+
+#endif  // PARSER_H

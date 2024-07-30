@@ -1,9 +1,15 @@
 #ifndef VISITOR_H
 #define VISITOR_H
 
-#include "Expression.h"
+#include <any>
 
-// Forward declarations
+
+// Forward declaration of Expression classes
+class Binary;
+class Grouping;
+class Literal;
+class Unary;
+class Expression;
 
 class Visitor {
  public:
@@ -13,12 +19,5 @@ class Visitor {
   virtual std::any visit(Unary* expr) = 0;
 };
 
-template <typename T>
-class VisitorT : public Visitor {
- public:
-  inline T visiting(Expression* expr) {
-    return std::any_cast<T>(expr->accept(this));
-  }
-};
 
 #endif  // VISITOR_H

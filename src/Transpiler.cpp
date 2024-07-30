@@ -4,6 +4,7 @@
 // Define the static member variable
 bool Transpiler::hadError = false;
 bool Transpiler::hadRuntimeError = false;
+Interpreter Transpiler::interpreter;
 
 Transpiler::Transpiler() {
   interpreter = Interpreter();

@@ -1,9 +1,28 @@
 #include "Expression.h"
-#include "Visitor.h"
+
+// Define constructors and accept methods
+Binary::Binary(Expression* left, Token op, Expression* right)
+    : left(left), op(op), right(right) {}
+
+std::any Binary::accept(Visitor* visitor) {
+  return visitor->visit(this);
+}
+
+Grouping::Grouping(Expression* expression) : expression(expression) {}
+
+std::any Grouping::accept(Visitor* visitor) {
+  return visitor->visit(this);
+}
+
+Unary::Unary(Token op, Expression* right) : op(op), right(right) {}
+
+std::any Unary::accept(Visitor* visitor) {
+  return visitor->visit(this);
+}
 
 // Define constructors and accept methods
 Literal::Literal(void* value) {
-    type = Type::BOOL; // Assuming this default, modify as per actual logic
+    type = Type::BOOL; 
     this->value = value;
 }
 
@@ -40,7 +59,6 @@ std::any Literal::getValue() {
   return value;
 }
 
-
 Literal* operator+(const Literal& lhs, const Literal& rhs) {
     if (lhs.type == Type::BOOL || rhs.type == Type::BOOL) 
         throw std::invalid_argument("Literal operation. Wrong types"); 
@@ -48,11 +66,11 @@ Literal* operator+(const Literal& lhs, const Literal& rhs) {
         throw std::invalid_argument("Literal wrong string adding");
 
     Literal* result = nullptr;
-    if (lhs.type == Type::DOUBLE || rhs.type == Type::DOUBLE) {
+    if (lhs.type == Type::DOUBLE || rhs.type == Type::DOUBLE) { // if one of these values is double --> result is double
         double value = lhs.getValue<double>() + rhs.getValue<double>();
         result = new Literal(Type::DOUBLE, value);
     } 
-    else if (lhs.type == Type::INT && rhs.type == Type::INT) {
+    else if (lhs.type == Type::INT && rhs.type == Type::INT) { // if both are int --> result is int
         int value = lhs.getValue<int>() + rhs.getValue<int>();
         result = new Literal(Type::INT, value);
     } 
@@ -62,6 +80,7 @@ Literal* operator+(const Literal& lhs, const Literal& rhs) {
 
     return result;
 }
+
 
 Literal* operator-(const Literal& lhs, const Literal& rhs) {
     if (lhs.type == Type::BOOL || rhs.type == Type::BOOL) 
@@ -83,6 +102,7 @@ Literal* operator-(const Literal& lhs, const Literal& rhs) {
     }
     return result;
 }
+
 
 Literal* operator/(const Literal& lhs, const Literal& rhs) {
     if (lhs.type == Type::BOOL || rhs.type == Type::BOOL) 
@@ -112,6 +132,7 @@ Literal* operator/(const Literal& lhs, const Literal& rhs) {
     return result;
 }
 
+
 Literal* operator*(const Literal& lhs, const Literal& rhs) {
     if (lhs.type == Type::BOOL || rhs.type == Type::BOOL) 
         throw std::invalid_argument("Literal operation. Wrong types"); 
@@ -133,6 +154,7 @@ Literal* operator*(const Literal& lhs, const Literal& rhs) {
     }
     return result;
 }
+
 
 bool operator==(const Literal& lhs, const Literal& rhs) {
     if (lhs.type != rhs.type) {
@@ -158,6 +180,7 @@ bool operator==(const Literal& lhs, const Literal& rhs) {
     return false;
 }
 
+
 bool operator>(const Literal& lhs, const Literal& rhs) {
     if (lhs.type != rhs.type) {
         return false;
@@ -182,9 +205,11 @@ bool operator>(const Literal& lhs, const Literal& rhs) {
     return false;
 }
 
+
 bool operator<(const Literal& lhs, const Literal& rhs) {
-    return lhs > rhs;
+    return rhs > lhs;
 }
+
 
 Literal* operator!(const Literal& lhs) {
     if (lhs.type != Type::BOOL) 
@@ -193,6 +218,3 @@ Literal* operator!(const Literal& lhs) {
     Literal* result = new Literal(!lhs.getValue<bool>());
     return result;
 }
-
-
-

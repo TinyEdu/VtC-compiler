@@ -5,10 +5,12 @@
 #include <string>
 #include <typeinfo>
 #include <variant>
+
 #include "Token.h"
+#include "Visitor.h"
 
 // Forward declaration of Visitor class
-class Visitor;
+
 
 class Expression {
  public:
@@ -64,7 +66,6 @@ public:
     template<typename T>
     T getValue() const;
 
-private:
     std::any value;
     Type type;
 
@@ -78,17 +79,9 @@ private:
     friend Literal* operator!(const Literal& lhs);
 };
 
-Literal* operator+(const Literal& lhs, const Literal& rhs);
-Literal* operator-(const Literal& lhs, const Literal& rhs);
-Literal* operator/(const Literal& lhs, const Literal& rhs);
-Literal* operator*(const Literal& lhs, const Literal& rhs);
-bool operator==(const Literal& lhs, const Literal& rhs);
-bool operator>(const Literal& lhs, const Literal& rhs);
-bool operator<(const Literal& lhs, const Literal& rhs);
-Literal* operator!(const Literal& lhs);
-
 template<typename T>
 T Literal::getValue() const {
     return std::any_cast<T>(value);
 }
+
 #endif  // EXPRESSION_H

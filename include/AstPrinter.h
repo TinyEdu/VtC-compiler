@@ -1,11 +1,15 @@
 #ifndef AST_PRINTER_H
 #define AST_PRINTER_H
-#include <Visitor.h>
+
+#include <any>
 #include <string>
 
-class AstPrinter : public VisitorT<std::string> {
+#include "Expression.h"
+#include "Visitor.h"
+
+class AstPrinter : public Visitor {
  public:
-  std::string print(Expression* expr) { return this->visiting(expr); }
+  std::string print(Expression* expr) { return std::any_cast<std::string>(expr->accept(this)); }
 
   std::any visit(Binary* expr) {
     return parenthesize(expr->op.lexeme, expr->left, expr->right);
@@ -23,14 +27,13 @@ class AstPrinter : public VisitorT<std::string> {
     return parenthesize(expr->op.lexeme, expr->right);
   }
 
-  template <typename T>
-  std::string parenthesize(std::string name, T* expr) {
-    return "(" + name + " " + visiting(expr) + ")";
+  std::string parenthesize(std::string name, Expression* expr) {
+    return "(" + name + " " + std::any_cast<std::string>(expr->accept(this)) + ")";
   }
 
-  template <typename T>
-  std::string parenthesize(std::string name, T* expr1, T* expr2) {
-    return "(" + visiting(expr1) + " " + name + " " + visiting(expr2) + ")";
+
+  std::string parenthesize(std::string name, Expression* expr1, Expression* expr2) {
+    return "(" + std::any_cast<std::string>(expr1->accept(this)) + " " + name + " " + std::any_cast<std::string>(expr2->accept(this)) + ")";
   }
 };
 

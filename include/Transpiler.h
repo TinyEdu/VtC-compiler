@@ -7,8 +7,8 @@
 
 #include "AstPrinter.h"
 #include "Parser.h"
+
 #include "Scanner.h"
-#include "Token.h"
 #include "Interpreter.h"
 
 

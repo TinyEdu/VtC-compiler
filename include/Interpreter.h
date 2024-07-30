@@ -1,9 +1,20 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-#include "Visitor.h"
+#include <iostream>
+#include <any>
+#include <variant>
 
-class Interpreter : public VisitorT<std::any> {
+#include "Token.h"
+
+class Visitor;
+class Expression;
+class Binary;
+class Grouping;
+class Literal;
+class Unary;
+
+class Interpreter : public Visitor {
 public:
     Interpreter();
     ~Interpreter();

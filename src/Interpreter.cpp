@@ -1,3 +1,6 @@
+#include "Expression.h"
+#include "Visitor.h"
+
 #include "Interpreter.h"
 
 Interpreter::Interpreter() {}
@@ -12,9 +15,8 @@ void Interpreter::interpret(Expression* expr) {
 }
 
 
-
 std::any Interpreter::visit(Literal* expr) {
-    return expr->getValue();
+    return expr->getValue<std::any>();
 }
 
 std::any Interpreter::visit(Grouping* expr) {
