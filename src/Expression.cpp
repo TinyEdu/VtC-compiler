@@ -56,8 +56,20 @@ std::any Literal::accept(Visitor* visitor) {
 }
 
 std::any Literal::getValue() {
-  return value;
+    // Assuming `value` is a `std::any` containing the actual value
+    if (type == Type::STRING) {
+        return value;
+    } else if (type == Type::INT) {
+        return std::to_string(std::any_cast<int>(value));
+    } else if (type == Type::DOUBLE) {
+        return std::to_string(std::any_cast<double>(value));
+    } else if (type == Type::BOOL) {
+        return std::any_cast<bool>(value) ? "true" : "false";
+    } 
+    // Add other types as needed
+    return ""; // Default case, should not reach here if all types are handled
 }
+
 
 Literal* operator+(const Literal& lhs, const Literal& rhs) {
     if (lhs.type == Type::BOOL || rhs.type == Type::BOOL) 
@@ -217,4 +229,45 @@ Literal* operator!(const Literal& lhs) {
 
     Literal* result = new Literal(!lhs.getValue<bool>());
     return result;
+}
+
+std::ostream& operator<<(std::ostream& os, const Grouping* expr) {
+    os << expr->expression;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Binary* expr) {
+    os << &expr->left << " " << expr->op.lexeme << " " << &expr->right;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Unary* expr) {
+    os << expr->op.lexeme << " " << expr->right;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Literal& expr) {
+    os << "Literal: ";
+    if (expr.type == Type::BOOL) {
+        os << expr.getValue<bool>();
+    } 
+    else if (expr.type == Type::DOUBLE) {
+        os << expr.getValue<double>();
+    } 
+    else if (expr.type == Type::INT) {
+        os << expr.getValue<int>();
+    } 
+    else if (expr.type == Type::STRING) {
+        os << expr.getValue<std::string>();
+    } 
+    else {
+        os << "Unsupported type";
+    }
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Literal* expr) {
+    os << "Literal: ";
+
+    return os;
 }

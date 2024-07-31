@@ -27,6 +27,8 @@ class Binary : public Expression {
   Expression* left;
   Token op;
   Expression* right;
+
+  friend std::ostream& operator<<(std::ostream& os, const Binary* expr);
 };
 
 class Grouping : public Expression {
@@ -35,6 +37,8 @@ class Grouping : public Expression {
   std::any accept(Visitor* visitor) override;
 
   Expression* expression;
+
+  friend std::ostream& operator<<(std::ostream& os, const Grouping* expr);
 };
 
 
@@ -45,6 +49,8 @@ class Unary : public Expression {
 
   Token op;
   Expression* right;
+
+  friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
 };
 
 
@@ -77,6 +83,7 @@ public:
     friend bool operator>(const Literal& lhs, const Literal& rhs);
     friend bool operator<(const Literal& lhs, const Literal& rhs);
     friend Literal* operator!(const Literal& lhs);
+    friend std::ostream& operator<<(std::ostream& os, const Literal* expr);
 };
 
 template<typename T>
