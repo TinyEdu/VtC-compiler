@@ -214,6 +214,9 @@ bool operator==(const Literal& lhs, const Literal& rhs) {
     return false;
 }
 
+bool operator!=(const Literal& lhs, const Literal& rhs) {
+  return !(lhs == rhs);
+}
 
 bool operator>(const Literal& lhs, const Literal& rhs) {
     if (lhs.type != rhs.type) {
@@ -244,10 +247,17 @@ bool operator<(const Literal& lhs, const Literal& rhs) {
     return rhs > lhs;
 }
 
+bool operator>=(const Literal& lhs, const Literal& rhs) {
+    return !(lhs < rhs);
+}
+
+bool operator<=(const Literal& lhs, const Literal& rhs) {
+  return !(lhs > rhs);
+}
 
 Literal* operator!(const Literal& lhs) {
     Literal* result = new Literal(true);
-    
+
     if (lhs.type == Type::BOOL) {
         result = new Literal(!lhs.getValue<bool>());
     }

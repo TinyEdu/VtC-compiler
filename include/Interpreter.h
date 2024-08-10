@@ -27,8 +27,6 @@ public:
     void interpret(Expression* expr);
     std::any evaluate(Expression* expr); 
     std::variant<bool, double, int, std::string> evaluate(Literal* expr);
-    bool isEqual(std::any a, std::any b);
-    void checkNumberOperands(Token op, std::any left, std::any right);
 };
 
 #endif  // INTERPRETER_H 

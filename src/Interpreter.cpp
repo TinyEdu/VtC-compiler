@@ -6,6 +6,8 @@
 Interpreter::Interpreter() {}
 
 void Interpreter::interpret(Expression* expr) {
+
+        std::cout << "errroo\n\n\n";
     try {
         Literal* value = std::any_cast<Literal*>(evaluate(expr));
 
@@ -46,32 +48,9 @@ std::any Interpreter::visit(Unary* expr) {
         default:
             break;
     }
+
+    std::cout << "Unreachable code reached in Interpreter::visit(Unary* expr) " << std::endl;
     return std::any();
-}
-
-
-bool Interpreter::isEqual(std::any a, std::any b) {
-    if (a.type() != b.type()) {
-        return false;
-    }
-    if (a.type() == typeid(bool)) {
-        return std::any_cast<bool>(a) == std::any_cast<bool>(b);
-    }
-    if (a.type() == typeid(double)) {
-        return std::any_cast<double>(a) == std::any_cast<double>(b);
-    }
-    if (a.type() == typeid(std::string)) {
-        return std::any_cast<std::string>(a) == std::any_cast<std::string>(b);
-    }
-    return false;
-}
-
-
-void Interpreter::checkNumberOperands(Token op, std::any left, std::any right) {
-    if (left.type() == typeid(double) && right.type() == typeid(double)) {
-        return;
-    }
-    throw std::runtime_error("Operands must be numbers.");
 }
 
 
@@ -79,33 +58,34 @@ Interpreter::~Interpreter() {}
 
 
 std::any Interpreter::visit(Binary* expr) {
-  Literal* left = std::any_cast<Literal*>(evaluate(expr->left));
-  Literal* right = std::any_cast<Literal*>(evaluate(expr->right));
+  Literal left = std::any_cast<Literal>(evaluate(expr->left));
+  Literal right = std::any_cast<Literal>(evaluate(expr->right));
 
   switch (expr->op.type) {
     case TokenType::MINUS:
-      checkNumberOperand(expr->op, right);
-      return std::any(leftValue - rightValue);
+      return left - right;
     case TokenType::SLASH:
-      return std::any(leftValue / rightValue);
+        return left / right;
     case TokenType::STAR:
-      return std::any(leftValue * rightValue);
+        return left * right;
     case TokenType::PLUS:
-      return std::any(leftValue + rightValue);
+        return left + right;
     case TokenType::GREATER:
-      return std::any(leftValue > rightValue);
+        return left > right;
     case TokenType::GREATER_EQUAL:
-      return std::any(leftValue >= rightValue);
+        return left >= right;
     case TokenType::LESS:
-      return std::any(leftValue < rightValue);
+        return left < right;
     case TokenType::LESS_EQUAL:
-      return std::any(leftValue <= rightValue);
+        return left <= right;
     case TokenType::BANG_EQUAL:
-      return std::any(!isEqual(left, right));
+        return left != right;
     case TokenType::EQUAL_EQUAL:
-      return std::any(isEqual(left, right));
+        return left == right;
     default:
       break;
   }
+
+  std::cout << "Unreachable code reached in Interpreter::visit(Binary* expr) " << std::endl;
   return std::any();
 }

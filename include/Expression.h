@@ -80,10 +80,15 @@ public:
     friend Literal* operator-(const Literal& lhs, const Literal& rhs);
     friend Literal* operator/(const Literal& lhs, const Literal& rhs);
     friend Literal* operator*(const Literal& lhs, const Literal& rhs);
+    
+    friend bool operator!=(const Literal& lhs, const Literal& rhs);
     friend bool operator==(const Literal& lhs, const Literal& rhs);
     friend bool operator>(const Literal& lhs, const Literal& rhs);
     friend bool operator<(const Literal& lhs, const Literal& rhs);
     
+    friend bool operator>=(const Literal& lhs, const Literal& rhs);
+    friend bool operator<=(const Literal& lhs, const Literal& rhs);
+
     friend Literal* operator-(const Literal& lhs);
     friend Literal* operator!(const Literal& lhs);
     friend std::ostream& operator<<(std::ostream& os, const Literal* expr);
