@@ -2,9 +2,13 @@
 #include "AstPrinter.h"
 #include "Transpiler.h"
 
+#include "LogManager.h"
+
 
 int main(int argc, char* argv[]) {
-  std::cout << "Running compiler...\n";
+  LOG("Running compiler...");
+  WARN("This is a warning message.");
+  CRIT_WARN("This is an info message.");
 
   if (argc > 2) {
     std::cerr << "Error: Wrong input amount.\n";
