@@ -47,19 +47,24 @@ if(CMAKE_BUILD_TYPE STREQUAL "Tests")
     include(GoogleTest)
     gtest_discover_tests(tests)
  
-    target_compile_definitions(MyProject PRIVATE gvDEBUG)
-    target_compile_definitions(tests PRIVATE gvDEBUG)
     message("Building in Tests mode.")
 
+    target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_MODE)
+    target_compile_definitions(tests PRIVATE DEBUG_MODE)
+
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    target_compile_definitions(MyProject PRIVATE gvDEBUG)
     message("Building in Debug mode.")
 
+    target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_MODE)
+    target_compile_definitions(tests PRIVATE DEBUG_MODE)
+
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_compile_definitions(MyProject PRIVATE gvRELEASE)
     message("Building in Release mode.")
 
-else()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE RELEASE_MODE)
+    target_compile_definitions(tests PRIVATE RELEASE_MODE)
+
+    else()
     message(FATAL_ERROR "Unknown build type. Set CMAKE_BUILD_TYPE to Debug, Release, or Tests.")
 endif()
 

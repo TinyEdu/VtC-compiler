@@ -2,12 +2,13 @@
 
 #include "LogManager.h"
 
-// Initialize static color variables
 const std::string LogManager::green = "\033[32m";  // Green color for LOG
 const std::string LogManager::orange = "\033[33m"; // Yellow/orange color for WARNING
 const std::string LogManager::red = "\033[31m";    // Red color for CRITICAL
 const std::string LogManager::reset = "\033[0m";   // Reset color
 
+
+#ifdef DEBUG_MODE
 
 void LogManager::Log(const std::string& message, const std::string& file, const std::string& function, int line) {
     std::cout << green << "[LOG] " << reset
@@ -44,3 +45,27 @@ std::string LogManager::extractFilename(const std::string& path) {
 
     return path;
 }
+
+#endif // DEBUG_MODE
+
+#ifndef DEBUG_MODE
+
+void LogManager::Log(const std::string& message, const std::string& file, const std::string& function, int line) {
+    ;
+}
+
+
+void LogManager::Warning(const std::string& message, const std::string& file, const std::string& function, int line) {
+    ;
+}
+
+void LogManager::CriticalWarning(const std::string& message, const std::string& file, const std::string& function, int line) {
+    ;
+}
+
+
+std::string LogManager::extractFilename(const std::string& path) {
+    return path;
+}
+
+#endif // RELEASE_MODE
