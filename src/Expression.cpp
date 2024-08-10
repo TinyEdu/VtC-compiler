@@ -71,28 +71,50 @@ std::any Literal::getValue() {
 }
 
 
-Literal* operator+(const Literal& lhs, const Literal& rhs) {
-    if (lhs.type == Type::BOOL || rhs.type == Type::BOOL) 
-        throw std::invalid_argument("Literal operation. Wrong types"); 
-    if (lhs.type == Type::STRING ^ rhs.type == Type::STRING) 
-        throw std::invalid_argument("Literal wrong string adding");
+Literal* operator-(const Literal& lhs) {
+    if (lhs.type == Type::BOOL) 
+        throw std::invalid_argument("Literal operation. Wrong types [- operator]");
 
     Literal* result = nullptr;
-    if (lhs.type == Type::DOUBLE || rhs.type == Type::DOUBLE) { // if one of these values is double --> result is double
-        double value = lhs.getValue<double>() + rhs.getValue<double>();
-        result = new Literal(Type::DOUBLE, value);
+
+    if (lhs.type == Type::DOUBLE) {
+        double value = -lhs.getValue<double>();
+        result = new Literal(value);
     } 
-    else if (lhs.type == Type::INT && rhs.type == Type::INT) { // if both are int --> result is int
-        int value = lhs.getValue<int>() + rhs.getValue<int>();
-        result = new Literal(Type::INT, value);
+    else if (lhs.type == Type::INT) {
+        int value = -lhs.getValue<int>();
+        result = new Literal(value);
     } 
     else {
-        std::cout << "SOMETHING MIGHT BE OFF + Literal.\n";
+        std::cout << "SOMETHING MIGHT BE OFF - Literal.\n";
     }
 
     return result;
 }
 
+Literal* operator+(const Literal& lhs, const Literal& rhs) {
+  if (lhs.type == Type::BOOL || rhs.type == Type::BOOL)
+    throw std::invalid_argument("Literal operation. Wrong types");
+  if (lhs.type == Type::STRING ^ rhs.type == Type::STRING)
+    throw std::invalid_argument("Literal wrong string adding");
+
+  Literal* result = nullptr;
+  if (lhs.type == Type::DOUBLE ||
+      rhs.type ==
+          Type::
+              DOUBLE) {  // if one of these values is double --> result is double
+    double value = lhs.getValue<double>() + rhs.getValue<double>();
+    result = new Literal(Type::DOUBLE, value);
+  } else if (lhs.type == Type::INT &&
+             rhs.type == Type::INT) {  // if both are int --> result is int
+    int value = lhs.getValue<int>() + rhs.getValue<int>();
+    result = new Literal(Type::INT, value);
+  } else {
+    std::cout << "SOMETHING MIGHT BE OFF + Literal.\n";
+  }
+
+  return result;
+}
 
 Literal* operator-(const Literal& lhs, const Literal& rhs) {
     if (lhs.type == Type::BOOL || rhs.type == Type::BOOL) 
@@ -224,10 +246,21 @@ bool operator<(const Literal& lhs, const Literal& rhs) {
 
 
 Literal* operator!(const Literal& lhs) {
-    if (lhs.type != Type::BOOL) 
-        throw std::invalid_argument("Literal operation. Wrong types [! operator]");
-
-    Literal* result = new Literal(!lhs.getValue<bool>());
+    Literal* result = new Literal(true);
+    
+    if (lhs.type == Type::BOOL) {
+        result = new Literal(!lhs.getValue<bool>());
+    }
+    else if (lhs.type == Type::STRING) {
+        result == new Literal(lhs.getValue<std::string>() != "");
+    }
+    else if (lhs.type == Type::INT) {
+        result = new Literal(lhs.getValue<int>() != 0);
+    }
+    else if (lhs.type == Type::DOUBLE) {
+        result = new Literal(lhs.getValue<double>() != 0);
+    }
+    
     return result;
 }
 

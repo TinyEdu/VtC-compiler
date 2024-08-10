@@ -131,10 +131,11 @@ Token Parser::peek() {
 Token Parser::consume(TokenType type, std::string message) {
   if (check(type))
     return advance();
+
   throw error(peek(), message);
 }
 
-ParseError Parser::error(Token token, std::string message) {
+ParseError Parser::error(Token token, std::string message) {      // @TODO : Move to ErrorHandler
   std::cerr << "[line " << token.line << "] Error" << message << std::endl;
   return ParseError(message);
 }

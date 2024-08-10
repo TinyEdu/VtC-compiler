@@ -74,6 +74,9 @@ void Transpiler::run(std::string source) {
   if (expression != nullptr)
     std::cout << printer.print(expression) << "\n";
 
+  if (hadError) return;
+
+  interpreter.interpret(expression);
 
   std::cout << std::string(15, '_') << "\n";
 }
