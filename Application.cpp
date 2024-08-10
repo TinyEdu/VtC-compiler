@@ -6,9 +6,9 @@
 
 
 int main(int argc, char* argv[]) {
-  LOG("Running compiler...");
-  WARN("This is a warning message.");
-  CRIT_WARN("This is an info message.");
+  LOG << "Running compiler...";
+  WARN << "This is a warning message.";
+  CRIT << "This is an info message.";
 
   if (argc > 2) {
     std::cerr << "Error: Wrong input amount.\n";

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # Set the project name and version
-project(MyProject VERSION 1.0)
+project(vtc-compiler VERSION 1.0)
 
 # Specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -19,7 +19,7 @@ file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file(GLOB HEADERS ${PROJECT_SOURCE_DIR}/include/*.h)
 
 # Add the executable for the main application
-add_executable(MyProject ${PROJECT_SOURCE_DIR}/Application.cpp ${SOURCES})
+add_executable(vtc-compiler ${PROJECT_SOURCE_DIR}/Application.cpp ${SOURCES})
 
 # Platform-specific settings
 if(WIN32)
@@ -56,13 +56,11 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("Building in Debug mode.")
 
     target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_MODE)
-    target_compile_definitions(tests PRIVATE DEBUG_MODE)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     message("Building in Release mode.")
 
     target_compile_definitions(${PROJECT_NAME} PRIVATE RELEASE_MODE)
-    target_compile_definitions(tests PRIVATE RELEASE_MODE)
 
     else()
     message(FATAL_ERROR "Unknown build type. Set CMAKE_BUILD_TYPE to Debug, Release, or Tests.")
