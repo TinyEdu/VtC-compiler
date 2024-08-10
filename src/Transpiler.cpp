@@ -3,7 +3,9 @@
 // Define the static member variable
 bool Transpiler::hadError = false;
 bool Transpiler::hadRuntimeError = false;
+
 Interpreter Transpiler::interpreter;
+
 
 Transpiler::Transpiler() {
   interpreter = Interpreter();
@@ -28,6 +30,10 @@ void Transpiler::runFile(const char* file) {
 
   if (hadError) {
     exit(65);
+  }
+  
+  if (hadRuntimeError) {
+    exit(70);
   }
 }
 
@@ -78,4 +84,10 @@ void Transpiler::run(std::string source) {
   interpreter.interpret(expression);
 
   LOG << std::string(15, '_') << "\n";
+}
+
+void Transpiler::runtimeError(RuntimeError error) {
+  LOG << error.getMessage() << "\n";
+  LOG << "[line " << error.token.line << "]\n";
+  hadRuntimeError = true;
 }

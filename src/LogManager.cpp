@@ -31,8 +31,8 @@ void LogManager::LogStream::output() const {
     out << std::setw(prefixWidth) << std::setfill(' ') << std::left << prefix.str()
         << " " << buffer.str();
 }
-
 #endif
+
 #ifndef DEBUG_MODE
 void LogManager::LogStream::output() const {}
 #endif

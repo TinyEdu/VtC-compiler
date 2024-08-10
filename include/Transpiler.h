@@ -15,6 +15,21 @@
 #include "Interpreter.h"
 #include "LogManager.h"
 
+
+class RuntimeError {
+public:
+    std::string message;
+    Token token;
+
+    std::string getMessage() const {
+        return message;
+    }
+
+    // Constructor
+    RuntimeError(const std::string& msg, const Token& tok) : message(msg), token(tok) {}
+};
+
+
 class Transpiler {
  public:
   Transpiler();
@@ -31,6 +46,7 @@ class Transpiler {
 
  private:
   static void run(std::string source);
+  static void runtimeError(RuntimeError error);
 };
 
 #endif  // TRANSPILER_H

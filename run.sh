@@ -31,5 +31,7 @@ cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .. || { echo "CMake configuration failed"; 
 # Build the project with make using 6 cores
 cmake --build . -- -j6 || { echo "Build failed"; exit 1; }
 
+echo -e "\n\n"
+
 # Run the transpiler
 ./vtc-compiler || { echo "Failed to execute Transpiler"; exit 1; }
