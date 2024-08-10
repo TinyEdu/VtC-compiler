@@ -98,17 +98,19 @@ Literal* operator+(const Literal& lhs, const Literal& rhs) {
   if (lhs.type == Type::STRING ^ rhs.type == Type::STRING)
     throw std::invalid_argument("Literal wrong string adding");
 
-  Literal* result = nullptr;
+  Literal* result = nullptr; 
   if (lhs.type == Type::DOUBLE ||
-      rhs.type ==
-          Type::
-              DOUBLE) {  // if one of these values is double --> result is double
+      rhs.type == Type::DOUBLE) {  
+    // if any of these values is double --> result is double
+    
     double value = lhs.getValue<double>() + rhs.getValue<double>();
-    result = new Literal(Type::DOUBLE, value);
+    result = new Literal(value);
   } else if (lhs.type == Type::INT &&
-             rhs.type == Type::INT) {  // if both are int --> result is int
+             rhs.type == Type::INT) {  
+    // if both are int --> result is int
+    
     int value = lhs.getValue<int>() + rhs.getValue<int>();
-    result = new Literal(Type::INT, value);
+    result = new Literal(value);
   } else {
     std::cout << "SOMETHING MIGHT BE OFF + Literal.\n";
   }
@@ -134,6 +136,7 @@ Literal* operator-(const Literal& lhs, const Literal& rhs) {
     else {
         std::cout << "SOMETHING MIGHT BE OFF - Literal.\n";
     }
+    std::cout << "Result: " << result->getValue<int>() << std::endl;
     return result;
 }
 
@@ -290,7 +293,7 @@ std::ostream& operator<<(std::ostream& os, const Unary* expr) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Literal& expr) {
-    os << "Literal: ";
+    os << "Literal&: ";
     if (expr.type == Type::BOOL) {
         os << expr.getValue<bool>();
     } 
@@ -298,6 +301,7 @@ std::ostream& operator<<(std::ostream& os, const Literal& expr) {
         os << expr.getValue<double>();
     } 
     else if (expr.type == Type::INT) {
+        std::cout << "INT\n";
         os << expr.getValue<int>();
     } 
     else if (expr.type == Type::STRING) {
@@ -310,7 +314,21 @@ std::ostream& operator<<(std::ostream& os, const Literal& expr) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Literal* expr) {
-    os << "Literal: ";
-
+    os << "Literal*: ";
+    if (expr->type == Type::BOOL) {
+        os << expr->getValue<bool>();
+    } 
+    else if (expr->type == Type::DOUBLE) {
+        os << expr->getValue<double>();
+    } 
+    else if (expr->type == Type::INT) {
+        os << expr->getValue<int>();
+    } 
+    else if (expr->type == Type::STRING) {
+        os << expr->getValue<std::string>();
+    } 
+    else {
+        os << "Unsupported type";
+    }
     return os;
 }

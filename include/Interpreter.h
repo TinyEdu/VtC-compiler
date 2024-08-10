@@ -25,7 +25,7 @@ public:
   std::any visit(Unary* expr);
 
     void interpret(Expression* expr);
-    std::any evaluate(Expression* expr); 
+    Literal* evaluate(Expression* expr); 
     std::variant<bool, double, int, std::string> evaluate(Literal* expr);
 };
 

@@ -76,16 +76,23 @@ Expression* Parser::unary() {
 Expression* Parser::primary() {
   if (match({TokenType::FALSE}))
     return new Literal(false);
-  if (match({TokenType::TRUE}))
+  else if (match({TokenType::TRUE}))
     return new Literal(true);
-  if (match({TokenType::NIL}))
+  else if (match({TokenType::NIL}))
     return new Literal(nullptr);
-
-  if (match({TokenType::NUMBER, TokenType::STRING})) {
+  else if(match({TokenType::NUMBER})) {
+    // check if the given value is an integer or a double
+    if (previous().literal.find('.') != std::string::npos) {
+      return new Literal(std::stod(previous().literal));
+    }
+    else {
+      return new Literal(std::stoi(previous().literal));
+    }
+  }
+  else if (match({TokenType::STRING})) {
     return new Literal(previous().literal);
   }
-
-  if (match({TokenType::LEFT_PAREN})) {
+  else if (match({TokenType::LEFT_PAREN})) {
     Expression* expr = expression();
     consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
     return new Grouping(expr);
