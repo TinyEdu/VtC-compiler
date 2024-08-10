@@ -9,7 +9,6 @@
 
 #include "TokenType.h"
 
-
 class Token {
  public:
   Token(TokenType type, std::string lexeme, std::string literal, int line);

@@ -54,6 +54,10 @@ MyProject
     cmake --build . --target run_tests
     ```
 
+## Formatting
+To correctly format the code you can use the provided .clang-format with the following command:
+```find . -name "*.cpp" -o -name "*.h" | xargs clang-format -i```
+
 ## License
 Do what you want.
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

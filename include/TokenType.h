@@ -7,7 +7,6 @@
 #include <string>
 #include <unordered_map>
 
-
 enum class TokenType {
   // Single-character tokens.
   LEFT_PAREN,

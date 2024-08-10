@@ -6,7 +6,6 @@ bool Transpiler::hadRuntimeError = false;
 
 Interpreter Transpiler::interpreter;
 
-
 Transpiler::Transpiler() {
   interpreter = Interpreter();
   hadRuntimeError = false;
@@ -31,7 +30,7 @@ void Transpiler::runFile(const char* file) {
   if (hadError) {
     exit(65);
   }
-  
+
   if (hadRuntimeError) {
     exit(70);
   }
@@ -66,28 +65,29 @@ void Transpiler::run(std::string source) {
   std::vector<Token> tokens = scanner.scanTokens();
 
   // for testing purposes
-  for (Token token : tokens) LOG << token << "\n";
+  for (Token token : tokens)
+    LOG << token << "\n";
 
   LOG << std::string(15, '_') << "\n";
 
   Parser parser(tokens);
   Expression* expression = parser.parse();
 
-
   // for testing purposes
   AstPrinter printer;
   if (expression != nullptr)
     LOG << printer.print(expression) << "\n";
 
-  if (hadError) return;
+  if (hadError)
+    return;
 
   interpreter.interpret(expression);
 
   LOG << std::string(15, '_') << "\n";
 }
 
-void Transpiler::runtimeError(RuntimeError error) {
-  LOG << error.getMessage() << "\n";
-  LOG << "[line " << error.token.line << "]\n";
+void Transpiler::runtimeError(const std::runtime_error& error) {
+  LOG << error.what() << "\n";
+  // @TODO : Maybe add some more specifics
   hadRuntimeError = true;
 }

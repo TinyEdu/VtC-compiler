@@ -6,7 +6,6 @@
 
 #include "LogManager.h"
 
-
 class ErrorHandler {
  public:
   ErrorHandler();

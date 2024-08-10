@@ -8,9 +8,8 @@
 #include <vector>
 
 #include "ErrorHandler.h"
-#include "Token.h"
 #include "LogManager.h"
-
+#include "Token.h"
 
 class Scanner {
  public:

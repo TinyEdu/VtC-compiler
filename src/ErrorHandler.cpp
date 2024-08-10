@@ -10,8 +10,7 @@ void ErrorHandler::error(int line, const std::string& message) {
 
 void ErrorHandler::report(int line, const std::string& where,
                           const std::string& message) {
-  LOG << "[line " << line << "] Error" << where << ": " << message
-            << "\n";
+  LOG << "[line " << line << "] Error" << where << ": " << message << "\n";
 }
 
 bool ErrorHandler::hadError() {

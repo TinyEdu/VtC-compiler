@@ -1,6 +1,5 @@
-#include "Expression.h"
 #include "Parser.h"
-
+#include "Expression.h"
 
 Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
 
@@ -80,19 +79,16 @@ Expression* Parser::primary() {
     return new Literal(true);
   else if (match({TokenType::NIL}))
     return new Literal(nullptr);
-  else if(match({TokenType::NUMBER})) {
+  else if (match({TokenType::NUMBER})) {
     // check if the given value is an integer or a double
     if (previous().literal.find('.') != std::string::npos) {
       return new Literal(std::stod(previous().literal));
-    }
-    else {
+    } else {
       return new Literal(std::stoi(previous().literal));
     }
-  }
-  else if (match({TokenType::STRING})) {
+  } else if (match({TokenType::STRING})) {
     return new Literal(previous().literal);
-  }
-  else if (match({TokenType::LEFT_PAREN})) {
+  } else if (match({TokenType::LEFT_PAREN})) {
     Expression* expr = expression();
     consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
     return new Grouping(expr);
@@ -142,7 +138,8 @@ Token Parser::consume(TokenType type, std::string message) {
   throw error(peek(), message);
 }
 
-ParseError Parser::error(Token token, std::string message) {      // @TODO : Move to ErrorHandler
+ParseError Parser::error(Token token,
+                         std::string message) {  // @TODO : Move to ErrorHandler
   CRIT << "[line " << token.line << "] Error" << message << ENDL;
   return ParseError(message);
 }

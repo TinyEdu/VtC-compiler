@@ -5,7 +5,6 @@
 
 #include "LogManager.h"
 
-
 int main(int argc, char* argv[]) {
   LOG << "Running compiler..." << ENDL;
 

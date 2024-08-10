@@ -79,7 +79,7 @@ void Scanner::scanToken() {
   // If nothing matches, throw an error
   else {
     CRIT << "Error: Unexpected character '" << c << "' at line " << line
-              << "\n";
+         << "\n";
     ErrorHandler::error(line, "invalid character");
   }
 }

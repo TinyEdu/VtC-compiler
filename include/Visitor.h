@@ -5,7 +5,6 @@
 
 #include <any>
 
-
 // Forward declaration of Expression classes
 class Binary;
 class Grouping;

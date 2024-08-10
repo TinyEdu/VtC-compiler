@@ -2,33 +2,16 @@
 #ifndef TRANSPILER_H
 
 #include <fstream>
-#include <iostream>
 #include <memory>
 #include <sstream>
-#include <string>
-#include <vector>
+#include <stdexcept>
 
 #include "AstPrinter.h"
 #include "Parser.h"
 
-#include "Scanner.h"
 #include "Interpreter.h"
 #include "LogManager.h"
-
-
-class RuntimeError {
-public:
-    std::string message;
-    Token token;
-
-    std::string getMessage() const {
-        return message;
-    }
-
-    // Constructor
-    RuntimeError(const std::string& msg, const Token& tok) : message(msg), token(tok) {}
-};
-
+#include "Scanner.h"
 
 class Transpiler {
  public:
@@ -46,7 +29,9 @@ class Transpiler {
 
  private:
   static void run(std::string source);
-  static void runtimeError(RuntimeError error);
+
+ public:
+  static void runtimeError(const std::runtime_error& error);
 };
 
 #endif  // TRANSPILER_H

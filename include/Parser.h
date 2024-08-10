@@ -6,9 +6,8 @@
 #include <stdexcept>
 #include <vector>
 
-#include "Token.h"
 #include "LogManager.h"
-
+#include "Token.h"
 
 // Forward declaration of Expression classes
 class Expression;
@@ -17,7 +16,6 @@ class Binary;
 class Grouping;
 class Literal;
 class Unary;
-
 
 class ParseError : public std::runtime_error {
  public:
