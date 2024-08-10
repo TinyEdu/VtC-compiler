@@ -1,10 +1,12 @@
 // TokenType.h
+
 #ifndef TOKENTYPE_H
 #define TOKENTYPE_H
 
 #include <map>
 #include <string>
 #include <unordered_map>
+
 
 enum class TokenType {
   // Single-character tokens.

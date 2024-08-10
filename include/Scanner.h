@@ -1,12 +1,16 @@
 // Scanner.h
+
 #ifndef SCANNER_H
 #define SCANNER_H
 
 #include <sstream>
 #include <string>
 #include <vector>
+
 #include "ErrorHandler.h"
 #include "Token.h"
+#include "LogManager.h"
+
 
 class Scanner {
  public:

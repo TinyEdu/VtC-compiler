@@ -1,3 +1,6 @@
+// Transpiler.h
+#ifndef TRANSPILER_H
+
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -10,7 +13,7 @@
 
 #include "Scanner.h"
 #include "Interpreter.h"
-
+#include "LogManager.h"
 
 class Transpiler {
  public:
@@ -29,3 +32,5 @@ class Transpiler {
  private:
   static void run(std::string source);
 };
+
+#endif  // TRANSPILER_H

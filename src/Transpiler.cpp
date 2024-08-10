@@ -1,6 +1,5 @@
 #include "Transpiler.h"
 
-// @NOTE: Temporary solution
 // Define the static member variable
 bool Transpiler::hadError = false;
 bool Transpiler::hadRuntimeError = false;
@@ -18,7 +17,7 @@ void Transpiler::runFile(const char* file) {
   std::ifstream fileStream(file);
 
   if (!fileStream.is_open()) {
-    std::cerr << "Error: Could not open file " << file << "\n";
+    CRIT << "Could not open file " << file << "\n";
     exit(74);
   }
 
@@ -36,11 +35,11 @@ void Transpiler::runPrompt() {
   std::string line;
 
   for (;;) {
-    std::cout << ">> ";
+    LOG << ">> ";
     std::getline(std::cin, line);
 
     if (std::cin.eof()) {
-      std::clog << "Ending REPL compilation...\n";
+      LOG << "Ending REPL compilation...\n";
       break;
     } else if (line.empty()) {
       continue;  // If the file is empty, skip it
@@ -52,18 +51,18 @@ void Transpiler::runPrompt() {
 }
 
 void Transpiler::run(std::string source) {
-  std::cout << "Source code: \n";
-  std::cout << std::string(15, '_') << "\n";
-  std::cout << source << "\n";
-  std::cout << std::string(15, '_') << "\n";
+  LOG << "Source code: \n";
+  LOG << std::string(15, '_') << "\n";
+  LOG << source << "\n";
+  LOG << std::string(15, '_') << "\n";
 
   Scanner scanner(source);
   std::vector<Token> tokens = scanner.scanTokens();
 
   // for testing purposes
-  for (Token token : tokens) std::cout << token << "\n";
+  for (Token token : tokens) LOG << token << "\n";
 
-  std::cout << std::string(15, '_') << "\n";
+  LOG << std::string(15, '_') << "\n";
 
   Parser parser(tokens);
   Expression* expression = parser.parse();
@@ -72,11 +71,11 @@ void Transpiler::run(std::string source) {
   // for testing purposes
   AstPrinter printer;
   if (expression != nullptr)
-    std::cout << printer.print(expression) << "\n";
+    LOG << printer.print(expression) << "\n";
 
   if (hadError) return;
 
   interpreter.interpret(expression);
 
-  std::cout << std::string(15, '_') << "\n";
+  LOG << std::string(15, '_') << "\n";
 }

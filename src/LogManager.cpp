@@ -8,6 +8,9 @@ const std::string LogManager::orange = "\033[33m"; // Yellow/orange color for WA
 const std::string LogManager::red = "\033[31m";    // Red color for CRITICAL
 const std::string LogManager::reset = "\033[0m";   // Reset color
 
+// Set the prefix width for alignment
+const int LogManager::prefixWidth = 50;
+
 #ifdef DEBUG_MODE
 void LogManager::LogStream::output() const {
     std::string color;
@@ -18,11 +21,17 @@ void LogManager::LogStream::output() const {
 
     std::ostream& out = (level == "LOG") ? std::cout : std::cerr;
 
-    out << color << "[" << level << "] " << reset
-        << "[" << extractFilename(file) << " | "
-        << std::setw(4) << std::setfill(' ') << line << " | " << function << "] "
-        << buffer.str() << std::endl;
+    // Format the prefix with fixed width to ensure alignment of the closing bracket
+    std::ostringstream prefix;
+    prefix << color << "[" << level << "] " << reset
+           << "[" << std::setw(15) << std::left << extractFilename(file) << " | "
+           << std::setw(4) << std::right << line << " | "
+           << std::setw(15) << std::left << function << "]";
+
+    out << std::setw(prefixWidth) << std::setfill(' ') << std::left << prefix.str()
+        << " " << buffer.str();
 }
+
 #endif
 #ifndef DEBUG_MODE
 void LogManager::LogStream::output() const {}

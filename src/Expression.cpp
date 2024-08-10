@@ -66,7 +66,9 @@ std::any Literal::getValue() {
     } else if (type == Type::BOOL) {
         return std::any_cast<bool>(value) ? "true" : "false";
     } 
+
     // Add other types as needed
+
     return ""; // Default case, should not reach here if all types are handled
 }
 
@@ -86,7 +88,7 @@ Literal* operator-(const Literal& lhs) {
         result = new Literal(value);
     } 
     else {
-        std::cout << "SOMETHING MIGHT BE OFF - Literal.\n";
+        LOG << "SOMETHING MIGHT BE OFF - Literal.\n";
     }
 
     return result;
@@ -112,7 +114,7 @@ Literal* operator+(const Literal& lhs, const Literal& rhs) {
     int value = lhs.getValue<int>() + rhs.getValue<int>();
     result = new Literal(value);
   } else {
-    std::cout << "SOMETHING MIGHT BE OFF + Literal.\n";
+    LOG << "SOMETHING MIGHT BE OFF + Literal.\n";
   }
 
   return result;
@@ -134,9 +136,9 @@ Literal* operator-(const Literal& lhs, const Literal& rhs) {
         result = new Literal(Type::INT, value);
     } 
     else {
-        std::cout << "SOMETHING MIGHT BE OFF - Literal.\n";
+        LOG << "SOMETHING MIGHT BE OFF - Literal.\n";
     }
-    std::cout << "Result: " << result->getValue<int>() << std::endl;
+
     return result;
 }
 
@@ -164,7 +166,7 @@ Literal* operator/(const Literal& lhs, const Literal& rhs) {
         result = new Literal(Type::INT, value);
     } 
     else {
-        std::cout << "SOMETHING MIGHT BE OFF / Literal.\n";
+        LOG << "SOMETHING MIGHT BE OFF / Literal.\n";
     }
     return result;
 }
@@ -187,7 +189,7 @@ Literal* operator*(const Literal& lhs, const Literal& rhs) {
         result = new Literal(Type::INT, value);
     } 
     else {
-        std::cout << "SOMETHING MIGHT BE OFF * Literal.\n";
+        LOG << "SOMETHING MIGHT BE OFF * Literal.\n";
     }
     return result;
 }
@@ -301,7 +303,6 @@ std::ostream& operator<<(std::ostream& os, const Literal& expr) {
         os << expr.getValue<double>();
     } 
     else if (expr.type == Type::INT) {
-        std::cout << "INT\n";
         os << expr.getValue<int>();
     } 
     else if (expr.type == Type::STRING) {

@@ -78,7 +78,7 @@ void Scanner::scanToken() {
 
   // If nothing matches, throw an error
   else {
-    std::cerr << "Error: Unexpected character '" << c << "' at line " << line
+    CRIT << "Error: Unexpected character '" << c << "' at line " << line
               << "\n";
     ErrorHandler::error(line, "invalid character");
   }

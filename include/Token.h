@@ -1,3 +1,5 @@
+// Token.h
+
 #ifndef TOKEN_H
 #define TOKEN_H
 
@@ -6,6 +8,7 @@
 #include <string>
 
 #include "TokenType.h"
+
 
 class Token {
  public:

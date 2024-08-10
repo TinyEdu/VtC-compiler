@@ -1,3 +1,5 @@
+// Interpreter.h
+
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
@@ -6,13 +8,16 @@
 #include <variant>
 
 #include "Token.h"
+#include "LogManager.h"
 
+// Forward declaration of Expression classes
 class Visitor;
 class Expression;
 class Binary;
 class Grouping;
 class Literal;
 class Unary;
+
 
 class Interpreter : public Visitor {
 public:

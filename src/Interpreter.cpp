@@ -10,16 +10,16 @@ void Interpreter::interpret(Expression* expr) {
         Literal* value = evaluate(expr);
 
         // Print the expression
-        std::cout << value << std::endl;    
+        LOG << value << ENDL;    
 
     } catch (std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
+        std::cerr << e.what() << ENDL;
     }
 }
 
 
 std::any Interpreter::visit(Literal* expr) {  // @TODO - do I want to return this for sure?
-    std::cout << "Visit Literal\n";
+    LOG << "Visit Literal\n";
     return expr;
 }
 
@@ -35,7 +35,7 @@ Literal* Interpreter::evaluate(Expression* expr) {
 
 
 std::any Interpreter::visit(Unary* expr) {
-    std::cout << "Visit Unary\n";
+    LOG << "Visit Unary\n";
     Literal* right = evaluate(expr->right);
 
     switch (expr->op.type) {
@@ -49,7 +49,7 @@ std::any Interpreter::visit(Unary* expr) {
             break;
     }
 
-    std::cout << "Unreachable code reached in Interpreter::visit(Unary* expr) " << std::endl;
+    LOG << "Unreachable code reached in Interpreter::visit(Unary* expr) " << ENDL;
     return std::any();
 }
 
@@ -58,7 +58,7 @@ Interpreter::~Interpreter() {}
 
 
 std::any Interpreter::visit(Binary* expr) {
-    std::cout << "Visit Binary\n";
+    LOG << "Visit Binary\n";
   Literal* left = evaluate(expr->left);
   Literal* right = evaluate(expr->right);
 
@@ -87,6 +87,6 @@ std::any Interpreter::visit(Binary* expr) {
       break;
   }
 
-  std::cout << "Unreachable code reached in Interpreter::visit(Binary* expr) " << std::endl;
+  LOG << "Unreachable code reached in Interpreter::visit(Binary* expr) " << ENDL;
   return std::any();
 }

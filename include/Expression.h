@@ -1,3 +1,5 @@
+// Expression.h
+
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
@@ -7,9 +9,8 @@
 #include <variant>
 
 #include "Token.h"
+#include "LogManager.h"
 #include "Visitor.h"
-
-// Forward declaration of Visitor class
 
 
 class Expression {

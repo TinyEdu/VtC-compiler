@@ -1,3 +1,5 @@
+// Visitor.h
+
 #ifndef VISITOR_H
 #define VISITOR_H
 
@@ -18,6 +20,5 @@ class Visitor {
   virtual std::any visit(Literal* expr) = 0;
   virtual std::any visit(Unary* expr) = 0;
 };
-
 
 #endif  // VISITOR_H

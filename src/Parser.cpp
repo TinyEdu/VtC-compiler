@@ -10,7 +10,7 @@ Expression* Parser::expression() {
   try {
     return equality();
   } catch (const ParseError& e) {
-    std::cerr << "Parse error: " << e.what() << std::endl;
+    CRIT << "Parse error: " << e.what() << ENDL;
     return nullptr;
   }
 }
@@ -143,7 +143,7 @@ Token Parser::consume(TokenType type, std::string message) {
 }
 
 ParseError Parser::error(Token token, std::string message) {      // @TODO : Move to ErrorHandler
-  std::cerr << "[line " << token.line << "] Error" << message << std::endl;
+  CRIT << "[line " << token.line << "] Error" << message << ENDL;
   return ParseError(message);
 }
 
@@ -176,7 +176,7 @@ Expression* Parser::parse() {
   try {
     return expression();
   } catch (const ParseError& e) {
-    std::cerr << "Parse error: " << e.what() << std::endl;
+    CRIT << "Parse error: " << e.what() << ENDL;
     return nullptr;
   }
 }

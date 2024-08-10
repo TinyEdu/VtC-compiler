@@ -1,18 +1,23 @@
+// Parser.h
+
 #ifndef PARSER_H
 #define PARSER_H
 
 #include <stdexcept>
 #include <vector>
-#include <iostream>
 
 #include "Token.h"
+#include "LogManager.h"
 
+
+// Forward declaration of Expression classes
 class Expression;
 
 class Binary;
 class Grouping;
 class Literal;
 class Unary;
+
 
 class ParseError : public std::runtime_error {
  public:

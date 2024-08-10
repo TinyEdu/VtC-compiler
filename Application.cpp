@@ -1,4 +1,5 @@
-#include <iostream>
+// Application.cpp
+
 #include "AstPrinter.h"
 #include "Transpiler.h"
 
@@ -6,18 +7,17 @@
 
 
 int main(int argc, char* argv[]) {
-  LOG << "Running compiler...";
-  WARN << "This is a warning message.";
-  CRIT << "This is an info message.";
+  LOG << "Running compiler..." << ENDL;
 
   if (argc > 2) {
-    std::cerr << "Error: Wrong input amount.\n";
+    WARN << "Error: Wrong input amount." << ENDL;
     return 65;  // https://man.freebsd.org/cgi/man.cgi?query=sysexits&apropos=0&sektion=0&manpath=FreeBSD+4.3-RELEASE&format=html
   } else if (argc == 2) {
-    std::clog << "Compiling file: " << argv[1] << "...\n";
+    LOG << "Compiling file: " << argv[1] << "...\n";
     Transpiler::runFile(argv[1]);
   } else {  // argc == 1
-    std::clog << "Real life compilation... \nPrompting :>\n";
+    LOG << "Real life compilation..." << ENDL;
+    LOG << "Prompting :>" << ENDL;
     Transpiler::runPrompt();
   }
 

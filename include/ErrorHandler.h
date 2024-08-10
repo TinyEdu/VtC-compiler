@@ -1,5 +1,11 @@
+// ErrorHandler.h
+
+#ifndef ERROR_HANDLER_H
 #include <iostream>
 #include <string>
+
+#include "LogManager.h"
+
 
 class ErrorHandler {
  public:
@@ -13,3 +19,5 @@ class ErrorHandler {
   bool hadError();
   bool hadRuntimeError();
 };
+
+#endif  // ERROR_HANDLER_H
