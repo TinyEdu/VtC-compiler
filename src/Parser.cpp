@@ -171,9 +171,7 @@ void Parser::synchronize() {
   }
 }
 
-/* 
-// Old Implementation
-Expression* Parser::parse() { 
+Expression* Parser::parseExpression() { 
   try {
     return expression();
   } catch (const ParseError& e) {
@@ -181,7 +179,6 @@ Expression* Parser::parse() {
     return nullptr;
   }
 }
-*/
 
 std::vector<Statement*> Parser::parse() {
   std::vector<Statement*> statements;
@@ -204,11 +201,11 @@ Statement* Parser::statement() {
 Statement* Parser::printStatement() {
   Expression* value = expression();
   consume(TokenType::SEMICOLON, "Expect ';' after value.");
-  return new Print(value);
+  return new PrintStatement(value);
 }
 
 Statement* Parser::expressionStatement() {
   Expression* expr = expression();
   consume(TokenType::SEMICOLON, "Expect ';' after expression.");
-  return new Statement.Expression(expr);
+  return new ExpressionStatement(expr);
 }

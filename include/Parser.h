@@ -8,6 +8,7 @@
 
 #include "LogManager.h"
 #include "Token.h"
+#include "Statement.h"
 
 // Forward declaration of Expression classes
 class Expression;
@@ -53,7 +54,7 @@ class Parser {
   void synchronize();
 
  public:
-  // Expression* parse();
+  Expression* parseExpression();
   std::vector<Statement*> parse();
   Statement* expressionStatement();
   Statement* printStatement();
