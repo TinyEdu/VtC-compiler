@@ -1,3 +1,4 @@
+// Transpiler.cpp
 #include "Transpiler.h"
 
 // Define the static member variable
@@ -71,7 +72,7 @@ void Transpiler::run(std::string source) {
   LOG << std::string(15, '_') << "\n";
 
   Parser parser(tokens);
-  Expression* expression = parser.parse();
+  std::vector<Statement> expression = parser.parse();
 
   // for testing purposes
   AstPrinter printer;

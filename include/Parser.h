@@ -17,6 +17,8 @@ class Grouping;
 class Literal;
 class Unary;
 
+class Statement;
+
 class ParseError : public std::runtime_error {
  public:
   ParseError(std::string message) : std::runtime_error(message) {}
@@ -51,7 +53,12 @@ class Parser {
   void synchronize();
 
  public:
-  Expression* parse();
+  // Expression* parse();
+  std::vector<Statement*> parse();
+  Statement* expressionStatement();
+  Statement* printStatement();
+  Statement* statement();
+
 };
 
 #endif  // PARSER_H

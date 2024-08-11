@@ -1,3 +1,5 @@
+// ErrorHandler.cpp
+
 #include "ErrorHandler.h"
 
 ErrorHandler::ErrorHandler() {}

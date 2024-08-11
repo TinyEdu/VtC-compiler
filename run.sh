@@ -7,6 +7,9 @@ if [ "$1" == "RELEASE" ]; then
 elif [ "$1" == "DEBUG" ]; then
     echo "Building in Debug mode"
     BUILD_TYPE=Debug
+elif [ "$1" == "TESTS"]; then
+    echo "Building in Test mode"
+    BUILD_TYPE=Tests
 else
     echo "Invalid or missing build type. Using default: Debug"
     BUILD_TYPE=Debug

@@ -1,4 +1,6 @@
+// Parser.cpp
 #include "Parser.h"
+#include "Statement.h"
 #include "Expression.h"
 
 Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
@@ -169,11 +171,44 @@ void Parser::synchronize() {
   }
 }
 
-Expression* Parser::parse() {
+/* 
+// Old Implementation
+Expression* Parser::parse() { 
   try {
     return expression();
   } catch (const ParseError& e) {
     CRIT << "Parse error: " << e.what() << ENDL;
     return nullptr;
   }
+}
+*/
+
+std::vector<Statement*> Parser::parse() {
+  std::vector<Statement*> statements;
+
+  while (!isAtEnd()) {
+    statements.push_back(statement());
+  }
+
+  return statements;
+}
+
+Statement* Parser::statement() {
+  if (match({TokenType::PRINT})) {
+    return printStatement();
+  }
+
+  return expressionStatement();
+}
+
+Statement* Parser::printStatement() {
+  Expression* value = expression();
+  consume(TokenType::SEMICOLON, "Expect ';' after value.");
+  return new Print(value);
+}
+
+Statement* Parser::expressionStatement() {
+  Expression* expr = expression();
+  consume(TokenType::SEMICOLON, "Expect ';' after expression.");
+  return new Statement.Expression(expr);
 }

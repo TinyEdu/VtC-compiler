@@ -1,7 +1,6 @@
 // LogManager.cpp
 
 #include "LogManager.h"
-#include <iomanip>
 
 const std::string LogManager::green = "\033[32m";  // Green color for LOG
 const std::string LogManager::orange =

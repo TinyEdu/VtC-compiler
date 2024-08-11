@@ -1,3 +1,4 @@
+// Token.cpp
 #include "Token.h"
 
 // Constructor definition
@@ -6,6 +7,13 @@ Token::Token(TokenType type, std::string lexeme, std::string literal, int line)
       lexeme(std::move(lexeme)),
       literal(std::move(literal)),
       line(line) {}
+
+Token::Token(TokenType type) {
+  this->type = type;
+  this->lexeme = "";
+  this->literal = "";
+  this->line = 0;
+}
 
 // Destructor definition
 Token::~Token() {}
