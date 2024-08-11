@@ -96,4 +96,12 @@ T Literal::getValue() const {
   return std::any_cast<T>(value);
 }
 
+class Variable : public Expression {
+ public:
+  Variable(Token name);
+  std::any accept(Visitor* visitor) override;
+
+  Token name;
+};
+
 #endif  // EXPRESSION_H

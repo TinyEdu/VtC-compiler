@@ -35,6 +35,7 @@ class Parser {
   ~Parser();
 
  private:
+  Statement* declaration();
   Expression* expression();
   Expression* equality();
   Expression* comparison();
@@ -52,8 +53,9 @@ class Parser {
   Token consume(TokenType type, std::string message);
   ParseError error(Token token, std::string message);
   void synchronize();
-
- public:
+  Statement* varDeclaration();
+ 
+ public: 
   Expression* parseExpression();
   std::vector<Statement*> parse();
   Statement* expressionStatement();

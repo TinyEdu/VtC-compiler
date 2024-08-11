@@ -268,7 +268,7 @@ std::ostream& operator<<(std::ostream& os, const Unary* expr) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Literal& expr) {
-  os << "Literal&: ";
+  os << "[L&]";
   if (expr.type == Type::BOOL) {
     os << expr.getValue<bool>();
   } else if (expr.type == Type::DOUBLE) {
@@ -284,7 +284,7 @@ std::ostream& operator<<(std::ostream& os, const Literal& expr) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Literal* expr) {
-  os << "Literal*: ";
+  os << "[L*]";
   if (expr->type == Type::BOOL) {
     os << expr->getValue<bool>();
   } else if (expr->type == Type::DOUBLE) {
@@ -297,4 +297,10 @@ std::ostream& operator<<(std::ostream& os, const Literal* expr) {
     os << "Unsupported type";
   }
   return os;
+}
+
+Variable::Variable(Token name) : name(name) {}
+
+std::any Variable::accept(Visitor* visitor) {
+  return visitor->visit(this);
 }

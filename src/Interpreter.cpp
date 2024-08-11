@@ -7,6 +7,8 @@
 
 Interpreter::Interpreter() {}
 
+Interpreter::~Interpreter() {}
+
 void Interpreter::interpret(Expression* expr) {
   try {
     Literal* value = evaluate(expr);
@@ -34,53 +36,16 @@ void Interpreter::interpret(std::vector<Statement*> stmt) {
    
 }
 
-std::any Interpreter::visit(
-    Literal* expr) {  // @TODO - do I want to return this for sure?
-  LOG << "Visit Literal\n";
-  return expr;
-}
-
-std::any Interpreter::visit(Grouping* expr) {
-  return evaluate(expr->expression);
-}
-
 Literal* Interpreter::evaluate(Expression* expr) {
   return std::any_cast<Literal*>(expr->accept(this));
 }
 
-std::any Interpreter::visit(Unary* expr) {
-  LOG << "Visit Unary\n";
-  Literal* right = evaluate(expr->right);
 
-  switch (expr->op.type) {
-    case TokenType::BANG:
-      // return !isTruthy(right);
-      return !*right;
-    case TokenType::MINUS:
-      // return -std::any_cast<double>(right);
-      return -*right;
-    default:
-      break;
-  }
 
-  LOG << "Unreachable code reached in Interpreter::visit(Unary* expr) " << ENDL;
-  return std::any();
-}
+// ______________________________________________________________
 
-std::any Interpreter::visit(ExpressionStatement* stmt) {
-  evaluate(stmt->expression);
-  return std::any();
-}
-
-std::any Interpreter::visit(PrintStatement* stmt) {
-  LOG << "PRINT FUNCTION: " << evaluate(stmt->expression) << ENDL;
-  return std::any();
-}
-
-Interpreter::~Interpreter() {}
 
 std::any Interpreter::visit(Binary* expr) {
-  LOG << "Visit Binary\n";
   Literal* left = evaluate(expr->left);
   Literal* right = evaluate(expr->right);
 
@@ -113,3 +78,62 @@ std::any Interpreter::visit(Binary* expr) {
       << ENDL;
   return std::any();
 }
+
+std::any Interpreter::visit(Literal* expr) {  
+  return expr;
+}
+
+std::any Interpreter::visit(Grouping* expr) {
+  return evaluate(expr->expression);
+}
+
+std::any Interpreter::visit(Unary* expr) {
+  Literal* right = evaluate(expr->right);
+
+  switch (expr->op.type) {
+    case TokenType::BANG:
+      // return !isTruthy(right);
+      return !*right;
+    case TokenType::MINUS:
+      // return -std::any_cast<double>(right);
+      return -*right;
+    default:
+      break;
+  }
+
+  LOG << "Unreachable code reached in Interpreter::visit(Unary* expr) " << ENDL;
+  return std::any();
+}
+
+std::any Interpreter::visit(Variable* expr) {
+  return std::any();
+}
+
+// ______________________________________________________________
+
+std::any Interpreter::visit(ExpressionStatement* stmt) {
+  evaluate(stmt->expression);
+  return std::any();
+}
+
+std::any Interpreter::visit(PrintStatement* stmt) {
+  std::cout << "PRINT FUNCTION: " << evaluate(stmt->expression) << "\n";
+  return std::any();
+}
+
+std::any Interpreter::visit(VarStatement* stmt) {
+  return std::any();
+}
+
+std::any Interpreter::visit(BlockStatement* stmt) {
+  return std::any();
+}
+
+std::any Interpreter::visit(FunctionStatement* stmt) {
+  return std::any();
+}
+
+std::any Interpreter::visit(ClassStatement* stmt) {
+  return std::any();
+}
+

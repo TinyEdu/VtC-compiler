@@ -7,6 +7,19 @@ Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
 
 Parser::~Parser() {}
 
+Statement* Parser::declaration() {
+  try {
+    if (match({TokenType::VAR}))
+      return varDeclaration();
+
+    return statement();
+  } catch (const ParseError& e) {
+    CRIT << "Parse error: " << e.what() << ENDL;
+    synchronize();
+    return nullptr;
+  }
+}
+
 Expression* Parser::expression() {
   try {
     return equality();
@@ -94,6 +107,8 @@ Expression* Parser::primary() {
     Expression* expr = expression();
     consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
     return new Grouping(expr);
+  } else if (match({TokenType::IDENTIFIER})) {
+    return new Variable(previous());
   }
 
   throw ParseError("Expect expression.");
@@ -171,6 +186,18 @@ void Parser::synchronize() {
   }
 }
 
+Statement* Parser::varDeclaration() {
+  Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
+
+  Expression* initializer = nullptr;
+  if (match({TokenType::EQUAL})) {
+    initializer = expression();
+  }
+
+  consume(TokenType::SEMICOLON, "Expect ';' after variable declaration.");
+  return new VarStatement(name, initializer);
+}
+
 Expression* Parser::parseExpression() { 
   try {
     return expression();
@@ -184,7 +211,7 @@ std::vector<Statement*> Parser::parse() {
   std::vector<Statement*> statements;
 
   while (!isAtEnd()) {
-    statements.push_back(statement());
+    statements.push_back(declaration());
   }
 
   return statements;
