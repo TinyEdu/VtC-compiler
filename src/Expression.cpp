@@ -304,3 +304,9 @@ Variable::Variable(Token name) : name(name) {}
 std::any Variable::accept(Visitor* visitor) {
   return visitor->visit(this);
 }
+
+Assign::Assign(Token name, Expression* value) : name(name), value(value) {}
+
+std::any Assign::accept(Visitor* visitor) {
+  return visitor->visit(this);
+}

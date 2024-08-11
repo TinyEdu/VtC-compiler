@@ -41,9 +41,12 @@ Literal* Interpreter::evaluate(Expression* expr) {
 }
 
 
-
 // ______________________________________________________________
 
+
+std::any Interpreter::visit(Assign* expr) {
+  return std::any();
+}
 
 std::any Interpreter::visit(Binary* expr) {
   Literal* left = evaluate(expr->left);
@@ -106,7 +109,7 @@ std::any Interpreter::visit(Unary* expr) {
 }
 
 std::any Interpreter::visit(Variable* expr) {
-  return std::any();
+  return environment.lookup(expr->name.lexeme);
 }
 
 // ______________________________________________________________
@@ -122,6 +125,18 @@ std::any Interpreter::visit(PrintStatement* stmt) {
 }
 
 std::any Interpreter::visit(VarStatement* stmt) {
+  Expression* value = nullptr;
+
+  if (stmt->initializer != nullptr) {
+    value = evaluate(stmt->initializer);
+  }
+  else {
+    // if we have a variable declaration without an initializer
+    // we should throw an error
+    throw std::runtime_error("Variable declaration without an initializer");
+  }
+  environment.define(stmt->name.lexeme, value);
+  
   return std::any();
 }
 

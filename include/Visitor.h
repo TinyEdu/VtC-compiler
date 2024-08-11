@@ -6,6 +6,7 @@
 #include <any>
 
 // Forward declaration of Expression classes
+class Assign;
 class Binary;
 class Grouping;
 class Literal;
@@ -19,6 +20,7 @@ class BaseVisitor {
 
 class Visitor : public BaseVisitor {
  public:
+  virtual std::any visit(Assign* expr) = 0;
   virtual std::any visit(Binary* expr) = 0;
   virtual std::any visit(Grouping* expr) = 0;
   virtual std::any visit(Literal* expr) = 0;

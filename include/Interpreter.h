@@ -9,6 +9,7 @@
 
 #include "LogManager.h"
 #include "Token.h"
+#include "Environment.h"
 
 // Forward declaration of Expression classes
 class Visitor;
@@ -24,7 +25,9 @@ class Interpreter : public Visitor, public StatementVisitor {
   Interpreter();
   ~Interpreter();
 
+  Environment environment; 
  public:
+  std::any visit(Assign* expr);
   std::any visit(Binary* expr);
   std::any visit(Grouping* expr);
   std::any visit(Literal* expr);

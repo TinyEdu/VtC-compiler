@@ -21,12 +21,25 @@ Statement* Parser::declaration() {
 }
 
 Expression* Parser::expression() {
-  try {
-    return equality();
-  } catch (const ParseError& e) {
-    CRIT << "Parse error: " << e.what() << ENDL;
-    return nullptr;
+  return assignment();
+}
+
+Expression* Parser::assignment() {
+  Expression* expr = equality();
+
+  if (match({TokenType::EQUAL})) {
+    Token equals = previous();
+    Expression* value = assignment();
+
+    if (expr->type == ExpressionType::VARIABLE) {
+      Token name = static_cast<Variable*>(expr)->name;
+      return new Assign(name, value);
+    }
+
+    error(equals, "Invalid assignment target.");
   }
+
+  return expr;
 }
 
 Expression* Parser::equality() {

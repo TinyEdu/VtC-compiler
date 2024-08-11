@@ -36,6 +36,7 @@ class Parser {
 
  private:
   Statement* declaration();
+  Expression* assignment();
   Expression* expression();
   Expression* equality();
   Expression* comparison();

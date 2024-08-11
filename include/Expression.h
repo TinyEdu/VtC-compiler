@@ -19,6 +19,15 @@ class Expression {
   virtual std::any accept(Visitor* visitor) = 0;
 };
 
+class Assign : public Expression {
+ public:
+  Assign(Token name, Expression* value);
+  std::any accept(Visitor* visitor) override;
+
+  Token name;
+  Expression* value;
+};
+
 class Binary : public Expression {
  public:
   Binary(Expression* left, Token op, Expression* right);
