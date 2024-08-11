@@ -3,11 +3,10 @@
 #ifndef LOGMANAGER_H
 #define LOGMANAGER_H
 
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <iomanip>
-
 
 class LogManager {
  public:

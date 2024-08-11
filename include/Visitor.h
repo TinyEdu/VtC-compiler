@@ -14,9 +14,7 @@ class Unary;
 class Expression;
 class Variable;
 
-class BaseVisitor {
-
-};
+class BaseVisitor {};
 
 class Visitor : public BaseVisitor {
  public:
@@ -37,13 +35,13 @@ class FunctionStatement;
 class ClassStatement;
 
 class StatementVisitor : public BaseVisitor {
-  public:
-    virtual std::any visit(ExpressionStatement* stmt) = 0;
-    virtual std::any visit(PrintStatement* stmt) = 0;
-    virtual std::any visit(VarStatement* stmt) = 0;
-    virtual std::any visit(BlockStatement* stmt) = 0;
-    virtual std::any visit(FunctionStatement* stmt) = 0;
-    virtual std::any visit(ClassStatement* stmt) = 0;
+ public:
+  virtual std::any visit(ExpressionStatement* stmt) = 0;
+  virtual std::any visit(PrintStatement* stmt) = 0;
+  virtual std::any visit(VarStatement* stmt) = 0;
+  virtual std::any visit(BlockStatement* stmt) = 0;
+  virtual std::any visit(FunctionStatement* stmt) = 0;
+  virtual std::any visit(ClassStatement* stmt) = 0;
 };
 
 #endif  // VISITOR_H

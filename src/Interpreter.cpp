@@ -22,27 +22,20 @@ void Interpreter::interpret(Expression* expr) {
 }
 
 void Interpreter::interpret(std::vector<Statement*> stmt) {
-  try
-  {
-    for (auto& statement : stmt)
-    {
+  try {
+    for (auto& statement : stmt) {
       statement->accept(this);
     }
-  }
-  catch(const std::exception& e)
-  {
+  } catch (const std::exception& e) {
     CRIT << e.what() << ENDL;
   }
-   
 }
 
 Literal* Interpreter::evaluate(Expression* expr) {
   return std::any_cast<Literal*>(expr->accept(this));
 }
 
-
 // ______________________________________________________________
-
 
 std::any Interpreter::visit(Assign* expr) {
   return std::any();
@@ -82,7 +75,7 @@ std::any Interpreter::visit(Binary* expr) {
   return std::any();
 }
 
-std::any Interpreter::visit(Literal* expr) {  
+std::any Interpreter::visit(Literal* expr) {
   return expr;
 }
 
@@ -129,14 +122,13 @@ std::any Interpreter::visit(VarStatement* stmt) {
 
   if (stmt->initializer != nullptr) {
     value = evaluate(stmt->initializer);
-  }
-  else {
+  } else {
     // if we have a variable declaration without an initializer
     // we should throw an error
     throw std::runtime_error("Variable declaration without an initializer");
   }
   environment.define(stmt->name.lexeme, value);
-  
+
   return std::any();
 }
 
@@ -151,4 +143,3 @@ std::any Interpreter::visit(FunctionStatement* stmt) {
 std::any Interpreter::visit(ClassStatement* stmt) {
   return std::any();
 }
-

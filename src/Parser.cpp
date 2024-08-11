@@ -1,7 +1,7 @@
 // Parser.cpp
 #include "Parser.h"
-#include "Statement.h"
 #include "Expression.h"
+#include "Statement.h"
 
 Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
 
@@ -211,7 +211,7 @@ Statement* Parser::varDeclaration() {
   return new VarStatement(name, initializer);
 }
 
-Expression* Parser::parseExpression() { 
+Expression* Parser::parseExpression() {
   try {
     return expression();
   } catch (const ParseError& e) {

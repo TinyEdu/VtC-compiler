@@ -13,7 +13,8 @@ class Statement {
 
 class ExpressionStatement : public Statement {
  public:
-  ExpressionStatement(Expression* expression) : expression(std::move(expression)) {}
+  ExpressionStatement(Expression* expression)
+      : expression(std::move(expression)) {}
   ~ExpressionStatement() = default;
 
   std::any accept(StatementVisitor* visitor) override {
@@ -32,25 +33,27 @@ class PrintStatement : public Statement {
     return visitor->visit(this);
   }
 
- Expression* expression;
+  Expression* expression;
 };
 
 class VarStatement : public Statement {
-  public:
-    VarStatement(Token name, Expression* initializer) : name(std::move(name)), initializer(std::move(initializer)) {}
-    ~VarStatement() = default;
-  
-    std::any accept(StatementVisitor* visitor) override {
-      return visitor->visit(this);
-    }
-  
-    Token name;
-    Expression* initializer;
-  };
+ public:
+  VarStatement(Token name, Expression* initializer)
+      : name(std::move(name)), initializer(std::move(initializer)) {}
+  ~VarStatement() = default;
+
+  std::any accept(StatementVisitor* visitor) override {
+    return visitor->visit(this);
+  }
+
+  Token name;
+  Expression* initializer;
+};
 
 class BlockStatement : public Statement {
  public:
-  BlockStatement(std::vector<Statement*> statements) : statements(std::move(statements)) {}
+  BlockStatement(std::vector<Statement*> statements)
+      : statements(std::move(statements)) {}
   ~BlockStatement() = default;
 
   std::any accept(StatementVisitor* visitor) override {
@@ -62,7 +65,11 @@ class BlockStatement : public Statement {
 
 class FunctionStatement : public Statement {
  public:
-  FunctionStatement(Token name, std::vector<Token> params, std::vector<Statement*> body) : name(std::move(name)), params(std::move(params)), body(std::move(body)) {}
+  FunctionStatement(Token name, std::vector<Token> params,
+                    std::vector<Statement*> body)
+      : name(std::move(name)),
+        params(std::move(params)),
+        body(std::move(body)) {}
   ~FunctionStatement() = default;
 
   std::any accept(StatementVisitor* visitor) override {
@@ -76,7 +83,8 @@ class FunctionStatement : public Statement {
 
 class ClassStatement : public Statement {
  public:
-  ClassStatement(Token name, std::vector<FunctionStatement*> methods) : name(std::move(name)), methods(std::move(methods)) {}
+  ClassStatement(Token name, std::vector<FunctionStatement*> methods)
+      : name(std::move(name)), methods(std::move(methods)) {}
   ~ClassStatement() = default;
 
   std::any accept(StatementVisitor* visitor) override {
@@ -87,4 +95,4 @@ class ClassStatement : public Statement {
   std::vector<FunctionStatement*> methods;
 };
 
-#endif // STATEMENT_H
+#endif  // STATEMENT_H

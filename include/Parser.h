@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "LogManager.h"
-#include "Token.h"
 #include "Statement.h"
+#include "Token.h"
 
 // Forward declaration of Expression classes
 class Expression;
@@ -55,14 +55,13 @@ class Parser {
   ParseError error(Token token, std::string message);
   void synchronize();
   Statement* varDeclaration();
- 
- public: 
+
+ public:
   Expression* parseExpression();
   std::vector<Statement*> parse();
   Statement* expressionStatement();
   Statement* printStatement();
   Statement* statement();
-
 };
 
 #endif  // PARSER_H

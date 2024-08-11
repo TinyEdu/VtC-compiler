@@ -4,22 +4,22 @@
 #define ENVIRONMENT_H
 
 #include <map>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 class Expression;
 
-class Environment
-{
-public:
-    Environment();
-    ~Environment();
-public:
-    void define(std::string name, Expression* value);
-    Expression* lookup(std::string name);
-private:
-    std::map<std::string, Expression*> env;
+class Environment {
+ public:
+  Environment();
+  ~Environment();
+
+ public:
+  void define(std::string name, Expression* value);
+  Expression* lookup(std::string name);
+
+ private:
+  std::map<std::string, Expression*> env;
 };
 
-
-#endif // ENVIRONMENT_H
+#endif  // ENVIRONMENT_H
