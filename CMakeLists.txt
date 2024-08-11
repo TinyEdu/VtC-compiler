@@ -30,39 +30,42 @@ elseif(UNIX)
     message("Building on Linux")
 endif()
 
-# Check the build type
+# Build types configuration
 if(CMAKE_BUILD_TYPE STREQUAL "Tests")
+    # Test configuration
+    message("Building in Tests mode.")
     find_package(GTest CONFIG REQUIRED)
     include_directories(${GTEST_INCLUDE_DIRS})
-    
-    set(TESTS 
-        ${PROJECT_SOURCE_DIR}/tests/test_adding.cpp
-    )
 
-    add_executable(tests ${TESTS} ${SOURCES} ${HEADERS})
+    # Gather test sources, excluding the main application
+    file(GLOB_RECURSE TEST_SOURCES "${PROJECT_SOURCE_DIR}/tests/*.cpp")
 
+    # Add the test executable
+    add_executable(tests ${TEST_SOURCES} ${SOURCES})
+
+    # Link GTest libraries
     target_link_libraries(tests PRIVATE GTest::gtest GTest::gtest_main)
 
     enable_testing()
     include(GoogleTest)
     gtest_discover_tests(tests)
- 
-    message("Building in Tests mode.")
 
-    target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_MODE)
+    # Define preprocessor macros
+    target_compile_definitions(vtc-compiler PRIVATE DEBUG_MODE TESTS_MODE)
     target_compile_definitions(tests PRIVATE DEBUG_MODE)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # Debug configuration
     message("Building in Debug mode.")
-
-    target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG_MODE)
+    target_compile_definitions(vtc-compiler PRIVATE DEBUG_MODE)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    # Release configuration
     message("Building in Release mode.")
+    target_compile_definitions(vtc-compiler PRIVATE RELEASE_MODE)
 
-    target_compile_definitions(${PROJECT_NAME} PRIVATE RELEASE_MODE)
-
-    else()
+else()
+    # Unknown configuration
     message(FATAL_ERROR "Unknown build type. Set CMAKE_BUILD_TYPE to Debug, Release, or Tests.")
 endif()
 

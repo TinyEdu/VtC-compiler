@@ -72,11 +72,13 @@ void Transpiler::run(std::string source) {
   LOG << std::string(15, '_') << "\n";
 
   Parser parser(tokens);
-  std::vector<Statement*> expression = parser.parse();
+  std::vector<Statement*> statements = parser.parse();
 
   if (hadError) {
     return;
   }
+
+  interpreter.interpret(statements);
 
   LOG << std::string(15, '_') << "\n";
 }

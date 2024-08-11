@@ -7,7 +7,7 @@ if [ "$1" == "RELEASE" ]; then
 elif [ "$1" == "DEBUG" ]; then
     echo "Building in Debug mode"
     BUILD_TYPE=Debug
-elif [ "$1" == "TESTS"]; then
+elif [ "$1" == "TESTS" ]; then
     echo "Building in Test mode"
     BUILD_TYPE=Tests
 else
@@ -20,7 +20,6 @@ if [ "$2" == "CLEAN" ] || [ "$1" == "CLEAN" ]; then
     echo "Cleaning build directory"
     rm -rf build
 fi
-
 
 # Create build directory if it doesn't exist
 mkdir -p build
@@ -37,4 +36,10 @@ cmake --build . -- -j6 || { echo "Build failed"; exit 1; }
 echo -e "\n\n"
 
 # Run the transpiler
-./vtc-compiler || { echo "Failed to execute Transpiler"; exit 1; }
+if [ "$BUILD_TYPE" == "Tests" ]; then
+    # Run tests if in test mode
+    ctest --output-on-failure || { echo "Tests failed"; exit 1; }
+else
+    # Otherwise, run the transpiler
+    ./vtc-compiler || { echo "Failed to execute Transpiler"; exit 1; }
+fi

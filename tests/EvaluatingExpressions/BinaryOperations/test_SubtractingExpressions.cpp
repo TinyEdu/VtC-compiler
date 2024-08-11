@@ -47,7 +47,3 @@ TEST(InterpreterTest, SubtractsPositiveAndNegativeNumbers) {
     EXPECT_EQ(interpreter.evaluate(expr6), Literal(-20));
 }
 
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

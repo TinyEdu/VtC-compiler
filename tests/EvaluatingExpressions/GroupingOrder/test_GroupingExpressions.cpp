@@ -72,8 +72,3 @@ TEST(InterpreterTest, NestedGrouping) {
     EXPECT_EQ(interpreter.evaluate(expr1), Literal(21));  // (1 + 2) * (3 + 4) = 21
     EXPECT_EQ(interpreter.evaluate(expr2), Literal(4));   // (5 + 3) / (4 - 2) = 4
 }
-
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

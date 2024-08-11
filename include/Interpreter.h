@@ -18,7 +18,7 @@ class Grouping;
 class Literal;
 class Unary;
 
-class Interpreter : public Visitor {
+class Interpreter : public Visitor, public StatementVisitor {
  public:
   Interpreter();
   ~Interpreter();
@@ -29,7 +29,11 @@ class Interpreter : public Visitor {
   std::any visit(Literal* expr);
   std::any visit(Unary* expr);
 
+  std::any visit(ExpressionStatement* stmt);
+  std::any visit(PrintStatement* stmt);
+
   void interpret(Expression* expr);
+  void interpret(std::vector<Statement*> stmt);
   Literal* evaluate(Expression* expr);
   std::variant<bool, double, int, std::string> evaluate(Literal* expr);
 };

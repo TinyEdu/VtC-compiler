@@ -19,6 +19,21 @@ void Interpreter::interpret(Expression* expr) {
   }
 }
 
+void Interpreter::interpret(std::vector<Statement*> stmt) {
+  try
+  {
+    for (auto& statement : stmt)
+    {
+      statement->accept(this);
+    }
+  }
+  catch(const std::exception& e)
+  {
+    CRIT << e.what() << ENDL;
+  }
+   
+}
+
 std::any Interpreter::visit(
     Literal* expr) {  // @TODO - do I want to return this for sure?
   LOG << "Visit Literal\n";
@@ -49,6 +64,16 @@ std::any Interpreter::visit(Unary* expr) {
   }
 
   LOG << "Unreachable code reached in Interpreter::visit(Unary* expr) " << ENDL;
+  return std::any();
+}
+
+std::any Interpreter::visit(ExpressionStatement* stmt) {
+  evaluate(stmt->expression);
+  return std::any();
+}
+
+std::any Interpreter::visit(PrintStatement* stmt) {
+  LOG << "PRINT FUNCTION: " << evaluate(stmt->expression) << ENDL;
   return std::any();
 }
 

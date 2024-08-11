@@ -28,8 +28,3 @@ TEST(InterpreterTest, NegateNegativeNumber) {
     EXPECT_EQ(interpreter.evaluate(expr2), Literal(0));
     EXPECT_EQ(interpreter.evaluate(expr3), Literal(2));
 }
-
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

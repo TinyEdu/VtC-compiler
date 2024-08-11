@@ -45,7 +45,3 @@ TEST(InterpreterTest, NegateWithArithmetic) {
     EXPECT_EQ(interpreter.evaluate(expr2), Literal(true));
 }
 
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
