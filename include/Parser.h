@@ -62,6 +62,7 @@ class Parser {
   Statement* expressionStatement();
   Statement* printStatement();
   Statement* statement();
+  std::vector<Statement*> block();
 };
 
 #endif  // PARSER_H

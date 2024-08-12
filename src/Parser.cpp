@@ -8,9 +8,11 @@ Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
 Parser::~Parser() {}
 
 Statement* Parser::declaration() {
+  
   try {
-    if (match({TokenType::VAR}))
+    if (match({TokenType::VAR})) {
       return varDeclaration();
+    }
 
     return statement();
   } catch (const ParseError& e) {
@@ -25,14 +27,17 @@ Expression* Parser::expression() {
 }
 
 Expression* Parser::assignment() {
+  // Get the result of an equality expression
   Expression* expr = equality();
 
   if (match({TokenType::EQUAL})) {
+    // Get the previous token and recursively call assignment
     Token equals = previous();
     Expression* value = assignment();
 
-    if (expr->type == ExpressionType::VARIABLE) {
-      Token name = static_cast<Variable*>(expr)->name;
+    // Use dynamic_cast to check if expr is of type Variable
+    if (auto varExpr = dynamic_cast<Variable*>(expr)) {
+      Token name = varExpr->name; 
       return new Assign(name, value);
     }
 
@@ -201,7 +206,7 @@ void Parser::synchronize() {
 
 Statement* Parser::varDeclaration() {
   Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
-
+  
   Expression* initializer = nullptr;
   if (match({TokenType::EQUAL})) {
     initializer = expression();
@@ -234,8 +239,22 @@ Statement* Parser::statement() {
   if (match({TokenType::PRINT})) {
     return printStatement();
   }
+  else if (match({TokenType::LEFT_BRACE})) {
+    return new BlockStatement(block());
+  }
 
   return expressionStatement();
+}
+
+std::vector<Statement*> Parser::block() {
+  std::vector<Statement*> statements;
+
+  while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+    statements.push_back(declaration());
+  }
+
+  consume(TokenType::RIGHT_BRACE, "Expect '}' after block.");
+  return statements;
 }
 
 Statement* Parser::printStatement() {

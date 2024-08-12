@@ -5,7 +5,7 @@
 
 #include "Interpreter.h"
 
-Interpreter::Interpreter() {}
+Interpreter::Interpreter() : environment(new Environment()){}
 
 Interpreter::~Interpreter() {}
 
@@ -35,10 +35,35 @@ Literal* Interpreter::evaluate(Expression* expr) {
   return std::any_cast<Literal*>(expr->accept(this));
 }
 
+void Interpreter::executeBlock(std::vector<Statement*> stmt, Environment* env) {
+  Environment* previous = environment;
+  /*
+  Manually changing and restoring a mutable environment field feels inelegant. Another classic approach is to explicitly pass the environment as a parameter to each visit method. To “change” the environment, you pass a different one as you recurse down the tree. You don’t have to restore the old one, since the new one lives on the Java stack and is implicitly discarded when the interpreter returns from the block’s visit method.
+
+  ~ https://craftinginterpreters.com/statements-and-state.html 
+  */
+  try {
+    environment = env;
+
+    // Execute the block
+    for (auto& statement : stmt) {
+      statement->accept(this);
+    }
+
+  } catch (const std::exception& e) {
+    this->environment = previous;
+    CRIT << e.what() << ENDL;
+  }
+
+  environment = previous;
+}
+
 // ______________________________________________________________
 
 std::any Interpreter::visit(Assign* expr) {
-  return std::any();
+  Literal* value = evaluate(expr->value);
+  environment->assign(expr->name.lexeme, value);
+  return value;
 }
 
 std::any Interpreter::visit(Binary* expr) {
@@ -102,7 +127,7 @@ std::any Interpreter::visit(Unary* expr) {
 }
 
 std::any Interpreter::visit(Variable* expr) {
-  return environment.lookup(expr->name.lexeme);
+  return environment->lookup(expr->name.lexeme);
 }
 
 // ______________________________________________________________
@@ -122,17 +147,18 @@ std::any Interpreter::visit(VarStatement* stmt) {
 
   if (stmt->initializer != nullptr) {
     value = evaluate(stmt->initializer);
-  } else {
-    // if we have a variable declaration without an initializer
-    // we should throw an error
-    throw std::runtime_error("Variable declaration without an initializer");
+    environment->define(stmt->name.lexeme, value);
   }
-  environment.define(stmt->name.lexeme, value);
-
+  
+  // if we have a variable declaration without an initializer
+  // we should throw an error
+  throw std::runtime_error("Variable declaration without an initializer");
+  
   return std::any();
 }
 
 std::any Interpreter::visit(BlockStatement* stmt) {
+  executeBlock(stmt->statements, new Environment(environment));
   return std::any();
 }
 
