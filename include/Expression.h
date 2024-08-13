@@ -17,6 +17,25 @@ class Expression {
   Expression() = default;
   virtual ~Expression() = default;
   virtual std::any accept(Visitor* visitor) = 0;
+
+  friend Expression* operator+(const Expression& lhs, const Expression& rhs);
+  friend Expression* operator-(const Expression& lhs, const Expression& rhs);
+  friend Expression* operator/(const Expression& lhs, const Expression& rhs);
+  friend Expression* operator*(const Expression& lhs, const Expression& rhs);
+  
+  friend bool operator!=(const Expression& lhs, const Expression& rhs);
+  friend bool operator==(const Expression& lhs, const Expression& rhs);
+  friend bool operator>(const Expression& lhs, const Expression& rhs);
+  friend bool operator<(const Expression& lhs, const Expression& rhs);
+
+  friend bool operator>=(const Expression& lhs, const Expression& rhs);
+  friend bool operator<=(const Expression& lhs, const Expression& rhs);
+
+  friend Expression* operator-(const Expression& lhs);
+  friend Expression* operator!(const Expression& lhs);
+
+  friend std::ostream& operator<<(std::ostream& os, const Expression* expr);
+  friend std::ostream& operator<<(std::ostream& os, const Expression& expr);
 };
 
 class Assign : public Expression {
@@ -82,21 +101,7 @@ class Literal : public Expression {
   std::any value;
   Type type;
 
-  friend Literal* operator+(const Literal& lhs, const Literal& rhs);
-  friend Literal* operator-(const Literal& lhs, const Literal& rhs);
-  friend Literal* operator/(const Literal& lhs, const Literal& rhs);
-  friend Literal* operator*(const Literal& lhs, const Literal& rhs);
 
-  friend bool operator!=(const Literal& lhs, const Literal& rhs);
-  friend bool operator==(const Literal& lhs, const Literal& rhs);
-  friend bool operator>(const Literal& lhs, const Literal& rhs);
-  friend bool operator<(const Literal& lhs, const Literal& rhs);
-
-  friend bool operator>=(const Literal& lhs, const Literal& rhs);
-  friend bool operator<=(const Literal& lhs, const Literal& rhs);
-
-  friend Literal* operator-(const Literal& lhs);
-  friend Literal* operator!(const Literal& lhs);
   friend std::ostream& operator<<(std::ostream& os, const Literal* expr);
 };
 
@@ -111,6 +116,8 @@ class Variable : public Expression {
   std::any accept(Visitor* visitor) override;
 
   Token name;
+
+  friend std::ostream& operator<<(std::ostream& os, const Variable* expr);
 };
 
 #endif  // EXPRESSION_H

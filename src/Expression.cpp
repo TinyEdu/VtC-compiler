@@ -1,4 +1,3 @@
-// Expression.cpp
 #include "Expression.h"
 
 // Define constructors and accept methods
@@ -57,7 +56,6 @@ std::any Literal::accept(Visitor* visitor) {
 }
 
 std::any Literal::getValue() {
-  // Assuming `value` is a `std::any` containing the actual value
   if (type == Type::STRING) {
     return value;
   } else if (type == Type::INT) {
@@ -67,186 +65,193 @@ std::any Literal::getValue() {
   } else if (type == Type::BOOL) {
     return std::any_cast<bool>(value) ? "true" : "false";
   }
-
-  // Add other types as needed
-
-  return "";  // Default case, should not reach here if all types are handled
+  return "";
 }
 
-Literal* operator-(const Literal& lhs) {
-  if (lhs.type == Type::BOOL)
-    throw std::invalid_argument("Literal operation. Wrong types [- operator]");
+Expression* operator-(const Expression& lhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  if (!_lhs) {
+    throw std::invalid_argument("Unsupported type for - operator");
+  }
 
   Literal* result = nullptr;
-
-  if (lhs.type == Type::DOUBLE) {
-    double value = -lhs.getValue<double>();
+  if (_lhs->type == Type::DOUBLE) {
+    double value = -_lhs->getValue<double>();
     result = new Literal(value);
-  } else if (lhs.type == Type::INT) {
-    int value = -lhs.getValue<int>();
+  } else if (_lhs->type == Type::INT) {
+    int value = -_lhs->getValue<int>();
     result = new Literal(value);
-  } else {
-    LOG << "SOMETHING MIGHT BE OFF - Literal.\n";
   }
 
   return result;
 }
 
-Literal* operator+(const Literal& lhs, const Literal& rhs) {
-  if (lhs.type == Type::BOOL || rhs.type == Type::BOOL)
-    throw std::invalid_argument("Literal operation. Wrong types");
-  if (lhs.type == Type::STRING ^ rhs.type == Type::STRING)
-    throw std::invalid_argument("Literal wrong string adding");
+Expression* operator+(const Expression& lhs, const Expression& rhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
+  
+  if (!_lhs || !_rhs) {
+    throw std::invalid_argument("Unsupported type for + operator");
+  }
 
   Literal* result = nullptr;
-  if (lhs.type == Type::DOUBLE || rhs.type == Type::DOUBLE) {
-    // if any of these values is double --> result is double
-
-    double value = lhs.getValue<double>() + rhs.getValue<double>();
+  if (_lhs->type == Type::DOUBLE || _rhs->type == Type::DOUBLE) {
+    double value = _lhs->getValue<double>() + _rhs->getValue<double>();
     result = new Literal(value);
-  } else if (lhs.type == Type::INT && rhs.type == Type::INT) {
-    // if both are int --> result is int
-
-    int value = lhs.getValue<int>() + rhs.getValue<int>();
+  } else if (_lhs->type == Type::INT && _rhs->type == Type::INT) {
+    int value = _lhs->getValue<int>() + _rhs->getValue<int>();
     result = new Literal(value);
-  } else {
-    LOG << "SOMETHING MIGHT BE OFF + Literal.\n";
   }
 
   return result;
 }
 
-Literal* operator-(const Literal& lhs, const Literal& rhs) {
-  if (lhs.type == Type::BOOL || rhs.type == Type::BOOL)
-    throw std::invalid_argument("Literal operation. Wrong types");
-  if (lhs.type == Type::STRING ^ rhs.type == Type::STRING)
-    throw std::invalid_argument("Literal wrong string adding");
+Expression* operator-(const Expression& lhs, const Expression& rhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
+  
+  if (!_lhs || !_rhs) {
+    throw std::invalid_argument("Unsupported type for - operator");
+  }
 
   Literal* result = nullptr;
-  if (lhs.type == Type::DOUBLE || rhs.type == Type::DOUBLE) {
-    double value = lhs.getValue<double>() - rhs.getValue<double>();
+  if (_lhs->type == Type::DOUBLE || _rhs->type == Type::DOUBLE) {
+    double value = _lhs->getValue<double>() - _rhs->getValue<double>();
     result = new Literal(Type::DOUBLE, value);
-  } else if (lhs.type == Type::INT && rhs.type == Type::INT) {
-    int value = lhs.getValue<int>() - rhs.getValue<int>();
+  } else if (_lhs->type == Type::INT && _rhs->type == Type::INT) {
+    int value = _lhs->getValue<int>() - _rhs->getValue<int>();
     result = new Literal(Type::INT, value);
-  } else {
-    LOG << "SOMETHING MIGHT BE OFF - Literal.\n";
   }
 
   return result;
 }
 
-Literal* operator/(const Literal& lhs, const Literal& rhs) {
-  if (lhs.type == Type::BOOL || rhs.type == Type::BOOL)
-    throw std::invalid_argument("Literal operation. Wrong types");
-  if (lhs.type == Type::STRING ^ rhs.type == Type::STRING)
-    throw std::invalid_argument("Literal wrong string adding");
+Expression* operator/(const Expression& lhs, const Expression& rhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
+  
+  if (!_lhs || !_rhs) {
+    throw std::invalid_argument("Unsupported type for / operator");
+  }
 
   Literal* result = nullptr;
-  if ((rhs.type == Type::INT && rhs.getValue<int>() == 0) ||
-      (rhs.type == Type::DOUBLE && rhs.getValue<double>() == 0)) {
+  if ((_rhs->type == Type::INT && _rhs->getValue<int>() == 0) ||
+      (_rhs->type == Type::DOUBLE && _rhs->getValue<double>() == 0)) {
     result = new Literal(Type::INT, 0);
     std::cout << "CAN'T DIV BY 0.\n";
+  } else if (_lhs->type == Type::DOUBLE || _rhs->type == Type::DOUBLE) {
+    double value = _lhs->getValue<double>() / _rhs->getValue<double>();
+    result = new Literal(Type::DOUBLE, value);
+  } else if (_lhs->type == Type::INT && _rhs->type == Type::INT) {
+    int value = _lhs->getValue<int>() / _rhs->getValue<int>();
+    result = new Literal(Type::INT, value);
   }
 
-  if (lhs.type == Type::DOUBLE || rhs.type == Type::DOUBLE) {
-    double value = lhs.getValue<double>() / rhs.getValue<double>();
-    result = new Literal(Type::DOUBLE, value);
-  } else if (lhs.type == Type::INT && rhs.type == Type::INT) {
-    int value = lhs.getValue<int>() / rhs.getValue<int>();
-    result = new Literal(Type::INT, value);
-  } else {
-    LOG << "SOMETHING MIGHT BE OFF / Literal.\n";
-  }
   return result;
 }
 
-Literal* operator*(const Literal& lhs, const Literal& rhs) {
-  if (lhs.type == Type::BOOL || rhs.type == Type::BOOL)
-    throw std::invalid_argument("Literal operation. Wrong types");
-  if (lhs.type == Type::STRING ^ rhs.type == Type::STRING)
-    throw std::invalid_argument("Literal wrong string adding");
+Expression* operator*(const Expression& lhs, const Expression& rhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
+  
+  if (!_lhs || !_rhs) {
+    throw std::invalid_argument("Unsupported type for * operator");
+  }
 
   Literal* result = nullptr;
-  if (lhs.type == Type::DOUBLE || rhs.type == Type::DOUBLE) {
-    double value = lhs.getValue<double>() * rhs.getValue<double>();
+  if (_lhs->type == Type::DOUBLE || _rhs->type == Type::DOUBLE) {
+    double value = _lhs->getValue<double>() * _rhs->getValue<double>();
     result = new Literal(Type::DOUBLE, value);
-  } else if (lhs.type == Type::INT && rhs.type == Type::INT) {
-    int value = lhs.getValue<int>() * rhs.getValue<int>();
+  } else if (_lhs->type == Type::INT && _rhs->type == Type::INT) {
+    int value = _lhs->getValue<int>() * _rhs->getValue<int>();
     result = new Literal(Type::INT, value);
-  } else {
-    LOG << "SOMETHING MIGHT BE OFF * Literal.\n";
   }
+
   return result;
 }
 
-bool operator==(const Literal& lhs, const Literal& rhs) {
-  if (lhs.type != rhs.type) {
+bool operator==(const Expression& lhs, const Expression& rhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
+  
+  if (!_lhs || !_rhs) {
+    throw std::invalid_argument("Unsupported type for == operator");
+  }
+  
+  if (_lhs->type != _rhs->type) {
     return false;
   }
 
-  if (lhs.type == Type::BOOL) {
-    return lhs.getValue<bool>() == rhs.getValue<bool>();
-  } else if (lhs.type == Type::DOUBLE) {
-    return lhs.getValue<double>() == rhs.getValue<double>();
-  } else if (lhs.type == Type::INT) {
-    return lhs.getValue<int>() == rhs.getValue<int>();
-  } else if (lhs.type == Type::STRING) {
-    return lhs.getValue<std::string>() == rhs.getValue<std::string>();
+  if (_lhs->type == Type::BOOL) {
+    return _lhs->getValue<bool>() == _rhs->getValue<bool>();
+  } else if (_lhs->type == Type::DOUBLE) {
+    return _lhs->getValue<double>() == _rhs->getValue<double>();
+  } else if (_lhs->type == Type::INT) {
+    return _lhs->getValue<int>() == _rhs->getValue<int>();
+  } else if (_lhs->type == Type::STRING) {
+    return _lhs->getValue<std::string>() == _rhs->getValue<std::string>();
   } else {
     throw std::runtime_error("Unsupported type for comparison");
   }
-
-  return false;
 }
 
-bool operator!=(const Literal& lhs, const Literal& rhs) {
+bool operator!=(const Expression& lhs, const Expression& rhs) {
   return !(lhs == rhs);
 }
 
-bool operator>(const Literal& lhs, const Literal& rhs) {
-  if (lhs.type != rhs.type) {
+bool operator>(const Expression& lhs, const Expression& rhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
+  
+  if (!_lhs || !_rhs) {
+    throw std::invalid_argument("Unsupported type for > operator");
+  }
+  
+  if (_lhs->type != _rhs->type) {
     return false;
   }
 
-  if (lhs.type == Type::BOOL) {
-    return lhs.getValue<bool>() > rhs.getValue<bool>();
-  } else if (lhs.type == Type::DOUBLE) {
-    return lhs.getValue<double>() > rhs.getValue<double>();
-  } else if (lhs.type == Type::INT) {
-    return lhs.getValue<int>() > rhs.getValue<int>();
-  } else if (lhs.type == Type::STRING) {
-    return lhs.getValue<std::string>() > rhs.getValue<std::string>();
+  if (_lhs->type == Type::BOOL) {
+    return _lhs->getValue<bool>() > _rhs->getValue<bool>();
+  } else if (_lhs->type == Type::DOUBLE) {
+    return _lhs->getValue<double>() > _rhs->getValue<double>();
+  } else if (_lhs->type == Type::INT) {
+    return _lhs->getValue<int>() > _rhs->getValue<int>();
+  } else if (_lhs->type == Type::STRING) {
+    return _lhs->getValue<std::string>() > _rhs->getValue<std::string>();
   } else {
     throw std::runtime_error("Unsupported type for >");
   }
-
-  return false;
 }
 
-bool operator<(const Literal& lhs, const Literal& rhs) {
+bool operator<(const Expression& lhs, const Expression& rhs) {
   return rhs > lhs;
 }
 
-bool operator>=(const Literal& lhs, const Literal& rhs) {
+bool operator>=(const Expression& lhs, const Expression& rhs) {
   return !(lhs < rhs);
 }
 
-bool operator<=(const Literal& lhs, const Literal& rhs) {
+bool operator<=(const Expression& lhs, const Expression& rhs) {
   return !(lhs > rhs);
 }
 
-Literal* operator!(const Literal& lhs) {
+Expression* operator!(const Expression& lhs) {
+  const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
+  if (!_lhs) {
+    throw std::invalid_argument("Unsupported type for ! operator");
+  } 
+
   Literal* result = new Literal(true);
 
-  if (lhs.type == Type::BOOL) {
-    result = new Literal(!lhs.getValue<bool>());
-  } else if (lhs.type == Type::STRING) {
-    result == new Literal(lhs.getValue<std::string>() != "");
-  } else if (lhs.type == Type::INT) {
-    result = new Literal(lhs.getValue<int>() != 0);
-  } else if (lhs.type == Type::DOUBLE) {
-    result = new Literal(lhs.getValue<double>() != 0);
+  if (_lhs->type == Type::BOOL) {
+    result = new Literal(!_lhs->getValue<bool>());
+  } else if (_lhs->type == Type::STRING) {
+    result == new Literal(_lhs->getValue<std::string>() != "");
+  } else if (_lhs->type == Type::INT) {
+    result = new Literal(_lhs->getValue<int>() != 0);
+  } else if (_lhs->type == Type::DOUBLE) {
+    result = new Literal(_lhs->getValue<double>() != 0);
   }
 
   return result;
@@ -277,8 +282,6 @@ std::ostream& operator<<(std::ostream& os, const Literal& expr) {
     os << expr.getValue<int>();
   } else if (expr.type == Type::STRING) {
     os << expr.getValue<std::string>();
-  } else {
-    os << "Unsupported type";
   }
   return os;
 }
@@ -293,9 +296,44 @@ std::ostream& operator<<(std::ostream& os, const Literal* expr) {
     os << expr->getValue<int>();
   } else if (expr->type == Type::STRING) {
     os << expr->getValue<std::string>();
-  } else {
-    os << "Unsupported type";
   }
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Variable* expr) {
+  os << expr->name.lexeme;
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Expression* expr) {
+  if (const Literal* _expr = dynamic_cast<const Literal*>(expr)) {
+    os << _expr;
+  } else if (const Grouping* _expr = dynamic_cast<const Grouping*>(expr)) {
+    os << _expr;
+  } else if (const Binary* _expr = dynamic_cast<const Binary*>(expr)) {
+    os << _expr;
+  } else if (const Unary* _expr = dynamic_cast<const Unary*>(expr)) {
+    os << _expr;
+  } else if (const Variable* _expr = dynamic_cast<const Variable*>(expr)) {
+    os << _expr;
+  }
+  
+  return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Expression& expr) {
+  if (const Literal* _expr = dynamic_cast<const Literal*>(&expr)) {
+    os << _expr;
+  } else if (const Grouping* _expr = dynamic_cast<const Grouping*>(&expr)) {
+    os << _expr;
+  } else if (const Binary* _expr = dynamic_cast<const Binary*>(&expr)) {
+    os << _expr;
+  } else if (const Unary* _expr = dynamic_cast<const Unary*>(&expr)) {
+    os << _expr;
+  } else if (const Variable* _expr = dynamic_cast<const Variable*>(&expr)) {
+    os << _expr;
+  }
+  
   return os;
 }
 

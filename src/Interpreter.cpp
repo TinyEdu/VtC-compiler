@@ -11,7 +11,7 @@ Interpreter::~Interpreter() {}
 
 void Interpreter::interpret(Expression* expr) {
   try {
-    Literal* value = evaluate(expr);
+    Expression* value = evaluate(expr);
 
     // Print the expression
     LOG << value << ENDL;
@@ -31,8 +31,8 @@ void Interpreter::interpret(std::vector<Statement*> stmt) {
   }
 }
 
-Literal* Interpreter::evaluate(Expression* expr) {
-  return std::any_cast<Literal*>(expr->accept(this));
+Expression* Interpreter::evaluate(Expression* expr) {
+  return std::any_cast<Expression*>(expr->accept(this));
 }
 
 void Interpreter::executeBlock(std::vector<Statement*> stmt, Environment* env) {
@@ -61,18 +61,18 @@ void Interpreter::executeBlock(std::vector<Statement*> stmt, Environment* env) {
 // ______________________________________________________________
 
 std::any Interpreter::visit(Assign* expr) {
-  Literal* value = evaluate(expr->value);
+  Expression* value = evaluate(expr->value);
   environment->assign(expr->name.lexeme, value);
   return value;
 }
 
 std::any Interpreter::visit(Binary* expr) {
-  Literal* left = evaluate(expr->left);
-  Literal* right = evaluate(expr->right);
+  Expression* left = static_cast<Literal*>(evaluate(expr->left));
+  Expression* right = static_cast<Literal*>(evaluate(expr->right));
 
   switch (expr->op.type) {
     case TokenType::MINUS:
-      return *left - *right;
+      return left - right;
     case TokenType::SLASH:
       return *left / *right;
     case TokenType::STAR:
@@ -80,28 +80,27 @@ std::any Interpreter::visit(Binary* expr) {
     case TokenType::PLUS:
       return *left + *right;
     case TokenType::GREATER:
-      return *left > *right;
+      return left > right;
     case TokenType::GREATER_EQUAL:
-      return *left >= *right;
+      return left >= right;
     case TokenType::LESS:
-      return *left < *right;
+      return left < right;
     case TokenType::LESS_EQUAL:
-      return *left <= *right;
+      return left <= right;
     case TokenType::BANG_EQUAL:
-      return *left != *right;
+      return left != right;
     case TokenType::EQUAL_EQUAL:
-      return *left == *right;
+      return left == right;
     default:
       break;
   }
 
-  LOG << "Unreachable code reached in Interpreter::visit(Binary* expr) "
-      << ENDL;
+  LOG << "Unreachable code reached in Interpreter::visit(B) \n";
   return std::any();
 }
 
 std::any Interpreter::visit(Literal* expr) {
-  return expr;
+  return static_cast<Expression*>(expr);
 }
 
 std::any Interpreter::visit(Grouping* expr) {
@@ -109,7 +108,7 @@ std::any Interpreter::visit(Grouping* expr) {
 }
 
 std::any Interpreter::visit(Unary* expr) {
-  Literal* right = evaluate(expr->right);
+  Literal* right = static_cast<Literal*>(evaluate(expr->right));
 
   switch (expr->op.type) {
     case TokenType::BANG:
@@ -149,11 +148,12 @@ std::any Interpreter::visit(VarStatement* stmt) {
     value = evaluate(stmt->initializer);
     environment->define(stmt->name.lexeme, value);
   }
-  
-  // if we have a variable declaration without an initializer
-  // we should throw an error
-  throw std::runtime_error("Variable declaration without an initializer");
-  
+  else {
+    // if we have a variable declaration without an initializer
+    // we should throw an error
+    throw std::runtime_error("Variable declaration without an initializer");
+  }
+
   return std::any();
 }
 

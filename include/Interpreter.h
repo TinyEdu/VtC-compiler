@@ -44,7 +44,7 @@ class Interpreter : public Visitor, public StatementVisitor {
 
   void interpret(Expression* expr);
   void interpret(std::vector<Statement*> stmt);
-  Literal* evaluate(Expression* expr);
+  Expression* evaluate(Expression* expr);
   void executeBlock(std::vector<Statement*> stmt, Environment* env);
 };
 
