@@ -36,6 +36,7 @@ class Interpreter : public Visitor, public StatementVisitor {
   std::any visit(Variable* expr);
 
   std::any visit(ExpressionStatement* stmt);
+  std::any visit(IfStatement* stmt);
   std::any visit(PrintStatement* stmt);
   std::any visit(VarStatement* stmt);
   std::any visit(BlockStatement* stmt);

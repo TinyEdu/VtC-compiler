@@ -25,6 +25,25 @@ class ExpressionStatement : public Statement {
   Expression* expression;
 };
 
+class IfStatement : public Statement {
+ public:
+  IfStatement(Expression* condition, Statement* thenBranch,
+              Statement* elseBranch)
+      : condition(condition),
+        thenBranch(thenBranch),
+        elseBranch(elseBranch) {}
+
+  ~IfStatement() = default;
+
+  std::any accept(StatementVisitor* visitor) override {
+    return visitor->visit(this);
+  }
+
+  Expression* condition;
+  Statement* thenBranch;
+  Statement* elseBranch;
+};
+
 class PrintStatement : public Statement {
  public:
   PrintStatement(Expression* expression) : expression(expression) {}

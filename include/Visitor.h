@@ -33,6 +33,8 @@ class VarStatement;
 class BlockStatement;
 class FunctionStatement;
 class ClassStatement;
+class IfStatement;
+
 
 class StatementVisitor : public BaseVisitor {
  public:
@@ -42,6 +44,7 @@ class StatementVisitor : public BaseVisitor {
   virtual std::any visit(BlockStatement* stmt) = 0;
   virtual std::any visit(FunctionStatement* stmt) = 0;
   virtual std::any visit(ClassStatement* stmt) = 0;
+  virtual std::any visit(IfStatement* stmt) = 0;
 };
 
 #endif  // VISITOR_H

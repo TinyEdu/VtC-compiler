@@ -236,7 +236,10 @@ std::vector<Statement*> Parser::parse() {
 }
 
 Statement* Parser::statement() {
-  if (match({TokenType::PRINT})) {
+  if (match({TokenType::IF})) {
+    return ifStatement();
+  }
+  else if (match({TokenType::PRINT})) {
     return printStatement();
   }
   else if (match({TokenType::LEFT_BRACE})) {
@@ -261,6 +264,20 @@ Statement* Parser::printStatement() {
   Expression* value = expression();
   consume(TokenType::SEMICOLON, "Expect ';' after value.");
   return new PrintStatement(value);
+}
+
+Statement* Parser::ifStatement() {
+  consume(TokenType::LEFT_PAREN, "Expect '(' after 'if'.");
+  Expression* condition = expression();
+  consume(TokenType::RIGHT_PAREN, "Expect ')' after if condition.");
+
+  Statement* thenBranch = statement();
+  Statement* elseBranch = nullptr;
+  if (match({TokenType::ELSE})) {
+    elseBranch = statement();
+  }
+
+  return new IfStatement(condition, thenBranch, elseBranch);
 }
 
 Statement* Parser::expressionStatement() {

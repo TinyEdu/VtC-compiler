@@ -131,10 +131,23 @@ std::any Interpreter::visit(Variable* expr) {
 
 // ______________________________________________________________
 
+std::any Interpreter::visit(IfStatement* stmt) {
+  bool isTrutrhy = evaluate(stmt->condition);
+  if (isTrutrhy) {
+    executeBlock(stmt->thenBranch);
+  } else if (stmt->elseBranch != nullptr) {
+    executeBlock(stmt->elseBranch);
+  }
+
+  return std::any();
+}
+
 std::any Interpreter::visit(ExpressionStatement* stmt) {
   evaluate(stmt->expression);
   return std::any();
 }
+
+
 
 std::any Interpreter::visit(PrintStatement* stmt) {
   std::cout << "PRINT FUNCTION: " << evaluate(stmt->expression) << "\n";

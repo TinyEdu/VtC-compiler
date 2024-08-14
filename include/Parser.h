@@ -61,6 +61,7 @@ class Parser {
   std::vector<Statement*> parse();
   Statement* expressionStatement();
   Statement* printStatement();
+  Statement* ifStatement();
   Statement* statement();
   std::vector<Statement*> block();
 };
