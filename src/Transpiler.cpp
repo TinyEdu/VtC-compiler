@@ -57,19 +57,19 @@ void Transpiler::runPrompt() {
 }
 
 void Transpiler::run(std::string source) {
-  LOG << "Source code: \n";
-  LOG << std::string(15, '_') << "\n";
-  LOG << source << "\n";
-  LOG << std::string(15, '_') << "\n";
+  //LOG << "Source code: \n";
+  //LOG << std::string(15, '_') << "\n";
+  //LOG << source << "\n";
+  //LOG << std::string(15, '_') << "\n";
 
   Scanner scanner(source);
   std::vector<Token> tokens = scanner.scanTokens();
 
   // for testing purposes
-  for (Token token : tokens)
-    LOG << token << "\n";
+  //for (Token token : tokens)
+  //  LOG << token << "\n";
 
-  LOG << std::string(15, '_') << "\n";
+  //LOG << std::string(15, '_') << "\n";
 
   Parser parser(tokens);
   std::vector<Statement*> statements = parser.parse();
@@ -80,7 +80,7 @@ void Transpiler::run(std::string source) {
 
   interpreter.interpret(statements);
 
-  LOG << std::string(15, '_') << "\n";
+  //LOG << std::string(15, '_') << "\n";
 }
 
 void Transpiler::runtimeError(const std::runtime_error& error) {

@@ -58,6 +58,10 @@ void Interpreter::executeBlock(std::vector<Statement*> stmt, Environment* env) {
   environment = previous;
 }
 
+void Interpreter::execute(Statement* stmt) {
+  stmt->accept(this);
+}
+
 // ______________________________________________________________
 
 std::any Interpreter::visit(Assign* expr) {
@@ -129,14 +133,26 @@ std::any Interpreter::visit(Variable* expr) {
   return environment->lookup(expr->name.lexeme);
 }
 
+std::any Interpreter::visit(Logical* expr) {
+  Expression* left = evaluate(expr->left);    // @TODO: should we cast it to Literal?
+
+  if (expr->op.type == TokenType::OR) {
+    if (left) return left;
+  } else {
+    if (!left) return left;
+  }
+  
+  return evaluate(expr->right);
+}
+
 // ______________________________________________________________
 
 std::any Interpreter::visit(IfStatement* stmt) {
   bool isTrutrhy = evaluate(stmt->condition);
   if (isTrutrhy) {
-    executeBlock(stmt->thenBranch);
+    execute(stmt->thenBranch);
   } else if (stmt->elseBranch != nullptr) {
-    executeBlock(stmt->elseBranch);
+    execute(stmt->elseBranch);
   }
 
   return std::any();
@@ -180,5 +196,13 @@ std::any Interpreter::visit(FunctionStatement* stmt) {
 }
 
 std::any Interpreter::visit(ClassStatement* stmt) {
+  return std::any();
+}
+
+std::any Interpreter::visit(WhileStatement* stmt) {
+  while (evaluate(stmt->condition)) {
+    execute(stmt->body);
+  }
+
   return std::any();
 }

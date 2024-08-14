@@ -80,6 +80,17 @@ class Unary : public Expression {
   friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
 };
 
+class Logical : public Expression {
+ public:
+  Logical(Expression* left, Token op, Expression* right);
+  std::any accept(Visitor* visitor) override;
+
+  Expression* left;
+  Token op;
+  Expression* right;
+};
+
+
 enum Type { STRING, INT, DOUBLE, BOOL };
 
 class Literal : public Expression {

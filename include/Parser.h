@@ -45,6 +45,10 @@ class Parser {
   Expression* unary();
   Expression* primary();
 
+  // logical
+  Expression* logicalOr();
+  Expression* logicalAnd();
+
   Token previous();
   bool match(std::vector<TokenType> types);
   Token advance();
@@ -62,6 +66,8 @@ class Parser {
   Statement* expressionStatement();
   Statement* printStatement();
   Statement* ifStatement();
+  Statement* whileStatement();
+  Statement* forStatement();
   Statement* statement();
   std::vector<Statement*> block();
 };

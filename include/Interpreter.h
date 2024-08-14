@@ -34,6 +34,7 @@ class Interpreter : public Visitor, public StatementVisitor {
   std::any visit(Literal* expr);
   std::any visit(Unary* expr);
   std::any visit(Variable* expr);
+  std::any visit(Logical* expr);
 
   std::any visit(ExpressionStatement* stmt);
   std::any visit(IfStatement* stmt);
@@ -42,11 +43,13 @@ class Interpreter : public Visitor, public StatementVisitor {
   std::any visit(BlockStatement* stmt);
   std::any visit(FunctionStatement* stmt);
   std::any visit(ClassStatement* stmt);
+  std::any visit(WhileStatement* stmt);
 
   void interpret(Expression* expr);
   void interpret(std::vector<Statement*> stmt);
   Expression* evaluate(Expression* expr);
   void executeBlock(std::vector<Statement*> stmt, Environment* env);
+  void execute(Statement* stmt);
 };
 
 #endif  // INTERPRETER_H

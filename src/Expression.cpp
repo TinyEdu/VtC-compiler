@@ -348,3 +348,9 @@ Assign::Assign(Token name, Expression* value) : name(name), value(value) {}
 std::any Assign::accept(Visitor* visitor) {
   return visitor->visit(this);
 }
+
+Logical::Logical(Expression* left, Token op, Expression* right) : left(left), op(op), right(right) {}
+
+std::any Logical::accept(Visitor* visitor) {
+  return visitor->visit(this);
+}

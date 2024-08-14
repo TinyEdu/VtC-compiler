@@ -44,6 +44,20 @@ class IfStatement : public Statement {
   Statement* elseBranch;
 };
 
+class WhileStatement : public Statement {
+ public:
+  WhileStatement(Expression* condition, Statement* body)
+      : condition(condition), body(body) {}
+  ~WhileStatement() = default;
+
+  std::any accept(StatementVisitor* visitor) override {
+    return visitor->visit(this);
+  }
+
+  Expression* condition;
+  Statement* body;
+};
+
 class PrintStatement : public Statement {
  public:
   PrintStatement(Expression* expression) : expression(expression) {}

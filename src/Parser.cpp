@@ -132,6 +132,32 @@ Expression* Parser::primary() {
   throw ParseError("Expect expression.");
 }
 
+Expression* Parser::logicalOr() {
+  Expression* expr = logicalAnd();
+
+  while (match({TokenType::OR}))
+  {
+    Token op = previous();
+    Expression* right = logicalAnd();
+    expr = new Logical(expr, op, right);
+  }
+
+  return expr;
+}
+
+Expression* Parser::logicalAnd() {
+  Expression* expr = equality();
+
+  while (match({TokenType::AND}))
+  {
+    Token op = previous();
+    Expression* right = equality();
+    expr = new Logical(expr, op, right);
+  }
+
+  return expr;
+}
+
 Token Parser::previous() {
   return tokens[current - 1];
 }
@@ -236,8 +262,14 @@ std::vector<Statement*> Parser::parse() {
 }
 
 Statement* Parser::statement() {
-  if (match({TokenType::IF})) {
+  if (match({TokenType::FOR})) {
+    return forStatement();
+  }
+  else if (match({TokenType::IF})) {
     return ifStatement();
+  }
+  else if (match({TokenType::WHILE})) {
+    return whileStatement();
   }
   else if (match({TokenType::PRINT})) {
     return printStatement();
@@ -279,6 +311,61 @@ Statement* Parser::ifStatement() {
 
   return new IfStatement(condition, thenBranch, elseBranch);
 }
+
+Statement* Parser::whileStatement() {
+  consume(TokenType::LEFT_PAREN, "Expect '(' after 'while'.");
+  Expression* condition = expression();
+  consume(TokenType::RIGHT_PAREN, "Expect ')' after condition.");
+  Statement* body = statement();
+
+  return new WhileStatement(condition, body);
+}
+
+Statement* Parser::forStatement() {
+  consume(TokenType::LEFT_PAREN, "Expect '(' after 'for'.");
+
+  Statement* initializer = nullptr;
+  if (match({TokenType::SEMICOLON})) {
+    initializer = nullptr;
+  } else if (match({TokenType::VAR})) {
+    initializer = varDeclaration();
+  } else {
+    initializer = expressionStatement();
+  }
+
+  Expression* condition = nullptr;
+  if (!check(TokenType::SEMICOLON)) {
+    condition = expression();
+  }
+  consume(TokenType::SEMICOLON, "Expect ';' after loop condition.");
+
+  Expression* increment = nullptr;
+  if (!check(TokenType::RIGHT_PAREN)) {
+    increment = expression();
+  }
+  consume(TokenType::RIGHT_PAREN, "Expect ')' after for clauses.");
+
+  Statement* body = statement();
+
+  // Desugar increment: if increment is non-null, append it to the end of the loop body
+  if (increment != nullptr) {
+    body = new BlockStatement({body, new ExpressionStatement(increment)});
+  }
+
+  // Desugar condition: if condition is null, set it to `true`
+  if (condition == nullptr) {
+    condition = new Literal(true);
+  }
+  body = new WhileStatement(condition, body);
+
+  // Desugar initializer: if initializer is non-null, wrap everything in a new block with the initializer
+  if (initializer != nullptr) {
+    body = new BlockStatement({initializer, body});
+  }
+
+  return body;
+}
+
 
 Statement* Parser::expressionStatement() {
   Expression* expr = expression();

@@ -13,6 +13,8 @@ class Literal;
 class Unary;
 class Expression;
 class Variable;
+class Logical;
+
 
 class BaseVisitor {};
 
@@ -24,6 +26,7 @@ class Visitor : public BaseVisitor {
   virtual std::any visit(Literal* expr) = 0;
   virtual std::any visit(Unary* expr) = 0;
   virtual std::any visit(Variable* expr) = 0;
+  virtual std::any visit(Logical* expr) = 0;
 };
 
 class Statement;
@@ -34,7 +37,7 @@ class BlockStatement;
 class FunctionStatement;
 class ClassStatement;
 class IfStatement;
-
+class WhileStatement;
 
 class StatementVisitor : public BaseVisitor {
  public:
@@ -45,6 +48,7 @@ class StatementVisitor : public BaseVisitor {
   virtual std::any visit(FunctionStatement* stmt) = 0;
   virtual std::any visit(ClassStatement* stmt) = 0;
   virtual std::any visit(IfStatement* stmt) = 0;
+  virtual std::any visit(WhileStatement* stmt) = 0;
 };
 
 #endif  // VISITOR_H
