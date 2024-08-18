@@ -15,7 +15,8 @@ endif()
 
 # Add the include and source directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/include/Expressions)
+file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/*.cpp)
 file(GLOB HEADERS ${PROJECT_SOURCE_DIR}/include/*.h)
 
 # Add the executable for the main application
