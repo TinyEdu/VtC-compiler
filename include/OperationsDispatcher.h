@@ -8,7 +8,24 @@
 class OperationsDispatcher {
  public:
   template<typename T1, typename T2>
-  Expression* dispatch(T1 left, T2 right);
+  Expression* dispatch(T1 left, T2 right, Token token) {
+    switch (token.type)
+    {
+    case TokenType::PLUS: 
+      add(left, right);
+      break;
+      // ... 
+    default:
+      break;
+    }
+  }
+
+    // Helper template to call the reversed addition if the direct one doesn't exist
+  template<typename T1, typename T2>
+  Expression* add(T1* left, T2* right) {
+    return add_impl(left, right, std::is_same<T1, T2>());
+  }
+
 
   // Every unique possible combination of dispatches for literals
   
@@ -42,8 +59,6 @@ class OperationsDispatcher {
   Expression* add(LiteralDouble* left, LiteralString* right);
   Expression* add(LiteralDouble* left, LiteralBool* right);
   Expression* add(LiteralDouble* left, LiteralDouble* right);
-
-
 };
 
 
