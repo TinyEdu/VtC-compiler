@@ -1,5 +1,6 @@
 # Ignore all files in build directory
 build/*
+tools/DispatcherGenerator/build/*
 tests/Testing/*
 Testing/
 .vscode/
