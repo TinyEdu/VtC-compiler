@@ -19,7 +19,6 @@ class Unary;
 class Logical;
 class Variable;
 
-
 class Expression {
  public:
   Expression() = default;

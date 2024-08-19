@@ -15,7 +15,6 @@ class Expression;
 class Variable;
 class Logical;
 
-
 class BaseVisitor {};
 
 class Visitor : public BaseVisitor {

@@ -1,6 +1,6 @@
 #include "Environment.h"
-#include "LogManager.h"
 #include "Expression.h"
+#include "LogManager.h"
 
 Environment::Environment() {
   env = std::map<std::string, Expression*>();
@@ -29,17 +29,17 @@ Expression* Environment::lookup(std::string name) {
 }
 
 void Environment::assign(std::string name, Expression* value) {
-    // Check if the variable is defined in the current environment
-    if (env.find(name) != env.end()) {
-        env[name] = value;
-        return;
-    }
+  // Check if the variable is defined in the current environment
+  if (env.find(name) != env.end()) {
+    env[name] = value;
+    return;
+  }
 
-    // If not, check if it is defined in the enclosing environment
-    if (enclosing != nullptr) {
-        enclosing->assign(name, value);
-        return;
-    }
+  // If not, check if it is defined in the enclosing environment
+  if (enclosing != nullptr) {
+    enclosing->assign(name, value);
+    return;
+  }
 
-    throw std::runtime_error("Undefined variable '" + name + "'");
+  throw std::runtime_error("Undefined variable '" + name + "'");
 }

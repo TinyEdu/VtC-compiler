@@ -5,7 +5,6 @@
 
 #include "Expression.h"
 
-
 class Grouping : public Expression {
  public:
   Grouping(Expression* expression);
@@ -16,5 +15,4 @@ class Grouping : public Expression {
   friend std::ostream& operator<<(std::ostream& os, const Grouping* expr);
 };
 
-
-#endif // GROUPING_H
+#endif  // GROUPING_H

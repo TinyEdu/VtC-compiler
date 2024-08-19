@@ -16,4 +16,4 @@ class Assign : public Expression {
   friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
 };
 
-#endif // ASSIGN_H
+#endif  // ASSIGN_H

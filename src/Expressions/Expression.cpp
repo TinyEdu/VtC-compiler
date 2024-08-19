@@ -89,7 +89,7 @@ Expression* operator-(const Expression& lhs) {
 Expression* operator+(const Expression& lhs, const Expression& rhs) {
   const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
   const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
-  
+
   if (!_lhs || !_rhs) {
     throw std::invalid_argument("Unsupported type for + operator");
   }
@@ -109,7 +109,7 @@ Expression* operator+(const Expression& lhs, const Expression& rhs) {
 Expression* operator-(const Expression& lhs, const Expression& rhs) {
   const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
   const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
-  
+
   if (!_lhs || !_rhs) {
     throw std::invalid_argument("Unsupported type for - operator");
   }
@@ -129,7 +129,7 @@ Expression* operator-(const Expression& lhs, const Expression& rhs) {
 Expression* operator/(const Expression& lhs, const Expression& rhs) {
   const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
   const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
-  
+
   if (!_lhs || !_rhs) {
     throw std::invalid_argument("Unsupported type for / operator");
   }
@@ -153,7 +153,7 @@ Expression* operator/(const Expression& lhs, const Expression& rhs) {
 Expression* operator*(const Expression& lhs, const Expression& rhs) {
   const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
   const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
-  
+
   if (!_lhs || !_rhs) {
     throw std::invalid_argument("Unsupported type for * operator");
   }
@@ -173,11 +173,11 @@ Expression* operator*(const Expression& lhs, const Expression& rhs) {
 bool operator==(const Expression& lhs, const Expression& rhs) {
   const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
   const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
-  
+
   if (!_lhs || !_rhs) {
     throw std::invalid_argument("Unsupported type for == operator");
   }
-  
+
   if (_lhs->type != _rhs->type) {
     return false;
   }
@@ -202,11 +202,11 @@ bool operator!=(const Expression& lhs, const Expression& rhs) {
 bool operator>(const Expression& lhs, const Expression& rhs) {
   const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
   const Literal* _rhs = dynamic_cast<const Literal*>(&rhs);
-  
+
   if (!_lhs || !_rhs) {
     throw std::invalid_argument("Unsupported type for > operator");
   }
-  
+
   if (_lhs->type != _rhs->type) {
     return false;
   }
@@ -240,7 +240,7 @@ Expression* operator!(const Expression& lhs) {
   const Literal* _lhs = dynamic_cast<const Literal*>(&lhs);
   if (!_lhs) {
     throw std::invalid_argument("Unsupported type for ! operator");
-  } 
+  }
 
   Literal* result = new Literal(true);
 
@@ -317,7 +317,7 @@ std::ostream& operator<<(std::ostream& os, const Expression* expr) {
   } else if (const Variable* _expr = dynamic_cast<const Variable*>(expr)) {
     os << _expr;
   }
-  
+
   return os;
 }
 
@@ -333,7 +333,7 @@ std::ostream& operator<<(std::ostream& os, const Expression& expr) {
   } else if (const Variable* _expr = dynamic_cast<const Variable*>(&expr)) {
     os << _expr;
   }
-  
+
   return os;
 }
 
@@ -349,7 +349,8 @@ std::any Assign::accept(Visitor* visitor) {
   return visitor->visit(this);
 }
 
-Logical::Logical(Expression* left, Token op, Expression* right) : left(left), op(op), right(right) {}
+Logical::Logical(Expression* left, Token op, Expression* right)
+    : left(left), op(op), right(right) {}
 
 std::any Logical::accept(Visitor* visitor) {
   return visitor->visit(this);

@@ -3,7 +3,6 @@
 #ifndef BINARY_H
 #define BINARY_H
 
-
 #include "Expression.h"
 
 class Binary : public Expression {
@@ -18,4 +17,4 @@ class Binary : public Expression {
   friend std::ostream& operator<<(std::ostream& os, const Binary* expr);
 };
 
-#endif // BINARY_H
+#endif  // BINARY_H

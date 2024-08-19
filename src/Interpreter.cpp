@@ -5,7 +5,7 @@
 
 #include "Interpreter.h"
 
-Interpreter::Interpreter() : environment(new Environment()){}
+Interpreter::Interpreter() : environment(new Environment()) {}
 
 Interpreter::~Interpreter() {}
 
@@ -134,14 +134,17 @@ std::any Interpreter::visit(Variable* expr) {
 }
 
 std::any Interpreter::visit(Logical* expr) {
-  Expression* left = evaluate(expr->left);    // @TODO: should we cast it to Literal?
+  Expression* left =
+      evaluate(expr->left);  // @TODO: should we cast it to Literal?
 
   if (expr->op.type == TokenType::OR) {
-    if (left) return left;
+    if (left)
+      return left;
   } else {
-    if (!left) return left;
+    if (!left)
+      return left;
   }
-  
+
   return evaluate(expr->right);
 }
 
@@ -163,8 +166,6 @@ std::any Interpreter::visit(ExpressionStatement* stmt) {
   return std::any();
 }
 
-
-
 std::any Interpreter::visit(PrintStatement* stmt) {
   std::cout << "PRINT FUNCTION: " << evaluate(stmt->expression) << "\n";
   return std::any();
@@ -176,8 +177,7 @@ std::any Interpreter::visit(VarStatement* stmt) {
   if (stmt->initializer != nullptr) {
     value = evaluate(stmt->initializer);
     environment->define(stmt->name.lexeme, value);
-  }
-  else {
+  } else {
     // if we have a variable declaration without an initializer
     // we should throw an error
     throw std::runtime_error("Variable declaration without an initializer");

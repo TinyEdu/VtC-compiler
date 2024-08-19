@@ -15,4 +15,4 @@ class Variable : public Expression {
   friend std::ostream& operator<<(std::ostream& os, const Variable* expr);
 };
 
-#endif // VARIABLE_H
+#endif  // VARIABLE_H

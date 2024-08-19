@@ -19,10 +19,12 @@ class Environment {
   void define(std::string name, Expression* value);
   Expression* lookup(std::string name);
   void assign(std::string name, Expression* value);
+
  private:
   // enclosing environment
   Environment* enclosing = nullptr;
-public:
+
+ public:
   std::map<std::string, Expression*> env;
 };
 

@@ -8,7 +8,7 @@ Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
 Parser::~Parser() {}
 
 Statement* Parser::declaration() {
-  
+
   try {
     if (match({TokenType::VAR})) {
       return varDeclaration();
@@ -37,7 +37,7 @@ Expression* Parser::assignment() {
 
     // Use dynamic_cast to check if expr is of type Variable
     if (auto varExpr = dynamic_cast<Variable*>(expr)) {
-      Token name = varExpr->name; 
+      Token name = varExpr->name;
       return new Assign(name, value);
     }
 
@@ -135,8 +135,7 @@ Expression* Parser::primary() {
 Expression* Parser::logicalOr() {
   Expression* expr = logicalAnd();
 
-  while (match({TokenType::OR}))
-  {
+  while (match({TokenType::OR})) {
     Token op = previous();
     Expression* right = logicalAnd();
     expr = new Logical(expr, op, right);
@@ -148,8 +147,7 @@ Expression* Parser::logicalOr() {
 Expression* Parser::logicalAnd() {
   Expression* expr = equality();
 
-  while (match({TokenType::AND}))
-  {
+  while (match({TokenType::AND})) {
     Token op = previous();
     Expression* right = equality();
     expr = new Logical(expr, op, right);
@@ -232,7 +230,7 @@ void Parser::synchronize() {
 
 Statement* Parser::varDeclaration() {
   Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
-  
+
   Expression* initializer = nullptr;
   if (match({TokenType::EQUAL})) {
     initializer = expression();
@@ -264,17 +262,13 @@ std::vector<Statement*> Parser::parse() {
 Statement* Parser::statement() {
   if (match({TokenType::FOR})) {
     return forStatement();
-  }
-  else if (match({TokenType::IF})) {
+  } else if (match({TokenType::IF})) {
     return ifStatement();
-  }
-  else if (match({TokenType::WHILE})) {
+  } else if (match({TokenType::WHILE})) {
     return whileStatement();
-  }
-  else if (match({TokenType::PRINT})) {
+  } else if (match({TokenType::PRINT})) {
     return printStatement();
-  }
-  else if (match({TokenType::LEFT_BRACE})) {
+  } else if (match({TokenType::LEFT_BRACE})) {
     return new BlockStatement(block());
   }
 
@@ -365,7 +359,6 @@ Statement* Parser::forStatement() {
 
   return body;
 }
-
 
 Statement* Parser::expressionStatement() {
   Expression* expr = expression();

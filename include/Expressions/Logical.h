@@ -17,4 +17,4 @@ class Logical : public Expression {
   friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
 };
 
-#endif // LOGICAL_H
+#endif  // LOGICAL_H

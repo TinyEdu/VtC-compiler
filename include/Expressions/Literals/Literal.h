@@ -3,8 +3,8 @@
 #ifndef LITERAL_H
 #define LITERAL_H
 
-#include "OperationsDispatcher.h"
 #include "Expression.h"
+#include "OperationsDispatcher.h"
 
 // forward declarations
 class LiteralInt;
@@ -38,5 +38,4 @@ class Literal : public Expression {
   friend std::ostream& operator<<(std::ostream& os, const Literal* expr);
 };
 
-
-#endif // LITERAL_H
+#endif  // LITERAL_H

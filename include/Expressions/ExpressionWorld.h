@@ -8,8 +8,8 @@
 #include "Expression.h"
 #include "Grouping.h"
 #include "Literal.h"
-#include "Unary.h"
 #include "Logical.h"
+#include "Unary.h"
 #include "Variable.h"
 
-#endif // EXPRESSION_WORLD_H
+#endif  // EXPRESSION_WORLD_H

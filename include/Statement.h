@@ -14,8 +14,7 @@ class Statement {
 
 class ExpressionStatement : public Statement {
  public:
-  ExpressionStatement(Expression* expression)
-      : expression(expression) {}
+  ExpressionStatement(Expression* expression) : expression(expression) {}
   ~ExpressionStatement() = default;
 
   std::any accept(StatementVisitor* visitor) override {
@@ -29,9 +28,7 @@ class IfStatement : public Statement {
  public:
   IfStatement(Expression* condition, Statement* thenBranch,
               Statement* elseBranch)
-      : condition(condition),
-        thenBranch(thenBranch),
-        elseBranch(elseBranch) {}
+      : condition(condition), thenBranch(thenBranch), elseBranch(elseBranch) {}
 
   ~IfStatement() = default;
 
@@ -86,8 +83,7 @@ class VarStatement : public Statement {
 
 class BlockStatement : public Statement {
  public:
-  BlockStatement(std::vector<Statement*> statements)
-      : statements(statements) {}
+  BlockStatement(std::vector<Statement*> statements) : statements(statements) {}
   ~BlockStatement() = default;
 
   std::any accept(StatementVisitor* visitor) override {
@@ -101,9 +97,7 @@ class FunctionStatement : public Statement {
  public:
   FunctionStatement(Token name, std::vector<Token> params,
                     std::vector<Statement*> body)
-      : name(name),
-        params(params),
-        body(body) {}
+      : name(name), params(params), body(body) {}
   ~FunctionStatement() = default;
 
   std::any accept(StatementVisitor* visitor) override {
