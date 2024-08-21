@@ -7,10 +7,17 @@
 #include "Binary.h"
 #include "Expression.h"
 #include "Grouping.h"
-#include "Literal.h"
 #include "Logical.h"
 #include "Unary.h"
 #include "Variable.h"
+
+// Literals
+#include "Literals/Literal.h"
+#include "Literals/LiteralBool.h"
+#include "Literals/LiteralDouble.h"
+#include "Literals/LiteralFloat.h"
+#include "Literals/LiteralInt.h"
+#include "Literals/LiteralString.h"
 
 #include <any>
 

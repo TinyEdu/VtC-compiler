@@ -4,6 +4,7 @@
 #define LITERAL_BOOL_H
 
 #include "Literal.h"
+#include "OperationsDispatcher.h"
 
 class LiteralBool : public Literal {
  public:

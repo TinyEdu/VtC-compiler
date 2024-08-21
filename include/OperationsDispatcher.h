@@ -5,10 +5,11 @@
 
 #include "ExpressionWorld.h"
 
+
 class OperationsDispatcher {
  public:
   template <typename T1, typename T2>
-  static Expression* dispatch(T1 left, T2 right, Token token) {
+  static Expression* dispatch(T1* left, T2* right, Token token) {
     switch (token.type) {
       case TokenType::PLUS:
         return add(left, right);

@@ -5,6 +5,16 @@
 
 #include <ExpressionWorld.h>
 
+#include <any>
+
+class Assign;
+class Binary;
+class Grouping;
+class Literal;
+class Unary;
+class Variable;
+class Logical;
+
 
 class BaseVisitor {};
 
