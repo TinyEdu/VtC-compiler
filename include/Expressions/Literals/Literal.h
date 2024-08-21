@@ -11,8 +11,8 @@ class LiteralInt;
 class LiteralFloat;
 class LiteralString;
 class LiteralBool;
-
 class LiteralDouble;
+
 // class LiteralArray; // @TODO - implement arrays and chars
 // class LiteralChar;
 
@@ -34,8 +34,6 @@ class Literal : public Expression {
   virtual Expression* process(LiteralString* expr, Token token) = 0;
   virtual Expression* process(LiteralBool* expr, Token token) = 0;
   virtual Expression* process(LiteralDouble* expr, Token token) = 0;
-
-  friend std::ostream& operator<<(std::ostream& os, const Literal* expr);
 };
 
 #endif  // LITERAL_H

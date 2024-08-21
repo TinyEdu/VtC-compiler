@@ -14,7 +14,8 @@ class Logical : public Expression {
   Token op;
   Expression* right;
 
-  friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
+  friend std::ostream& operator<<(std::ostream& os, const Logical& expr);
+  friend std::ostream& operator<<(std::ostream& os, const Logical* expr);
 };
 
 #endif  // LOGICAL_H

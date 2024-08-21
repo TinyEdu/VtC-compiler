@@ -3,10 +3,8 @@
 #ifndef AST_PRINTER_H
 #define AST_PRINTER_H
 
-#include <any>
 #include <string>
 
-#include "Expression.h"
 #include "Visitor.h"
 
 class AstPrinter : public Visitor {

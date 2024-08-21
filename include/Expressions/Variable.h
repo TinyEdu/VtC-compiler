@@ -13,6 +13,7 @@ class Variable : public Expression {
   Token name;
 
   friend std::ostream& operator<<(std::ostream& os, const Variable* expr);
+  friend std::ostream& operator<<(std::ostream& os, const Variable& expr);
 };
 
 #endif  // VARIABLE_H

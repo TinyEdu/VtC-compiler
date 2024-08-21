@@ -13,6 +13,7 @@ class Grouping : public Expression {
   Expression* expression;
 
   friend std::ostream& operator<<(std::ostream& os, const Grouping* expr);
+  friend std::ostream& operator<<(std::ostream& os, const Grouping& expr);
 };
 
 #endif  // GROUPING_H

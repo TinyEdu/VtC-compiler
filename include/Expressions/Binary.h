@@ -14,7 +14,9 @@ class Binary : public Expression {
   Token op;
   Expression* right;
 
+
   friend std::ostream& operator<<(std::ostream& os, const Binary* expr);
+  friend std::ostream& operator<<(std::ostream& os, const Binary& expr);
 };
 
 #endif  // BINARY_H

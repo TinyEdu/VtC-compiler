@@ -13,7 +13,8 @@ class Assign : public Expression {
   Token name;
   Expression* value;
 
-  friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
+  friend std::ostream& operator<<(std::ostream& os, const Assign& expr);
+  friend std::ostream& operator<<(std::ostream& os, const Assign* expr);
 };
 
 #endif  // ASSIGN_H

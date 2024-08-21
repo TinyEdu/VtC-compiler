@@ -3,17 +3,8 @@
 #ifndef VISITOR_H
 #define VISITOR_H
 
-#include <any>
+#include <ExpressionWorld.h>
 
-// Forward declaration of Expression classes
-class Assign;
-class Binary;
-class Grouping;
-class Literal;
-class Unary;
-class Expression;
-class Variable;
-class Logical;
 
 class BaseVisitor {};
 

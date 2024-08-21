@@ -14,6 +14,7 @@ class Unary : public Expression {
   Expression* right;
 
   friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
+  friend std::ostream& operator<<(std::ostream& os, const Unary& expr);
 };
 
 #endif  // UNARY_H

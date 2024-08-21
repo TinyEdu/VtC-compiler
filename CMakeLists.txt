@@ -16,6 +16,9 @@ endif()
 # Add the include and source directories
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/Expressions)
+include_directories(${PROJECT_SOURCE_DIR}/include/Expressions/Literals)
+
+
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/*.cpp)
 file(GLOB HEADERS ${PROJECT_SOURCE_DIR}/include/*.h)
 

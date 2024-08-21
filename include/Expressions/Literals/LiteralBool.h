@@ -7,7 +7,7 @@
 
 class LiteralBool : public Literal {
  public:
-  LiteralBool(bool value);
+  LiteralBool(bool value) { this->value = value; };
 
   bool value;
 
