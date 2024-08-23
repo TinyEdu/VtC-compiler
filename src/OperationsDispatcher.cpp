@@ -6,7 +6,6 @@
 #include "LiteralInt.h"
 #include "LiteralString.h"
 
-
 Literal* OperationsDispatcher::add(LiteralInt* left, LiteralInt* right) {
   return new LiteralInt(left->value + right->value);
 }
@@ -154,7 +153,7 @@ Literal* OperationsDispatcher::subtract(LiteralString* left,
                                         LiteralString* right) {
   throw std::runtime_error(
       "Illegal operation[subtract] LiteralString | LiteralFloat!");
-  return nullptr; 
+  return nullptr;
 }
 Literal* OperationsDispatcher::subtract(LiteralString* left,
                                         LiteralBool* right) {
@@ -374,7 +373,7 @@ Literal* OperationsDispatcher::divide(LiteralString* left,
   throw std::runtime_error(
       "Illegal operation[divide] LiteralString | LiteralFloat!");
   return nullptr;
-                                      }
+}
 Literal* OperationsDispatcher::divide(LiteralString* left, LiteralBool* right) {
   throw std::runtime_error(
       "Illegal operation[divide] LiteralString | LiteralFloat!");
@@ -471,7 +470,7 @@ Literal* OperationsDispatcher::modulo(LiteralFloat* left,
   throw std::runtime_error(
       "Illegal operation[modulo] LiteralFloat | LiteralString!");
   return nullptr;
-                                      }
+}
 
 Literal* OperationsDispatcher::modulo(LiteralString* left, LiteralInt* right) {
   throw std::runtime_error(
@@ -544,13 +543,13 @@ Literal* OperationsDispatcher::modulo(LiteralDouble* left,
 Literal* OperationsDispatcher::modulo(LiteralDouble* left, LiteralBool* right) {
   throw std::runtime_error(
       "Illegal operation[modulo] LiteralBool | LiteralString!");
-  return nullptr;  
+  return nullptr;
 }
 Literal* OperationsDispatcher::modulo(LiteralDouble* left,
                                       LiteralDouble* right) {
   throw std::runtime_error(
       "Illegal operation[modulo] LiteralBool | LiteralString!");
-  return nullptr; 
+  return nullptr;
 }
 Literal* OperationsDispatcher::negate(LiteralInt* right) {
   return new LiteralInt(-right->value);

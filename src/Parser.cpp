@@ -111,12 +111,12 @@ Expression* Parser::primary() {
   else if (match({TokenType::TRUE}))
     return new LiteralBool(true);
   else if (match({TokenType::NIL}))
-    return new LiteralInt(0);   // @TODO - how to handle NULL values?
+    return new LiteralInt(0);  // @TODO - how to handle NULL values?
   else if (match({TokenType::NUMBER})) {
     // check if the given value is an integer or a double
-    if (previous().literal.find('.') != std::string::npos) { // is a double
+    if (previous().literal.find('.') != std::string::npos) {  // is a double
       return new LiteralDouble(std::stod(previous().literal));
-    } else { // is an integer
+    } else {  // is an integer
       return new LiteralInt(std::stoi(previous().literal));
     }
   } else if (match({TokenType::STRING})) {

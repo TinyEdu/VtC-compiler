@@ -7,7 +7,6 @@
 
 class Visitor;
 
-
 class Binary : public Expression {
  public:
   Binary(Expression* left, Token op, Expression* right);
@@ -16,7 +15,6 @@ class Binary : public Expression {
   Expression* left;
   Token op;
   Expression* right;
-
 
   friend std::ostream& operator<<(std::ostream& os, const Binary* expr);
   friend std::ostream& operator<<(std::ostream& os, const Binary& expr);

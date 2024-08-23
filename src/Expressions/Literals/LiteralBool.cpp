@@ -1,12 +1,11 @@
 #include "LiteralBool.h"
 
-#include "LiteralInt.h"
-#include "LiteralFloat.h"
-#include "LiteralString.h"
 #include "LiteralDouble.h"
+#include "LiteralFloat.h"
+#include "LiteralInt.h"
+#include "LiteralString.h"
 #include "OperationsDispatcher.h"
 #include "Visitor.h"
-
 
 std::any LiteralBool::accept(Visitor* visitor) {
   return visitor->visit(this);

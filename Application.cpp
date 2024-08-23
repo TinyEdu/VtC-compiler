@@ -1,7 +1,7 @@
 // Application.cpp
 
-#include "Transpiler.h"
 #include "LogManager.h"
+#include "Transpiler.h"
 
 int main(int argc, char* argv[]) {
   LOG << "Running compiler..." << ENDL;

@@ -145,19 +145,19 @@ std::any Interpreter::visit(PrintStatement* stmt) {
   Literal* lit = static_cast<Literal*>(evaluate(stmt->expression));
 
   // check with static_cast what type of literal we have, store it in auto r
-  if(auto r = dynamic_cast<LiteralString*>(lit)) {
+  if (auto r = dynamic_cast<LiteralString*>(lit)) {
     ss << r->value;
-  } else if(auto r = dynamic_cast<LiteralInt*>(lit)) {
+  } else if (auto r = dynamic_cast<LiteralInt*>(lit)) {
     ss << r->value;
-  } else if(auto r = dynamic_cast<LiteralBool*>(lit)) {
-    if(r->value) {
+  } else if (auto r = dynamic_cast<LiteralBool*>(lit)) {
+    if (r->value) {
       ss << "true";
     } else {
       ss << "false";
     }
-  } else if(auto r = dynamic_cast<LiteralFloat*>(lit)) {
+  } else if (auto r = dynamic_cast<LiteralFloat*>(lit)) {
     ss << r->value;
-  } else if(auto r = dynamic_cast<LiteralDouble*>(lit)) {
+  } else if (auto r = dynamic_cast<LiteralDouble*>(lit)) {
     ss << r->value;
   } else {
     ss << "Unknown type";

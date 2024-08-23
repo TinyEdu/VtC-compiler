@@ -1,17 +1,15 @@
 #include "LiteralFloat.h"
 
-#include "LiteralInt.h"
-#include "LiteralString.h"
 #include "LiteralBool.h"
 #include "LiteralDouble.h"
+#include "LiteralInt.h"
+#include "LiteralString.h"
 #include "OperationsDispatcher.h"
 #include "Visitor.h"
-
 
 std::any LiteralFloat::accept(Visitor* visitor) {
   return visitor->visit(this);
 }
-
 
 Expression* LiteralFloat::process(LiteralInt* expr, Token token) {
   return OperationsDispatcher::dispatch(expr, this, token);

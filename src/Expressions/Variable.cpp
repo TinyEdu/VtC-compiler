@@ -2,7 +2,6 @@
 
 #include "Visitor.h"
 
-
 Variable::Variable(Token name) : name(name) {}
 
 std::any Variable::accept(Visitor* visitor) {

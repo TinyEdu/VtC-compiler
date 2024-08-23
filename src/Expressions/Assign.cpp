@@ -2,7 +2,6 @@
 
 #include "Visitor.h"
 
-
 Assign::Assign(Token name, Expression* value) : name(name), value(value) {}
 
 std::any Assign::accept(Visitor* visitor) {
