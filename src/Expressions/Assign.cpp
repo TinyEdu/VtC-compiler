@@ -1,21 +1,20 @@
 #include "Assign.h"
 
-Assign::Assign(Variable* var, Expression* expr) : var(var), expr(expr) {}
+#include "Visitor.h"
 
-Assign::~Assign() {}
+
+Assign::Assign(Token name, Expression* value) : name(name), value(value) {}
 
 std::any Assign::accept(Visitor* visitor) {
-    return visitor->visit(this);
+  return visitor->visit(this);
 }
 
-std::ostream& operator<<(std::ostream& os, const Assign& assign) {
-    os << *assign.var << " = " << *assign.expr;
-    return os;
+std::ostream& operator<<(std::ostream& os, const Assign& expr) {
+  os << "Assign: " << expr.name.lexeme << " = " << expr.value;
+  return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Assign* assign) {
-    os << assign.var << " = " << assign.expr;
-    return os;
+std::ostream& operator<<(std::ostream& os, const Assign* expr) {
+  os << "Assign: " << expr->name.lexeme << " = " << expr->value;
+  return os;
 }
-
-

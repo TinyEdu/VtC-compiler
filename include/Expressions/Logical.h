@@ -5,6 +5,8 @@
 
 #include "Expression.h"
 
+class Visitor;
+
 class Logical : public Expression {
  public:
   Logical(Expression* left, Token op, Expression* right);

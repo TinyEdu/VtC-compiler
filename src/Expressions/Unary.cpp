@@ -1,5 +1,7 @@
 #include "Unary.h"
 
+#include "Visitor.h"
+
 Unary::Unary(Token op, Expression* right) : op(op), right(right) {}
 
 std::any Unary::accept(Visitor* visitor) {

@@ -23,3 +23,6 @@ Expression* LiteralFloat::process(LiteralDouble* expr, Token token) {
   return OperationsDispatcher::dispatch(expr, this, token);
 };
 
+Expression* LiteralFloat::process(Token token) {
+  return OperationsDispatcher::dispatch(this, token);
+}

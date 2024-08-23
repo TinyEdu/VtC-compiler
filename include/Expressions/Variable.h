@@ -5,6 +5,8 @@
 
 #include "Expression.h"
 
+class Visitor;
+
 class Variable : public Expression {
  public:
   Variable(Token name);

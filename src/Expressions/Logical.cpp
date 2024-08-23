@@ -1,5 +1,8 @@
 #include "Logical.h"
 
+#include "Visitor.h"
+
+
 Logical::Logical(Expression* left, Token op, Expression* right) : left(left), op(op), right(right) {}
 
 std::any Logical::accept(Visitor* visitor) {

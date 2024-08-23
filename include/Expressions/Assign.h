@@ -5,6 +5,8 @@
 
 #include "Expression.h"
 
+class Visitor;
+
 class Assign : public Expression {
  public:
   Assign(Token name, Expression* value);

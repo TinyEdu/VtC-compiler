@@ -23,3 +23,6 @@ Expression* LiteralString::process(LiteralDouble* expr, Token token) {
   return OperationsDispatcher::dispatch(expr, this, token);
 };
 
+Expression* LiteralString::process(Token token) {
+  return OperationsDispatcher::dispatch(this, token);
+}

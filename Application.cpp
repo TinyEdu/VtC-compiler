@@ -1,8 +1,6 @@
 // Application.cpp
 
-#include "AstPrinter.h"
 #include "Transpiler.h"
-
 #include "LogManager.h"
 
 int main(int argc, char* argv[]) {

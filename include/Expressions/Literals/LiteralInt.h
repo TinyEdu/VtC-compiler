@@ -13,7 +13,7 @@ class LiteralBool;
 class LiteralDouble;
 
 class LiteralInt : public Literal {
-
+public:
 LiteralInt(int value) : value(value) {};
 
 int value;
@@ -27,6 +27,8 @@ virtual Expression* process(LiteralFloat* expr, Token token);
 virtual Expression* process(LiteralString* expr, Token token);
 virtual Expression* process(LiteralBool* expr, Token token);
 virtual Expression* process(LiteralDouble* expr, Token token);
+virtual Expression* process(Token token);
+
 
 friend std::ostream& operator<<(std::ostream& os, const LiteralInt* expr) {
   os << expr->value;

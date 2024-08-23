@@ -71,33 +71,10 @@ std::any Interpreter::visit(Assign* expr) {
 }
 
 std::any Interpreter::visit(Binary* expr) {
-  Expression* left = static_cast<Literal*>(evaluate(expr->left));
-  Expression* right = static_cast<Literal*>(evaluate(expr->right));
+  Literal* left = static_cast<Literal*>(evaluate(expr->left));
+  Literal* right = static_cast<Literal*>(evaluate(expr->right));
 
-  switch (expr->op.type) {
-    case TokenType::MINUS:
-      return left - right;
-    case TokenType::SLASH:
-      return *left / *right;
-    case TokenType::STAR:
-      return *left * *right;
-    case TokenType::PLUS:
-      return *left + *right;
-    case TokenType::GREATER:
-      return left > right;
-    case TokenType::GREATER_EQUAL:
-      return left >= right;
-    case TokenType::LESS:
-      return left < right;
-    case TokenType::LESS_EQUAL:
-      return left <= right;
-    case TokenType::BANG_EQUAL:
-      return left != right;
-    case TokenType::EQUAL_EQUAL:
-      return left == right;
-    default:
-      break;
-  }
+  left->process(right, expr->op);
 
   LOG << "Unreachable code reached in Interpreter::visit(B) \n";
   return std::any();
@@ -116,11 +93,9 @@ std::any Interpreter::visit(Unary* expr) {
 
   switch (expr->op.type) {
     case TokenType::BANG:
-      // return !isTruthy(right);
-      return !*right;
+      return right->process(expr->op);
     case TokenType::MINUS:
-      // return -std::any_cast<double>(right);
-      return -*right;
+      return right->process(expr->op);
     default:
       break;
   }

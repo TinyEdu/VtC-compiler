@@ -6,7 +6,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "AstPrinter.h"
 #include "Parser.h"
 
 #include "Interpreter.h"

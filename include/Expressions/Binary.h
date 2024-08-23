@@ -5,6 +5,9 @@
 
 #include "Expression.h"
 
+class Visitor;
+
+
 class Binary : public Expression {
  public:
   Binary(Expression* left, Token op, Expression* right);

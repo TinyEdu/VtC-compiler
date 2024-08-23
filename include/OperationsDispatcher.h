@@ -3,8 +3,16 @@
 #ifndef OPERATIONS_DISPATCHER_H
 #define OPERATIONS_DISPATCHER_H
 
-#include "ExpressionWorld.h"
+#include "Token.h"
 
+// forward declarations
+class LiteralInt;
+class LiteralFloat;
+class LiteralString;
+class LiteralBool;
+class LiteralDouble;
+class Literal;
+class Expression;
 
 class OperationsDispatcher {
  public:
@@ -14,13 +22,43 @@ class OperationsDispatcher {
       case TokenType::PLUS:
         return add(left, right);
         break;
-        // ...
+      case TokenType::MINUS:
+        return subtract(left, right);
+        break;
+      case TokenType::STAR:
+        return multiply(left, right);
+        break;
+      case TokenType::SLASH:  
+        return divide(left, right);
+        break;
+      case TokenType::MODULO:
+        return modulo(left, right);
+        break;
+      
       default:
         break;
     }
 
     return nullptr;
   }
+
+  template <typename T1>
+  static Expression* dispatch(T1* lt, Token token) {
+    switch (token.type) {
+      case TokenType::MINUS:
+        return negate(lt);
+        break;
+     case TokenType::BANG:
+        return negate(lt);
+        break;
+      
+      default:
+        break;
+    }
+
+    return nullptr;
+  }
+
 
   // Every unique possible combination of dispatches for literals
   static Literal* add(LiteralInt* left, LiteralInt* right);
@@ -152,6 +190,12 @@ static Literal* modulo(LiteralDouble* left, LiteralFloat* right);
 static Literal* modulo(LiteralDouble* left, LiteralString* right);
 static Literal* modulo(LiteralDouble* left, LiteralBool* right);
 static Literal* modulo(LiteralDouble* left, LiteralDouble* right);
+
+static Literal* negate(LiteralInt* right);
+static Literal* negate(LiteralFloat* right);
+static Literal* negate(LiteralString* right);
+static Literal* negate(LiteralBool* right);
+static Literal* negate(LiteralDouble* right);
 };
 
 #endif  // OPERATIONS_DISPATCHER_H

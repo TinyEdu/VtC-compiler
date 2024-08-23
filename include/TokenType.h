@@ -20,6 +20,7 @@ enum class TokenType {
   SEMICOLON,
   SLASH,
   STAR,
+  MODULO,
 
   // One or two character tokens.
   BANG,

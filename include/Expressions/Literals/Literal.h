@@ -22,7 +22,7 @@ class Literal : public Expression {
   virtual ~Literal() = default;
 
   // Note: Literal does not ha ve a visitor function, it just passes rhis requirement to its subclasses
-  virtual std::any accept(Visitor* visitor) = 0;
+  std::any accept(Visitor* visitor);
 
   // [___] value;
 
@@ -34,6 +34,7 @@ class Literal : public Expression {
   virtual Expression* process(LiteralString* expr, Token token) = 0;
   virtual Expression* process(LiteralBool* expr, Token token) = 0;
   virtual Expression* process(LiteralDouble* expr, Token token) = 0;
+  virtual Expression* process(Token token) = 0;
 };
 
 #endif  // LITERAL_H

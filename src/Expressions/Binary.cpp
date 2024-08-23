@@ -1,5 +1,8 @@
 #include "Binary.h"
 
+#include "Visitor.h"
+
+
 Binary::Binary(Expression* left, Token op, Expression* right) : left(left), op(op), right(right) {}
 
 std::any Binary::accept(Visitor* visitor) {

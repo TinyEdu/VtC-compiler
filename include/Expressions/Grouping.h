@@ -5,6 +5,8 @@
 
 #include "Expression.h"
 
+class Visitor;
+
 class Grouping : public Expression {
  public:
   Grouping(Expression* expression);

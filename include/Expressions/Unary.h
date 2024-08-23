@@ -5,6 +5,8 @@
 
 #include "Expression.h"
 
+class Visitor;
+
 class Unary : public Expression {
  public:
   Unary(Token op, Expression* right);

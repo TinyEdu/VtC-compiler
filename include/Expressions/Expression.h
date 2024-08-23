@@ -8,7 +8,6 @@
 
 #include "LogManager.h"
 #include "Token.h"
-#include "Visitor.h"
 
 // forward declarations
 class Assign;
@@ -18,6 +17,8 @@ class Literal;
 class Unary;
 class Logical;
 class Variable;
+
+class Visitor;
 
 class Expression {
  public:

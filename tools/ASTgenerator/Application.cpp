@@ -25,7 +25,7 @@ std::string forwardDeclaration(std::string type) {
 }
 
 std::string contructor(std::string type) {
-  return type + "(" + typeMap[type] +" value) : value(value) {};\n\n"
+  return "public:\n\n" + type + "(" + typeMap[type] +" value) : value(value) {};\n\n"
           "" + typeMap[type] +" value;\n\n";
 } 
 

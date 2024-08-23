@@ -107,20 +107,20 @@ Expression* Parser::unary() {
 
 Expression* Parser::primary() {
   if (match({TokenType::FALSE}))
-    return new Literal(false);
+    return new LiteralBool(false);
   else if (match({TokenType::TRUE}))
-    return new Literal(true);
+    return new LiteralBool(true);
   else if (match({TokenType::NIL}))
-    return new Literal(nullptr);
+    return new LiteralInt(0);   // @TODO - how to handle NULL values?
   else if (match({TokenType::NUMBER})) {
     // check if the given value is an integer or a double
-    if (previous().literal.find('.') != std::string::npos) {
-      return new Literal(std::stod(previous().literal));
-    } else {
-      return new Literal(std::stoi(previous().literal));
+    if (previous().literal.find('.') != std::string::npos) { // is a double
+      return new LiteralDouble(std::stod(previous().literal));
+    } else { // is an integer
+      return new LiteralInt(std::stoi(previous().literal));
     }
   } else if (match({TokenType::STRING})) {
-    return new Literal(previous().literal);
+    return new LiteralString(previous().literal);
   } else if (match({TokenType::LEFT_PAREN})) {
     Expression* expr = expression();
     consume(TokenType::RIGHT_PAREN, "Expect ')' after expression.");
@@ -348,7 +348,7 @@ Statement* Parser::forStatement() {
 
   // Desugar condition: if condition is null, set it to `true`
   if (condition == nullptr) {
-    condition = new Literal(true);
+    condition = new LiteralBool(true);
   }
   body = new WhileStatement(condition, body);
 
