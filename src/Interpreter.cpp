@@ -74,10 +74,9 @@ std::any Interpreter::visit(Binary* expr) {
   Literal* left = static_cast<Literal*>(evaluate(expr->left));
   Literal* right = static_cast<Literal*>(evaluate(expr->right));
 
-  left->process(right, expr->op);
+  auto result = left->process(right, expr->op);
 
-  LOG << "Unreachable code reached in Interpreter::visit(B) \n";
-  return std::any();
+  return result;
 }
 
 std::any Interpreter::visit(Literal* expr) {
@@ -142,7 +141,29 @@ std::any Interpreter::visit(ExpressionStatement* stmt) {
 }
 
 std::any Interpreter::visit(PrintStatement* stmt) {
-  std::cout << "PRINT FUNCTION: " << evaluate(stmt->expression) << "\n";
+  std::stringstream ss;
+  Literal* lit = static_cast<Literal*>(evaluate(stmt->expression));
+
+  // check with static_cast what type of literal we have, store it in auto r
+  if(auto r = dynamic_cast<LiteralString*>(lit)) {
+    ss << r->value;
+  } else if(auto r = dynamic_cast<LiteralInt*>(lit)) {
+    ss << r->value;
+  } else if(auto r = dynamic_cast<LiteralBool*>(lit)) {
+    if(r->value) {
+      ss << "true";
+    } else {
+      ss << "false";
+    }
+  } else if(auto r = dynamic_cast<LiteralFloat*>(lit)) {
+    ss << r->value;
+  } else if(auto r = dynamic_cast<LiteralDouble*>(lit)) {
+    ss << r->value;
+  } else {
+    ss << "Unknown type";
+  }
+
+  std::cout << "PRINT FUNCTION --> " << ss.str() << "\n";
   return std::any();
 }
 

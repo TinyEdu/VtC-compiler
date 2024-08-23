@@ -4,6 +4,7 @@
 #define OPERATIONS_DISPATCHER_H
 
 #include "Token.h"
+#include "LogManager.h"
 
 // forward declarations
 class LiteralInt;
@@ -38,7 +39,7 @@ class OperationsDispatcher {
       default:
         break;
     }
-
+    LOG << "Unreachable code reached in OperationsDispatcher::dispatch(T1*, T2*, Token)";
     return nullptr;
   }
 
@@ -56,6 +57,7 @@ class OperationsDispatcher {
         break;
     }
 
+    LOG << "Unreachable code reached in OperationsDispatcher::dispatch(T1*, Token)";
     return nullptr;
   }
 
