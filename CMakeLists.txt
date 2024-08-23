@@ -19,7 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/Expressions)
 include_directories(${PROJECT_SOURCE_DIR}/include/Expressions/Literals)
 
 
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/*.cpp)
+file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/Literals/*.cpp)
 file(GLOB HEADERS ${PROJECT_SOURCE_DIR}/include/*.h)
 
 # Add the executable for the main application

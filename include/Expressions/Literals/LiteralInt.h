@@ -4,9 +4,9 @@
 #define LiteralInt_H
 
 #include "string.h"
+#include "Literal.h"
 
 class Expression;
-class Literal;
 class LiteralFloat;
 class LiteralString;
 class LiteralBool;
@@ -17,6 +17,8 @@ public:
 LiteralInt(int value) : value(value) {};
 
 int value;
+
+virtual std::any accept(Visitor* visitor);
 
 virtual Expression* process(Literal* expr, Token token) override {
 return expr->process(this, token);

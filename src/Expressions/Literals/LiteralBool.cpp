@@ -1,9 +1,17 @@
+#include "LiteralBool.h"
+
 #include "LiteralInt.h"
 #include "LiteralFloat.h"
 #include "LiteralString.h"
 #include "LiteralDouble.h"
 #include "OperationsDispatcher.h"
-#include "LiteralBool.h"
+#include "Visitor.h"
+
+
+std::any LiteralBool::accept(Visitor* visitor) {
+  return visitor->visit(this);
+}
+
 Expression* LiteralBool::process(LiteralInt* expr, Token token) {
   return OperationsDispatcher::dispatch(expr, this, token);
 };
