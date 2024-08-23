@@ -1,37 +1,42 @@
 // LiteralDouble.h
 
-#ifndef LITERAL_DOUBLE_H
-#define LITERAL_DOUBLE_H
+#ifndef LiteralDouble_H
+#define LiteralDouble_H
 
-#include "Literal.h"
+#include "string.h"
+
+class Expression;
+class Literal;
+class LiteralInt;
+class LiteralFloat;
+class LiteralString;
+class LiteralBool;
 
 class LiteralDouble : public Literal {
- public:
-  LiteralDouble(double value);
 
-  double value;
+LiteralDouble(double value) : value(value) {};
 
-  virtual Expression* process(Literal* expr, Token token) override {
-    return expr->process(this, token);
-  };
+double value;
 
-  virtual Expression* process(LiteralInt* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralFloat* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralString* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralBool* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralDouble* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-
-  friend std::ostream& operator<<(std::ostream& os, const LiteralDouble* expr);
+virtual Expression* process(Literal* expr, Token token) override {
+return expr->process(this, token);
 };
 
-#endif  // LITERAL_DOUBLE_H
+virtual Expression* process(LiteralInt* expr, Token token);
+virtual Expression* process(LiteralFloat* expr, Token token);
+virtual Expression* process(LiteralString* expr, Token token);
+virtual Expression* process(LiteralBool* expr, Token token);
+virtual Expression* process(LiteralDouble* expr, Token token);
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralDouble* expr) {
+  os << expr->value;
+  return os;
+};
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralDouble& expr) {
+  os << expr.value;
+  return os;
+};
+
+};
+#endif  // LiteralDouble_H

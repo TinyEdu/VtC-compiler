@@ -1,37 +1,42 @@
 // LiteralInt.h
 
-#ifndef LITERAL_INT_H
-#define LITERAL_INT_H
+#ifndef LiteralInt_H
+#define LiteralInt_H
 
-#include "Literal.h"
+#include "string.h"
+
+class Expression;
+class Literal;
+class LiteralFloat;
+class LiteralString;
+class LiteralBool;
+class LiteralDouble;
 
 class LiteralInt : public Literal {
- public:
-  LiteralInt(int value);
 
-  int value;
+LiteralInt(int value) : value(value) {};
 
-  virtual Expression* process(Literal* expr, Token token) override {
-    return expr->process(this, token);
-  };
+int value;
 
-  virtual Expression* process(LiteralInt* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralFloat* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralString* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralBool* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralDouble* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-
-  friend std::ostream& operator<<(std::ostream& os, const LiteralInt* expr);
+virtual Expression* process(Literal* expr, Token token) override {
+return expr->process(this, token);
 };
 
-#endif  // LITERAL_INT_H
+virtual Expression* process(LiteralInt* expr, Token token);
+virtual Expression* process(LiteralFloat* expr, Token token);
+virtual Expression* process(LiteralString* expr, Token token);
+virtual Expression* process(LiteralBool* expr, Token token);
+virtual Expression* process(LiteralDouble* expr, Token token);
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralInt* expr) {
+  os << expr->value;
+  return os;
+};
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralInt& expr) {
+  os << expr.value;
+  return os;
+};
+
+};
+#endif  // LiteralInt_H

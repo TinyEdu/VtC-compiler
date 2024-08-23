@@ -1,37 +1,42 @@
 // LiteralFloat.h
 
-#ifndef LITERAL_FLOAT_H
-#define LITERAL_FLOAT_H
+#ifndef LiteralFloat_H
+#define LiteralFloat_H
 
-#include "Literal.h"
+#include "string.h"
+
+class Expression;
+class Literal;
+class LiteralInt;
+class LiteralString;
+class LiteralBool;
+class LiteralDouble;
 
 class LiteralFloat : public Literal {
- public:
-  LiteralFloat(float value);
 
-  float value;
+LiteralFloat(float value) : value(value) {};
 
-  virtual Expression* process(Literal* expr, Token token) override {
-    return expr->process(this, token);
-  };
+float value;
 
-  virtual Expression* process(LiteralInt* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralFloat* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralString* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralBool* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralDouble* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-
-  friend std::ostream& operator<<(std::ostream& os, const LiteralFloat* expr);
+virtual Expression* process(Literal* expr, Token token) override {
+return expr->process(this, token);
 };
 
-#endif  // LITERAL_FLOAT_H
+virtual Expression* process(LiteralInt* expr, Token token);
+virtual Expression* process(LiteralFloat* expr, Token token);
+virtual Expression* process(LiteralString* expr, Token token);
+virtual Expression* process(LiteralBool* expr, Token token);
+virtual Expression* process(LiteralDouble* expr, Token token);
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralFloat* expr) {
+  os << expr->value;
+  return os;
+};
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralFloat& expr) {
+  os << expr.value;
+  return os;
+};
+
+};
+#endif  // LiteralFloat_H

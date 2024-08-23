@@ -1,37 +1,42 @@
 // LiteralString.h
 
-#ifndef LITERAL_STRING_H
-#define LITERAL_STRING_H
+#ifndef LiteralString_H
+#define LiteralString_H
 
-#include "Literal.h"
+#include "string.h"
+
+class Expression;
+class Literal;
+class LiteralInt;
+class LiteralFloat;
+class LiteralBool;
+class LiteralDouble;
 
 class LiteralString : public Literal {
- public:
-  LiteralString(int value);
 
-  std::string value;
+LiteralString(std::string value) : value(value) {};
 
-  virtual Expression* process(Literal* expr, Token token) override {
-    return expr->process(this, token);
-  };
+std::string value;
 
-  virtual Expression* process(LiteralInt* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralFloat* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralString* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralBool* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-  virtual Expression* process(LiteralDouble* expr, Token token) override {
-    return OperationsDispatcher::dispatch(expr, this, token);
-  };
-
-  friend std::ostream& operator<<(std::ostream& os, const LiteralString* expr);
+virtual Expression* process(Literal* expr, Token token) override {
+return expr->process(this, token);
 };
 
-#endif  // LITERAL_STRING_H
+virtual Expression* process(LiteralInt* expr, Token token);
+virtual Expression* process(LiteralFloat* expr, Token token);
+virtual Expression* process(LiteralString* expr, Token token);
+virtual Expression* process(LiteralBool* expr, Token token);
+virtual Expression* process(LiteralDouble* expr, Token token);
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralString* expr) {
+  os << expr->value;
+  return os;
+};
+
+friend std::ostream& operator<<(std::ostream& os, const LiteralString& expr) {
+  os << expr.value;
+  return os;
+};
+
+};
+#endif  // LiteralString_H
