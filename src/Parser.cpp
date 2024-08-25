@@ -350,6 +350,8 @@ Statement* Parser::forStatement() {
   if (condition == nullptr) {
     condition = new LiteralBool(true);
   }
+  
+  // Create the loop using the while statement with the desugared condition
   body = new WhileStatement(condition, body);
 
   // Desugar initializer: if initializer is non-null, wrap everything in a new block with the initializer
@@ -359,6 +361,7 @@ Statement* Parser::forStatement() {
 
   return body;
 }
+
 
 Statement* Parser::expressionStatement() {
   Expression* expr = expression();
