@@ -16,7 +16,8 @@ class Callable {
   virtual int arity();
   virtual std::any call(Interpreter* interpreter, std::vector<Expression*> arguments);
 
-  virtual ~Callable() = default;
+  Callable() = default;
+  ~Callable() = default;
 
   friend std::ostream& operator<<(std::ostream& os, const Callable& expr);
   friend std::ostream& operator<<(std::ostream& os, const Callable* expr);

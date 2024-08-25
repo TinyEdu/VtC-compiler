@@ -73,7 +73,7 @@ void Interpreter::execute(Statement* stmt) {
 
 std::any Interpreter::visit(Assign* expr) {
   Expression* value = evaluate(expr->value);
-  environment->assign(expr->name.lexeme, value);
+  environment->assign<Expression*>(expr->name.lexeme, value);
   return value;
 }
 
@@ -111,7 +111,7 @@ std::any Interpreter::visit(Unary* expr) {
 }
 
 std::any Interpreter::visit(Variable* expr) {
-  return environment->lookup(expr->name.lexeme);
+  return environment->lookup<Expression*>(expr->name.lexeme);
 }
 
 std::any Interpreter::visit(Logical* expr) {
