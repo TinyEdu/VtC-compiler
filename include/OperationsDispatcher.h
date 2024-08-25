@@ -32,7 +32,25 @@ class OperationsDispatcher {
       case TokenType::SLASH:
         return divide(left, right);
         break;
-
+      case TokenType::EQUAL_EQUAL:
+        return equal(left, right);
+        break;
+      case TokenType::BANG_EQUAL:
+        return not_equal(left, right);
+        break;
+      case TokenType::GREATER:
+        return greater_than(left, right);
+        break;
+      case TokenType::GREATER_EQUAL:
+        return greater_than_or_equal(left, right);
+        break;
+      case TokenType::LESS:
+        return less_than(left, right);
+        break;
+      case TokenType::LESS_EQUAL:
+        return less_than_or_equal(left, right);
+        break;
+      
       default:
         break;
     }
