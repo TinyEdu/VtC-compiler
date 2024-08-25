@@ -32,9 +32,6 @@ class OperationsDispatcher {
       case TokenType::SLASH:
         return divide(left, right);
         break;
-      case TokenType::MODULO:
-        return modulo(left, right);
-        break;
 
       default:
         break;
@@ -63,8 +60,7 @@ class OperationsDispatcher {
     return nullptr;
   }
 
-  // Every unique possible combination of dispatches for literals
-  // Function: add
+// Function: add
 static Literal* add(LiteralInt* left, LiteralBool* right);
 static Literal* add(LiteralDouble* left, LiteralBool* right);
 static Literal* add(LiteralFloat* left, LiteralBool* right);
@@ -333,6 +329,7 @@ static Literal* less_than_or_equal(LiteralDouble* left, LiteralInt* right);
 static Literal* less_than_or_equal(LiteralFloat* left, LiteralInt* right);
 static Literal* less_than_or_equal(LiteralString* left, LiteralInt* right);
 static Literal* less_than_or_equal(LiteralBool* left, LiteralInt* right);
+
 
   // Function: negate  
   static Literal* negate(LiteralInt* right);

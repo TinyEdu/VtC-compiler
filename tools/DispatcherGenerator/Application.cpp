@@ -225,9 +225,13 @@ int main(int argc, char* argv[]) {
             for(int j = 1; j < mtx.matrix[i].size(); j++) {
                 hfile << "Literal* OperationsDispatcher::" << mtx.function << "(" << mtx.matrix[0][j] << "* left, " << mtx.matrix[i][0] << "* right) {\n";
                 // based on the mtx.matrix[i][j] we can get the result type
-                if (mtx.matrix[i][j] == "-") {
+                if (mtx.matrix[i][j] == "") {
+                    // do nothing
+
+                }
+                    if (mtx.matrix[i][j] == "-") {
                     // illegal operation
-                    hfile << "throw std::runtime_error(\"Illegal operation[" << mtx.function << "] " << mtx.matrix[0][j] << " | " << mtx.matrix[i][0] << "!\");\n}\n\n";
+                    hfile << "throw std::runtime_error(\"Illegal operation[" << mtx.function << "] " << mtx.matrix[0][j] << " | " << mtx.matrix[i][0] << "!\");\nreturn nullptr;\n}\n\n";
                 }
                 else {
                     hfile << "return new " << mtx.matrix[i][j] << "(left->value " << operationsMap[mtx.function] << " right->value);\n}\n\n";
