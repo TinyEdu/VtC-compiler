@@ -125,11 +125,18 @@ std::any Interpreter::visit(Logical* expr) {
 // ______________________________________________________________
 
 std::any Interpreter::visit(IfStatement* stmt) {
-  bool isTrutrhy = evaluate(stmt->condition);
-  if (isTrutrhy) {
-    execute(stmt->thenBranch);
-  } else if (stmt->elseBranch != nullptr) {
-    execute(stmt->elseBranch);
+  Expression* r = evaluate(stmt->condition);
+  LiteralBool* lb;
+
+  // check if is a LiteralBool
+  if ((lb = dynamic_cast<LiteralBool*>(r))) {
+    if (lb->value) {
+      execute(stmt->thenBranch);
+    } else if (stmt->elseBranch != nullptr) {
+      execute(stmt->elseBranch);
+    }
+  } else {
+    throw std::runtime_error("If statement condition must be possible to evaluate as a boolean");
   }
 
   return std::any();
@@ -196,7 +203,8 @@ std::any Interpreter::visit(ClassStatement* stmt) {
 }
 
 std::any Interpreter::visit(WhileStatement* stmt) {
-  while (evaluate(stmt->condition)) {
+  
+  while (dynamic_cast<LiteralBool*>(evaluate(stmt->condition))->value) {
     execute(stmt->body);
   }
 
