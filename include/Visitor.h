@@ -14,6 +14,7 @@ class Literal;
 class Unary;
 class Variable;
 class Logical;
+class Call;
 
 class BaseVisitor {};
 
@@ -26,6 +27,7 @@ class Visitor : public BaseVisitor {
   virtual std::any visit(Unary* expr) = 0;
   virtual std::any visit(Variable* expr) = 0;
   virtual std::any visit(Logical* expr) = 0;
+  virtual std::any visit(Call* expr) = 0;
 };
 
 class Statement;

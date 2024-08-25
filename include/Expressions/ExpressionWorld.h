@@ -10,6 +10,8 @@
 #include "Logical.h"
 #include "Unary.h"
 #include "Variable.h"
+#include "Call.h"
+
 
 // Literals
 #include "Literals/Literal.h"

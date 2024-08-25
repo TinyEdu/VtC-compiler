@@ -1,6 +1,6 @@
 // Parser.cpp
 #include "Parser.h"
-#include "Expression.h"
+#include "ExpressionWorld.h"
 #include "Statement.h"
 
 Parser::Parser(std::vector<Token> tokens) : tokens(tokens) {}
@@ -102,7 +102,7 @@ Expression* Parser::unary() {
     Expression* right = unary();
     return new Unary(op, right);
   }
-  return primary();
+  return call();
 }
 
 Expression* Parser::primary() {
@@ -130,6 +130,20 @@ Expression* Parser::primary() {
   }
 
   throw ParseError("Expect expression.");
+}
+
+Expression* Parser::call() {
+  Expression* expr = primary();
+  
+  while(true) {
+    if (match({TokenType::LEFT_PAREN})) {
+      expr = finishCall(expr);
+    } else {
+      break;
+    }
+  }
+
+  return expr;
 }
 
 Expression* Parser::logicalOr() {
@@ -238,6 +252,22 @@ Statement* Parser::varDeclaration() {
 
   consume(TokenType::SEMICOLON, "Expect ';' after variable declaration.");
   return new VarStatement(name, initializer);
+}
+
+Expression* Parser::finishCall(Expression* callee) {
+  std::vector<Expression*> arguments;
+  if(!check(TokenType::RIGHT_PAREN)) {
+    do {
+      if (arguments.size() >= 64) {
+        error(peek(), "Function definitions cannot have more than 64 arguments.");
+      }
+      arguments.push_back(expression());
+    } while (match({TokenType::COMMA}));
+  }
+
+  Token paren = consume(TokenType::RIGHT_PAREN, "Expect ')' after arguments.");
+
+  return new Call(callee, paren, arguments);
 }
 
 Expression* Parser::parseExpression() {

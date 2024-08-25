@@ -43,6 +43,7 @@ class Parser {
   Expression* term();
   Expression* factor();
   Expression* unary();
+  Expression* call();
   Expression* primary();
 
   // logical
@@ -59,6 +60,8 @@ class Parser {
   ParseError error(Token token, std::string message);
   void synchronize();
   Statement* varDeclaration();
+  Expression* finishCall(Expression* callee);
+
 
  public:
   Expression* parseExpression();

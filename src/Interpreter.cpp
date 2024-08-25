@@ -122,6 +122,29 @@ std::any Interpreter::visit(Logical* expr) {
   return evaluate(expr->right);
 }
 
+std::any Interpreter::visit(Call* expr) {
+  Expression* callee = evaluate(expr->callee);
+
+  std::vector<Expression*> arguments;
+  for (auto& argument : expr->arguments) {
+    arguments.push_back(evaluate(argument));
+  }
+
+  // check if the callee is a Callable
+  if (!(dynamic_cast<Callable*>(callee))) {
+    throw std::runtime_error("Can only call functions and classes.");
+  }
+
+  Callable* function = dynamic_cast<Callable*>(callee);
+
+  // don't allow passing different amount of arguments then expected
+  if (arguments.size() != function->arity()) {
+    throw std::runtime_error("Expected " + std::to_string(function->arity()) + " arguments but got " + std::to_string(arguments.size()) + ".");
+  }
+
+  return function->call(this, arguments);
+}
+
 // ______________________________________________________________
 
 std::any Interpreter::visit(IfStatement* stmt) {
