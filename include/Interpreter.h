@@ -25,7 +25,9 @@ class Interpreter : public Visitor, public StatementVisitor {
   Interpreter();
   ~Interpreter();
 
+  Environment* globals;
   Environment* environment;
+  
 
  public:
   std::any visit(Assign* expr);

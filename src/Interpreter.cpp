@@ -4,8 +4,15 @@
 #include "Visitor.h"
 
 #include "Interpreter.h"
+#include "Callable.h"
+#include "ClockCallable.h"
 
-Interpreter::Interpreter() : environment(new Environment()) {}
+Interpreter::Interpreter() : globals(new Environment()), environment(globals) {
+  // define a builtin clock function
+
+  globals->define("clock", std::make_shared<ClockCallable>());
+
+}
 
 Interpreter::~Interpreter() {}
 

@@ -17,9 +17,9 @@ endif()
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/Expressions)
 include_directories(${PROJECT_SOURCE_DIR}/include/Expressions/Literals)
+include_directories(${PROJECT_SOURCE_DIR}/include/Natives)
 
-
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/Literals/*.cpp)
+file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/*.cpp ${PROJECT_SOURCE_DIR}/src/Expressions/Literals/*.cpp ${PROJECT_SOURCE_DIR}/src/Natives/*.cpp)
 file(GLOB HEADERS ${PROJECT_SOURCE_DIR}/include/*.h)
 
 # Add the executable for the main application
