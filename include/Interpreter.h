@@ -25,6 +25,7 @@ class Assign;
 class Logical;
 class Call;
 class Return;
+class Callable;
 
 class Interpreter : public Visitor, public StatementVisitor {
  public:
@@ -64,6 +65,7 @@ class Interpreter : public Visitor, public StatementVisitor {
   void interpret(Expression* expr);
   void interpret(std::vector<Statement*> stmt);
   Expression* evaluate(Expression* expr);
+  Callable* evaluate(Call* expr);
   void executeBlock(std::vector<Statement*> stmt, Environment* env);
   void execute(Statement* stmt);
 };

@@ -46,6 +46,10 @@ Expression* Interpreter::evaluate(Expression* expr) {
   return std::any_cast<Expression*>(expr->accept(this));
 }
 
+Callable* Interpreter::evaluate(Call* expr) {
+  return std::any_cast<Callable*>(expr->accept(this));
+}
+
 void Interpreter::executeBlock(std::vector<Statement*> stmt, Environment* env) {
   Environment* previous = environment;
   /*
@@ -133,19 +137,22 @@ std::any Interpreter::visit(Logical* expr) {
 }
 
 std::any Interpreter::visit(Call* expr) {
-  Expression* callee = evaluate(expr->callee);
-
+  LOG << "TUTAJ PRZYPAL";
+  std::any callee = evaluate(expr->callee); /// THIS IS NOT WORKING - bad any cast
+  LOG << "TUTAJ PRZYPAL";
+  
   std::vector<Expression*> arguments;
   for (auto& argument : expr->arguments) {
     arguments.push_back(evaluate(argument));
   }
 
   // check if the callee is a Callable
-  if (!(dynamic_cast<Callable*>(callee))) {
+  if (!(std::any_cast<Callable*>(callee))) {
     throw std::runtime_error("Can only call functions and classes.");
   }
 
-  Callable* function = dynamic_cast<Callable*>(callee);
+
+  Callable* function = std::any_cast<Callable*>(callee);
 
   // don't allow passing different amount of arguments then expected
   if (arguments.size() != function->arity()) {

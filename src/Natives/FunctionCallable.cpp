@@ -6,6 +6,8 @@
 #include "Statement.h"
 #include "Return.h"
 
+#include <iostream>
+
 int FunctionCallable::arity() {
   return declaration->params.size();
 }
