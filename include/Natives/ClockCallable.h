@@ -8,8 +8,8 @@
 
 class ClockCallable : public Callable {
  public:
-  ClockCallable() = default;
-  ~ClockCallable() = default;
+  ClockCallable() {};
+  ~ClockCallable() {};
 
   int arity() override;
   std::any call(Interpreter* interpreter, std::vector<Expression*> arguments) override;

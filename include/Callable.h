@@ -13,11 +13,11 @@ class Expression;
 
 class Callable {
  public:
-  virtual int arity();
-  virtual std::any call(Interpreter* interpreter, std::vector<Expression*> arguments);
+  Callable() {};
+  ~Callable() {};
 
-  Callable() = default;
-  ~Callable() = default;
+  virtual int arity()=0;
+  virtual std::any call(Interpreter* interpreter, std::vector<Expression*> arguments)=0;
 
   friend std::ostream& operator<<(std::ostream& os, const Callable& expr);
   friend std::ostream& operator<<(std::ostream& os, const Callable* expr);

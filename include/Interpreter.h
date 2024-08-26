@@ -10,6 +10,7 @@
 #include "Environment.h"
 #include "LogManager.h"
 #include "Token.h"
+#include "Statement.h"
 
 // Forward declaration of Expression classes
 class Visitor;
@@ -19,6 +20,10 @@ class Grouping;
 class Literal;
 class Unary;
 class Variable;
+class Statement;
+class Assign;
+class Logical;
+class Call;
 
 class Interpreter : public Visitor, public StatementVisitor {
  public:

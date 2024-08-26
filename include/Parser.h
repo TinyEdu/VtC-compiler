@@ -59,6 +59,7 @@ class Parser {
   Token consume(TokenType type, std::string message);
   ParseError error(Token token, std::string message);
   void synchronize();
+  Statement* function(std::string kind);
   Statement* varDeclaration();
   Expression* finishCall(Expression* callee);
 

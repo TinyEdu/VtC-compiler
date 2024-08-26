@@ -3,9 +3,13 @@
 #include "Transpiler.h"
 #include "Visitor.h"
 
-#include "Interpreter.h"
 #include "Callable.h"
 #include "ClockCallable.h"
+
+#include "FunctionCallable.h"
+
+#include "Interpreter.h"
+
 
 Interpreter::Interpreter() : globals(new Environment()), environment(globals) {
   // define a builtin clock function
@@ -225,6 +229,10 @@ std::any Interpreter::visit(BlockStatement* stmt) {
 }
 
 std::any Interpreter::visit(FunctionStatement* stmt) {
+  FunctionCallable* function = new FunctionCallable(stmt);
+
+  environment->define(stmt->name.lexeme, function);
+
   return std::any();
 }
 

@@ -13,7 +13,9 @@ Statement* Parser::declaration() {
     if (match({TokenType::VAR})) {
       return varDeclaration();
     }
-
+    else if (match({TokenType::DEF})) {
+      return function("function");
+    }
     return statement();
   } catch (const ParseError& e) {
     CRIT << "Parse error: " << e.what() << ENDL;
@@ -242,6 +244,28 @@ void Parser::synchronize() {
   }
 }
 
+Statement* Parser::function(std::string kind) {
+  Token name = consume(TokenType::IDENTIFIER, "Expect " + kind + " name.");
+
+  consume(TokenType::LEFT_PAREN, "Expect '(' after " + kind + " name.");
+  std::vector<Token> params;
+
+  if (!check(TokenType::RIGHT_PAREN)) {
+    do {
+      if (params.size() >= 64) {
+        error(peek(), "Function definitions cannot have more than 64 parameters.");
+      }
+      params.push_back(consume(TokenType::IDENTIFIER, "Expect parameter name."));
+    } while (match({TokenType::COMMA}));
+  }
+
+  consume(TokenType::RIGHT_PAREN, "Expect ')' after parameters.");
+
+  consume(TokenType::LEFT_BRACE, "Expect '{' before " + kind + " body.");
+  std::vector<Statement*> body = block();
+  return new FunctionStatement(name, params, body);
+}
+
 Statement* Parser::varDeclaration() {
   Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
 
@@ -353,7 +377,8 @@ Statement* Parser::forStatement() {
     initializer = nullptr;
   } else if (match({TokenType::VAR})) {
     initializer = varDeclaration();
-  } else {
+  } 
+  else {
     initializer = expressionStatement();
   }
 

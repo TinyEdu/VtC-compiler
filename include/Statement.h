@@ -109,6 +109,7 @@ class FunctionStatement : public Statement {
   std::vector<Statement*> body;
 };
 
+// @TODO: remove ClassStatement
 class ClassStatement : public Statement {
  public:
   ClassStatement(Token name, std::vector<FunctionStatement*> methods)
