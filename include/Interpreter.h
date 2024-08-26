@@ -24,6 +24,7 @@ class Statement;
 class Assign;
 class Logical;
 class Call;
+class Return;
 
 class Interpreter : public Visitor, public StatementVisitor {
  public:
@@ -35,6 +36,10 @@ class Interpreter : public Visitor, public StatementVisitor {
   
 
  public:
+  // ------------------------------------------------
+  // Visitor Interface Methods
+  // ------------------------------------------------
+
   std::any visit(Assign* expr);
   std::any visit(Binary* expr);
   std::any visit(Grouping* expr);
@@ -52,6 +57,9 @@ class Interpreter : public Visitor, public StatementVisitor {
   std::any visit(FunctionStatement* stmt);
   std::any visit(ClassStatement* stmt);
   std::any visit(WhileStatement* stmt);
+  std::any visit(ReturnStatement* stmt);
+  
+  // ------------------------------------------------
 
   void interpret(Expression* expr);
   void interpret(std::vector<Statement*> stmt);

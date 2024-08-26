@@ -39,6 +39,7 @@ class FunctionStatement;
 class ClassStatement;
 class IfStatement;
 class WhileStatement;
+class ReturnStatement;
 
 class StatementVisitor : public BaseVisitor {
  public:
@@ -50,6 +51,7 @@ class StatementVisitor : public BaseVisitor {
   virtual std::any visit(ClassStatement* stmt) = 0;
   virtual std::any visit(IfStatement* stmt) = 0;
   virtual std::any visit(WhileStatement* stmt) = 0;
+  virtual std::any visit(ReturnStatement* stmt) = 0;
 };
 
 #endif  // VISITOR_H

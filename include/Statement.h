@@ -124,4 +124,18 @@ class ClassStatement : public Statement {
   std::vector<FunctionStatement*> methods;
 };
 
+class ReturnStatement : public Statement {
+ public:
+  ReturnStatement(Token keyword, Expression* value)
+      : keyword(keyword), value(value) {}
+  ~ReturnStatement() = default;
+
+  std::any accept(StatementVisitor* visitor) override {
+    return visitor->visit(this);
+  }
+
+  Token keyword;
+  Expression* value;
+};
+
 #endif  // STATEMENT_H

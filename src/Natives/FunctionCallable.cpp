@@ -4,6 +4,7 @@
 #include "ExpressionWorld.h"
 #include "Environment.h"
 #include "Statement.h"
+#include "Return.h"
 
 int FunctionCallable::arity() {
   return declaration->params.size();
@@ -18,7 +19,12 @@ std::any FunctionCallable::call(Interpreter* interpreter,
     environment->define(declaration->params[i].lexeme, arguments[i]);
   }
 
-  interpreter->executeBlock(declaration->body, environment);
+  try {
+    interpreter->executeBlock(declaration->body, environment);
+  } catch (const Return& returnedValue) {
+    std::any result = returnedValue.value;
+    return result;
+  }
 
   return std::any();
 }

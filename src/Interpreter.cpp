@@ -5,8 +5,8 @@
 
 #include "Callable.h"
 #include "ClockCallable.h"
-
 #include "FunctionCallable.h"
+#include "Return.h"
 
 #include "Interpreter.h"
 
@@ -103,7 +103,6 @@ std::any Interpreter::visit(Unary* expr) {
 
   switch (expr->op.type) {
     case TokenType::BANG:
-      return right->process(expr->op);
     case TokenType::MINUS:
       return right->process(expr->op);
     default:
@@ -247,4 +246,14 @@ std::any Interpreter::visit(WhileStatement* stmt) {
   }
 
   return std::any();
+}
+
+std::any Interpreter::visit(ReturnStatement* stmt) {
+  Literal* value = nullptr;
+
+  if (stmt->value != nullptr) {
+    value = static_cast<Literal*>(evaluate(stmt->value));
+  }
+
+  throw Return(value);
 }

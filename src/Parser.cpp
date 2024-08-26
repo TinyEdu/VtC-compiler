@@ -324,8 +324,17 @@ Statement* Parser::statement() {
     return printStatement();
   } else if (match({TokenType::LEFT_BRACE})) {
     return new BlockStatement(block());
+  } else if (match({TokenType::RETURN})) {
+    Token keyword = previous();
+    Expression* value = nullptr;
+    if (!check(TokenType::SEMICOLON)) {
+      value = expression();
+    }
+    consume(TokenType::SEMICOLON, "Expect ';' after return value.");
+    
+    return new ReturnStatement(keyword, value);
   }
-
+  
   return expressionStatement();
 }
 
