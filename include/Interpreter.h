@@ -32,9 +32,7 @@ class Interpreter : public Visitor, public StatementVisitor {
   Interpreter();
   ~Interpreter();
 
-  Environment* globals;
   Environment* environment;
-  
 
  public:
   // ------------------------------------------------
@@ -62,10 +60,16 @@ class Interpreter : public Visitor, public StatementVisitor {
   
   // ------------------------------------------------
 
+  template<typename T>
+  T evaluate(Expression* expr) {
+    return std::any_cast<T>(expr->accept(this));
+  }
+  std::any evaluate(Expression* stmt) {
+    return stmt->accept(this);
+  }
+
   void interpret(Expression* expr);
   void interpret(std::vector<Statement*> stmt);
-  Expression* evaluate(Expression* expr);
-  Callable* evaluate(Call* expr);
   void executeBlock(std::vector<Statement*> stmt, Environment* env);
   void execute(Statement* stmt);
 };
