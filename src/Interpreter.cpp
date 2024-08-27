@@ -11,10 +11,10 @@
 #include "Interpreter.h"
 
 
-Interpreter::Interpreter() : globals(new Environment()), environment(globals) {
+Interpreter::Interpreter() { 
+  environment = new Environment();
   // define a builtin clock function
-
-  globals->define("clock", std::make_shared<ClockCallable>());
+  environment->define("clock", new ClockCallable());
 
 }
 
@@ -22,7 +22,7 @@ Interpreter::~Interpreter() {}
 
 void Interpreter::interpret(Expression* expr) {
   try {
-    Expression* value = evaluate(expr);
+    Expression* value = evaluate<Expression*>(expr);
 
     // Print the expression
     LOG << value << ENDL;
@@ -42,13 +42,7 @@ void Interpreter::interpret(std::vector<Statement*> stmt) {
   }
 }
 
-Expression* Interpreter::evaluate(Expression* expr) {
-  return std::any_cast<Expression*>(expr->accept(this));
-}
 
-Callable* Interpreter::evaluate(Call* expr) {
-  return std::any_cast<Callable*>(expr->accept(this));
-}
 
 void Interpreter::executeBlock(std::vector<Statement*> stmt, Environment* env) {
   Environment* previous = environment;
@@ -80,14 +74,14 @@ void Interpreter::execute(Statement* stmt) {
 // ______________________________________________________________
 
 std::any Interpreter::visit(Assign* expr) {
-  Expression* value = evaluate(expr->value);
-  environment->assign<Expression*>(expr->name.lexeme, value);
+  Expression* value = evaluate<Expression*>(expr->value);
+  environment->assign(expr->name.lexeme, value);
   return value;
 }
 
 std::any Interpreter::visit(Binary* expr) {
-  Literal* left = static_cast<Literal*>(evaluate(expr->left));
-  Literal* right = static_cast<Literal*>(evaluate(expr->right));
+  Literal* left = evaluate<Literal*>(expr->left);
+  Literal* right = evaluate<Literal*>(expr->right);
 
   auto result = left->process(right, expr->op);
 
@@ -103,7 +97,7 @@ std::any Interpreter::visit(Grouping* expr) {
 }
 
 std::any Interpreter::visit(Unary* expr) {
-  Literal* right = static_cast<Literal*>(evaluate(expr->right));
+  Literal* right = evaluate<Literal*>(expr->right);
 
   switch (expr->op.type) {
     case TokenType::BANG:
@@ -118,12 +112,14 @@ std::any Interpreter::visit(Unary* expr) {
 }
 
 std::any Interpreter::visit(Variable* expr) {
+  // Note: orginal shouldn't be casted to Expression, might be a function 
+  // return environment->lookup<Expression*>(expr->name.lexeme);
   return environment->lookup<Expression*>(expr->name.lexeme);
 }
 
 std::any Interpreter::visit(Logical* expr) {
-  Expression* left =
-      evaluate(expr->left);  // @TODO: should we cast it to Literal?
+  Expression* left = evaluate<Literal*>(expr->left);  
+      // @TODO: should we cast it to Literal?
 
   if (expr->op.type == TokenType::OR) {
     if (left)
@@ -133,26 +129,19 @@ std::any Interpreter::visit(Logical* expr) {
       return left;
   }
 
-  return evaluate(expr->right);
+  return evaluate(expr->right); // halo
 }
 
 std::any Interpreter::visit(Call* expr) {
-  LOG << "TUTAJ PRZYPAL";
-  std::any callee = evaluate(expr->callee); /// THIS IS NOT WORKING - bad any cast
-  LOG << "TUTAJ PRZYPAL";
-  
+  // look up the function
+  std::string functionName = static_cast<Variable*>(expr->callee)->name.lexeme;
+  Callable* function = environment->lookup<Callable*>(functionName);
+
   std::vector<Expression*> arguments;
+  
   for (auto& argument : expr->arguments) {
-    arguments.push_back(evaluate(argument));
+    arguments.push_back(evaluate<Expression*>(argument));
   }
-
-  // check if the callee is a Callable
-  if (!(std::any_cast<Callable*>(callee))) {
-    throw std::runtime_error("Can only call functions and classes.");
-  }
-
-
-  Callable* function = std::any_cast<Callable*>(callee);
 
   // don't allow passing different amount of arguments then expected
   if (arguments.size() != function->arity()) {
@@ -165,7 +154,7 @@ std::any Interpreter::visit(Call* expr) {
 // ______________________________________________________________
 
 std::any Interpreter::visit(IfStatement* stmt) {
-  Expression* r = evaluate(stmt->condition);
+  Expression* r = evaluate<Literal*>(stmt->condition);
   LiteralBool* lb;
 
   // check if is a LiteralBool
@@ -189,7 +178,8 @@ std::any Interpreter::visit(ExpressionStatement* stmt) {
 
 std::any Interpreter::visit(PrintStatement* stmt) {
   std::stringstream ss;
-  Literal* lit = static_cast<Literal*>(evaluate(stmt->expression));
+  std::any li = evaluate(stmt->expression);
+  Expression* lit = std::any_cast<Expression*>(li); // @TODO bad any cast
 
   // check with static_cast what type of literal we have, store it in auto r
   if (auto r = dynamic_cast<LiteralString*>(lit)) {
@@ -218,7 +208,7 @@ std::any Interpreter::visit(VarStatement* stmt) {
   Expression* value = nullptr;
 
   if (stmt->initializer != nullptr) {
-    value = evaluate(stmt->initializer);
+    value = evaluate<Expression*>(stmt->initializer);
     environment->define(stmt->name.lexeme, value);
   } else {
     // if we have a variable declaration without an initializer
@@ -230,7 +220,7 @@ std::any Interpreter::visit(VarStatement* stmt) {
 }
 
 std::any Interpreter::visit(BlockStatement* stmt) {
-  executeBlock(stmt->statements, new Environment(environment));
+  executeBlock(stmt->statements, new Environment(environment->globalVariables));
   return std::any();
 }
 
@@ -248,7 +238,7 @@ std::any Interpreter::visit(ClassStatement* stmt) {
 
 std::any Interpreter::visit(WhileStatement* stmt) {
   
-  while (dynamic_cast<LiteralBool*>(evaluate(stmt->condition))->value) {
+  while (evaluate<LiteralBool*>(stmt->condition)->value) {
     execute(stmt->body);
   }
 
@@ -259,7 +249,7 @@ std::any Interpreter::visit(ReturnStatement* stmt) {
   Literal* value = nullptr;
 
   if (stmt->value != nullptr) {
-    value = static_cast<Literal*>(evaluate(stmt->value));
+    value = evaluate<Literal*>(stmt->value);
   }
 
   throw Return(value);

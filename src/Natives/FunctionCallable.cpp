@@ -15,7 +15,7 @@ int FunctionCallable::arity() {
 std::any FunctionCallable::call(Interpreter* interpreter,
                                 std::vector<Expression*> arguments) {
   
-  Environment* environment = new Environment(interpreter->globals);
+  Environment* environment = new Environment(interpreter->environment->globalVariables);
 
   for (int i = 0; i < declaration->params.size(); i++) {
     environment->define(declaration->params[i].lexeme, arguments[i]);
