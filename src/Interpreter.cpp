@@ -175,8 +175,10 @@ std::any Interpreter::visit(ExpressionStatement* stmt) {
 
 std::any Interpreter::visit(PrintStatement* stmt) {
   std::stringstream ss;
-  Literal* lit = evaluate<Literal*>(stmt->expression);
+  LOG << "PRINT STATEMENT" << ENDL;
+  Expression* lit = evaluate<Expression*>(stmt->expression);
 
+  LOG << "PRINT STATEMENT" << ENDL;
   // check with static_cast what type of literal we have, store it in auto r
   if (auto r = dynamic_cast<LiteralString*>(lit)) {
     ss << r->value;
