@@ -2,7 +2,8 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-#include <SymbolTable.h>
+#include "LogManager.h"
+#include "SymbolTable.h"
 #include <typeinfo>
 
 class Callable;
@@ -100,7 +101,7 @@ private:
             return enclosing->lookupCallable(name);
         }
 
-        throw std::runtime_error("Undefined variable '" + name + "'.");
+        throw std::runtime_error("Undefined Callable '" + name + "'.");
     }
 
 public:

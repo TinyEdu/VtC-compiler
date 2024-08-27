@@ -114,7 +114,7 @@ std::any Interpreter::visit(Unary* expr) {
 std::any Interpreter::visit(Variable* expr) {
   // Note: orginal shouldn't be casted to Expression, might be a function 
   // return environment->lookup<Expression*>(expr->name.lexeme);
-  return environment->lookup<Callable*>(expr->name.lexeme);
+  return environment->lookup<Expression*>(expr->name.lexeme);
 }
 
 std::any Interpreter::visit(Logical* expr) {
@@ -133,9 +133,12 @@ std::any Interpreter::visit(Logical* expr) {
 }
 
 std::any Interpreter::visit(Call* expr) {
-  Callable* function = evaluate<Callable*>(expr->callee); 
+  // look up the function
+  std::string functionName = static_cast<Variable*>(expr->callee)->name.lexeme;
+  Callable* function = environment->lookup<Callable*>(functionName);
 
   std::vector<Expression*> arguments;
+  
   for (auto& argument : expr->arguments) {
     arguments.push_back(evaluate<Expression*>(argument));
   }
@@ -175,10 +178,9 @@ std::any Interpreter::visit(ExpressionStatement* stmt) {
 
 std::any Interpreter::visit(PrintStatement* stmt) {
   std::stringstream ss;
-  LOG << "PRINT STATEMENT" << ENDL;
-  Expression* lit = evaluate<Expression*>(stmt->expression);
+  std::any li = evaluate(stmt->expression);
+  Expression* lit = std::any_cast<Expression*>(li); // @TODO bad any cast
 
-  LOG << "PRINT STATEMENT" << ENDL;
   // check with static_cast what type of literal we have, store it in auto r
   if (auto r = dynamic_cast<LiteralString*>(lit)) {
     ss << r->value;

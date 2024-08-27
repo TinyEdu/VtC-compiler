@@ -10,9 +10,5 @@ int ClockCallable::arity() {
 std::any ClockCallable::call(Interpreter* interpreter, std::vector<Expression*> arguments) {
   LOG << "ClockCallable::call" << ENDL;  
   int result = int(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
-  return new LiteralInt(result);
+  return static_cast<Expression*>(new LiteralInt(result));
 }
-
-// print overloading
-
-
