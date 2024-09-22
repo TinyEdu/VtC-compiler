@@ -4,17 +4,10 @@
 #define VISITOR_H
 
 #include <ExpressionWorld.h>
+#include <Statement.h>
 
+#include <variant>
 #include <any>
-
-class Assign;
-class Binary;
-class Grouping;
-class Literal;
-class Unary;
-class Variable;
-class Logical;
-class Call;
 
 class BaseVisitor {};
 
@@ -29,17 +22,6 @@ class Visitor : public BaseVisitor {
   virtual std::any visit(Logical* expr) = 0;
   virtual std::any visit(Call* expr) = 0;
 };
-
-class Statement;
-class ExpressionStatement;
-class PrintStatement;
-class VarStatement;
-class BlockStatement;
-class FunctionStatement;
-class ClassStatement;
-class IfStatement;
-class WhileStatement;
-class ReturnStatement;
 
 class StatementVisitor : public BaseVisitor {
  public:
