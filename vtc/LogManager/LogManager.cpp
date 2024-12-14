@@ -2,62 +2,57 @@
 
 #include "LogManager.h"
 
-const std::string LogManager::green = "\033[32m";  // Green color for LOG
-const std::string LogManager::orange =
-    "\033[33m";  // Yellow/orange color for WARNING
-const std::string LogManager::red = "\033[31m";   // Red color for CRITICAL
-const std::string LogManager::reset = "\033[0m";  // Reset color
-
-// Set the prefix width for alignment
-const int LogManager::prefixWidth = 50;
-
-#ifdef DEBUG_MODE
-void LogManager::LogStream::output() const {
-  std::string color;
-
-  if (level == "LOG")
-    color = green;
-  else if (level == "WARNING")
-    color = orange;
-  else if (level == "CRITICAL")
-    color = red;
-
-  std::ostream& out = (level == "LOG") ? std::cout : std::cerr;
-
-  // Format the prefix with fixed width to ensure alignment of the closing bracket
-  std::ostringstream prefix;
-  prefix << color << "[" << level << "] " << reset << "[" << std::setw(15)
-         << std::left << extractFilename(file) << " | " << std::setw(4)
-         << std::right << line << " | " << std::setw(15) << std::left
-         << function << "]";
-
-  out << std::setw(prefixWidth) << std::setfill(' ') << std::left
-      << prefix.str() << " " << buffer.str();
-}
-#endif
-
-#ifndef DEBUG_MODE
-void LogManager::LogStream::output() const { // As It's not DEBUG_MODE, we don't want anything to happen - do nothing}
-#endif
-
-LogManager::LogStream LogManager::Log(const std::string& file,
-                                      const std::string& function, int line) {
-  return LogStream("LOG", file, function, line);
+inline void LogManager::log(const std::string_view message, const std::source_location location)
+{
+    display(message, location, green, "LOG ");
 }
 
-LogManager::LogStream LogManager::Warning(const std::string& file,
-                                          const std::string& function,
-                                          int line) {
-  return LogStream("WARNING", file, function, line);
+inline void LogManager::warn(const std::string_view message, const std::source_location location)
+{
+    display(message, location, orange, "WARN");
 }
 
-LogManager::LogStream LogManager::CriticalWarning(const std::string& file,
-                                                  const std::string& function,
-                                                  int line) {
-  return LogStream("CRITICAL", file, function, line);
+inline void LogManager::crit(const std::string_view message, const std::source_location location)
+{
+    display(message, location, red, "CRIT");
 }
 
-std::string LogManager::extractFilename(const std::string& path) {
-  size_t pos = path.find_last_of("/\\");
-  return (pos != std::string::npos) ? path.substr(pos + 1) : path;
+inline void LogManager::display(const std::string_view message, const std::source_location location,
+                                const std::string& color, const std::string& type)
+{
+    std::ostringstream oss;
+
+    oss << color << type << " ["
+        << extractFilenameAndLine(location.file_name())
+        << " | line:" << location.line() << " | "
+        << extractFunctionName(location.function_name()) << "] "
+        << reset
+        << message;
+
+    std::cout << oss.str() << std::endl;
+}
+
+inline std::string LogManager::extractFilenameAndLine(const std::string& input)
+{
+    return extractLastByDelimiter(input, '/');
+}
+
+inline std::string LogManager::extractFunctionName(const std::string& input)
+{
+    return extractLastByDelimiter(input, ' ');
+}
+
+inline std::string LogManager::extractLastByDelimiter(const std::string& input, const char delimiter)
+{
+    std::vector<std::string> parts;
+    std::stringstream ss(input);
+    std::string token;
+
+    // Split the string using a delimiter
+    while (std::getline(ss, token, delimiter))
+    {
+        parts.push_back(token);
+    }
+
+    return parts.back();
 }

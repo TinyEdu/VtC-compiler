@@ -3,67 +3,35 @@
 #ifndef LOGMANAGER_H
 #define LOGMANAGER_H
 
-#include <source_location>
-#include <iomanip>
 #include <iostream>
+#include <source_location>
 #include <sstream>
 #include <string>
+#include <vector>
+#include <format>
+#include <iomanip>
 
-class LogManager {
+const static std::string green = "\033[32m";
+const static std::string orange = "\033[33m";
+const static std::string red = "\033[31m";
+const static std::string reset = "\033[0m";
+
+class LogManager
+{
 public:
-    class LogStream {
-    public:
-        LogStream(const std::string& level, const std::string& file,
-                  const std::string& function, int line)
-            : level(level), file(file), function(function), line(line) {}
+    static void log(std::string_view message, std::source_location location = std::source_location::current());
 
-        template <typename T>
-        LogStream& operator<<(const T& msg) {
+    static void warn(std::string_view message, std::source_location location = std::source_location::current());
 
-#ifdef DEBUG_MODE
-            buffer << msg;
-#endif
-
-            return *this;
-        }
-
-        ~LogStream() {
-            output();
-        }
-
-    private:
-        std::string level;
-        std::string file;
-        std::string function;
-        int line;
-        std::ostringstream buffer;
-        void output() const;
-    };
-
-    static LogStream Log(const std::string& file, const std::string& function,
-                         int line);
-    static LogStream Warning(const std::string& file, const std::string& function,
-                             int line);
-    static LogStream CriticalWarning(const std::string& file,
-                                     const std::string& function, int line);
+    static void crit(std::string_view message, std::source_location location = std::source_location::current());
 
 private:
-    static std::string extractFilename(const std::string& path);
+    static void display(std::string_view message,
+                        std::source_location location, const std::string& color, const std::string& type);
 
-    // ANSI escape codes for colors
-    static const std::string green;
-    static const std::string orange;
-    static const std::string red;
-    static const std::string reset;
-
-    // Maximum width for the log prefix to align the closing bracket
-    static const int prefixWidth;
+    static std::string extractFilenameAndLine(const std::string& input);
+    static std::string extractFunctionName(const std::string& input);
+    static std::string extractLastByDelimiter(const std::string& input, char delimiter);
 };
-
-// Macros to simplify logging
-#define ENDL "\n"
-#define LOG LogManager::Log(std::source_location::current())
-#define WARN LogManager::Warning(std::source_location::current())
-#define CRIT LogManager::CriticalWarning(std::source_location::current())
 
 #endif  // LOGMANAGER_H

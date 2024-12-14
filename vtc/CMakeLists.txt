@@ -9,3 +9,4 @@ set(SOURCE_FILES
 )
 
 add_library(vtc STATIC ${SOURCE_FILES} ${HEADER_FILES})
+target_compile_definitions(vtc PRIVATE DEBUG_MODE)
