@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.29)
-project(VtC_compiler)
+project(vtc-compiler)
 
 set(CMAKE_CXX_STANDARD 20)
+add_definitions(-std=gnu++20)
 
-add_executable(VtC_compiler main.cpp
-        LogManager/LogManager.cpp)
+set(SOURCE_FILES
+main.cpp
+vtc/LogManager/LogManager.cpp)
+add_executable(vtc-compiler ${SOURCE_FILES})
+
+include_directories(vtc)
+
+add_subdirectory(vtc)
+add_subdirectory(tests)
+
+target_link_libraries(vtc-compiler vtc)

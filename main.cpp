@@ -1,7 +1,6 @@
 // main.cpp
 
-#include "LogManager/LogManager.h"
-#include "Compiler/Compiler.h"
+#include "vtc/LogManager/LogManager.h"
 
 #include <span>
 #include <optional>
