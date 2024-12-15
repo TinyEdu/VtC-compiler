@@ -14,5 +14,6 @@ include_directories(vtc)
 add_subdirectory(vtc)
 add_subdirectory(tests)
 
+target_compile_definitions(vtc-compiler PRIVATE ENABLE_ANSI_COLOR)
 target_compile_definitions(vtc-compiler PRIVATE DEBUG_MODE)
 target_link_libraries(vtc-compiler vtc)
