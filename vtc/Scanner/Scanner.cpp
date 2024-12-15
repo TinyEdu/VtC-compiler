@@ -2,7 +2,7 @@
 #include "Scanner.h"
 
 
-std::vector<Token> Scanner::scanTokens(std::string_view inputSource)
+std::vector<Token> Scanner::scan(std::string_view inputSource)
 {
   reset();
   source = inputSource;

@@ -9,9 +9,9 @@
 #include <stdexcept>
 
 // #include "Interpreter.h"
-// #include "LogManager.h"
+#include "LogManager/LogManager.h"
 #include "Scanner/Scanner.h"
-//#include "Parser.h"
+#include "Parser/Parser.h"
 
 class Compiler {
 public:

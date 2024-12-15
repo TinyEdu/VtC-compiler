@@ -65,21 +65,15 @@ void Compiler::runPrompt() {
 
 void Compiler::run(const std::string_view source) {
     Scanner scanner;
-    std::vector<Token> tokens = scanner.scanTokens(source);
+    std::vector<Token> tokens = scanner.scan(source);
 
-    // for testing purposes
-    //for (Token token : tokens)
-    //  LOG << token << "\n";
+    Parser parser(tokens);
+    std::vector<Statement*> statements = parser.parse();
 
-    //LOG << std::string(15, '_') << "\n";
+    if (hadError) {
+        return;
+    }
 
-    // Parser parser(tokens);
-    // std::vector<Statement*> statements = parser.parse();
-    //
-    // if (hadError) {
-    //     return;
-    // }
-    //
     // interpreter.interpret(statements);
 }
 

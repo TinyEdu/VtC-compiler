@@ -25,7 +25,7 @@ TEST(ScannerValidation, IsSingleCharacterTokenWorkingCorrectly) {
 
     // when
     Scanner scanner;
-    const std::vector<Token> output = scanner.scanTokens(input);
+    const std::vector<Token> output = scanner.scan(input);
 
     // then
     EXPECT_EQ(output.size(), input.size() + 1);
@@ -45,7 +45,7 @@ TEST(ScannerValidation, IsNewLineAndCommentsAndBlankspacesWorkingCorrecltly) {
 
     // when
     Scanner scanner;
-    const std::vector<Token> output = scanner.scanTokens(input);
+    const std::vector<Token> output = scanner.scan(input);
 
     // then
     EXPECT_EQ(output, expectedOutput);
@@ -64,8 +64,8 @@ TEST(ScannerValidation, AreMultipleRunsWorkingCorrectly) {
 
     // when
     Scanner scanner;
-    const std::vector<Token> output1 = scanner.scanTokens(input);
-    const std::vector<Token> output2 = scanner.scanTokens(input);
+    const std::vector<Token> output1 = scanner.scan(input);
+    const std::vector<Token> output2 = scanner.scan(input);
 
     // then
     EXPECT_EQ(output1, expectedOutput);
@@ -87,7 +87,7 @@ TEST(ScannerValidation, IsLineCountingCorrect) {
 
     // when
     Scanner scanner;
-    const std::vector<Token> output = scanner.scanTokens(input);
+    const std::vector<Token> output = scanner.scan(input);
 
     // then
     EXPECT_EQ(output, expectedOutput);
@@ -110,7 +110,7 @@ TEST(ScannerValidation, IsDoubleCharacterTokenWorkingCorrectly) {
 
     // when
     Scanner scanner;
-    const std::vector<Token> output = scanner.scanTokens(input);
+    const std::vector<Token> output = scanner.scan(input);
 
     // then
     EXPECT_EQ(output, expectedOutput);
@@ -132,7 +132,7 @@ TEST(ScannerValidation, IsHandlingLiteralsCorrect) {
 
     // when
     Scanner scanner;
-    const std::vector<Token> output = scanner.scanTokens(input);
+    const std::vector<Token> output = scanner.scan(input);
 
     // then
     EXPECT_EQ(output, expectedOutput);

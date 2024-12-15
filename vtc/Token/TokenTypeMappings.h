@@ -6,6 +6,9 @@
 #define TOKENTYPEMAPPINGS_H
 
 #include "TokenType.h"
+#include <unordered_map>
+#include <map>
+
 
 const std::map<TokenType, std::string> tokenTypeMap = {
     // Single-character tokens.

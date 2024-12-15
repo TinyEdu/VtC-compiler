@@ -9,6 +9,8 @@ set(HEADER_FILES
         Token/TokenType.h
         Scanner/ErrorHandler.h
         Token/TokenTypeMappings.h
+        Statements/Statement.h
+        Parser/ParseError.h
 )
 
 set(SOURCE_FILES
@@ -18,6 +20,22 @@ set(SOURCE_FILES
         Token/Token.cpp
         Scanner/Scanner.cpp
         Scanner/ErrorHandler.cpp
+        Visitor/Visitor.h
+        Expressions/Assign.cpp
+        Expressions/Binary.cpp
+        Expressions/Call.cpp
+        Expressions/Grouping.cpp
+        Expressions/Logical.cpp
+        Expressions/Unary.cpp
+        Expressions/Variable.cpp
+        Statements/Statement.cpp
+        Expressions/Literals/Literal.cpp
+        Expressions/Literals/LiteralBool.cpp
+        Expressions/Literals/LiteralDouble.cpp
+        Expressions/Literals/LiteralFloat.cpp
+        Expressions/Literals/LiteralInt.cpp
+        Expressions/Literals/LiteralString.cpp
+        Visitor/OperationsDispatcher.cpp
 )
 
 add_library(vtc STATIC ${SOURCE_FILES} ${HEADER_FILES})

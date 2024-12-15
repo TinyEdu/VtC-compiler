@@ -18,7 +18,7 @@ class Scanner
 public:
     Scanner() = default;
 
-    std::vector<Token> scanTokens(std::string_view inputSource);
+    std::vector<Token> scan(std::string_view inputSource);
     void reset();
 
 private:
