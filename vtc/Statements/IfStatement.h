@@ -7,16 +7,13 @@ class IfStatement : public Statement
 {
 public:
     IfStatement(Expression* condition, Statement* thenBranch,
-                Statement* elseBranch)
-        : condition(condition), thenBranch(thenBranch), elseBranch(elseBranch)
-    {
-    }
+                Statement* elseBranch);
 
-    ~IfStatement() = default;
+    ~IfStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Expression* condition;
     Statement* thenBranch;

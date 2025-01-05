@@ -7,16 +7,13 @@ class FunctionStatement : public Statement
 {
 public:
     FunctionStatement(Token name, std::vector<Token> params,
-                      std::vector<Statement*> body)
-        : name(name), params(params), body(body)
-    {
-    }
+                      std::vector<Statement*> body);
 
-    ~FunctionStatement() = default;
+    ~FunctionStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Token name;
     std::vector<Token> params;

@@ -6,16 +6,13 @@
 class VarStatement : public Statement
 {
 public:
-    VarStatement(Token name, Expression* initializer)
-        : name(name), initializer(initializer)
-    {
-    }
+    VarStatement(Token name, Expression* initializer);
 
-    ~VarStatement() = default;
+    ~VarStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Token name;
     Expression* initializer;

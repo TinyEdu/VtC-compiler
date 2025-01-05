@@ -6,16 +6,13 @@
 class WhileStatement : public Statement
 {
 public:
-    WhileStatement(Expression* condition, Statement* body)
-        : condition(condition), body(body)
-    {
-    }
+    WhileStatement(Expression* condition, Statement* body);
 
-    ~WhileStatement() = default;
+    ~WhileStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Expression* condition;
     Statement* body;

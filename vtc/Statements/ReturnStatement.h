@@ -6,16 +6,13 @@
 class ReturnStatement : public Statement
 {
 public:
-    ReturnStatement(Token keyword, Expression* value)
-        : keyword(keyword), value(value)
-    {
-    }
+    ReturnStatement(Token keyword, Expression* value);
 
-    ~ReturnStatement() = default;
+    ~ReturnStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Token keyword;
     Expression* value;

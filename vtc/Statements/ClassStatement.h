@@ -9,16 +9,13 @@ class FunctionStatement;
 class ClassStatement : public Statement
 {
 public:
-    ClassStatement(Token name, std::vector<FunctionStatement*> methods)
-        : name(name), methods(methods)
-    {
-    }
+    ClassStatement(Token name, std::vector<FunctionStatement*> methods);
 
-    ~ClassStatement() = default;
+    ~ClassStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Token name;
     std::vector<FunctionStatement*> methods;

@@ -6,15 +6,12 @@
 class BlockStatement : public Statement
 {
 public:
-    BlockStatement(std::vector<Statement*> statements) : statements(statements)
-    {
-    }
-
-    ~BlockStatement() = default;
+    BlockStatement(std::vector<Statement*> statements);
+    ~BlockStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     std::vector<Statement*> statements;
 };

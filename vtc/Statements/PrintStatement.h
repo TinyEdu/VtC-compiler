@@ -6,15 +6,13 @@
 class PrintStatement : public Statement
 {
 public:
-    PrintStatement(Expression* expression) : expression(expression)
-    {
-    }
+    explicit PrintStatement(Expression* expression);
 
-    ~PrintStatement() = default;
+    ~PrintStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Expression* expression;
 };

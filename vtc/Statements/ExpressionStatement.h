@@ -6,15 +6,13 @@
 class ExpressionStatement : public Statement
 {
 public:
-    ExpressionStatement(Expression* expression) : expression(expression)
-    {
-    }
+    ExpressionStatement(Expression* expression);
 
-    ~ExpressionStatement() = default;
+    ~ExpressionStatement();
 
     std::any accept(StatementVisitor* visitor) override;
 
-    bool equals(const Expression& other) const override;
+    bool equals(const Statement& other) const override;
 
     Expression* expression;
 };
