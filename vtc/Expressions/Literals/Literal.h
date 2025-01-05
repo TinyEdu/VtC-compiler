@@ -16,25 +16,27 @@ class LiteralDouble;
 // class LiteralArray; // @TODO - implement arrays and chars
 // class LiteralChar;
 
-class Literal : public Expression {
- public:
-  Literal() = default;
-  virtual ~Literal() = default;
+class Literal : public Expression
+{
+public:
+    Literal() = default;
+    ~Literal() override = default;
 
-  // Note: Literal does not ha ve a visitor function, it just passes rhis requirement to its subclasses
-  std::any accept(Visitor* visitor);
+    std::any accept(Visitor* visitor) override;
 
-  // [___] value;
+    bool equals(const Expression& other) const override;
 
-  // declare double dispatch visiting functions
-  // expr = left, this = right
-  virtual Expression* process(Literal* expr, Token token) = 0;
-  virtual Expression* process(LiteralInt* expr, Token token) = 0;
-  virtual Expression* process(LiteralFloat* expr, Token token) = 0;
-  virtual Expression* process(LiteralString* expr, Token token) = 0;
-  virtual Expression* process(LiteralBool* expr, Token token) = 0;
-  virtual Expression* process(LiteralDouble* expr, Token token) = 0;
-  virtual Expression* process(Token token) = 0;
+    // [___] value;
+
+    // declare double dispatch visiting functions
+    // expr = left, this = right
+    virtual Expression* process(Literal* expr, Token token) = 0;
+    virtual Expression* process(LiteralInt* expr, Token token) = 0;
+    virtual Expression* process(LiteralFloat* expr, Token token) = 0;
+    virtual Expression* process(LiteralString* expr, Token token) = 0;
+    virtual Expression* process(LiteralBool* expr, Token token) = 0;
+    virtual Expression* process(LiteralDouble* expr, Token token) = 0;
+    virtual Expression* process(Token token) = 0;
 };
 
 #endif  // LITERAL_H

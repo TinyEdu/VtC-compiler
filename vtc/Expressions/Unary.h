@@ -7,16 +7,19 @@
 
 class Visitor;
 
-class Unary : public Expression {
- public:
-  Unary(Token op, Expression* right);
-  std::any accept(Visitor* visitor) override;
+class Unary : public Expression
+{
+public:
+    Unary(Token op, Expression* right);
+    std::any accept(Visitor* visitor) override;
 
-  Token op;
-  Expression* right;
+    Token op;
+    Expression* right;
 
-  friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
-  friend std::ostream& operator<<(std::ostream& os, const Unary& expr);
+    bool equals(const Expression& other) const override;
+
+    friend std::ostream& operator<<(std::ostream& os, const Unary* expr);
+    friend std::ostream& operator<<(std::ostream& os, const Unary& expr);
 };
 
 #endif  // UNARY_H

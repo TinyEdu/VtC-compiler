@@ -7,15 +7,18 @@
 
 class Visitor;
 
-class Grouping : public Expression {
- public:
-  Grouping(Expression* expression);
-  std::any accept(Visitor* visitor) override;
+class Grouping : public Expression
+{
+public:
+    Grouping(Expression* expression);
+    std::any accept(Visitor* visitor) override;
 
-  Expression* expression;
+    Expression* expression;
 
-  friend std::ostream& operator<<(std::ostream& os, const Grouping* expr);
-  friend std::ostream& operator<<(std::ostream& os, const Grouping& expr);
+    bool equals(const Expression& other) const override;
+
+    friend std::ostream& operator<<(std::ostream& os, const Grouping* expr);
+    friend std::ostream& operator<<(std::ostream& os, const Grouping& expr);
 };
 
 #endif  // GROUPING_H

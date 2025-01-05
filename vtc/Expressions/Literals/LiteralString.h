@@ -11,33 +11,25 @@ class LiteralFloat;
 class LiteralBool;
 class LiteralDouble;
 
-class LiteralString : public Literal {
- public:
-  LiteralString(std::string value) : value(value){};
+class LiteralString : public Literal
+{
+public:
+    explicit LiteralString(std::string value);;
 
-  std::string value;
+    std::string value;
 
-  virtual std::any accept(Visitor* visitor);
+    std::any accept(Visitor* visitor) override;
 
-  virtual Expression* process(Literal* expr, Token token) override {
-    return expr->process(this, token);
-  };
+    Expression* process(Literal* expr, Token token) override;
 
-  virtual Expression* process(LiteralInt* expr, Token token);
-  virtual Expression* process(LiteralFloat* expr, Token token);
-  virtual Expression* process(LiteralString* expr, Token token);
-  virtual Expression* process(LiteralBool* expr, Token token);
-  virtual Expression* process(LiteralDouble* expr, Token token);
-  virtual Expression* process(Token token);
+    Expression* process(LiteralInt* expr, Token token) override;
+    Expression* process(LiteralFloat* expr, Token token) override;
+    Expression* process(LiteralString* expr, Token token) override;
+    Expression* process(LiteralBool* expr, Token token) override;
+    Expression* process(LiteralDouble* expr, Token token) override;
+    Expression* process(Token token) override;
 
-  friend std::ostream& operator<<(std::ostream& os, const LiteralString* expr) {
-    os << expr->value;
-    return os;
-  };
-
-  friend std::ostream& operator<<(std::ostream& os, const LiteralString& expr) {
-    os << expr.value;
-    return os;
-  };
+    friend std::ostream& operator<<(std::ostream& os, const LiteralBool* expr);
+    friend std::ostream& operator<<(std::ostream& os, const LiteralBool& expr);
 };
 #endif  // LiteralString_H

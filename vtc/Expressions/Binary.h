@@ -7,17 +7,20 @@
 
 class Visitor;
 
-class Binary : public Expression {
- public:
-  Binary(Expression* left, Token op, Expression* right);
-  std::any accept(Visitor* visitor) override;
+class Binary : public Expression
+{
+public:
+    Binary(Expression* left, Token op, Expression* right);
+    std::any accept(Visitor* visitor) override;
 
-  Expression* left;
-  Token op;
-  Expression* right;
+    Expression* left;
+    Token op;
+    Expression* right;
 
-  friend std::ostream& operator<<(std::ostream& os, const Binary* expr);
-  friend std::ostream& operator<<(std::ostream& os, const Binary& expr);
+    bool equals(const Expression& other) const override;
+
+    friend std::ostream& operator<<(std::ostream& os, const Binary* expr);
+    friend std::ostream& operator<<(std::ostream& os, const Binary& expr);
 };
 
 #endif  // BINARY_H

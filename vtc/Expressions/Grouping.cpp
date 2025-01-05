@@ -2,18 +2,38 @@
 
 #include "Visitor/Visitor.h"
 
-Grouping::Grouping(Expression* expression) : expression(expression) {}
-
-std::any Grouping::accept(Visitor* visitor) {
-  return visitor->visit(this);
+Grouping::Grouping(Expression* expression) : expression(expression)
+{
 }
 
-std::ostream& operator<<(std::ostream& os, const Grouping* expr) {
-  os << "(" << expr->expression << ")";
-  return os;
+std::any Grouping::accept(Visitor* visitor)
+{
+    return visitor->visit(this);
 }
 
-std::ostream& operator<<(std::ostream& os, const Grouping& expr) {
-  os << "(" << expr.expression << ")";
-  return os;
+bool Grouping::equals(const Expression& other) const
+{
+    const auto* otherGrouping = dynamic_cast<const Grouping*>(&other);
+    if (otherGrouping == nullptr)
+    {
+        return false;
+    }
+
+    // Compare the `expression` field
+    return (this->expression == nullptr && otherGrouping->expression == nullptr) ||
+    (this->expression != nullptr && otherGrouping->expression != nullptr &&
+        *this->expression == *otherGrouping->expression);
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Grouping* expr)
+{
+    os << "(" << expr->expression << ")";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Grouping& expr)
+{
+    os << "(" << expr.expression << ")";
+    return os;
 }

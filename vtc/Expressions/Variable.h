@@ -7,15 +7,18 @@
 
 class Visitor;
 
-class Variable : public Expression {
- public:
-  Variable(Token name);
-  std::any accept(Visitor* visitor) override;
+class Variable : public Expression
+{
+public:
+    Variable(Token name);
+    std::any accept(Visitor* visitor) override;
 
-  Token name;
+    Token name;
 
-  friend std::ostream& operator<<(std::ostream& os, const Variable* expr);
-  friend std::ostream& operator<<(std::ostream& os, const Variable& expr);
+    bool equals(const Expression& other) const override;
+
+    friend std::ostream& operator<<(std::ostream& os, const Variable* expr);
+    friend std::ostream& operator<<(std::ostream& os, const Variable& expr);
 };
 
 #endif  // VARIABLE_H
