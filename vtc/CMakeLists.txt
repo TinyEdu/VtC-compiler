@@ -36,6 +36,26 @@ set(SOURCE_FILES
         Expressions/Literals/LiteralInt.cpp
         Expressions/Literals/LiteralString.cpp
         Visitor/OperationsDispatcher.cpp
+        Statements/ExpressionStatement.cpp
+        Statements/ExpressionStatement.h
+        Statements/IfStatement.cpp
+        Statements/IfStatement.h
+        Statements/WhileStatement.cpp
+        Statements/WhileStatement.h
+        Statements/PrintStatement.cpp
+        Statements/PrintStatement.h
+        Statements/BlockStatement.cpp
+        Statements/BlockStatement.h
+        Statements/FunctionStatement.cpp
+        Statements/FunctionStatement.h
+        Statements/ClassStatement.cpp
+        Statements/ClassStatement.h
+        Statements/VarStatement.cpp
+        Statements/VarStatement.h
+        Statements/ReturnStatement.cpp
+        Statements/ReturnStatement.h
+        Statements/StatementsWorld.cpp
+        Statements/StatementsWorld.h
 )
 
 add_library(vtc STATIC ${SOURCE_FILES} ${HEADER_FILES})

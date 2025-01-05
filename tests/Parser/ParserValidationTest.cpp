@@ -1,9 +1,8 @@
 #include "gtest/gtest.h"
 #include "Parser/Parser.h"
 #include "Scanner/Scanner.h"
-#include "Expressions/Literals/LiteralInt.h"
-#include "Expressions/Variable.h"
-#include "Expressions/Assign.h"
+#include "Expressions/ExpressionWorld.h"
+#include "Statements/StatementsWorld.h"
 
 TEST(ParserValidation, tts) {
     // given
@@ -38,7 +37,7 @@ TEST(ParserValidation, tts) {
     // Validate the content of the statements
     // Note: Depending on your implementation of equality for statements and expressions, you may need custom comparison logic.
     for (size_t i = 0; i < statements.size(); ++i) {
-        ASSERT_TRUE(*statements[i] == *expectedStatements[i]) << "Mismatch at statement " << i;
+        ASSERT_TRUE(statements[i] == expectedStatements[i]) << "Mismatch at statement " << i;
     }
 
     // Cleanup

@@ -14,7 +14,7 @@ class LiteralDouble;
 class LiteralInt : public Literal
 {
 public:
-    explicit LiteralInt(int value);;
+    explicit LiteralInt(int value);
 
     int value;
 
