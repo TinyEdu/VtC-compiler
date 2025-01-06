@@ -1,6 +1,6 @@
 // Scanner.cpp
 #include "Scanner.h"
-
+#include "Token/TokenTypeMappings.h"
 
 std::vector<Token> Scanner::scan(std::string_view inputSource)
 {

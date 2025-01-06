@@ -16,7 +16,7 @@ bool Literal::equals(const Expression& other) const
     }
 
     // Note: this is only for testing purpose, this is not a save code for production code
-    auto eq = Token(TokenType::EQUAL);
+    auto eq = Token(TokenType::EQUAL_EQUAL);
     auto nonConstOtherLiteral = const_cast<Literal*>(otherLiteral);
     auto nonConstThis = const_cast<Literal*>(this);
 

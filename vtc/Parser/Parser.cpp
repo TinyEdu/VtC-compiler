@@ -389,13 +389,13 @@ Expression* Parser::parseExpression()
   }
 }
 
-std::vector<Statement*> Parser::parse()
+std::vector<std::unique_ptr<Statement>> Parser::parse()
 {
-  std::vector<Statement*> statements;
+  std::vector<std::unique_ptr<Statement>> statements;
 
   while (!isAtEnd())
   {
-    statements.push_back(declaration());
+    statements.push_back(std::unique_ptr<Statement>(declaration()));
   }
 
   return statements;

@@ -35,11 +35,17 @@ bool BlockStatement::equals(const Statement& other) const
     // Compare each statement in the vectors
     for (size_t i = 0; i < this->statements.size(); ++i)
     {
-        if (*this->statements[i] != *otherBlock->statements[i])
+        // Ensure both statements are non-null and compare them
+        if (this->statements[i] == nullptr || otherBlock->statements[i] == nullptr)
         {
-            return false;
+            return false; // Null pointer mismatch
+        }
+        if (!this->statements[i]->equals(*otherBlock->statements[i]))
+        {
+            return false; // Statements don't match
         }
     }
 
     return true; // All statements matched
 }
+

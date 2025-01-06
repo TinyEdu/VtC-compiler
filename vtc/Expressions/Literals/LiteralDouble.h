@@ -1,5 +1,4 @@
 // LiteralDouble.h
-
 #ifndef LiteralDouble_H
 #define LiteralDouble_H
 
@@ -10,9 +9,9 @@ class LiteralInt;
 class LiteralFloat;
 class LiteralString;
 class LiteralBool;
+class LiteralDouble;
 
-class LiteralDouble : public Literal
-{
+class LiteralDouble : public Literal {
 public:
     explicit LiteralDouble(double value);
 
@@ -29,7 +28,8 @@ public:
     Expression* process(LiteralDouble* expr, Token token) override;
     Expression* process(Token token) override;
 
-    friend std::ostream& operator<<(std::ostream& os, const LiteralBool* expr);
-    friend std::ostream& operator<<(std::ostream& os, const LiteralBool& expr);
+    friend std::ostream& operator<<(std::ostream& os, const LiteralDouble* expr);
+    friend std::ostream& operator<<(std::ostream& os, const LiteralDouble& expr);
 };
+
 #endif  // LiteralDouble_H

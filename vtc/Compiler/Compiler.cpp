@@ -68,7 +68,7 @@ void Compiler::run(const std::string_view source) {
     std::vector<Token> tokens = scanner.scan(source);
 
     Parser parser(tokens);
-    std::vector<Statement*> statements = parser.parse();
+    std::vector<std::unique_ptr<Statement>> statements = parser.parse();
 
     if (hadError) {
         return;

@@ -4,6 +4,7 @@
 #define PARSER_H
 
 
+#include <memory>
 #include <vector>
 #include <utility>
 
@@ -22,7 +23,8 @@ class Unary;
 class Statement;
 
 
-class Parser {
+class Parser
+{
 private:
     std::vector<Token> tokens;
     int currentIndex = 0;
@@ -60,10 +62,9 @@ private:
     Statement* varDeclaration();
     Expression* finishCall(Expression* callee);
 
-
 public:
     Expression* parseExpression();
-    std::vector<Statement*> parse();
+    std::vector<std::unique_ptr<Statement>> parse();
     Statement* expressionStatement();
     Statement* printStatement();
     Statement* ifStatement();

@@ -3,32 +3,33 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include <iomanip>
-#include <iostream>
 #include <string>
-#include <utility>
-#include <format>
 
 #include "TokenType.h"
-#include "TokenTypeMappings.h"
 
-class Token {
+class Token
+{
 public:
-    Token(const TokenType type, std::string lexeme, std::string literal, const int line);
-    Token(const TokenType type);
+    explicit Token(TokenType type);
+    Token(TokenType type, std::string lexeme, std::string literal, int line);
+    /**
+     * Constructor to initialize a Token with all its attributes.
+     * @param type The type of the token.
+     * @param lexeme The raw text in the source code that this token represents.
+     * @param literal The parsed value of the token (e.g., the actual number for a numeric literal).
+     * @param line The line number in the source code where the token appears.
+     */
     ~Token();
 
     friend std::ostream& operator<<(std::ostream& os, const Token& token);
 
-    bool operator==(const Token& other) const {
-        return type == other.type && lexeme == other.lexeme && literal == other.literal && line == other.line;
-    }
+    bool operator==(const Token& other) const;
 
     TokenType type;
     std::string lexeme;
     std::string literal;
+
     int line;
-    std::string lexeme_;
 };
 
 #endif  // TOKEN_H

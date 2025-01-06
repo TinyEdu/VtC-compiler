@@ -11,6 +11,32 @@ set(HEADER_FILES
         Token/TokenTypeMappings.h
         Statements/Statement.h
         Parser/ParseError.h
+        Visitor/Visitor.h
+        Expressions/Expression.h
+        Expressions/Assign.h
+        Expressions/Binary.h
+        Expressions/Call.h
+        Expressions/Grouping.h
+        Expressions/Logical.h
+        Expressions/Unary.h
+        Expressions/Variable.h
+        Expressions/Literals/Literal.h
+        Expressions/Literals/LiteralBool.h
+        Expressions/Literals/LiteralDouble.h
+        Expressions/Literals/LiteralFloat.h
+        Expressions/Literals/LiteralInt.h
+        Expressions/Literals/LiteralString.h
+        Visitor/OperationsDispatcher.h
+        Statements/ExpressionStatement.h
+        Statements/IfStatement.h
+        Statements/WhileStatement.h
+        Statements/PrintStatement.h
+        Statements/BlockStatement.h
+        Statements/FunctionStatement.h
+        Statements/ClassStatement.h
+        Statements/VarStatement.h
+        Statements/ReturnStatement.h
+        Statements/StatementsWorld.h
 )
 
 set(SOURCE_FILES
@@ -20,7 +46,6 @@ set(SOURCE_FILES
         Token/Token.cpp
         Scanner/Scanner.cpp
         Scanner/ErrorHandler.cpp
-        Visitor/Visitor.h
         Expressions/Assign.cpp
         Expressions/Binary.cpp
         Expressions/Call.cpp
@@ -37,25 +62,15 @@ set(SOURCE_FILES
         Expressions/Literals/LiteralString.cpp
         Visitor/OperationsDispatcher.cpp
         Statements/ExpressionStatement.cpp
-        Statements/ExpressionStatement.h
         Statements/IfStatement.cpp
-        Statements/IfStatement.h
         Statements/WhileStatement.cpp
-        Statements/WhileStatement.h
         Statements/PrintStatement.cpp
-        Statements/PrintStatement.h
         Statements/BlockStatement.cpp
-        Statements/BlockStatement.h
         Statements/FunctionStatement.cpp
-        Statements/FunctionStatement.h
         Statements/ClassStatement.cpp
-        Statements/ClassStatement.h
         Statements/VarStatement.cpp
-        Statements/VarStatement.h
         Statements/ReturnStatement.cpp
-        Statements/ReturnStatement.h
         Statements/StatementsWorld.cpp
-        Statements/StatementsWorld.h
 )
 
 add_library(vtc STATIC ${SOURCE_FILES} ${HEADER_FILES})
