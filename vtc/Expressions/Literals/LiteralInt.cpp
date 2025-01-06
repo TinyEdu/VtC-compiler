@@ -6,7 +6,6 @@
 
 LiteralInt::LiteralInt(int value): value(value)
 {
-
 }
 
 std::any LiteralInt::accept(Visitor* visitor)

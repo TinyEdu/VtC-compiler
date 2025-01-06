@@ -5,12 +5,10 @@
 
 BlockStatement::BlockStatement(std::vector<Statement*> statements): statements(std::move(statements))
 {
-
 }
 
 BlockStatement::~BlockStatement()
 {
-
 }
 
 std::any BlockStatement::accept(StatementVisitor* visitor)
@@ -48,4 +46,3 @@ bool BlockStatement::equals(const Statement& other) const
 
     return true; // All statements matched
 }
-

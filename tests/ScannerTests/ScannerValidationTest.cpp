@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 #include "Scanner/Scanner.h"
 
-TEST(ScannerValidation, IsSingleCharacterTokenWorkingCorrectly) {
+TEST(ScannerValidation, IsSingleCharacterTokenWorkingCorrectly)
+{
     using enum TokenType;
     // given
     const std::string input = "+){.},-(;/***";
@@ -32,14 +33,15 @@ TEST(ScannerValidation, IsSingleCharacterTokenWorkingCorrectly) {
     EXPECT_EQ(output, expectedOutput);
 }
 
-TEST(ScannerValidation, IsNewLineAndCommentsAndBlankspacesWorkingCorrecltly) {
+TEST(ScannerValidation, IsNewLineAndCommentsAndBlankspacesWorkingCorrecltly)
+{
     using enum TokenType;
     // given
     const std::string input = "// Here is a comment\n \t/                      /";
 
     const std::vector expectedOutput = {
-    Token(SLASH, "/", "", 2),
-    Token(SLASH, "/", "", 2),
+        Token(SLASH, "/", "", 2),
+        Token(SLASH, "/", "", 2),
         Token(END_OF_FILE, "", "", 2),
     };
 
@@ -51,7 +53,8 @@ TEST(ScannerValidation, IsNewLineAndCommentsAndBlankspacesWorkingCorrecltly) {
     EXPECT_EQ(output, expectedOutput);
 }
 
-TEST(ScannerValidation, AreMultipleRunsWorkingCorrectly) {
+TEST(ScannerValidation, AreMultipleRunsWorkingCorrectly)
+{
     using enum TokenType;
     // given
     const std::string input = "// Here is a comment\n \t/                      /\n";
@@ -59,8 +62,8 @@ TEST(ScannerValidation, AreMultipleRunsWorkingCorrectly) {
     const std::vector expectedOutput = {
         Token(SLASH, "/", "", 2),
         Token(SLASH, "/", "", 2),
-            Token(END_OF_FILE, "", "", 3),
-        };
+        Token(END_OF_FILE, "", "", 3),
+    };
 
     // when
     Scanner scanner;
@@ -72,7 +75,8 @@ TEST(ScannerValidation, AreMultipleRunsWorkingCorrectly) {
     EXPECT_EQ(output2, expectedOutput);
 }
 
-TEST(ScannerValidation, IsLineCountingCorrect) {
+TEST(ScannerValidation, IsLineCountingCorrect)
+{
     using enum TokenType;
     // given
     const std::string input = "+\n+\n+\n+\n";
@@ -83,7 +87,7 @@ TEST(ScannerValidation, IsLineCountingCorrect) {
         Token(PLUS, "+", "", 3),
         Token(PLUS, "+", "", 4),
         Token(END_OF_FILE, "", "", 5)
-        };
+    };
 
     // when
     Scanner scanner;
@@ -93,7 +97,8 @@ TEST(ScannerValidation, IsLineCountingCorrect) {
     EXPECT_EQ(output, expectedOutput);
 }
 
-TEST(ScannerValidation, IsDoubleCharacterTokenWorkingCorrectly) {
+TEST(ScannerValidation, IsDoubleCharacterTokenWorkingCorrectly)
+{
     using enum TokenType;
     // given
     const std::string input = "<= +> >= != ==";
@@ -116,7 +121,8 @@ TEST(ScannerValidation, IsDoubleCharacterTokenWorkingCorrectly) {
     EXPECT_EQ(output, expectedOutput);
 }
 
-TEST(ScannerValidation, IsHandlingLiteralsCorrect) {
+TEST(ScannerValidation, IsHandlingLiteralsCorrect)
+{
     using enum TokenType;
     // given
     const std::string input = "var variable = \"special string\";";

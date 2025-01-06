@@ -3,7 +3,8 @@
 
 #include <stdexcept>
 
-class ParseError final : public std::runtime_error {
+class ParseError final : public std::runtime_error
+{
 public:
     using runtime_error::runtime_error;
 };

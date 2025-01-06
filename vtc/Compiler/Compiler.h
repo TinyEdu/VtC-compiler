@@ -13,7 +13,8 @@
 #include "Scanner/Scanner.h"
 #include "Parser/Parser.h"
 
-class Compiler {
+class Compiler
+{
 public:
     Compiler();
     ~Compiler();

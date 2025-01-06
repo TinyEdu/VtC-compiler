@@ -6,7 +6,8 @@
 
 #include "LogManager/LogManager.h"
 
-class ErrorHandler {
+class ErrorHandler
+{
 public:
     ErrorHandler();
     ~ErrorHandler();

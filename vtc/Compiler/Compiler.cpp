@@ -14,7 +14,8 @@ bool Compiler::hadRuntimeError = false;
 
 //Interpreter Compiler::interpreter;
 
-Compiler::Compiler() {
+Compiler::Compiler()
+{
     //interpreter = Interpreter();
     hadRuntimeError = false;
     hadError = false;
@@ -22,10 +23,12 @@ Compiler::Compiler() {
 
 Compiler::~Compiler() = default;
 
-void Compiler::runFile(const char* file) {
+void Compiler::runFile(const char* file)
+{
     std::ifstream fileStream(file);
 
-    if (!fileStream.is_open()) {
+    if (!fileStream.is_open())
+    {
         LogManager::crit() << "Could not open file " << file << "\n";
         exit(74);
     }
@@ -35,49 +38,61 @@ void Compiler::runFile(const char* file) {
 
     Compiler::run(buffer.str());
 
-    if (hadError) {
+    if (hadError)
+    {
         exit(65);
     }
 
-    if (hadRuntimeError) {
+    if (hadRuntimeError)
+    {
         exit(70);
     }
 }
 
-void Compiler::runPrompt() {
+void Compiler::runPrompt()
+{
     std::string line;
 
-    for (;;) {
+    for (;;)
+    {
         LogManager::log() << ">> ";
         std::getline(std::cin, line);
 
-        if (std::cin.eof()) {
+        if (std::cin.eof())
+        {
             LogManager::log() << "Ending REPL compilation...\n";
             break;
-        } else if (line.empty()) {
-            continue;  // If the file is empty, skip it
-        } else {
+        }
+        else if (line.empty())
+        {
+            continue; // If the file is empty, skip it
+        }
+        else
+        {
             Compiler::run(line);
             hadError = false;
         }
     }
 }
 
-void Compiler::run(const std::string_view source) {
+void Compiler::run(const std::string_view source)
+{
     Scanner scanner;
     std::vector<Token> tokens = scanner.scan(source);
 
     Parser parser(tokens);
     std::vector<std::unique_ptr<Statement>> statements = parser.parse();
 
-    if (hadError) {
+    if (hadError)
+    {
         return;
     }
 
     // interpreter.interpret(statements);
 }
 
-void Compiler::runtimeError(const std::runtime_error& error) {
+void Compiler::runtimeError(const std::runtime_error& error)
+{
     LogManager::log() << error.what() << "\n";
     // @TODO : Maybe add some more specifics
     hadRuntimeError = true;

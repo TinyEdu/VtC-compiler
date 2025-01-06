@@ -8,7 +8,6 @@
 
 LiteralString::LiteralString(std::string value): value(std::move(value))
 {
-
 }
 
 std::any LiteralString::accept(Visitor* visitor)

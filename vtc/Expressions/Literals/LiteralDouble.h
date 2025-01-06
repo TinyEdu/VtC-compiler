@@ -11,7 +11,8 @@ class LiteralString;
 class LiteralBool;
 class LiteralDouble;
 
-class LiteralDouble : public Literal {
+class LiteralDouble : public Literal
+{
 public:
     explicit LiteralDouble(double value);
 

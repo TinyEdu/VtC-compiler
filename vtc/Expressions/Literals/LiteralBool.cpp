@@ -21,7 +21,7 @@ Expression* LiteralBool::process(Literal* expr, Token token)
 Expression* LiteralBool::process(LiteralInt* expr, Token token)
 {
     return
-        OperationsDispatcher::dispatch(expr,this, token);
+        OperationsDispatcher::dispatch(expr, this, token);
 };
 
 Expression* LiteralBool::process(LiteralFloat* expr, Token token)

@@ -7,7 +7,6 @@
 
 LiteralFloat::LiteralFloat(float value): value(value)
 {
-
 }
 
 std::any LiteralFloat::accept(Visitor* visitor)

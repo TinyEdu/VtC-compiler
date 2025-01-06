@@ -5,10 +5,12 @@ add_subdirectory(lib/googletest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(vtc-tests
-        LogManager/LoggingValidationTest.cpp
-        templateTest/TemplateTest.cpp
-        Parser/ParserValidationTest.cpp
-        ScannerTest/ScannerValidationTest.cpp)
+        LogManagerTests/LoggingValidationTest.cpp
+        TemplateTests/TemplateTest.cpp
+        ParserTests/ParserValidationTest.cpp
+        ScannerTests/ScannerValidationTest.cpp
+        InterpreterTests/InterpreterValidationTest.cpp
+        InterpreterTests/InterpreterValidationTest.h)
 
 target_compile_definitions(vtc-tests PRIVATE DEBUG_MODE)
 target_compile_definitions(vtc PRIVATE DEBUG_MODE)
