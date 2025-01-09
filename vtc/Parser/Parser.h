@@ -3,40 +3,32 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-
 #include <memory>
 #include <vector>
-#include <utility>
 
 #include "Token/Token.h"
 #include "Statements/Statement.h"
-#include "ParseError.h"
+#include "ParserBase.h"
 
-// Forward declaration of Expression classes
+// Forward declarations
 class Expression;
-
-class Binary;
-class Grouping;
-class Literal;
-class Unary;
-
 class Statement;
 
 
-class Parser
+class Parser : protected ParserBase
 {
-private:
-    std::vector<Token> tokens;
-    int currentIndex = 0;
-
 public:
     explicit Parser(std::vector<Token> tokens);
     ~Parser();
 
+    std::vector<std::unique_ptr<Statement>> parse();
+
 private:
     Statement* declaration();
-    Expression* assignment();
     Expression* expression();
+    Expression* assignment();
+    Expression* logicalOr();
+    Expression* logicalAnd();
     Expression* equality();
     Expression* comparison();
     Expression* term();
@@ -45,35 +37,19 @@ private:
     Expression* call();
     Expression* primary();
 
-    // logical
-    Expression* logicalOr();
-    Expression* logicalAnd();
-
-    Token previous();
-    bool match(std::vector<TokenType> types);
-    Token advance();
-    bool check(TokenType type);
-    bool isAtEnd();
-    Token peek();
-    Token consume(TokenType type, const std::string& message);
-    static ParseError error(Token token, const std::string& message);
-    void synchronize();
-    Statement* function(const std::string& kind);
     Statement* varDeclaration();
-    Expression* finishCall(Expression* callee);
+    Statement* statementDeclaration();
+    Statement* functionDeclaration(const std::string& kind);
+    Expression* finishCallDeclaration(Expression& callee);
 
-public:
-    Expression* parseExpression();
-    std::vector<std::unique_ptr<Statement>> parse();
-    Statement* expressionStatement();
+
     Statement* printStatement();
     Statement* ifStatement();
     Statement* whileStatement();
     Statement* forStatement();
-    Statement* statement();
-    std::vector<Statement*> block();
+    Statement* expressionStatement();
 
-    friend class ParserTest;
+    std::vector<Statement*> parseBlock();
 };
 
 #endif  // PARSER_H

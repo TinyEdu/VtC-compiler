@@ -37,6 +37,7 @@ set(HEADER_FILES
         Statements/VarStatement.h
         Statements/ReturnStatement.h
         Statements/StatementsWorld.h
+        Parser/ParserBase.h
 )
 
 set(SOURCE_FILES
@@ -71,6 +72,7 @@ set(SOURCE_FILES
         Statements/VarStatement.cpp
         Statements/ReturnStatement.cpp
         Statements/StatementsWorld.cpp
+        Parser/ParserBase.cpp
 )
 
 add_library(vtc STATIC ${SOURCE_FILES} ${HEADER_FILES})

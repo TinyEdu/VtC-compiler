@@ -1,6 +1,7 @@
 // Parser.cpp
 #include "Parser.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "Expressions/ExpressionsWorld.h"
@@ -10,27 +11,41 @@
 using enum TokenType;
 
 
-Parser::Parser(std::vector<Token> tokens) : tokens(std::move(tokens))
+Parser::Parser(std::vector<Token> tokens) : ParserBase(std::move(tokens))
 {
 }
 
 Parser::~Parser() = default;
 
+std::vector<std::unique_ptr<Statement>> Parser::parse()
+{
+    std::vector<std::unique_ptr<Statement>> statements;
+
+    while (!isAtEnd())
+    {
+        statements.push_back(std::unique_ptr<Statement>(declaration()));
+    }
+
+    return statements;
+}
+
+// ----------------------------------------------------------------------------------------------
+
 Statement* Parser::declaration()
 {
     try
     {
-        if (match({VAR}))
+        if (match(VAR))
         {
             return varDeclaration();
         }
 
-        if (match({DEF}))
+        if (match(DEF))
         {
-            return function("function");
+            return functionDeclaration("function");
         }
 
-        return statement();
+        return statementDeclaration();
     }
     catch (const ParseError& e)
     {
@@ -47,16 +62,13 @@ Expression* Parser::expression()
 
 Expression* Parser::assignment()
 {
-    // Get the result of an equality expression
-    Expression* expr = equality();
+    Expression* expr = logicalOr();
 
-    if (match({EQUAL}))
+    if (match(EQUAL))
     {
-        // Get the previous token and recursively call assignment
         const Token equals = previous();
         Expression* value = assignment();
 
-        // Use dynamic_cast to check if expr is of type Variable
         if (const auto varExpr = dynamic_cast<Variable*>(expr))
         {
             const Token name = varExpr->name;
@@ -141,15 +153,34 @@ Expression* Parser::unary()
     return call();
 }
 
+Expression* Parser::call()
+{
+    Expression* expr = primary();
+
+    while (true)
+    {
+        if (match(LEFT_PAREN))
+        {
+            expr = finishCallDeclaration(*expr);
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return expr;
+}
+
 Expression* Parser::primary()
 {
-    if (match({FALSE}))
+    if (match(FALSE))
         return new LiteralBool(false);
-    else if (match({TRUE}))
+    if (match(TRUE))
         return new LiteralBool(true);
-    else if (match({NIL}))
+    if (match(NIL))
         return new LiteralInt(0); // @TODO - how to handle NULL values?
-    else if (match({NUMBER}))
+    if (match(NUMBER))
     {
         // check if the given value is an integer or a double
         if (previous().literal.find('.') != std::string::npos)
@@ -163,17 +194,18 @@ Expression* Parser::primary()
             return new LiteralInt(std::stoi(previous().literal));
         }
     }
-    else if (match({STRING}))
+
+    if (match(STRING))
     {
         return new LiteralString(previous().literal);
     }
-    else if (match({LEFT_PAREN}))
+    if (match(LEFT_PAREN))
     {
         Expression* expr = expression();
         consume(RIGHT_PAREN, "Expect ')' after expression.");
         return new Grouping(expr);
     }
-    else if (match({IDENTIFIER}))
+    if (match(IDENTIFIER))
     {
         return new Variable(previous());
     }
@@ -181,140 +213,61 @@ Expression* Parser::primary()
     throw ParseError("Expect expression.");
 }
 
-Expression* Parser::call()
-{
-    Expression* expr = primary();
+// ----------------------------------------------------------------------------------------------
 
-    while (true)
+Statement* Parser::varDeclaration()
+{
+    const Token name = consume(IDENTIFIER, "Expect variable name.");
+
+    Expression* initializer = nullptr;
+    if (match(EQUAL))
     {
-        if (match({LEFT_PAREN}))
+        initializer = expression();
+    }
+
+    consume(SEMICOLON, "Expect ';' after variable declaration.");
+    return new VarStatement(name, initializer);
+}
+
+Statement* Parser::statementDeclaration()
+{
+    if (match(FOR))
+    {
+        return forStatement();
+    }
+    if (match(IF))
+    {
+        return ifStatement();
+    }
+    if (match(WHILE))
+    {
+        return whileStatement();
+    }
+    if (match(PRINT))
+    {
+        return printStatement();
+    }
+    if (match(LEFT_BRACE))
+    {
+        return new BlockStatement(parseBlock());
+    }
+    if (match(RETURN))
+    {
+        const Token keyword = previous();
+        Expression* value = nullptr;
+        if (!check(SEMICOLON))
         {
-            expr = finishCall(expr);
+            value = expression();
         }
-        else
-        {
-            break;
-        }
+        consume(SEMICOLON, "Expect ';' after return value.");
+
+        return new ReturnStatement(keyword, value);
     }
 
-    return expr;
+    return expressionStatement();
 }
 
-Expression* Parser::logicalOr()
-{
-    Expression* expr = logicalAnd();
-
-    while (match({OR}))
-    {
-        Token op = previous();
-        Expression* right = logicalAnd();
-
-        expr = new Logical(expr, op, right);
-    }
-
-    return expr;
-}
-
-Expression* Parser::logicalAnd()
-{
-    Expression* expr = equality();
-
-    while (match({AND}))
-    {
-        Token op = previous();
-        Expression* right = equality();
-
-        expr = new Logical(expr, op, right);
-    }
-
-    return expr;
-}
-
-Token Parser::previous()
-{
-    return tokens[currentIndex - 1];
-}
-
-bool Parser::match(std::vector<TokenType> types)
-{
-    for (const TokenType type : types)
-    {
-        if (check(type))
-        {
-            advance();
-            return true;
-        }
-    }
-    return false;
-}
-
-Token Parser::advance()
-{
-    if (!isAtEnd())
-        currentIndex++;
-    return previous();
-}
-
-bool Parser::check(TokenType type)
-{
-    if (isAtEnd())
-        return false;
-    return peek().type == type;
-}
-
-bool Parser::isAtEnd()
-{
-    return peek().type == END_OF_FILE;
-}
-
-Token Parser::peek()
-{
-    return tokens[currentIndex];
-}
-
-Token Parser::consume(const TokenType type, const std::string& message)
-{
-    if (check(type))
-        return advance();
-
-    throw error(peek(), message);
-}
-
-ParseError Parser::error(Token token, const std::string& message)
-{
-    LogManager::crit() << "[line " << token.line << "] Error" << message;
-    return ParseError(message);
-}
-
-void Parser::synchronize()
-{
-    advance();
-
-    while (!isAtEnd())
-    {
-        if (previous().type == SEMICOLON)
-            return;
-
-        switch (peek().type)
-        {
-        case CLASS:
-        case DEF:
-        case VAR:
-        case FOR:
-        case IF:
-        case WHILE:
-        case PRINT:
-        case RETURN:
-            return;
-        default:
-            break;
-        }
-
-        advance();
-    }
-}
-
-Statement* Parser::function(const std::string& kind)
+Statement* Parser::functionDeclaration(const std::string& kind)
 {
     const Token name = consume(IDENTIFIER, "Expect " + kind + " name.");
 
@@ -331,31 +284,17 @@ Statement* Parser::function(const std::string& kind)
             }
             params.push_back(consume(IDENTIFIER, "Expect parameter name."));
         }
-        while (match({COMMA}));
+        while (match(COMMA));
     }
 
     consume(RIGHT_PAREN, "Expect ')' after parameters.");
 
     consume(LEFT_BRACE, "Expect '{' before " + kind + " body.");
-    std::vector<Statement*> body = block();
+    const std::vector<Statement*> body = parseBlock();
     return new FunctionStatement(name, params, body);
 }
 
-Statement* Parser::varDeclaration()
-{
-    Token name = consume(IDENTIFIER, "Expect variable name.");
-
-    Expression* initializer = nullptr;
-    if (match({EQUAL}))
-    {
-        initializer = expression();
-    }
-
-    consume(SEMICOLON, "Expect ';' after variable declaration.");
-    return new VarStatement(name, initializer);
-}
-
-Expression* Parser::finishCall(Expression* callee)
+Expression* Parser::finishCallDeclaration(Expression& callee)
 {
     std::vector<Expression*> arguments;
     if (!check(RIGHT_PAREN))
@@ -371,86 +310,12 @@ Expression* Parser::finishCall(Expression* callee)
         while (match({COMMA}));
     }
 
-    Token paren = consume(RIGHT_PAREN, "Expect ')' after arguments.");
+    const Token paren = consume(RIGHT_PAREN, "Expect ')' after arguments.");
 
-    return new Call(callee, paren, arguments);
+    return new Call(&callee, paren, arguments);
 }
 
-Expression* Parser::parseExpression()
-{
-    try
-    {
-        return expression();
-    }
-    catch (const ParseError& e)
-    {
-        LogManager::crit() << "Parse error: " << e.what();
-        return nullptr;
-    }
-}
-
-std::vector<std::unique_ptr<Statement>> Parser::parse()
-{
-    std::vector<std::unique_ptr<Statement>> statements;
-
-    while (!isAtEnd())
-    {
-        statements.push_back(std::unique_ptr<Statement>(declaration()));
-    }
-
-    return statements;
-}
-
-Statement* Parser::statement()
-{
-    if (match({FOR}))
-    {
-        return forStatement();
-    }
-    else if (match({IF}))
-    {
-        return ifStatement();
-    }
-    else if (match({WHILE}))
-    {
-        return whileStatement();
-    }
-    else if (match({PRINT}))
-    {
-        return printStatement();
-    }
-    else if (match({LEFT_BRACE}))
-    {
-        return new BlockStatement(block());
-    }
-    else if (match({RETURN}))
-    {
-        Token keyword = previous();
-        Expression* value = nullptr;
-        if (!check(SEMICOLON))
-        {
-            value = expression();
-        }
-        consume(SEMICOLON, "Expect ';' after return value.");
-
-        return new ReturnStatement(keyword, value);
-    }
-
-    return expressionStatement();
-}
-
-std::vector<Statement*> Parser::block()
-{
-    std::vector<Statement*> statements;
-
-    while (!check(RIGHT_BRACE) && !isAtEnd())
-    {
-        statements.push_back(declaration());
-    }
-
-    consume(RIGHT_BRACE, "Expect '}' after block.");
-    return statements;
-}
+// ----------------------------------------------------------------------------------------------
 
 Statement* Parser::printStatement()
 {
@@ -465,11 +330,11 @@ Statement* Parser::ifStatement()
     Expression* condition = expression();
     consume(RIGHT_PAREN, "Expect ')' after if condition.");
 
-    Statement* thenBranch = statement();
+    Statement* thenBranch = statementDeclaration();
     Statement* elseBranch = nullptr;
-    if (match({ELSE}))
+    if (match(ELSE))
     {
-        elseBranch = statement();
+        elseBranch = statementDeclaration();
     }
 
     return new IfStatement(condition, thenBranch, elseBranch);
@@ -480,7 +345,7 @@ Statement* Parser::whileStatement()
     consume(LEFT_PAREN, "Expect '(' after 'while'.");
     Expression* condition = expression();
     consume(RIGHT_PAREN, "Expect ')' after condition.");
-    Statement* body = statement();
+    Statement* body = statementDeclaration();
 
     return new WhileStatement(condition, body);
 }
@@ -490,11 +355,11 @@ Statement* Parser::forStatement()
     consume(LEFT_PAREN, "Expect '(' after 'for'.");
 
     Statement* initializer = nullptr;
-    if (match({SEMICOLON}))
+    if (match(SEMICOLON))
     {
         initializer = nullptr;
     }
-    else if (match({VAR}))
+    else if (match(VAR))
     {
         initializer = varDeclaration();
     }
@@ -517,7 +382,7 @@ Statement* Parser::forStatement()
     }
     consume(RIGHT_PAREN, "Expect ')' after for clauses.");
 
-    Statement* body = statement();
+    Statement* body = statementDeclaration();
 
     // Desugar increment: if increment is non-null, append it to the end of the loop body
     if (increment != nullptr)
@@ -550,4 +415,48 @@ Statement* Parser::expressionStatement()
     consume(SEMICOLON, "Expect ';' after expression.");
 
     return new ExpressionStatement(expr);
+}
+
+Expression* Parser::logicalOr()
+{
+    Expression* expr = logicalAnd();
+
+    while (match(OR))
+    {
+        const Token op = previous();
+        Expression* right = logicalAnd();
+        expr = new Logical(expr, op, right);
+    }
+
+    // if 'or' was not found it returns equality()
+    return expr;
+}
+
+
+Expression* Parser::logicalAnd()
+{
+    Expression* expr = equality();
+
+    while (match(AND))
+    {
+        const Token op = previous();
+        Expression* right = equality();
+        expr = new Logical(expr, op, right);
+    }
+
+    // if 'and' was not found it returns equality()
+    return expr;
+}
+
+std::vector<Statement*> Parser::parseBlock()
+{
+    std::vector<Statement*> statements;
+
+    while (!check(RIGHT_BRACE) && !isAtEnd())
+    {
+        statements.push_back(declaration());
+    }
+
+    consume(RIGHT_BRACE, "Expect '}' after block.");
+    return statements;
 }

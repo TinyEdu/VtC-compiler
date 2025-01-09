@@ -6,11 +6,9 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(vtc-tests
         LogManagerTests/LoggingValidationTest.cpp
-        TemplateTests/TemplateTest.cpp
         ParserTests/ParserValidationTest.cpp
         ScannerTests/ScannerValidationTest.cpp
-        InterpreterTests/InterpreterValidationTest.cpp
-        InterpreterTests/InterpreterValidationTest.h)
+        InterpreterTests/InterpreterValidationTest.cpp)
 
 target_compile_definitions(vtc-tests PRIVATE DEBUG_MODE)
 target_compile_definitions(vtc PRIVATE DEBUG_MODE)

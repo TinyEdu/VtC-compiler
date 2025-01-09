@@ -307,3 +307,73 @@ TEST(ParserValidation, AreParsingFunctionsWorkingCorrectly)
         ASSERT_TRUE(*statements[i] == *expectedStatements[i]);
     }
 }
+
+TEST(ParserValidation, AreLogicalOperationsWorkingCorrectly)
+{
+    // given
+    const std::string input = R"(
+        var a = true or false and (true or false);
+        var b = (a and false) or true;
+    )";
+    Scanner scanner;
+    const std::vector<Token> tokens = scanner.scan(input);
+    Parser parser(tokens);
+
+    // when
+    std::vector<std::unique_ptr<Statement>> statements = parser.parse();
+
+    // then
+    std::vector<std::unique_ptr<Statement>> expectedStatements;
+
+    // 1. Var - 'var a = true or false and (true or false);'
+    {
+        expectedStatements.emplace_back(
+            new VarStatement(
+                Token(TokenType::IDENTIFIER, "a", "", 2),
+                new Logical(
+                    new LiteralBool(true),
+                    Token(TokenType::OR, "or", "", 2),
+                    new Logical(
+                        new LiteralBool(false),
+                        Token(TokenType::AND, "and", "", 2),
+                        new Grouping(
+                            new Logical(
+                                new LiteralBool(true),
+                                Token(TokenType::OR, "or", "", 2),
+                                new LiteralBool(false)
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+
+    // 2. Var - 'var b = (a and false) or true;'
+    {
+        expectedStatements.emplace_back(
+            new VarStatement(
+                Token(TokenType::IDENTIFIER, "b", "", 3),
+                new Logical(
+                    new Grouping(
+                        new Logical(
+                            new Variable(
+                                Token(TokenType::IDENTIFIER, "a", "", 3)
+                            ),
+                            Token(TokenType::AND, "and", "", 3),
+                            new LiteralBool(false)
+                        )
+                    ),
+                    Token(TokenType::OR, "or", "", 3),
+                    new LiteralBool(true)
+                )
+            )
+        );
+    }
+
+    ASSERT_EQ(statements.size(), expectedStatements.size());
+    for (size_t i = 0; i < statements.size(); i++)
+    {
+        ASSERT_TRUE(*statements[i] == *expectedStatements[i]);
+    }
+}
