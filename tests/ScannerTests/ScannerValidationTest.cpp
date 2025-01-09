@@ -143,3 +143,25 @@ TEST(ScannerValidation, IsHandlingLiteralsCorrect)
     // then
     EXPECT_EQ(output, expectedOutput);
 }
+
+TEST(ScannerValidation, AreNumbersCorrectlyParsed)
+{
+    using enum TokenType;
+    // given
+    const std::string input = "123 456.789 0.001 \"000\"";
+
+    const std::vector<Token> expectedOutput = {
+        Token(NUMBER, "123", "123", 1),
+        Token(NUMBER, "456.789", "456.789", 1),
+        Token(NUMBER, "0.001", "0.001", 1),
+        Token(STRING, "\"000\"", "000", 1),
+        Token(END_OF_FILE, "", "", 1)
+    };
+
+    // when
+    Scanner scanner;
+    const std::vector<Token> output = scanner.scan(input);
+
+    // then
+    EXPECT_EQ(output, expectedOutput);
+}

@@ -26,21 +26,21 @@ private:
     int currentIndex = 0;
     int lineNumber = 1;
 
-    bool isSingleCharacterToken(char c);
+    static bool isSingleCharacterToken(char c);
     bool isDoubleCharacterTokens(char c, TokenType& tokenType);
 
     [[nodiscard]] bool isAtEnd() const;
-    [[nodiscard]] bool isWhitespace(char c) const;
     [[nodiscard]] bool isComment(char c) const;
-    [[nodiscard]] bool isNewLine(char c);
-    [[nodiscard]] bool isStartingString(char c);
-    [[nodiscard]] bool isDigit(char c) const;
-    [[nodiscard]] bool isAlphabetic(char c) const;
-    [[nodiscard]] bool isAlphanumeric(char c) const;
+    [[nodiscard]] static bool isWhitespace(char c);
+    [[nodiscard]] static bool isNewLine(char c);
+    [[nodiscard]] static bool isStartingString(char c);
+    [[nodiscard]] static bool isDigit(char c);
+    [[nodiscard]] static bool isAlphabetic(char c);
+    [[nodiscard]] static bool isAlphanumeric(char c);
 
     void scanToken();
-    char advance();
-    void addToken(TokenType type);
+    char getNextChar();
+    void addToken(TokenType tokenType);
     void addToken(TokenType type, const std::string& literal);
 
     [[nodiscard]] bool match(char expected);

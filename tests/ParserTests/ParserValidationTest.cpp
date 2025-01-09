@@ -13,7 +13,7 @@ TEST(ParserValidation, IsParsingVariableAndSimpleExpressionWorkingCorrectly)
     Scanner scanner;
     const std::vector<Token> tokens = scanner.scan(input);
     Parser parser(tokens);
-    std::vector<std::unique_ptr<Statement>> statements = parser.parse();
+    const std::vector<std::unique_ptr<Statement>> statements = parser.parse();
 
     // then
     std::vector<std::unique_ptr<Statement>> expectedStatements;

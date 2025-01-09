@@ -2,7 +2,11 @@
 #include "Scanner.h"
 #include "Token/TokenTypeMappings.h"
 
-std::vector<Token> Scanner::scan(std::string_view inputSource)
+static const std::unordered_set validChars = {
+    '(', ')', '{', '}', ',', '.', '-', '+', ';', '*', '/', '<', '>', '='
+};
+
+std::vector<Token> Scanner::scan(const std::string_view inputSource)
 {
     reset();
     source = inputSource;
@@ -32,18 +36,18 @@ bool Scanner::isAtEnd() const
     return currentIndex == source.length();
 }
 
-bool Scanner::isNewLine(char c)
+bool Scanner::isNewLine(const char c)
 {
     return c == '\n';
 }
 
 
-bool Scanner::isStartingString(char c)
+bool Scanner::isStartingString(const char c)
 {
     return c == '"';
 }
 
-bool Scanner::handleLiterals(char c)
+bool Scanner::handleLiterals(const char c)
 {
     if (isStartingString(c))
     {
@@ -54,7 +58,7 @@ bool Scanner::handleLiterals(char c)
 
     if (isDigit(c))
     {
-        // 12345678
+        // 12345678.0
         handleNumberLiteral();
         return true;
     }
@@ -66,20 +70,21 @@ bool Scanner::handleLiterals(char c)
         return true;
     }
 
-    return false; // If no literals are found, return false
+    // If no literals are found, return false
+    return false;
 }
 
 void Scanner::scanToken()
 {
     using enum TokenType;
 
-    char c = advance();
+    char c = getNextChar();
 
     if (isComment(c))
     {
         while (!isNewLine(c))
         {
-            c = advance();
+            c = getNextChar();
         }
     }
 
@@ -120,26 +125,22 @@ void Scanner::scanToken()
     ErrorHandler::error(lineNumber, "invalid character");
 }
 
-bool Scanner::isWhitespace(char c) const
+bool Scanner::isWhitespace(const char c)
 {
     return (c == '\r' || c == '\t' || c == ' ' || c == '\0');
 }
 
-bool Scanner::isComment(char c) const
+bool Scanner::isComment(const char c) const
 {
     return (c == '/' && peek() == '/');
 }
 
-bool Scanner::isSingleCharacterToken(char c)
+bool Scanner::isSingleCharacterToken(const char c)
 {
-    static const std::unordered_set<char> validChars = {
-        '(', ')', '{', '}', ',', '.', '-', '+', ';', '*', '/', '<', '>', '='
-    };
-
     return validChars.contains(c);
 }
 
-bool Scanner::isDoubleCharacterTokens(const char c, TokenType& result)
+bool Scanner::isDoubleCharacterTokens(const char c, TokenType& tokenType)
 {
     using enum TokenType;
 
@@ -148,15 +149,15 @@ bool Scanner::isDoubleCharacterTokens(const char c, TokenType& result)
     {
         switch (c)
         {
-        case '!': result = BANG_EQUAL;
+        case '!': tokenType = BANG_EQUAL;
             break;
-        case '=': result = EQUAL_EQUAL;
+        case '=': tokenType = EQUAL_EQUAL;
             break;
-        case '<': result = LESS_EQUAL;
+        case '<': tokenType = LESS_EQUAL;
             break;
-        case '>': result = GREATER_EQUAL;
+        case '>': tokenType = GREATER_EQUAL;
             break;
-        default: result = INVALID;
+        default: tokenType = INVALID;
         }
 
         return true;
@@ -165,14 +166,14 @@ bool Scanner::isDoubleCharacterTokens(const char c, TokenType& result)
     return false;
 }
 
-char Scanner::advance()
+char Scanner::getNextChar()
 {
     return source[currentIndex++];
 }
 
-void Scanner::addToken(TokenType type)
+void Scanner::addToken(const TokenType tokenType)
 {
-    addToken(type, "");
+    addToken(tokenType, "");
 }
 
 void Scanner::addToken(TokenType type, const std::string& literal)
@@ -181,12 +182,16 @@ void Scanner::addToken(TokenType type, const std::string& literal)
     tokens.emplace_back(type, text, literal, lineNumber);
 }
 
-bool Scanner::match(char expected)
+bool Scanner::match(const char expected)
 {
     if (isAtEnd())
+    {
         return false;
+    }
     if (source[currentIndex] != expected)
+    {
         return false;
+    }
 
     currentIndex++;
     return true;
@@ -195,14 +200,20 @@ bool Scanner::match(char expected)
 char Scanner::peek() const
 {
     if (isAtEnd())
+    {
         return '\0';
+    }
+
     return source[currentIndex];
 }
 
 char Scanner::peekNext() const
 {
     if (currentIndex + 1 >= source.length())
+    {
         return '\0';
+    }
+
     return source[currentIndex + 1];
 }
 
@@ -211,8 +222,10 @@ void Scanner::handleStringLiteral()
     while (peek() != '"' && !isAtEnd())
     {
         if (peek() == '\n')
+        {
             lineNumber++;
-        advance();
+        }
+        getNextChar();
     }
 
     if (isAtEnd())
@@ -222,46 +235,48 @@ void Scanner::handleStringLiteral()
     }
 
     // The closing "
-    advance();
+    getNextChar();
 
     // Trim the surrounding quotes.
-    std::string value =
-        source.substr(startIndex + 1, currentIndex - startIndex - 2); // @NOTE: Is this correct?
+    const std::string value =
+        source.substr(startIndex + 1, currentIndex - startIndex - 2);
     addToken(TokenType::STRING, value);
 }
 
 void Scanner::handleNumberLiteral()
 {
     while (isDigit(peek()))
-        advance();
+    {
+        getNextChar();
+    }
 
     // Look for a fractional part.
     if (peek() == '.' && isDigit(peekNext()))
     {
         // Consume the "."
-        advance();
+        getNextChar();
 
         while (isDigit(peek()))
-            advance();
+        {
+            getNextChar();
+        }
     }
 
-    double value;
-    std::stringstream ss(source.substr(startIndex, currentIndex - startIndex));
-    ss >> value;
+    const std::stringstream ss(source.substr(startIndex, currentIndex - startIndex));
     addToken(TokenType::NUMBER, ss.str());
 }
 
-bool Scanner::isDigit(char c) const
+bool Scanner::isDigit(const char c)
 {
     return c >= '0' && c <= '9';
 }
 
-bool Scanner::isAlphabetic(char c) const
+bool Scanner::isAlphabetic(const char c)
 {
     return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_');
 }
 
-bool Scanner::isAlphanumeric(char c) const
+bool Scanner::isAlphanumeric(const char c)
 {
     return isAlphabetic(c) || isDigit(c);
 }
@@ -269,13 +284,14 @@ bool Scanner::isAlphanumeric(char c) const
 void Scanner::handleIdentifierLiteral()
 {
     while (isAlphanumeric(peek()))
-        advance();
+    {
+        getNextChar();
+    }
 
-    std::string text = source.substr(startIndex, currentIndex - startIndex);
+    const std::string text = source.substr(startIndex, currentIndex - startIndex);
     TokenType type;
 
-    if (auto search = keywordMappings.find(text);
-        search != keywordMappings.end())
+    if (const auto search = keywordMappings.find(text); search != keywordMappings.end())
     {
         // There was a keyword found
         type = search->second;
