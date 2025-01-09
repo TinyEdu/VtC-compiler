@@ -122,7 +122,7 @@ std::any Interpreter::visit(Binary* expression)
 std::any Interpreter::visit(Literal* expression)
 {
   // @TODO: ??? return static_cast<Expression*>(expression);
-  return expression;
+  return static_cast<Expression*>(expression);
 }
 
 std::any Interpreter::visit(Grouping* expression)
@@ -278,10 +278,10 @@ std::any Interpreter::visit(PrintStatement* statement)
 
 std::any Interpreter::visit(VarStatement* statement)
 {
+  // @TODO: 2025 - tutaj wywala std any bad cast
   if (statement->initializer != nullptr)
   {
-    Expression* value = nullptr;
-    value = evaluate<Expression*>(statement->initializer);
+    auto value = evaluate<Expression*>(statement->initializer);
     environment->define(statement->name.lexeme, value);
   }
   else

@@ -23,7 +23,8 @@ std::vector<std::unique_ptr<Statement>> Parser::parse()
 
     while (!isAtEnd())
     {
-        statements.push_back(std::unique_ptr<Statement>(declaration()));
+        auto a = declaration();
+        statements.push_back(std::unique_ptr<Statement>(a));
     }
 
     return statements;
