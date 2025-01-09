@@ -1,17 +1,31 @@
 project(vtc)
 
 set(HEADER_FILES
+        # LogManager
         LogManager/LogManager.h
+
+        # Compiler
         Compiler/Compiler.h
+
+        # Parser
         Parser/Parser.h
+        Parser/ParseError.h
+        Parser/ParserBase.h
+
+        # Scanner
         Scanner/Scanner.h
+        Scanner/ErrorHandler.h
+
+        # Token
         Token/Token.h
         Token/TokenType.h
-        Scanner/ErrorHandler.h
         Token/TokenTypeMappings.h
-        Statements/Statement.h
-        Parser/ParseError.h
+
+        # Visitor
         Visitor/Visitor.h
+        Visitor/OperationsDispatcher.h
+
+        # Expressions
         Expressions/Expression.h
         Expressions/Assign.h
         Expressions/Binary.h
@@ -26,7 +40,9 @@ set(HEADER_FILES
         Expressions/Literals/LiteralFloat.h
         Expressions/Literals/LiteralInt.h
         Expressions/Literals/LiteralString.h
-        Visitor/OperationsDispatcher.h
+
+        # Statements
+        Statements/Statement.h
         Statements/ExpressionStatement.h
         Statements/IfStatement.h
         Statements/WhileStatement.h
@@ -37,16 +53,46 @@ set(HEADER_FILES
         Statements/VarStatement.h
         Statements/ReturnStatement.h
         Statements/StatementsWorld.h
-        Parser/ParserBase.h
+
+        # Interpreter
+        Interpreter/Interpreter.h
+        Interpreter/ArityMismatchException.h
+        Interpreter/NonBooleanConditionException.h
+        Interpreter/MissingInitializerException.h
+
+        # Environment
+        Environment/Environment.h
+        Environment/EnvironmentException.h
+
+        # Callable
+        Callable/Callable.h
+        Callable/Natives/ClockCallable.h
+        Callable/Natives/FunctionCallable.h
+        Callable/Return.h
 )
 
 set(SOURCE_FILES
+        # LogManager
         LogManager/LogManager.cpp
+
+        # Compiler
         Compiler/Compiler.cpp
+
+        # Parser
         Parser/Parser.cpp
-        Token/Token.cpp
+        Parser/ParserBase.cpp
+
+        # Scanner
         Scanner/Scanner.cpp
         Scanner/ErrorHandler.cpp
+
+        # Token
+        Token/Token.cpp
+
+        # Visitor
+        Visitor/OperationsDispatcher.cpp
+
+        # Expressions
         Expressions/Assign.cpp
         Expressions/Binary.cpp
         Expressions/Call.cpp
@@ -54,14 +100,15 @@ set(SOURCE_FILES
         Expressions/Logical.cpp
         Expressions/Unary.cpp
         Expressions/Variable.cpp
-        Statements/Statement.cpp
         Expressions/Literals/Literal.cpp
         Expressions/Literals/LiteralBool.cpp
         Expressions/Literals/LiteralDouble.cpp
         Expressions/Literals/LiteralFloat.cpp
         Expressions/Literals/LiteralInt.cpp
         Expressions/Literals/LiteralString.cpp
-        Visitor/OperationsDispatcher.cpp
+
+        # Statements
+        Statements/Statement.cpp
         Statements/ExpressionStatement.cpp
         Statements/IfStatement.cpp
         Statements/WhileStatement.cpp
@@ -72,7 +119,19 @@ set(SOURCE_FILES
         Statements/VarStatement.cpp
         Statements/ReturnStatement.cpp
         Statements/StatementsWorld.cpp
-        Parser/ParserBase.cpp
+
+        # Interpreter
+        Interpreter/Interpreter.cpp
+        Interpreter/ArityMismatchException.cpp
+        Interpreter/NonBooleanConditionException.cpp
+
+        # Callable
+        Callable/Callable.cpp
+        Callable/Natives/ClockCallable.cpp
+        Callable/Natives/FunctionCallable.cpp
+        Callable/Return.cpp
+        Environment/Environment.cpp
+        Environment/SymbolTable.cpp
 )
 
 add_library(vtc STATIC ${SOURCE_FILES} ${HEADER_FILES})

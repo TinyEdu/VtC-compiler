@@ -4,23 +4,14 @@
 #define VISITOR_H
 
 #include <Expressions/ExpressionsWorld.h>
-#include <Statements/Statement.h>
+#include <Statements/StatementsWorld.h>
 
-#include <variant>
 #include <any>
-
-class ReturnStatement;
-class WhileStatement;
-class IfStatement;
-class ClassStatement;
-class FunctionStatement;
-class BlockStatement;
-class VarStatement;
-class PrintStatement;
-class ExpressionStatement;
 
 class BaseVisitor
 {
+public:
+    virtual ~BaseVisitor() = default;
 };
 
 class Visitor : public BaseVisitor

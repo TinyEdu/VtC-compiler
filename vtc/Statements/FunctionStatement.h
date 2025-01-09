@@ -9,7 +9,7 @@ public:
     FunctionStatement(Token name, std::vector<Token> params,
                       std::vector<Statement*> body);
 
-    ~FunctionStatement();
+    ~FunctionStatement() override;
 
     std::any accept(StatementVisitor* visitor) override;
 
