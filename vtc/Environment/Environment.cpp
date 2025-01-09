@@ -1,42 +1,43 @@
 #include "Environment.h"
 #include "EnvironmentException.h"
 
-inline Environment::Environment(): globalVariables(new SymbolTable<Expression*>()),
-                                   localVariables(new SymbolTable<Expression*>()),
-                                   functions(new SymbolTable<Callable*>())
+Environment::Environment() : globalVariables(new SymbolTable<Expression*>()),
+                             localVariables(new SymbolTable<Expression*>()),
+                             functions(new SymbolTable<Callable*>())
 {
 }
 
-inline Environment::Environment(SymbolTable<Expression*>* globalVariables): globalVariables(globalVariables),
+
+Environment::Environment(SymbolTable<Expression*>* globalVariables): globalVariables(globalVariables),
                                                                             localVariables(
                                                                                 new SymbolTable<Expression*>()),
                                                                             functions(new SymbolTable<Callable*>())
 {
 }
 
-inline Environment::~Environment()
+Environment::~Environment()
 {
     delete localVariables;
     delete globalVariables;
     delete functions;
 }
 
-inline void Environment::define(const std::string& name, Expression* value) const
+void Environment::define(const std::string& name, Expression* value) const
 {
     localVariables->define(name, value);
 }
 
-inline void Environment::defineGlobal(const std::string& name, Expression* value) const
+void Environment::defineGlobal(const std::string& name, Expression* value) const
 {
     globalVariables->define(name, value);
 }
 
-inline void Environment::define(const std::string& name, Callable* value) const
+void Environment::define(const std::string& name, Callable* value) const
 {
     functions->define(name, value);
 }
 
-inline void Environment::assign(const std::string& name, Expression* value) const
+void Environment::assign(const std::string& name, Expression* value) const
 {
     if (localVariables->lookup(name) != nullptr)
     {
@@ -51,7 +52,7 @@ inline void Environment::assign(const std::string& name, Expression* value) cons
     throw EnvironmentException("Undefined variable '" + name + "'.");
 }
 
-inline void Environment::assign(const std::string& name, Callable* value) const
+void Environment::assign(const std::string& name, Callable* value) const
 {
     if (functions->lookup(name) != nullptr)
     {
@@ -66,21 +67,8 @@ inline void Environment::assign(const std::string& name, Callable* value) const
     throw EnvironmentException("Undefined variable '" + name + "'.");
 }
 
-template <typename T>
-T Environment::lookup(const std::string& name)
-{
-    if constexpr (std::is_same_v<T, Expression*>)
-    {
-        return lookupExpression(name);
-    }
-    else if constexpr (std::is_same_v<T, Callable*>)
-    {
-        return lookupCallable(name);
-    }
-    throw EnvironmentException("Type mismatch for variable '" + name + "'. Expected type: " + typeid(T).name());
-}
 
-inline Expression* Environment::lookupExpression(const std::string& name) const
+Expression* Environment::lookupExpression(const std::string& name) const
 {
     if (localVariables->lookup(name) != nullptr)
     {
@@ -97,7 +85,7 @@ inline Expression* Environment::lookupExpression(const std::string& name) const
     throw EnvironmentException("Undefined variable '" + name + "'.");
 }
 
-inline Callable* Environment::lookupCallable(const std::string& name) const
+Callable* Environment::lookupCallable(const std::string& name) const
 {
     if (functions->lookup(name) != nullptr)
     {

@@ -1,22 +1,23 @@
-//
-// Created by nikod on 15/12/2024.
-//
-
 #include "Compiler.h"
 
-#include <utility>
-
+#include "Interpreter/Interpreter.h"
 #include "LogManager/LogManager.h"
+#include "Scanner/Scanner.h"
+#include "Parser/Parser.h"
 
-// Define the static member variable
+#include <fstream>
+#include <memory>
+#include <sstream>
+#include <stdexcept>
+
+Interpreter Compiler::interpreter;
+
 bool Compiler::hadError = false;
 bool Compiler::hadRuntimeError = false;
 
-//Interpreter Compiler::interpreter;
-
 Compiler::Compiler()
 {
-    //interpreter = Interpreter();
+    interpreter = Interpreter();
     hadRuntimeError = false;
     hadError = false;
 }
@@ -36,7 +37,7 @@ void Compiler::runFile(const char* file)
     std::stringstream buffer;
     buffer << fileStream.rdbuf();
 
-    Compiler::run(buffer.str());
+    run(buffer.str());
 
     if (hadError)
     {
@@ -63,32 +64,32 @@ void Compiler::runPrompt()
             LogManager::log() << "Ending REPL compilation...\n";
             break;
         }
-        else if (line.empty())
+
+        if (line.empty())
         {
-            continue; // If the file is empty, skip it
+            // If the file is empty, skip it
+            continue;
         }
-        else
-        {
-            Compiler::run(line);
-            hadError = false;
-        }
+
+        Compiler::run(line);
+        hadError = false;
     }
 }
 
-void Compiler::run(const std::string_view source)
+void Compiler::run(const std::string& source)
 {
     Scanner scanner;
-    std::vector<Token> tokens = scanner.scan(source);
+    const std::vector<Token> tokens = scanner.scan(source);
 
     Parser parser(tokens);
-    std::vector<std::unique_ptr<Statement>> statements = parser.parse();
+    const std::vector<std::unique_ptr<Statement>> statements = parser.parse();
 
     if (hadError)
     {
         return;
     }
 
-    // interpreter.interpret(statements);
+    interpreter.interpret(statements);
 }
 
 void Compiler::runtimeError(const std::runtime_error& error)

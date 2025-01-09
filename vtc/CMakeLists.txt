@@ -1,76 +1,5 @@
 project(vtc)
 
-set(HEADER_FILES
-        # LogManager
-        LogManager/LogManager.h
-
-        # Compiler
-        Compiler/Compiler.h
-
-        # Parser
-        Parser/Parser.h
-        Parser/ParseError.h
-        Parser/ParserBase.h
-
-        # Scanner
-        Scanner/Scanner.h
-        Scanner/ErrorHandler.h
-
-        # Token
-        Token/Token.h
-        Token/TokenType.h
-        Token/TokenTypeMappings.h
-
-        # Visitor
-        Visitor/Visitor.h
-        Visitor/OperationsDispatcher.h
-
-        # Expressions
-        Expressions/Expression.h
-        Expressions/Assign.h
-        Expressions/Binary.h
-        Expressions/Call.h
-        Expressions/Grouping.h
-        Expressions/Logical.h
-        Expressions/Unary.h
-        Expressions/Variable.h
-        Expressions/Literals/Literal.h
-        Expressions/Literals/LiteralBool.h
-        Expressions/Literals/LiteralDouble.h
-        Expressions/Literals/LiteralFloat.h
-        Expressions/Literals/LiteralInt.h
-        Expressions/Literals/LiteralString.h
-
-        # Statements
-        Statements/Statement.h
-        Statements/ExpressionStatement.h
-        Statements/IfStatement.h
-        Statements/WhileStatement.h
-        Statements/PrintStatement.h
-        Statements/BlockStatement.h
-        Statements/FunctionStatement.h
-        Statements/ClassStatement.h
-        Statements/VarStatement.h
-        Statements/ReturnStatement.h
-        Statements/StatementsWorld.h
-
-        # Interpreter
-        Interpreter/Interpreter.h
-        Interpreter/ArityMismatchException.h
-        Interpreter/NonBooleanConditionException.h
-        Interpreter/MissingInitializerException.h
-
-        # Environment
-        Environment/Environment.h
-        Environment/EnvironmentException.h
-
-        # Callable
-        Callable/Callable.h
-        Callable/Natives/ClockCallable.h
-        Callable/Natives/FunctionCallable.h
-        Callable/Return.h
-)
-
 set(SOURCE_FILES
         # LogManager
         LogManager/LogManager.cpp
@@ -130,9 +59,11 @@ set(SOURCE_FILES
         Callable/Natives/ClockCallable.cpp
         Callable/Natives/FunctionCallable.cpp
         Callable/Return.cpp
+
+        # Environment
         Environment/Environment.cpp
-        Environment/SymbolTable.cpp
 )
 
-add_library(vtc STATIC ${SOURCE_FILES} ${HEADER_FILES})
+add_library(vtc STATIC ${SOURCE_FILES})
 target_compile_definitions(vtc PRIVATE DEBUG_MODE)
+set(CMAKE_VERBOSE_MAKEFILE ON)

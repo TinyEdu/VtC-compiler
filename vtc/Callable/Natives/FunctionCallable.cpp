@@ -27,7 +27,7 @@ std::any FunctionCallable::call(Interpreter* interpreter, std::span<Expression* 
 
     try
     {
-        interpreter->executeBlock(declaration->body, environment);
+        interpreter->execute(declaration->body, environment);
     }
     catch (const Return& returnedValue)
     {

@@ -1,6 +1,8 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
+#include <memory>
+
 #include "Environment/Environment.h"
 #include "Visitor/Visitor.h"
 
@@ -38,15 +40,18 @@ public:
 
     // ------------------------------------------------
 
-    template <typename T>
-    T evaluate(Expression* expr);
-
     std::any evaluate(Expression* statement);
 
     void interpret(Expression* expression);
-    void interpret(const std::vector<Statement*>& statements);
-    void executeBlock(const std::vector<Statement*>& statements, Environment* env);
+    void interpret(const std::vector<std::unique_ptr<Statement>>& statements);
+    void execute(const std::vector<Statement*>& statements, Environment* env);
     void execute(Statement* statement);
+
+    template <typename T>
+    T evaluate(Expression* expr)
+    {
+        return std::any_cast<T>(expr->accept(this));
+    }
 };
 
 #endif  // INTERPRETER_H

@@ -28,12 +28,6 @@ Interpreter::Interpreter()
 
 Interpreter::~Interpreter() = default;
 
-template <typename T>
-T Interpreter::evaluate(Expression* expr)
-{
-  return std::any_cast<T>(expr->accept(this));
-}
-
 std::any Interpreter::evaluate(Expression* statement)
 {
   return statement->accept(this);
@@ -53,7 +47,7 @@ void Interpreter::interpret(Expression* expression)
   }
 }
 
-void Interpreter::interpret(const std::vector<Statement*>& statements)
+void Interpreter::interpret(const std::vector<std::unique_ptr<Statement>>& statements)
 {
   try
   {
@@ -69,7 +63,7 @@ void Interpreter::interpret(const std::vector<Statement*>& statements)
 }
 
 
-void Interpreter::executeBlock(const std::vector<Statement*>& statements, Environment* env)
+void Interpreter::execute(const std::vector<Statement*>& statements, Environment* env)
 {
   Environment* previous = environment;
   /*
@@ -300,7 +294,7 @@ std::any Interpreter::visit(VarStatement* statement)
 
 std::any Interpreter::visit(BlockStatement* statement)
 {
-  executeBlock(statement->statements, new Environment(environment->globalVariables));
+  execute(statement->statements, new Environment(environment->globalVariables));
 
   return {};
 }
