@@ -13,7 +13,7 @@ public:
     Interpreter();
     ~Interpreter() override;
 
-    Environment* environment;
+    std::shared_ptr<Environment> environment;
 
     // ------------------------------------------------
     // Visitor Interface Methods

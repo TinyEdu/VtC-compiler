@@ -19,7 +19,7 @@
 
 Interpreter::Interpreter()
 {
-    environment = new Environment();
+    environment = std::make_shared<Environment>();
 
     // define a builtin clock function
     environment->define("clock", std::make_shared<ClockCallable>());
@@ -34,8 +34,13 @@ std::shared_ptr<Expression> Interpreter::evaluateExpression(const std::shared_pt
 
 std::shared_ptr<Literal> Interpreter::evaluateLiteral(const std::shared_ptr<Expression>& literal)
 {
-    const auto result = literal->accept(*this);
-    return std::dynamic_pointer_cast<Literal>(result);
+    auto result = literal->accept(*this);
+    auto castedResult = std::dynamic_pointer_cast<Literal>(result);
+    if (!castedResult)
+    {
+        throw std::runtime_error("evaluateLiteral: Invalid cast, type mismatch. Result is not a Literal.");
+    }
+    return castedResult;
 }
 
 void Interpreter::interpret(const std::shared_ptr<Expression>& expression)
@@ -122,13 +127,12 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Binary> expressio
 
     const auto result = left->process(right, expression->op);
 
-    return std::shared_ptr<Expression>(result);
+    return result;
 }
 
 std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Literal> expression)
 {
-    // @TODO: ??? return static_cast<std::shared_ptr<Expression>>(expression);
-    return std::shared_ptr<Expression>(expression);
+    return expression;
 }
 
 std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Grouping> expression)
@@ -244,7 +248,6 @@ std::any Interpreter::visit(std::shared_ptr<PrintStatement> statement)
     std::stringstream ss;
     const auto lit = evaluateLiteral(statement->expression);
 
-    // @TODO: ??? comment - bad any cast
     if (const auto literal_string = std::dynamic_pointer_cast<LiteralString>(lit))
     {
         ss << literal_string->value;
@@ -283,7 +286,6 @@ std::any Interpreter::visit(std::shared_ptr<PrintStatement> statement)
 
 std::any Interpreter::visit(std::shared_ptr<VarStatement> statement)
 {
-    // @TODO: 2025 - tutaj wywala std any bad cast
     if (statement->initializer != nullptr)
     {
         const auto value = evaluateLiteral(statement->initializer);

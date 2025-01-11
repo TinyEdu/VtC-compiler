@@ -1,14 +1,13 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
+#include "SymbolTable.h"
+
 #include <any>
 #include <memory>
 
-#include "SymbolTable.h"
-
 
 class Callable;
-
 class Expression;
 
 class Environment

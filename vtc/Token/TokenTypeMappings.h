@@ -100,7 +100,8 @@ const std::unordered_map<char, TokenType> singleCharTokensMappings = {
     {'<', TokenType::LESS},
     {'>', TokenType::GREATER},
     {'=', TokenType::EQUAL},
-    {'/', TokenType::SLASH}
+    {'/', TokenType::SLASH},
+    {'!', TokenType::BANG}
 };
 
 #endif //TOKENTYPEMAPPINGS_H

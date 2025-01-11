@@ -15,9 +15,7 @@ Environment::Environment(SymbolTable<std::shared_ptr<Expression>>& globalVars)
 {
 }
 
-Environment::~Environment()
-{
-}
+Environment::~Environment() = default;
 
 void Environment::define(const std::string& name, std::shared_ptr<Expression> value) const
 {
@@ -79,6 +77,7 @@ std::shared_ptr<Expression> Environment::lookupExpression(const std::string& nam
     {
         return enclosing->lookupExpression(name);
     }
+
     throw EnvironmentException("Undefined variable '" + name + "'.");
 }
 

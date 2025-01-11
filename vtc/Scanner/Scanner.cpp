@@ -3,7 +3,7 @@
 #include "Token/TokenTypeMappings.h"
 
 static const std::unordered_set validChars = {
-    '(', ')', '{', '}', ',', '.', '-', '+', ';', '*', '/', '<', '>', '='
+    '(', ')', '{', '}', ',', '.', '-', '+', ';', '*', '/', '<', '>', '=', '!'
 };
 
 std::vector<Token> Scanner::scan(const std::string_view inputSource)

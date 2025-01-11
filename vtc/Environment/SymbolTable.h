@@ -1,9 +1,11 @@
 #ifndef SYMBOLTABLE_H
 #define SYMBOLTABLE_H
 
+#include "EnvironmentException.h"
+
 #include <map>
 #include <string>
-#include "EnvironmentException.h"
+
 
 template <typename T>
 class SymbolTable
@@ -20,6 +22,11 @@ public:
   T lookup(const std::string& name) const
   {
     auto it = env.find(name);
+    if (it == env.end())
+    {
+      throw EnvironmentException("No such symbol");
+    }
+
     return (it != env.end()) ? it->second : nullptr;
   }
 
