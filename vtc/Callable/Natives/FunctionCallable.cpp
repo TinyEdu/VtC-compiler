@@ -18,10 +18,11 @@ int FunctionCallable::arity()
     return static_cast<int>(declaration->params.size());
 }
 
-std::shared_ptr<Expression> FunctionCallable::call(Interpreter* interpreter,
+std::shared_ptr<Expression> FunctionCallable::call(Interpreter& interpreter,
                                                    std::span<std::shared_ptr<Expression> const> arguments)
 {
-    auto environment = std::make_shared<Environment>(*interpreter->environment->globalVariables);
+    auto environment = std::make_shared<Environment>(interpreter.environment->globalVariables,
+        interpreter.environment->functions);
 
     for (int i = 0; i < declaration->params.size(); i++)
     {
@@ -30,7 +31,7 @@ std::shared_ptr<Expression> FunctionCallable::call(Interpreter* interpreter,
 
     try
     {
-        interpreter->execute(declaration->body, environment);
+        interpreter.execute(declaration->body, environment);
     }
     catch (const Return& returnedValue)
     {

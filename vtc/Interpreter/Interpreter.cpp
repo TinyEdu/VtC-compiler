@@ -32,14 +32,35 @@ std::shared_ptr<Expression> Interpreter::evaluateExpression(const std::shared_pt
     return expression->accept(*this);
 }
 
-std::shared_ptr<Literal> Interpreter::evaluateLiteral(const std::shared_ptr<Expression>& literal)
+std::shared_ptr<Literal> Interpreter::evaluateLiteral(const std::shared_ptr<Expression>& expression)
 {
-    auto result = literal->accept(*this);
+    // Evaluate the expression first
+    auto result = expression->accept(*this);
+
+    // Check if the result is a Literal
     auto castedResult = std::dynamic_pointer_cast<Literal>(result);
     if (!castedResult)
     {
-        throw std::runtime_error("evaluateLiteral: Invalid cast, type mismatch. Result is not a Literal.");
+        // Handle non-literal results by recursively evaluating them
+        if (auto binaryExpr = std::dynamic_pointer_cast<Binary>(result))
+        {
+            return evaluateLiteral(binaryExpr);
+        }
+        else if (auto variableExpr = std::dynamic_pointer_cast<Variable>(result))
+        {
+            return environment->lookup<std::shared_ptr<Literal>>(variableExpr->name.lexeme);
+        }
+        else if (auto callExpr = std::dynamic_pointer_cast<Call>(result))
+        {
+            auto callResult = callExpr->accept(*this);
+            return std::dynamic_pointer_cast<Literal>(callResult);
+        }
+        else
+        {
+            throw std::runtime_error("evaluateLiteral: Invalid cast, type mismatch. Result is not a Literal.");
+        }
     }
+
     return castedResult;
 }
 
@@ -76,7 +97,7 @@ void Interpreter::interpret(const std::vector<std::shared_ptr<Statement>>& state
 void Interpreter::execute(const std::vector<std::shared_ptr<Statement>>& statements,
                           const std::shared_ptr<Environment>& env)
 {
-    Environment* previous = environment;
+    const std::shared_ptr<Environment> previous = environment;
     /*
     Manually changing and restoring a mutable environment field feels inelegant.
     Another classic approach is to explicitly pass the environment as a parameter to each visit method.
@@ -87,21 +108,21 @@ void Interpreter::execute(const std::vector<std::shared_ptr<Statement>>& stateme
     ~ https://craftinginterpreters.com/statements-and-state.html
     */
 
-    try
-    {
-        environment = env.get();
+    // try
+    // {
+        environment = env;
 
         // Execute the block
         for (auto& statement : statements)
         {
             statement->accept(this);
         }
-    }
-    catch (const std::exception& e)
-    {
-        this->environment = previous;
-        LogManager::crit() << e.what();
-    }
+    // }
+    // catch (const std::exception& e)
+    // {
+    //     this->environment = previous;
+    //     LogManager::crit() << e.what();
+    // }
 
     environment = previous;
 }
@@ -189,10 +210,21 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Logical> expressi
 std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Call> expression)
 {
     // Look up the function
-    const std::string functionName = std::dynamic_pointer_cast<Variable>(expression->callee)->name.lexeme;
-    const std::shared_ptr<Callable> function = std::dynamic_pointer_cast<Callable>(
-        std::any_cast<std::shared_ptr<Callable>>(
-            environment->lookup<std::shared_ptr<Callable>>(functionName)));
+    const auto variableExpr = std::dynamic_pointer_cast<Variable>(expression->callee);
+    if (!variableExpr)
+    {
+        throw std::runtime_error("Callee is not a variable.");
+    }
+
+    const std::string functionName = variableExpr->name.lexeme;
+    auto callableOpt = environment->lookup<std::shared_ptr<Callable>>(functionName);
+
+    if (!callableOpt)
+    {
+        throw EnvironmentException("Function '" + functionName + "' is not defined.");
+    }
+
+    std::shared_ptr<Callable> function = callableOpt;
 
     std::vector<std::shared_ptr<Expression>> arguments;
 
@@ -209,8 +241,10 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Call> expression)
         );
     }
 
-    return function->call(this, arguments);
+    return function->call(*this, arguments);
 }
+
+
 
 std::any Interpreter::visit(std::shared_ptr<IfStatement> statement)
 {
@@ -301,7 +335,7 @@ std::any Interpreter::visit(std::shared_ptr<VarStatement> statement)
 
 std::any Interpreter::visit(std::shared_ptr<BlockStatement> statement)
 {
-    execute(statement->statements, std::make_shared<Environment>(*environment->globalVariables));
+    execute(statement->statements, std::make_shared<Environment>(environment->globalVariables, environment->functions));
 
     return {};
 }

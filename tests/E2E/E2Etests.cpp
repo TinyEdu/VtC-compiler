@@ -61,25 +61,25 @@ TEST(E2E, ConditionalStatements)
     ASSERT_TRUE(result);
 }
 
-// TEST(E2E, ForLoop)
-// {
-//     const std::string input_path = R"(06\input_test.nk)";
-//     const std::string expected_output_path = R"(06\expected_output.nk)";
-//
-//     const bool result = E2ETester::runTest(input_path, expected_output_path);
-//
-//     ASSERT_TRUE(result);
-// }
+TEST(E2E, ForLoop)
+{
+    const std::string input_path = R"(06\input_test.nk)";
+    const std::string expected_output_path = R"(06\expected_output.nk)";
 
-// TEST(E2E, WhileLoop)
-// {
-//     const std::string input_path = R"(07\input_test.nk)";
-//     const std::string expected_output_path = R"(07\expected_output.nk)";
-//
-//     const bool result = E2ETester::runTest(input_path, expected_output_path);
-//
-//     ASSERT_TRUE(result);
-// }
+    const bool result = E2ETester::runTest(input_path, expected_output_path);
+
+    ASSERT_TRUE(result);
+}
+
+TEST(E2E, WhileLoop)
+{
+    const std::string input_path = R"(07\input_test.nk)";
+    const std::string expected_output_path = R"(07\expected_output.nk)";
+
+    const bool result = E2ETester::runTest(input_path, expected_output_path);
+
+    ASSERT_TRUE(result);
+}
 
 TEST(E2E, FunctionDeclarationAndCall)
 {

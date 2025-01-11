@@ -16,11 +16,13 @@ public:
     std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>> globalVariables;
     std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>> localVariables;
     std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>> functions;
-    Environment* enclosing = nullptr;
+
+    std::shared_ptr<Environment> enclosing = nullptr;
 
     Environment();
-    explicit Environment(SymbolTable<std::shared_ptr<Expression>>& globalVars);
-
+    explicit Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars);
+    Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars,
+        std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>>& functions);
 
     ~Environment();
 
@@ -40,7 +42,7 @@ private:
 public:
     // @TODO: could be improved
     template <typename T>
-    [[nodiscard]] std::any lookup(const std::string& name) const
+    [[nodiscard]] T lookup(const std::string& name) const
     {
         if constexpr (std::is_same_v<T, std::shared_ptr<Expression>>)
         {

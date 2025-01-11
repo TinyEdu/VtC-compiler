@@ -28,6 +28,10 @@ public:
     std::shared_ptr<Expression> visit(std::shared_ptr<Logical> expr) override;
     std::shared_ptr<Expression> visit(std::shared_ptr<Call> expr) override;
 
+    // ------------------------------------------------
+    // StatementVisitor Interface Methods
+    // ------------------------------------------------
+
     std::any visit(std::shared_ptr<ExpressionStatement> statement) override;
     std::any visit(std::shared_ptr<IfStatement> statement) override;
     std::any visit(std::shared_ptr<PrintStatement> statement) override;

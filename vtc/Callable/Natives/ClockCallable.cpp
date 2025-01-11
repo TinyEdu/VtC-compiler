@@ -13,7 +13,7 @@ int ClockCallable::arity()
     return 0;
 }
 
-std::shared_ptr<Expression> ClockCallable::call(Interpreter* interpreter,
+std::shared_ptr<Expression> ClockCallable::call(Interpreter& interpreter,
                                                 std::span<std::shared_ptr<Expression> const> arguments)
 {
     LogManager::log() << "ClockCallable::call\n";

@@ -16,6 +16,11 @@ public:
 
   void define(const std::string& name, T value)
   {
+    if (!value)
+    {
+      throw std::runtime_error("Attempting to define a null value in the environment");
+    }
+
     env[name] = value;
   }
 
@@ -27,7 +32,7 @@ public:
       throw EnvironmentException("No such symbol");
     }
 
-    return (it != env.end()) ? it->second : nullptr;
+    return it->second;
   }
 
   void assign(const std::string& name, T value)

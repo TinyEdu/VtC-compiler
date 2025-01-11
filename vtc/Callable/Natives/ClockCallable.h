@@ -12,7 +12,7 @@ public:
 
     int arity() override;
     std::shared_ptr<Expression>
-    call(Interpreter* interpreter, std::span<std::shared_ptr<Expression> const> arguments) override;
+    call(Interpreter& interpreter, std::span<std::shared_ptr<Expression> const> arguments) override;
 };
 
 #endif  // CLOCKFUNCTION_H

@@ -8,10 +8,18 @@ Environment::Environment()
 {
 }
 
-Environment::Environment(SymbolTable<std::shared_ptr<Expression>>& globalVars)
-    : globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>(globalVars)),
+Environment::Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars)
+    : globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>(*globalVars)),
       localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
       functions(std::make_shared<SymbolTable<std::shared_ptr<Callable>>>())
+{
+}
+
+Environment::Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars,
+    std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>>& functions)
+: globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>(*globalVars)),
+  localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
+  functions(std::make_shared<SymbolTable<std::shared_ptr<Callable>>>(*functions))
 {
 }
 
@@ -39,6 +47,11 @@ void Environment::assign(const std::string& name, std::shared_ptr<Expression> va
         localVariables->assign(name, value);
         return;
     }
+    if (globalVariables->lookup(name) != nullptr)
+    {
+        globalVariables->assign(name, value);
+        return;
+    }
     if (enclosing != nullptr)
     {
         enclosing->assign(name, value);
@@ -59,9 +72,8 @@ void Environment::assign(const std::string& name, std::shared_ptr<Callable> valu
         enclosing->assign(name, value);
         return;
     }
-    throw EnvironmentException("Undefined variable '" + name + "'.");
+    throw EnvironmentException("Undefined Callable '" + name + "'.");
 }
-
 
 std::shared_ptr<Expression> Environment::lookupExpression(const std::string& name) const
 {
