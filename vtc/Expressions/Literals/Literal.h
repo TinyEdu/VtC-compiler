@@ -36,7 +36,6 @@ public:
     virtual std::shared_ptr<Expression> process(std::shared_ptr<LiteralBool> expr, Token token) = 0;
     virtual std::shared_ptr<Expression> process(std::shared_ptr<LiteralDouble> expr, Token token) = 0;
     virtual std::shared_ptr<Expression> process(Token token) = 0;
-    // @TODO: change to smart pointers
 };
 
 #endif  // LITERAL_H

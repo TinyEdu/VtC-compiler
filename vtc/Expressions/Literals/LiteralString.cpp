@@ -9,12 +9,12 @@ LiteralString::LiteralString(std::string value): value(std::move(value))
 
 std::shared_ptr<Expression> LiteralString::accept(Visitor& visitor)
 {
-    return visitor.visit(shared_from_this());
+    return visitor.visit(std::dynamic_pointer_cast<LiteralBool>(shared_from_this()));
 }
 
 std::shared_ptr<Expression> LiteralString::process(std::shared_ptr<Literal> expr, Token token)
 {
-    return expr->process(shared_from_this(), token);
+    return expr->process(std::dynamic_pointer_cast<LiteralBool>(shared_from_this()), token);
 }
 
 std::shared_ptr<Expression> LiteralString::process(std::shared_ptr<LiteralInt> expr, Token token)

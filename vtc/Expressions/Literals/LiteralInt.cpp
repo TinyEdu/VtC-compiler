@@ -9,7 +9,7 @@ LiteralInt::LiteralInt(int value): value(value)
 
 std::shared_ptr<Expression> LiteralInt::accept(Visitor& visitor)
 {
-    return visitor.visit(shared_from_this());
+    return visitor.visit(std::dynamic_pointer_cast<LiteralBool>(shared_from_this()));
 }
 
 std::shared_ptr<Expression> LiteralInt::process(std::shared_ptr<Literal> expr, Token token)

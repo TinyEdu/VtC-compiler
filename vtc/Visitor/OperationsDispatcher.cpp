@@ -61,7 +61,7 @@ std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralFloat>
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralString> left,
                                                    std::shared_ptr<LiteralString> right)
 {
-    std::make_shared<LiteralString>(left->value + right->value);
+    return std::make_shared<LiteralString>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralBool> left,
@@ -74,19 +74,19 @@ std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralBool> 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralInt> left,
                                                    std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value + right->value);
+    return std::make_shared<LiteralFloat>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralDouble> left,
                                                    std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralDouble>(left->value + right->value);
+    return std::make_shared<LiteralDouble>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralFloat> left,
                                                    std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value + right->value);
+    return std::make_shared<LiteralFloat>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralString> left,
@@ -106,19 +106,19 @@ std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralBool> 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralInt> left,
                                                    std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value + right->value);
+    return std::make_shared<LiteralDouble>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralDouble> left,
                                                    std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value + right->value);
+    return std::make_shared<LiteralDouble>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralFloat> left,
                                                    std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value + right->value);
+    return std::make_shared<LiteralDouble>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralString> left,
@@ -137,19 +137,19 @@ std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralBool> 
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralInt> left, std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralInt>(left->value + right->value);
+    return std::make_shared<LiteralInt>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralDouble> left,
                                                    std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralDouble>(left->value + right->value);
+    return std::make_shared<LiteralDouble>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralFloat> left,
                                                    std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralFloat>(left->value + right->value);
+    return std::make_shared<LiteralFloat>(left->value + right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::add(std::shared_ptr<LiteralString> left,
@@ -240,19 +240,19 @@ std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralInt> left,
                                                         std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value - right->value);
+    return std::make_shared<LiteralFloat>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralDouble> left,
                                                         std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralDouble>(left->value - right->value);
+    return std::make_shared<LiteralDouble>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralFloat> left,
                                                         std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value - right->value);
+    return std::make_shared<LiteralFloat>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralString> left,
@@ -272,19 +272,19 @@ std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralInt> left,
                                                         std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value - right->value);
+    return std::make_shared<LiteralDouble>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralDouble> left,
                                                         std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value - right->value);
+    return std::make_shared<LiteralDouble>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralFloat> left,
                                                         std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value - right->value);
+    return std::make_shared<LiteralDouble>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralString> left,
@@ -304,19 +304,19 @@ std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralInt> left,
                                                         std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralInt>(left->value - right->value);
+    return std::make_shared<LiteralInt>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralDouble> left,
                                                         std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralDouble>(left->value - right->value);
+    return std::make_shared<LiteralDouble>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralFloat> left,
                                                         std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralFloat>(left->value - right->value);
+    return std::make_shared<LiteralFloat>(left->value - right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralString> left,
@@ -338,19 +338,19 @@ std::shared_ptr<Literal> OperationsDispatcher::subtract(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralInt> left,
                                                         std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralInt>(left->value * right->value);
+    return std::make_shared<LiteralInt>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralDouble> left,
                                                         std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralDouble>(left->value * right->value);
+    return std::make_shared<LiteralDouble>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralFloat> left,
                                                         std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralFloat>(left->value * right->value);
+    return std::make_shared<LiteralFloat>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralString> left,
@@ -405,19 +405,19 @@ std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralInt> left,
                                                         std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value * right->value);
+    return std::make_shared<LiteralFloat>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralDouble> left,
                                                         std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralDouble>(left->value * right->value);
+    return std::make_shared<LiteralDouble>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralFloat> left,
                                                         std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value * right->value);
+    return std::make_shared<LiteralFloat>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralString> left,
@@ -437,19 +437,19 @@ std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralInt> left,
                                                         std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value * right->value);
+    return std::make_shared<LiteralDouble>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralDouble> left,
                                                         std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value * right->value);
+    return std::make_shared<LiteralDouble>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralFloat> left,
                                                         std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value * right->value);
+    return std::make_shared<LiteralDouble>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralString> left,
@@ -469,19 +469,19 @@ std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralInt> left,
                                                         std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralInt>(left->value * right->value);
+    return std::make_shared<LiteralInt>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralDouble> left,
                                                         std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralDouble>(left->value * right->value);
+    return std::make_shared<LiteralDouble>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralFloat> left,
                                                         std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralFloat>(left->value * right->value);
+    return std::make_shared<LiteralFloat>(left->value * right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralString> left,
@@ -503,19 +503,19 @@ std::shared_ptr<Literal> OperationsDispatcher::multiply(std::shared_ptr<LiteralB
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralInt> left,
                                                       std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralInt>(left->value / right->value);
+    return std::make_shared<LiteralInt>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralDouble> left,
                                                       std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralDouble>(left->value / right->value);
+    return std::make_shared<LiteralDouble>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralFloat> left,
                                                       std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralFloat>(left->value / right->value);
+    return std::make_shared<LiteralFloat>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralString> left,
@@ -570,19 +570,19 @@ std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralBoo
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralInt> left,
                                                       std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value / right->value);
+    return std::make_shared<LiteralFloat>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralDouble> left,
                                                       std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralDouble>(left->value / right->value);
+    return std::make_shared<LiteralDouble>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralFloat> left,
                                                       std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(left->value / right->value);
+    return std::make_shared<LiteralFloat>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralString> left,
@@ -602,19 +602,19 @@ std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralBoo
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralInt> left,
                                                       std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value / right->value);
+    return std::make_shared<LiteralDouble>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralDouble> left,
                                                       std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value / right->value);
+    return std::make_shared<LiteralDouble>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralFloat> left,
                                                       std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(left->value / right->value);
+    return std::make_shared<LiteralDouble>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralString> left,
@@ -634,19 +634,19 @@ std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralBoo
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralInt> left,
                                                       std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralInt>(left->value / right->value);
+    return std::make_shared<LiteralInt>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralDouble> left,
                                                       std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralDouble>(left->value / right->value);
+    return std::make_shared<LiteralDouble>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralFloat> left,
                                                       std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralFloat>(left->value / right->value);
+    return std::make_shared<LiteralFloat>(left->value / right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralString> left,
@@ -668,19 +668,19 @@ std::shared_ptr<Literal> OperationsDispatcher::divide(std::shared_ptr<LiteralBoo
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralInt> left,
                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralDouble> left,
                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralFloat> left,
                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralString> left,
@@ -693,7 +693,7 @@ std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralStri
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralBool> left,
                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralInt> left,
@@ -720,7 +720,7 @@ std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralFloa
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralString> left,
                                                      std::shared_ptr<LiteralString> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralBool> left,
@@ -733,19 +733,19 @@ std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralBool
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralInt> left,
                                                      std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralDouble> left,
                                                      std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralFloat> left,
                                                      std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralString> left,
@@ -765,19 +765,19 @@ std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralBool
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralInt> left,
                                                      std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralDouble> left,
                                                      std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralFloat> left,
                                                      std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralString> left,
@@ -797,19 +797,19 @@ std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralBool
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralInt> left,
                                                      std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralDouble> left,
                                                      std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralFloat> left,
                                                      std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value == right->value);
+    return std::make_shared<LiteralBool>(left->value == right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralString> left,
@@ -831,19 +831,19 @@ std::shared_ptr<Literal> OperationsDispatcher::equal(std::shared_ptr<LiteralBool
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralString> left,
@@ -856,7 +856,7 @@ std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralBool> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralInt> left,
@@ -883,7 +883,7 @@ std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralString> left,
                                                          std::shared_ptr<LiteralString> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralBool> left,
@@ -896,19 +896,19 @@ std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralString> left,
@@ -928,19 +928,19 @@ std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralString> left,
@@ -960,19 +960,19 @@ std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value != right->value);
+    return std::make_shared<LiteralBool>(left->value != right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<LiteralString> left,
@@ -994,19 +994,19 @@ std::shared_ptr<Literal> OperationsDispatcher::not_equal(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralInt> left,
                                                             std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralDouble> left,
                                                             std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralFloat> left,
                                                             std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralString> left,
@@ -1019,7 +1019,7 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<Lite
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralBool> left,
                                                             std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralInt> left,
@@ -1046,7 +1046,7 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<Lite
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralString> left,
                                                             std::shared_ptr<LiteralString> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralBool> left,
@@ -1059,19 +1059,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<Lite
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralInt> left,
                                                             std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralDouble> left,
                                                             std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralFloat> left,
                                                             std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralString> left,
@@ -1091,19 +1091,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<Lite
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralInt> left,
                                                             std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralDouble> left,
                                                             std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralFloat> left,
                                                             std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralString> left,
@@ -1123,19 +1123,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<Lite
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralInt> left,
                                                             std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralDouble> left,
                                                             std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralFloat> left,
                                                             std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value > right->value);
+    return std::make_shared<LiteralBool>(left->value > right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<LiteralString> left,
@@ -1157,19 +1157,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than(std::shared_ptr<Lite
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralString> left,
@@ -1182,7 +1182,7 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralBool> left,
                                                          std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralInt> left,
@@ -1209,7 +1209,7 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralString> left,
                                                          std::shared_ptr<LiteralString> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralBool> left,
@@ -1222,19 +1222,19 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralString> left,
@@ -1254,19 +1254,19 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralString> left,
@@ -1286,19 +1286,19 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralInt> left,
                                                          std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralDouble> left,
                                                          std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralFloat> left,
                                                          std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value < right->value);
+    return std::make_shared<LiteralBool>(left->value < right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<LiteralString> left,
@@ -1320,19 +1320,19 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than(std::shared_ptr<Literal
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1345,7 +1345,7 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralBool> left,
                                                                      std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralInt> left,
@@ -1372,7 +1372,7 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralString> left,
                                                                      std::shared_ptr<LiteralString> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralBool> left,
@@ -1385,19 +1385,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                      std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                      std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                      std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1417,19 +1417,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                      std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                      std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                      std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1449,19 +1449,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                      std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                      std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                      std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value >= right->value);
+    return std::make_shared<LiteralBool>(left->value >= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1483,19 +1483,19 @@ std::shared_ptr<Literal> OperationsDispatcher::greater_than_or_equal(std::shared
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                   std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                   std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                   std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1508,7 +1508,7 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_pt
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralBool> left,
                                                                   std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralInt> left,
@@ -1535,7 +1535,7 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_pt
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralString> left,
                                                                   std::shared_ptr<LiteralString> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralBool> left,
@@ -1548,19 +1548,19 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_pt
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                   std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                   std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                   std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1580,19 +1580,19 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_pt
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                   std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                   std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                   std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1612,19 +1612,19 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_pt
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralInt> left,
                                                                   std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralDouble> left,
                                                                   std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralFloat> left,
                                                                   std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralBool>(left->value <= right->value);
+    return std::make_shared<LiteralBool>(left->value <= right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_ptr<LiteralString> left,
@@ -1643,12 +1643,12 @@ std::shared_ptr<Literal> OperationsDispatcher::less_than_or_equal(std::shared_pt
 
 std::shared_ptr<Literal> OperationsDispatcher::negate(std::shared_ptr<LiteralInt> right)
 {
-    std::make_shared<LiteralInt>(-right->value);
+    return std::make_shared<LiteralInt>(-right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::negate(std::shared_ptr<LiteralFloat> right)
 {
-    std::make_shared<LiteralFloat>(-right->value);
+    return std::make_shared<LiteralFloat>(-right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::negate(std::shared_ptr<LiteralString> right)
@@ -1659,10 +1659,10 @@ std::shared_ptr<Literal> OperationsDispatcher::negate(std::shared_ptr<LiteralStr
 
 std::shared_ptr<Literal> OperationsDispatcher::negate(std::shared_ptr<LiteralBool> right)
 {
-    std::make_shared<LiteralBool>(!right->value);
+    return std::make_shared<LiteralBool>(!right->value);
 }
 
 std::shared_ptr<Literal> OperationsDispatcher::negate(std::shared_ptr<LiteralDouble> right)
 {
-    std::make_shared<LiteralDouble>(-right->value);
+    return std::make_shared<LiteralDouble>(-right->value);
 }

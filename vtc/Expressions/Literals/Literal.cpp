@@ -41,5 +41,5 @@ bool Literal::equals(const Expression& other) const
     }
 
     // Call process using the shared pointer of the appropriate type
-    return nonConstThis->process(s, eq)->equals(*this);
+    return nonConstThis->process(s, eq).get();
 }

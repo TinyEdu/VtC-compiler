@@ -21,7 +21,15 @@ bool VarStatement::equals(const Statement& other) const
         return false;
     }
 
-    return name == otherVarStmt->name &&
-    ((!initializer && !otherVarStmt->initializer) ||
-        (initializer && otherVarStmt->initializer && initializer->equals(*otherVarStmt->initializer)));
+    if (name != otherVarStmt->name)
+    {
+        return false;
+    }
+
+    if (initializer && otherVarStmt->initializer)
+    {
+        return initializer->equals(*otherVarStmt->initializer);
+    }
+
+    return !initializer && !otherVarStmt->initializer;
 }

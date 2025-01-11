@@ -1,5 +1,7 @@
 project(vtc)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+
 set(SOURCE_FILES
         # LogManager
         LogManager/LogManager.cpp
@@ -46,7 +48,6 @@ set(SOURCE_FILES
         Statements/ClassStatement.cpp
         Statements/VarStatement.cpp
         Statements/ReturnStatement.cpp
-        Statements/StatementsWorld.cpp
 
         # Interpreter
         Interpreter/Interpreter.cpp

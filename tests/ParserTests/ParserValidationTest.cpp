@@ -35,7 +35,7 @@ TEST(ParserValidation, IsParsingVariableAndSimpleExpressionWorkingCorrectly)
     ASSERT_EQ(statements.size(), expectedStatements.size());
     for (size_t i = 0; i < statements.size(); i++)
     {
-        ASSERT_TRUE(*expectedStatements[i] == *statements[i]);
+        ASSERT_TRUE(*expectedStatements[i].get() == *statements[i].get());
     }
 }
 
@@ -148,9 +148,10 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
 
     // 2. While - 'while ( a > 9 ) { ... }'
     {
+        using enum TokenType;
         auto whileCondition = std::make_shared<Binary>(
-            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 2)),
-            Token(TokenType::GREATER, ">", "", 2),
+            std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 2)),
+            Token(GREATER, ">", "", 2),
             std::make_shared<LiteralInt>(9)
         );
 
@@ -160,10 +161,10 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
         whileBodyStatements.push_back(
             std::make_shared<ExpressionStatement>(
                 std::make_shared<Assign>(
-                    Token(TokenType::IDENTIFIER, "a", "", 4),
+                    Token(IDENTIFIER, "a", "", 4),
                     std::make_shared<Binary>(
-                        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 4)),
-                        Token(TokenType::PLUS, "+", "", 4),
+                        std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 4)),
+                        Token(PLUS, "+", "", 4),
                         std::make_shared<LiteralInt>(1)
                     )
                 )
@@ -172,8 +173,8 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
 
         // 2.2 If - 'if ( a == 3 ) { ... }'
         auto ifCondition = std::make_shared<Binary>(
-            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 5)),
-            Token(TokenType::EQUAL_EQUAL, "==", "", 5),
+            std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 5)),
+            Token(EQUAL_EQUAL, "==", "", 5),
             std::make_shared<LiteralInt>(3)
         );
 
@@ -181,10 +182,10 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
         ifBodyStatements.push_back(
             std::make_shared<ExpressionStatement>(
                 std::make_shared<Assign>(
-                    Token(TokenType::IDENTIFIER, "a", "", 7),
+                    Token(IDENTIFIER, "a", "", 7),
                     std::make_shared<Binary>(
-                        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 7)),
-                        Token(TokenType::PLUS, "+", "", 7),
+                        std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 7)),
+                        Token(PLUS, "+", "", 7),
                         std::make_shared<LiteralInt>(6)
                     )
                 )
