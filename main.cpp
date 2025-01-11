@@ -1,9 +1,8 @@
-// main.cpp
-
-#include "vtc/LogManager/LogManager.h"
-
 #include <span>
 #include <optional>
+
+#include "LogManager/LogManager.h"
+#include <Compiler/Compiler.h>
 
 
 #ifdef _WIN32
@@ -51,13 +50,14 @@ int main(const int argc, char* argv[])
     if (const auto filename = isCorrectFilename(args))
     {
         LogManager::log() << "Compiling file: " << *filename << "...";
-        //Transpiler::runFile(*filename);
+        Compiler::runFile(*filename);
     }
     else
     {
         LogManager::log() << "Real life compilation...";
         LogManager::log() << "Prompting :>";
-        //Transpiler::runPrompt();
+
+        Compiler::runPrompt();
     }
 
     return 0;
