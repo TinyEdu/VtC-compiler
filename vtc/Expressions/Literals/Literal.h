@@ -12,7 +12,7 @@ class LiteralString;
 class LiteralBool;
 class LiteralDouble;
 
-// class LiteralArray; // @TODO - implement arrays and chars
+// class LiteralArray; // @TODO - arrays and chars
 // class LiteralChar;
 
 class Literal : public Expression, public std::enable_shared_from_this<Literal>

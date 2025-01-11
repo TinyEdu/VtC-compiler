@@ -20,19 +20,20 @@ public:
     std::shared_ptr<Environment> enclosing = nullptr;
 
     Environment();
-    explicit Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars);
-    Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars,
-        std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>>& functions);
+    Environment(std::shared_ptr<Environment> enclosing);
+    explicit Environment(const std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars);
+    Environment(const std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars,
+                const std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>>& functions);
 
     ~Environment();
 
-    void define(const std::string& name, std::shared_ptr<Expression>  value) const;
+    void define(const std::string& name, std::shared_ptr<Expression> value) const;
     void define(const std::string& name, std::shared_ptr<Callable> value) const;
-    void defineGlobal(const std::string& name, std::shared_ptr<Expression>  value) const;
+    void defineGlobal(const std::string& name, std::shared_ptr<Expression> value) const;
 
 
-    void assign(const std::string& name, std::shared_ptr<Expression>  value) const;
-    void assign(const std::string& name, std::shared_ptr<Callable>  value) const;
+    void assign(const std::string& name, std::shared_ptr<Expression> value) const;
+    void assign(const std::string& name, std::shared_ptr<Callable> value) const;
 
 private:
     [[nodiscard]] std::shared_ptr<Expression> lookupExpression(const std::string& name) const;
@@ -40,7 +41,6 @@ private:
     [[nodiscard]] std::shared_ptr<Callable> lookupCallable(const std::string& name) const;
 
 public:
-    // @TODO: could be improved
     template <typename T>
     [[nodiscard]] T lookup(const std::string& name) const
     {

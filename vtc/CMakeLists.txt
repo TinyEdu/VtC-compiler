@@ -62,6 +62,7 @@ set(SOURCE_FILES
 
         # Environment
         Environment/Environment.cpp
+        Environment/NotFoundInScopeException.h
 )
 
 add_library(vtc STATIC ${SOURCE_FILES})

@@ -95,6 +95,5 @@ void Compiler::run(const std::string& source)
 void Compiler::runtimeError(const std::runtime_error& error)
 {
     LogManager::log() << error.what() << "\n";
-    // @TODO : Maybe add some more specifics
     hadRuntimeError = true;
 }

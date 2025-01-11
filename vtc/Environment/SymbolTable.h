@@ -6,6 +6,8 @@
 #include <map>
 #include <string>
 
+#include "NotFoundInScopeException.h"
+
 
 template <typename T>
 class SymbolTable
@@ -27,9 +29,10 @@ public:
   T lookup(const std::string& name) const
   {
     auto it = env.find(name);
+
     if (it == env.end())
     {
-      throw EnvironmentException("No such symbol");
+      return nullptr;
     }
 
     return it->second;

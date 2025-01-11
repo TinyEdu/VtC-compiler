@@ -8,18 +8,31 @@ Environment::Environment()
 {
 }
 
-Environment::Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars)
+Environment::Environment(std::shared_ptr<Environment> enclosingEnv)
+    : globalVariables(enclosingEnv
+                          ? enclosingEnv->globalVariables
+                          : std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
+      localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
+      functions(enclosingEnv
+                    ? enclosingEnv->functions
+                    : std::make_shared<SymbolTable<std::shared_ptr<Callable>>>()),
+      enclosing(std::move(enclosingEnv))
+{
+}
+
+
+Environment::Environment(const std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars)
     : globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>(*globalVars)),
       localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
       functions(std::make_shared<SymbolTable<std::shared_ptr<Callable>>>())
 {
 }
 
-Environment::Environment(std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars,
-    std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>>& functions)
-: globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>(*globalVars)),
-  localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
-  functions(std::make_shared<SymbolTable<std::shared_ptr<Callable>>>(*functions))
+Environment::Environment(const std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>>& globalVars,
+                         const std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>>& functions)
+    : globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>(*globalVars)),
+      localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
+      functions(std::make_shared<SymbolTable<std::shared_ptr<Callable>>>(*functions))
 {
 }
 
@@ -27,7 +40,14 @@ Environment::~Environment() = default;
 
 void Environment::define(const std::string& name, std::shared_ptr<Expression> value) const
 {
-    localVariables->define(name, value);
+    if (enclosing == nullptr)
+    {
+        globalVariables->define(name, value);
+    }
+    else // Local scope
+    {
+        localVariables->define(name, value);
+    }
 }
 
 void Environment::defineGlobal(const std::string& name, std::shared_ptr<Expression> value) const

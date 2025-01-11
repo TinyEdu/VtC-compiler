@@ -62,7 +62,7 @@ public:
         {
         case TokenType::MINUS:
         case TokenType::BANG:
-            return negate(lt); // @TODO: negate twice??
+            return negate(lt);
         default:
             LogManager::log() << "Unreachable code reached in OperationsDispatcher::dispatch(T1, Token)";
         }

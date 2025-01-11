@@ -80,17 +80,17 @@ void Interpreter::interpret(const std::shared_ptr<Expression>& expression)
 
 void Interpreter::interpret(const std::vector<std::shared_ptr<Statement>>& statements)
 {
-    // try
-    // {
-    for (auto& statement : statements)
+    try
     {
-        statement->accept(this);
+        for (auto& statement : statements)
+        {
+            statement->accept(this);
+        }
     }
-    // }
-    // catch (std::exception& e)
-    // {
-    //   LogManager::crit() << e.what();
-    // }
+    catch (std::exception& e)
+    {
+        LogManager::crit() << e.what();
+    }
 }
 
 
@@ -108,21 +108,13 @@ void Interpreter::execute(const std::vector<std::shared_ptr<Statement>>& stateme
     ~ https://craftinginterpreters.com/statements-and-state.html
     */
 
-    // try
-    // {
-        environment = env;
+    environment = env;
 
-        // Execute the block
-        for (auto& statement : statements)
-        {
-            statement->accept(this);
-        }
-    // }
-    // catch (const std::exception& e)
-    // {
-    //     this->environment = previous;
-    //     LogManager::crit() << e.what();
-    // }
+    // Execute the block
+    for (auto& statement : statements)
+    {
+        statement->accept(this);
+    }
 
     environment = previous;
 }
@@ -180,7 +172,6 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Unary> expression
 
 std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Variable> expression)
 {
-    // @TODO: ??? Note: orginal shouldn't be casted to Expression, might be a function
     return std::any_cast<std::shared_ptr<Expression>>(
         environment->lookup<std::shared_ptr<Expression>>(expression->name.lexeme));
 }
@@ -243,8 +234,6 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Call> expression)
 
     return function->call(*this, arguments);
 }
-
-
 
 std::any Interpreter::visit(std::shared_ptr<IfStatement> statement)
 {
@@ -335,7 +324,9 @@ std::any Interpreter::visit(std::shared_ptr<VarStatement> statement)
 
 std::any Interpreter::visit(std::shared_ptr<BlockStatement> statement)
 {
-    execute(statement->statements, std::make_shared<Environment>(environment->globalVariables, environment->functions));
+    auto newEnv = std::make_shared<Environment>(environment);
+
+    execute(statement->statements, newEnv);
 
     return {};
 }

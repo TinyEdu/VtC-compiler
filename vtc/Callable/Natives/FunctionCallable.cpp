@@ -22,7 +22,7 @@ std::shared_ptr<Expression> FunctionCallable::call(Interpreter& interpreter,
                                                    std::span<std::shared_ptr<Expression> const> arguments)
 {
     auto environment = std::make_shared<Environment>(interpreter.environment->globalVariables,
-        interpreter.environment->functions);
+                                                     interpreter.environment->functions);
 
     for (int i = 0; i < declaration->params.size(); i++)
     {
