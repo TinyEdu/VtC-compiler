@@ -3,24 +3,23 @@
 #include <utility>
 #include "Visitor/Visitor.h"
 
-ClassStatement::ClassStatement(Token name, std::vector<FunctionStatement*> methods): name(name),
-    methods(std::move(methods))
+ClassStatement::ClassStatement(Token name, std::vector<std::shared_ptr<FunctionStatement>> methods)
+    : name(std::move(name)), methods(std::move(methods))
 {
 }
 
-ClassStatement::~ClassStatement()
-{
-}
+ClassStatement::~ClassStatement() = default;
 
 std::any ClassStatement::accept(StatementVisitor* visitor)
 {
-    return visitor->visit(this);
+    return visitor->visit(shared_from_this());
 }
 
 bool ClassStatement::equals(const Statement& other) const
 {
+    // Use dynamic_cast with pointers to check if the type matches
     const auto* otherClassStmt = dynamic_cast<const ClassStatement*>(&other);
-    if (otherClassStmt == nullptr)
+    if (!otherClassStmt)
     {
         return false;
     }
@@ -31,15 +30,16 @@ bool ClassStatement::equals(const Statement& other) const
         return false;
     }
 
-    // Compare the methods vector
+    // Compare the methods vector size
     if (this->methods.size() != otherClassStmt->methods.size())
     {
         return false;
     }
 
+    // Compare each method in the methods vector
     for (size_t i = 0; i < this->methods.size(); ++i)
     {
-        if (!(this->methods[i] == otherClassStmt->methods[i]))
+        if (!(this->methods[i]->equals(*otherClassStmt->methods[i])))
         {
             return false;
         }

@@ -1,14 +1,17 @@
 #include "Assign.h"
 
+#include <utility>
+
 #include "Visitor/Visitor.h"
 
-Assign::Assign(Token name, Expression* value) : name(name), value(value)
+
+Assign::Assign(Token name, std::shared_ptr<Expression> value) : name(name), value(std::move(value))
 {
 }
 
-std::any Assign::accept(Visitor* visitor)
+std::shared_ptr<Expression> Assign::accept(Visitor& visitor)
 {
-    return visitor->visit(this);
+    return visitor.visit(shared_from_this());
 }
 
 bool Assign::equals(const Expression& other) const

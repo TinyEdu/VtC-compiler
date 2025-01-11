@@ -1,15 +1,17 @@
 #include "Binary.h"
 
+#include <utility>
+
 #include "Visitor/Visitor.h"
 
-Binary::Binary(Expression* left, Token op, Expression* right)
-    : left(left), op(op), right(right)
+Binary::Binary(std::shared_ptr<Expression> left, Token op, std::shared_ptr<Expression> right)
+    : left(std::move(left)), op(op), right(std::move(right))
 {
 }
 
-std::any Binary::accept(Visitor* visitor)
+std::shared_ptr<Expression> Binary::accept(Visitor& visitor)
 {
-    return visitor->visit(this);
+    return visitor.visit(shared_from_this());
 }
 
 bool Binary::equals(const Expression& other) const

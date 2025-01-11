@@ -1,12 +1,14 @@
 #ifndef PRINTSTATEMENT_H
 #define PRINTSTATEMENT_H
 
+#include <memory>
+
 #include "Statement.h"
 
-class PrintStatement : public Statement
+class PrintStatement : public Statement, public std::enable_shared_from_this<PrintStatement>
 {
 public:
-    explicit PrintStatement(Expression* expression);
+    explicit PrintStatement(std::shared_ptr<Expression> expression);
 
     ~PrintStatement();
 
@@ -14,7 +16,7 @@ public:
 
     bool equals(const Statement& other) const override;
 
-    Expression* expression;
+    std::shared_ptr<Expression> expression;
 };
 
 #endif

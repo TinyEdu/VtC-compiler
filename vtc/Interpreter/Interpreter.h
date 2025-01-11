@@ -1,10 +1,10 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-#include <memory>
-
 #include "Environment/Environment.h"
 #include "Visitor/Visitor.h"
+
+#include <memory>
 
 
 class Interpreter final : public Visitor, public StatementVisitor
@@ -19,39 +19,34 @@ public:
     // Visitor Interface Methods
     // ------------------------------------------------
 
-    std::any visit(Assign* expression) override;
-    std::any visit(Binary* expression) override;
-    std::any visit(Grouping* expression) override;
-    std::any visit(Literal* expression) override;
-    std::any visit(Unary* expression) override;
-    std::any visit(Variable* expression) override;
-    std::any visit(Logical* expression) override;
-    std::any visit(Call* expression) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Assign> expr) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Binary> expr) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Grouping> expr) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Literal> expr) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Unary> expr) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Variable> expr) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Logical> expr) override;
+    std::shared_ptr<Expression> visit(std::shared_ptr<Call> expr) override;
 
-    std::any visit(ExpressionStatement* statement) override;
-    std::any visit(IfStatement* statement) override;
-    std::any visit(PrintStatement* statement) override;
-    std::any visit(VarStatement* statement) override;
-    std::any visit(BlockStatement* statement) override;
-    std::any visit(FunctionStatement* statement) override;
-    std::any visit(ClassStatement* statement) override;
-    std::any visit(WhileStatement* statement) override;
-    std::any visit(ReturnStatement* statement) override;
+    std::any visit(std::shared_ptr<ExpressionStatement> statement) override;
+    std::any visit(std::shared_ptr<IfStatement> statement) override;
+    std::any visit(std::shared_ptr<PrintStatement> statement) override;
+    std::any visit(std::shared_ptr<VarStatement> statement) override;
+    std::any visit(std::shared_ptr<BlockStatement> statement) override;
+    std::any visit(std::shared_ptr<FunctionStatement> statement) override;
+    std::any visit(std::shared_ptr<ClassStatement> statement) override;
+    std::any visit(std::shared_ptr<WhileStatement> statement) override;
+    std::any visit(std::shared_ptr<ReturnStatement> statement) override;
 
     // ------------------------------------------------
 
-    std::any evaluate(Expression* statement);
+    void interpret(const std::shared_ptr<Expression>& expression);
+    void interpret(const std::vector<std::shared_ptr<Statement>>& statements);
+    void execute(const std::vector<std::shared_ptr<Statement>>& statements, const std::shared_ptr<Environment>& env);
+    void execute(const std::shared_ptr<Statement>& statement);
 
-    void interpret(Expression* expression);
-    void interpret(const std::vector<std::unique_ptr<Statement>>& statements);
-    void execute(const std::vector<Statement*>& statements, Environment* env);
-    void execute(Statement* statement);
-
-    template <typename T>
-    T evaluate(Expression* expr)
-    {
-        return std::any_cast<T>(expr->accept(this));
-    }
+    std::shared_ptr<Expression> evaluateExpression(const std::shared_ptr<Expression>& expression);
+    std::shared_ptr<Literal> evaluateLiteral(const std::shared_ptr<Expression>& literal);
 };
 
 #endif  // INTERPRETER_H

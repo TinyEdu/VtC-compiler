@@ -1,21 +1,21 @@
-// Logical.h
-
 #ifndef LOGICAL_H
 #define LOGICAL_H
 
 #include "Expression.h"
+#include "Token/Token.h"
 
 class Visitor;
 
-class Logical : public Expression
+class Logical : public Expression, public std::enable_shared_from_this<Logical>
 {
 public:
-    Logical(Expression* left, Token op, Expression* right);
-    std::any accept(Visitor* visitor) override;
+    Logical(std::shared_ptr<Expression> left, Token op, std::shared_ptr<Expression> right);
 
-    Expression* left;
+    std::shared_ptr<Expression> accept(Visitor& visitor) override;
+
+    std::shared_ptr<Expression> left;
     Token op;
-    Expression* right;
+    std::shared_ptr<Expression> right;
 
     bool equals(const Expression& other) const override;
 

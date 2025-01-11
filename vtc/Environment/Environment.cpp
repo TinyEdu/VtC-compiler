@@ -1,43 +1,40 @@
 #include "Environment.h"
 #include "EnvironmentException.h"
 
-Environment::Environment() : globalVariables(new SymbolTable<Expression*>()),
-                             localVariables(new SymbolTable<Expression*>()),
-                             functions(new SymbolTable<Callable*>())
+Environment::Environment()
+    : globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
+      localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
+      functions(std::make_shared<SymbolTable<std::shared_ptr<Callable>>>())
 {
 }
 
-
-Environment::Environment(SymbolTable<Expression*>* globalVariables): globalVariables(globalVariables),
-                                                                            localVariables(
-                                                                                new SymbolTable<Expression*>()),
-                                                                            functions(new SymbolTable<Callable*>())
+Environment::Environment(SymbolTable<std::shared_ptr<Expression>>& globalVars)
+    : globalVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>(globalVars)),
+      localVariables(std::make_shared<SymbolTable<std::shared_ptr<Expression>>>()),
+      functions(std::make_shared<SymbolTable<std::shared_ptr<Callable>>>())
 {
 }
 
 Environment::~Environment()
 {
-    delete localVariables;
-    delete globalVariables;
-    delete functions;
 }
 
-void Environment::define(const std::string& name, Expression* value) const
+void Environment::define(const std::string& name, std::shared_ptr<Expression> value) const
 {
     localVariables->define(name, value);
 }
 
-void Environment::defineGlobal(const std::string& name, Expression* value) const
+void Environment::defineGlobal(const std::string& name, std::shared_ptr<Expression> value) const
 {
     globalVariables->define(name, value);
 }
 
-void Environment::define(const std::string& name, Callable* value) const
+void Environment::define(const std::string& name, std::shared_ptr<Callable> value) const
 {
     functions->define(name, value);
 }
 
-void Environment::assign(const std::string& name, Expression* value) const
+void Environment::assign(const std::string& name, std::shared_ptr<Expression> value) const
 {
     if (localVariables->lookup(name) != nullptr)
     {
@@ -52,7 +49,7 @@ void Environment::assign(const std::string& name, Expression* value) const
     throw EnvironmentException("Undefined variable '" + name + "'.");
 }
 
-void Environment::assign(const std::string& name, Callable* value) const
+void Environment::assign(const std::string& name, std::shared_ptr<Callable> value) const
 {
     if (functions->lookup(name) != nullptr)
     {
@@ -68,7 +65,7 @@ void Environment::assign(const std::string& name, Callable* value) const
 }
 
 
-Expression* Environment::lookupExpression(const std::string& name) const
+std::shared_ptr<Expression> Environment::lookupExpression(const std::string& name) const
 {
     if (localVariables->lookup(name) != nullptr)
     {
@@ -85,7 +82,7 @@ Expression* Environment::lookupExpression(const std::string& name) const
     throw EnvironmentException("Undefined variable '" + name + "'.");
 }
 
-Callable* Environment::lookupCallable(const std::string& name) const
+std::shared_ptr<Callable> Environment::lookupCallable(const std::string& name) const
 {
     if (functions->lookup(name) != nullptr)
     {

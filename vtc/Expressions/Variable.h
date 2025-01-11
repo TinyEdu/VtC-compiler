@@ -1,17 +1,17 @@
-// Variable.h
-
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
 #include "Expression.h"
+#include "Token/Token.h"
 
 class Visitor;
 
-class Variable : public Expression
+class Variable : public Expression, public std::enable_shared_from_this<Variable>
 {
 public:
     Variable(Token name);
-    std::any accept(Visitor* visitor) override;
+
+    std::shared_ptr<Expression> accept(Visitor& visitor) override;
 
     Token name;
 

@@ -1,29 +1,27 @@
 #include "ReturnStatement.h"
 #include "Visitor/Visitor.h"
 
-ReturnStatement::ReturnStatement(Token keyword, Expression* value): keyword(keyword), value(value)
+ReturnStatement::ReturnStatement(Token keyword, std::shared_ptr<Expression> value)
+    : keyword(std::move(keyword)), value(std::move(value))
 {
 }
 
-ReturnStatement::~ReturnStatement()
-{
-}
+ReturnStatement::~ReturnStatement() = default;
 
 std::any ReturnStatement::accept(StatementVisitor* visitor)
 {
-    return visitor->visit(this);
+    return visitor->visit(shared_from_this());
 }
 
 bool ReturnStatement::equals(const Statement& other) const
 {
     const auto* otherReturn = dynamic_cast<const ReturnStatement*>(&other);
-    if (otherReturn == nullptr)
+    if (!otherReturn)
     {
         return false;
     }
 
-    return this->keyword == otherReturn->keyword &&
-    ((this->value == nullptr && otherReturn->value == nullptr) ||
-        (this->value != nullptr && otherReturn->value != nullptr &&
-            *this->value == *otherReturn->value)); // Recursively compare `value`
+    return keyword == otherReturn->keyword &&
+    ((!value && !otherReturn->value) ||
+        (value && otherReturn->value && value->equals(*otherReturn->value)));
 }

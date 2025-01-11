@@ -10,18 +10,19 @@ class FunctionStatement;
 class FunctionCallable final : public Callable
 {
 public:
-    explicit FunctionCallable(FunctionStatement* declaration);
+    explicit FunctionCallable(std::shared_ptr<FunctionStatement> declaration);
 
-    ~FunctionCallable() override = default;;
+    ~FunctionCallable() override = default;
 
     int arity() override;
-    std::any call(Interpreter* interpreter, std::span<Expression* const> arguments) override;
+    std::shared_ptr<Expression>
+    call(Interpreter* interpreter, std::span<std::shared_ptr<Expression> const> arguments) override;
 
     friend std::ostream& operator<<(std::ostream& os, const FunctionCallable& expr);
     friend std::ostream& operator<<(std::ostream& os, const FunctionCallable* expr);
 
 private:
-    FunctionStatement* declaration;
+    std::shared_ptr<FunctionStatement> declaration;
 };
 
 #endif  // FUNCTIONCALLABLE_H

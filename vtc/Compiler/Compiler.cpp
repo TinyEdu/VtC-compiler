@@ -82,7 +82,7 @@ void Compiler::run(const std::string& source)
     const std::vector<Token> tokens = scanner.scan(source);
 
     Parser parser(tokens);
-    const std::vector<std::unique_ptr<Statement>> statements = parser.parse();
+    const auto& statements = parser.parse();
 
     if (hadError)
     {

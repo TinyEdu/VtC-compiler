@@ -1,29 +1,37 @@
 #include "ExpressionStatement.h"
 #include "Visitor/Visitor.h"
 
-ExpressionStatement::ExpressionStatement(Expression* expression): expression(expression)
+ExpressionStatement::ExpressionStatement(std::shared_ptr<Expression> expression)
+    : expression(std::move(expression))
 {
 }
 
-ExpressionStatement::~ExpressionStatement()
-{
-}
+ExpressionStatement::~ExpressionStatement() = default;
 
 std::any ExpressionStatement::accept(StatementVisitor* visitor)
 {
-    return visitor->visit(this);
+    return visitor->visit(shared_from_this());
 }
 
 bool ExpressionStatement::equals(const Statement& other) const
 {
+    // Use dynamic_cast to check type and cast to ExpressionStatement
     const auto* otherExprStmt = dynamic_cast<const ExpressionStatement*>(&other);
-    if (otherExprStmt == nullptr)
+    if (!otherExprStmt)
     {
         return false;
     }
 
     // Compare the `expression` fields
-    return ((this->expression == nullptr && otherExprStmt->expression == nullptr) ||
-        (this->expression != nullptr && otherExprStmt->expression != nullptr &&
-            *this->expression == *otherExprStmt->expression)); // Recursively compare `expression`
+    if (!this->expression && !otherExprStmt->expression)
+    {
+        return true; // Both expressions are null
+    }
+
+    if (!this->expression || !otherExprStmt->expression)
+    {
+        return false; // One is null, the other is not
+    }
+
+    return this->expression->equals(*otherExprStmt->expression); // Compare expressions
 }

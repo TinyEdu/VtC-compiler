@@ -3,6 +3,7 @@
 
 #include <any>
 #include <iostream>
+#include <memory>
 #include <span>
 
 
@@ -16,7 +17,8 @@ public:
     virtual ~Callable();
 
     virtual int arity() = 0;
-    virtual std::any call(Interpreter* interpreter, std::span<Expression* const> arguments) = 0;
+    virtual std::shared_ptr<Expression> call(Interpreter* interpreter,
+                                             std::span<std::shared_ptr<Expression> const> arguments) = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Callable& expr);
     friend std::ostream& operator<<(std::ostream& os, const Callable* expr);

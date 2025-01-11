@@ -1,12 +1,14 @@
 #ifndef WHILESTATEMENT_H
 #define WHILESTATEMENT_H
 
+#include <memory>
+
 #include "Statement.h"
 
-class WhileStatement : public Statement
+class WhileStatement : public Statement, public std::enable_shared_from_this<WhileStatement>
 {
 public:
-    WhileStatement(Expression* condition, Statement* body);
+    WhileStatement(std::shared_ptr<Expression> condition, std::shared_ptr<Statement> body);
 
     ~WhileStatement();
 
@@ -14,8 +16,8 @@ public:
 
     bool equals(const Statement& other) const override;
 
-    Expression* condition;
-    Statement* body;
+    std::shared_ptr<Expression> condition;
+    std::shared_ptr<Statement> body;
 };
 
 #endif

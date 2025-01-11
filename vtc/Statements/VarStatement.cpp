@@ -1,30 +1,27 @@
 #include "VarStatement.h"
 #include "Visitor/Visitor.h"
 
-VarStatement::VarStatement(Token name, Expression* initializer): name(name), initializer(initializer)
+VarStatement::VarStatement(Token name, std::shared_ptr<Expression> initializer)
+    : name(std::move(name)), initializer(std::move(initializer))
 {
 }
 
-VarStatement::~VarStatement()
-{
-}
+VarStatement::~VarStatement() = default;
 
 std::any VarStatement::accept(StatementVisitor* visitor)
 {
-    return visitor->visit(this);
+    return visitor->visit(shared_from_this());
 }
 
 bool VarStatement::equals(const Statement& other) const
 {
     const auto* otherVarStmt = dynamic_cast<const VarStatement*>(&other);
-    if (otherVarStmt == nullptr)
+    if (!otherVarStmt)
     {
         return false;
     }
 
-    // Compare the `name` and `initializer` fields
-    return this->name == otherVarStmt->name &&
-    ((this->initializer == nullptr && otherVarStmt->initializer == nullptr) ||
-        (this->initializer != nullptr && otherVarStmt->initializer != nullptr &&
-            *this->initializer == *otherVarStmt->initializer)); // Recursively compare `initializer`
+    return name == otherVarStmt->name &&
+    ((!initializer && !otherVarStmt->initializer) ||
+        (initializer && otherVarStmt->initializer && initializer->equals(*otherVarStmt->initializer)));
 }

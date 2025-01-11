@@ -1,6 +1,9 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
+#include <any>
+#include <memory>
+
 #include "SymbolTable.h"
 
 
@@ -11,39 +14,40 @@ class Expression;
 class Environment
 {
 public:
-    SymbolTable<Expression*>* globalVariables = nullptr;
-    SymbolTable<Expression*>* localVariables = nullptr;
-    SymbolTable<Callable*>* functions = nullptr;
+    std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>> globalVariables;
+    std::shared_ptr<SymbolTable<std::shared_ptr<Expression>>> localVariables;
+    std::shared_ptr<SymbolTable<std::shared_ptr<Callable>>> functions;
     Environment* enclosing = nullptr;
 
     Environment();
+    explicit Environment(SymbolTable<std::shared_ptr<Expression>>& globalVars);
 
-    explicit Environment(SymbolTable<Expression*>* globalVariables);
 
     ~Environment();
 
-    void define(const std::string& name, Expression* value) const;
-    void define(const std::string& name, Callable* value) const;
-    void defineGlobal(const std::string& name, Expression* value) const;
+    void define(const std::string& name, std::shared_ptr<Expression>  value) const;
+    void define(const std::string& name, std::shared_ptr<Callable> value) const;
+    void defineGlobal(const std::string& name, std::shared_ptr<Expression>  value) const;
 
 
-    void assign(const std::string& name, Expression* value) const;
-    void assign(const std::string& name, Callable* value) const;
+    void assign(const std::string& name, std::shared_ptr<Expression>  value) const;
+    void assign(const std::string& name, std::shared_ptr<Callable>  value) const;
 
 private:
-    [[nodiscard]] Expression* lookupExpression(const std::string& name) const;
+    [[nodiscard]] std::shared_ptr<Expression> lookupExpression(const std::string& name) const;
 
-    [[nodiscard]] Callable* lookupCallable(const std::string& name) const;
+    [[nodiscard]] std::shared_ptr<Callable> lookupCallable(const std::string& name) const;
 
 public:
+    // @TODO: could be improved
     template <typename T>
-    T lookup(const std::string& name)
+    [[nodiscard]] std::any lookup(const std::string& name) const
     {
-        if constexpr (std::is_same_v<T, Expression*>)
+        if constexpr (std::is_same_v<T, std::shared_ptr<Expression>>)
         {
             return lookupExpression(name);
         }
-        else if constexpr (std::is_same_v<T, Callable*>)
+        else if constexpr (std::is_same_v<T, std::shared_ptr<Callable>>)
         {
             return lookupCallable(name);
         }

@@ -1,4 +1,5 @@
-#include "Expressions/Literals/LiteralDouble.h"
+#include "LiteralDouble.h"
+
 #include "Visitor/OperationsDispatcher.h"
 #include "Visitor/Visitor.h"
 
@@ -6,47 +7,47 @@ LiteralDouble::LiteralDouble(double value) : value(value)
 {
 }
 
-std::any LiteralDouble::accept(Visitor* visitor)
+std::shared_ptr<Expression> LiteralDouble::accept(Visitor& visitor)
 {
-    return visitor->visit(this);
+    return visitor.visit(std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()));
 }
 
-Expression* LiteralDouble::process(Literal* expr, Token token)
+std::shared_ptr<Expression> LiteralDouble::process(std::shared_ptr<Literal> expr, Token token)
 {
-    return expr->process(this, token);
+    return expr->process(std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()), token);
 }
 
-Expression* LiteralDouble::process(LiteralInt* expr, Token token)
+std::shared_ptr<Expression> LiteralDouble::process(std::shared_ptr<LiteralInt> expr, Token token)
 {
-    return OperationsDispatcher::dispatch(expr, this, token);
+    return OperationsDispatcher::dispatch(expr, std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()), token);
 }
 
-Expression* LiteralDouble::process(LiteralFloat* expr, Token token)
+std::shared_ptr<Expression> LiteralDouble::process(std::shared_ptr<LiteralFloat> expr, Token token)
 {
-    return OperationsDispatcher::dispatch(expr, this, token);
+    return OperationsDispatcher::dispatch(expr, std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()), token);
 }
 
-Expression* LiteralDouble::process(LiteralString* expr, Token token)
+std::shared_ptr<Expression> LiteralDouble::process(std::shared_ptr<LiteralString> expr, Token token)
 {
-    return OperationsDispatcher::dispatch(expr, this, token);
+    return OperationsDispatcher::dispatch(expr, std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()), token);
 }
 
-Expression* LiteralDouble::process(LiteralBool* expr, Token token)
+std::shared_ptr<Expression> LiteralDouble::process(std::shared_ptr<LiteralBool> expr, Token token)
 {
-    return OperationsDispatcher::dispatch(expr, this, token);
+    return OperationsDispatcher::dispatch(expr, std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()), token);
 }
 
-Expression* LiteralDouble::process(LiteralDouble* expr, Token token)
+std::shared_ptr<Expression> LiteralDouble::process(std::shared_ptr<LiteralDouble> expr, Token token)
 {
-    return OperationsDispatcher::dispatch(expr, this, token);
+    return OperationsDispatcher::dispatch(expr, std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()), token);
 }
 
-Expression* LiteralDouble::process(Token token)
+std::shared_ptr<Expression> LiteralDouble::process(Token token)
 {
-    return OperationsDispatcher::dispatch(this, token);
+    return OperationsDispatcher::dispatch(std::dynamic_pointer_cast<LiteralDouble>(shared_from_this()), token);
 }
 
-std::ostream& operator<<(std::ostream& os, const LiteralDouble* expr)
+std::ostream& operator<<(std::ostream& os, const std::shared_ptr<LiteralDouble> expr)
 {
     os << expr->value;
     return os;

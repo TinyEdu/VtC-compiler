@@ -3,11 +3,7 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
-#include <any>
-#include <string>
-
-#include "LogManager/LogManager.h"
-#include "Token/Token.h"
+#include <memory>
 
 // forward declarations
 class Assign;
@@ -25,7 +21,8 @@ class Expression
 public:
     Expression() = default;
     virtual ~Expression() = default;
-    virtual std::any accept(Visitor* visitor) = 0;
+
+    virtual std::shared_ptr<Expression> accept(Visitor& visitor) = 0;
 
     // Virtual method for comparison
     virtual bool equals(const Expression& other) const = 0;

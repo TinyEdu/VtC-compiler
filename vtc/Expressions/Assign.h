@@ -1,20 +1,21 @@
-// Assign.h
-
 #ifndef ASSIGN_H
 #define ASSIGN_H
 
 #include "Expression.h"
+#include "Token/Token.h"
+
 
 class Visitor;
 
-class Assign : public Expression
+class Assign : public Expression, public std::enable_shared_from_this<Assign>
 {
 public:
-    Assign(Token name, Expression* value);
-    std::any accept(Visitor* visitor) override;
+    Assign(Token name, std::shared_ptr<Expression> value);
+
+    std::shared_ptr<Expression> accept(Visitor& visitor) override;
 
     Token name;
-    Expression* value;
+    std::shared_ptr<Expression> value;
 
     bool equals(const Expression& other) const override;
 

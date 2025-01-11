@@ -3,23 +3,23 @@
 #include <utility>
 #include "Visitor/Visitor.h"
 
-BlockStatement::BlockStatement(std::vector<Statement*> statements): statements(std::move(statements))
+BlockStatement::BlockStatement(std::vector<std::shared_ptr<Statement>> statements)
+    : statements(std::move(statements))
 {
 }
 
-BlockStatement::~BlockStatement()
-{
-}
+BlockStatement::~BlockStatement() = default;
 
 std::any BlockStatement::accept(StatementVisitor* visitor)
 {
-    return visitor->visit(this);
+    return visitor->visit(shared_from_this());
 }
 
 bool BlockStatement::equals(const Statement& other) const
 {
+    // Use dynamic_cast to check type and cast to BlockStatement
     const auto* otherBlock = dynamic_cast<const BlockStatement*>(&other);
-    if (otherBlock == nullptr)
+    if (!otherBlock)
     {
         return false;
     }
@@ -34,7 +34,7 @@ bool BlockStatement::equals(const Statement& other) const
     for (size_t i = 0; i < this->statements.size(); ++i)
     {
         // Ensure both statements are non-null and compare them
-        if (this->statements[i] == nullptr || otherBlock->statements[i] == nullptr)
+        if (!this->statements[i] || !otherBlock->statements[i])
         {
             return false; // Null pointer mismatch
         }

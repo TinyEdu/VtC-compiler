@@ -2,13 +2,13 @@
 
 #include "Visitor/Visitor.h"
 
-Unary::Unary(Token op, Expression* right) : op(op), right(right)
+Unary::Unary(Token op, std::shared_ptr<Expression> right) : op(op), right(right)
 {
 }
 
-std::any Unary::accept(Visitor* visitor)
+std::shared_ptr<Expression> Unary::accept(Visitor& visitor)
 {
-    return visitor->visit(this);
+    return visitor.visit(shared_from_this());
 }
 
 bool Unary::equals(const Expression& other) const

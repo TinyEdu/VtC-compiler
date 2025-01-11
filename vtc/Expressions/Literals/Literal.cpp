@@ -2,23 +2,44 @@
 
 #include "Visitor/Visitor.h"
 
-std::any Literal::accept(Visitor* visitor)
-{
-    return visitor->visit(this);
-}
-
 bool Literal::equals(const Expression& other) const
 {
-    const auto otherLiteral = dynamic_cast<const Literal*>(&other);
-    if (otherLiteral == nullptr)
+    // Try to cast the other Expression to a Literal
+    const auto* otherLiteral = dynamic_cast<const Literal*>(&other);
+    if (!otherLiteral)
     {
         return false;
     }
 
-    // Note: this is only for testing purpose, this is not a save code for production code
-    auto eq = Token(TokenType::EQUAL_EQUAL);
-    auto nonConstOtherLiteral = const_cast<Literal*>(otherLiteral);
-    auto nonConstThis = const_cast<Literal*>(this);
+    Token eq(TokenType::EQUAL_EQUAL);
 
-    return nonConstThis->process(nonConstOtherLiteral, eq);
+    // Use concrete type when creating the shared pointer
+    auto* nonConstOtherLiteral = const_cast<Literal*>(otherLiteral);
+    auto* nonConstThis = const_cast<Literal*>(this);
+
+    // Determine the concrete type of the Literal and create the appropriate shared pointer
+    std::shared_ptr<Literal> s;
+    if (auto* literalInt = dynamic_cast<LiteralInt*>(nonConstOtherLiteral))
+    {
+        s = std::make_shared<LiteralInt>(*literalInt);
+    }
+    else if (auto* literalBool = dynamic_cast<LiteralBool*>(nonConstOtherLiteral))
+    {
+        s = std::make_shared<LiteralBool>(*literalBool);
+    }
+    else if (auto* literalDouble = dynamic_cast<LiteralDouble*>(nonConstOtherLiteral))
+    {
+        s = std::make_shared<LiteralDouble>(*literalDouble);
+    }
+    else if (auto* literalString = dynamic_cast<LiteralString*>(nonConstOtherLiteral))
+    {
+        s = std::make_shared<LiteralString>(*literalString);
+    }
+    else
+    {
+        throw std::runtime_error("Unsupported Literal type in equals()");
+    }
+
+    // Call process using the shared pointer of the appropriate type
+    return nonConstThis->process(s, eq)->equals(*this);
 }

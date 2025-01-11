@@ -38,7 +38,9 @@ bool E2ETester::runTest(const std::string& requestFile, const std::string& expec
 
 std::string E2ETester::readFile(const std::string& filename)
 {
-    std::ifstream fileStream(filename);
+    const std::string base_path = std::filesystem::current_path().string() + R"(\..\..\tests\E2E\tests\)";
+
+    std::ifstream fileStream(base_path + filename);
     if (!fileStream.is_open())
     {
         LogManager::log() << "File " << filename << " does not exist or cannot be opened.\n";

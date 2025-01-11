@@ -2,13 +2,13 @@
 
 #include "Visitor/Visitor.h"
 
-Grouping::Grouping(Expression* expression) : expression(expression)
+Grouping::Grouping(std::shared_ptr<Expression> expression) : expression(expression)
 {
 }
 
-std::any Grouping::accept(Visitor* visitor)
+std::shared_ptr<Expression> Grouping::accept(Visitor& visitor)
 {
-    return visitor->visit(this);
+    return visitor.visit(shared_from_this());
 }
 
 bool Grouping::equals(const Expression& other) const

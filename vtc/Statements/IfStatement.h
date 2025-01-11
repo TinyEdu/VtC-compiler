@@ -1,13 +1,15 @@
 #ifndef IFSTATEMENT_H
 #define IFSTATEMENT_H
 
+#include <memory>
+
 #include "Statement.h"
 
-class IfStatement : public Statement
+class IfStatement : public Statement, public std::enable_shared_from_this<IfStatement>
 {
 public:
-    IfStatement(Expression* condition, Statement* thenBranch,
-                Statement* elseBranch);
+    IfStatement(std::shared_ptr<Expression> condition, std::shared_ptr<Statement> thenBranch,
+                std::shared_ptr<Statement> elseBranch);
 
     ~IfStatement();
 
@@ -15,9 +17,9 @@ public:
 
     bool equals(const Statement& other) const override;
 
-    Expression* condition;
-    Statement* thenBranch;
-    Statement* elseBranch;
+    std::shared_ptr<Expression> condition;
+    std::shared_ptr<Statement> thenBranch;
+    std::shared_ptr<Statement> elseBranch;
 };
 
 #endif

@@ -1,22 +1,22 @@
-// Call.h
-
 #ifndef CALL_H
 #define CALL_H
 
 #include "Expression.h"
+#include "Token/Token.h"
 #include <vector>
 
 class Visitor;
 
-class Call : public Expression
+class Call : public Expression, public std::enable_shared_from_this<Call>
 {
 public:
-    Call(Expression* callee, Token paren, std::vector<Expression*> arguments);
-    std::any accept(Visitor* visitor) override;
+    Call(std::shared_ptr<Expression> callee, Token paren, std::vector<std::shared_ptr<Expression>> arguments);
 
-    Expression* callee;
+    std::shared_ptr<Expression> accept(Visitor& visitor) override;
+
+    std::shared_ptr<Expression> callee;
     Token paren;
-    std::vector<Expression*> arguments;
+    std::vector<std::shared_ptr<Expression>> arguments;
 
     bool equals(const Expression& other) const override;
 

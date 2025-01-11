@@ -119,4 +119,3 @@ void ParserBase::synchronize()
         advance();
     }
 }
-

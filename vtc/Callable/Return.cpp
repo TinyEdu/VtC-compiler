@@ -1,6 +1,6 @@
 #include "Return.h"
 
-Return::Return(std::any value): value(std::move(value))
+Return::Return(std::shared_ptr<Literal> value) : value(std::move(value))
 {
 }
 

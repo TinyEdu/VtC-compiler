@@ -11,7 +11,8 @@ public:
     ~ClockCallable() override;
 
     int arity() override;
-    std::any call(Interpreter* interpreter, std::span<Expression* const> arguments) override;
+    std::shared_ptr<Expression>
+    call(Interpreter* interpreter, std::span<std::shared_ptr<Expression> const> arguments) override;
 };
 
 #endif  // CLOCKFUNCTION_H

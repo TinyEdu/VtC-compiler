@@ -37,7 +37,6 @@ set(SOURCE_FILES
         Expressions/Literals/LiteralString.cpp
 
         # Statements
-        Statements/Statement.cpp
         Statements/ExpressionStatement.cpp
         Statements/IfStatement.cpp
         Statements/WhileStatement.cpp

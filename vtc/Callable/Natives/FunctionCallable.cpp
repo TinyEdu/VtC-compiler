@@ -1,5 +1,7 @@
 #include "FunctionCallable.h"
 
+#include <utility>
+
 #include "Interpreter/Interpreter.h"
 #include "Expressions/ExpressionsWorld.h"
 #include "Environment/Environment.h"
@@ -7,7 +9,7 @@
 #include "Callable/Return.h"
 
 
-FunctionCallable::FunctionCallable(FunctionStatement* declaration): declaration(declaration)
+FunctionCallable::FunctionCallable(std::shared_ptr<FunctionStatement> declaration): declaration(std::move(declaration))
 {
 }
 
@@ -16,9 +18,10 @@ int FunctionCallable::arity()
     return static_cast<int>(declaration->params.size());
 }
 
-std::any FunctionCallable::call(Interpreter* interpreter, std::span<Expression* const> arguments)
+std::shared_ptr<Expression> FunctionCallable::call(Interpreter* interpreter,
+                                                   std::span<std::shared_ptr<Expression> const> arguments)
 {
-    auto* environment = new Environment(interpreter->environment->globalVariables);
+    auto environment = std::make_shared<Environment>(*interpreter->environment->globalVariables);
 
     for (int i = 0; i < declaration->params.size(); i++)
     {
@@ -32,7 +35,7 @@ std::any FunctionCallable::call(Interpreter* interpreter, std::span<Expression* 
     catch (const Return& returnedValue)
     {
         std::any result = returnedValue.value;
-        return result;
+        return returnedValue.value;
     }
 
     return {};

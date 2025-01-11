@@ -8,9 +8,9 @@ add_executable(vtc-tests
         LogManagerTests/LoggingValidationTest.cpp
         ParserTests/ParserValidationTest.cpp
         ScannerTests/ScannerValidationTest.cpp
-        InterpreterTests/InterpreterValidationTest.cpp
         E2E/tools/E2ETester.cpp
-        E2E/tools/E2ETester.h)
+        E2E/tools/E2ETester.h
+        E2E/E2Etests.cpp)
 
 target_compile_definitions(vtc-tests PRIVATE DEBUG_MODE)
 target_compile_definitions(vtc PRIVATE DEBUG_MODE)

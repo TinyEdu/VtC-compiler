@@ -21,35 +21,35 @@ public:
     explicit Parser(std::vector<Token> tokens);
     ~Parser();
 
-    std::vector<std::unique_ptr<Statement>> parse();
+    std::vector<std::shared_ptr<Statement>> parse();
 
 private:
-    Statement* declaration();
-    Expression* expression();
-    Expression* assignment();
-    Expression* logicalOr();
-    Expression* logicalAnd();
-    Expression* equality();
-    Expression* comparison();
-    Expression* term();
-    Expression* factor();
-    Expression* unary();
-    Expression* call();
-    Expression* primary();
+    std::shared_ptr<Statement> declaration();
+    std::shared_ptr<Expression> expression();
+    std::shared_ptr<Expression> assignment();
+    std::shared_ptr<Expression> logicalOr();
+    std::shared_ptr<Expression> logicalAnd();
+    std::shared_ptr<Expression> equality();
+    std::shared_ptr<Expression> comparison();
+    std::shared_ptr<Expression> term();
+    std::shared_ptr<Expression> factor();
+    std::shared_ptr<Expression> unary();
+    std::shared_ptr<Expression> call();
+    std::shared_ptr<Expression> primary();
 
-    Statement* varDeclaration();
-    Statement* statementDeclaration();
-    Statement* functionDeclaration(const std::string& kind);
-    Expression* finishCallDeclaration(Expression& callee);
+    std::shared_ptr<Statement> varDeclaration();
+    std::shared_ptr<Statement> statementDeclaration();
+    std::shared_ptr<Statement> functionDeclaration(const std::string& kind);
+    std::shared_ptr<Expression> finishCallDeclaration(std::shared_ptr<Expression> callee);
 
 
-    Statement* printStatement();
-    Statement* ifStatement();
-    Statement* whileStatement();
-    Statement* forStatement();
-    Statement* expressionStatement();
+    std::shared_ptr<Statement> printStatement();
+    std::shared_ptr<Statement> ifStatement();
+    std::shared_ptr<Statement> whileStatement();
+    std::shared_ptr<Statement> forStatement();
+    std::shared_ptr<Statement> expressionStatement();
 
-    std::vector<Statement*> parseBlock();
+    std::vector<std::shared_ptr<Statement>> parseBlock();
 };
 
 #endif  // PARSER_H

@@ -6,9 +6,9 @@ Variable::Variable(Token name) : name(name)
 {
 }
 
-std::any Variable::accept(Visitor* visitor)
+std::shared_ptr<Expression> Variable::accept(Visitor& visitor)
 {
-    return visitor->visit(this);
+    return visitor.visit(shared_from_this());
 }
 
 bool Variable::equals(const Expression& other) const

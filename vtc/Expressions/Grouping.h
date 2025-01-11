@@ -1,5 +1,3 @@
-// Grouping.h
-
 #ifndef GROUPING_H
 #define GROUPING_H
 
@@ -7,13 +5,14 @@
 
 class Visitor;
 
-class Grouping : public Expression
+class Grouping : public Expression, public std::enable_shared_from_this<Grouping>
 {
 public:
-    Grouping(Expression* expression);
-    std::any accept(Visitor* visitor) override;
+    Grouping(std::shared_ptr<Expression> expression);
 
-    Expression* expression;
+    std::shared_ptr<Expression> accept(Visitor& visitor) override;
+
+    std::shared_ptr<Expression> expression;
 
     bool equals(const Expression& other) const override;
 

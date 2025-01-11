@@ -2,12 +2,16 @@
 
 #include "Visitor/Visitor.h"
 
-Call::Call(Expression* callee, Token paren, std::vector<Expression*> arguments)
+
+Call::Call(std::shared_ptr<Expression> callee, Token paren, std::vector<std::shared_ptr<Expression>> arguments)
     : callee(callee), paren(paren), arguments(arguments)
 {
 }
 
-std::any Call::accept(Visitor* visitor) { return visitor->visit(this); }
+std::shared_ptr<Expression> Call::accept(Visitor& visitor)
+{
+    return visitor.visit(shared_from_this());
+}
 
 bool Call::equals(const Expression& other) const
 {

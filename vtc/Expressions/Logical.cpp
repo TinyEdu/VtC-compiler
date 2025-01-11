@@ -2,14 +2,14 @@
 
 #include "Visitor/Visitor.h"
 
-Logical::Logical(Expression* left, Token op, Expression* right)
+Logical::Logical(std::shared_ptr<Expression> left, Token op, std::shared_ptr<Expression> right)
     : left(left), op(op), right(right)
 {
 }
 
-std::any Logical::accept(Visitor* visitor)
+std::shared_ptr<Expression> Logical::accept(Visitor& visitor)
 {
-    return visitor->visit(this);
+    return visitor.visit(shared_from_this());
 }
 
 bool Logical::equals(const Expression& other) const

@@ -1,12 +1,14 @@
 #ifndef RETURNSTATEMENT_H
 #define RETURNSTATEMENT_H
 
+#include <memory>
+
 #include "Statement.h"
 
-class ReturnStatement : public Statement
+class ReturnStatement : public Statement, public std::enable_shared_from_this<ReturnStatement>
 {
 public:
-    ReturnStatement(Token keyword, Expression* value);
+    ReturnStatement(Token keyword, std::shared_ptr<Expression> value);
 
     ~ReturnStatement();
 
@@ -15,7 +17,7 @@ public:
     bool equals(const Statement& other) const override;
 
     Token keyword;
-    Expression* value;
+    std::shared_ptr<Expression> value;
 };
 
 #endif

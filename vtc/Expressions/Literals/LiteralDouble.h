@@ -1,8 +1,7 @@
-// LiteralDouble.h
 #ifndef LiteralDouble_H
 #define LiteralDouble_H
 
-#include "Expressions/Literals/Literal.h"
+#include "Literal.h"
 
 class Expression;
 class LiteralInt;
@@ -18,16 +17,16 @@ public:
 
     double value;
 
-    std::any accept(Visitor* visitor) override;
+    std::shared_ptr<Expression> accept(Visitor& visitor) override;
 
-    Expression* process(Literal* expr, Token token) override;
+    std::shared_ptr<Expression> process(std::shared_ptr<Literal> expr, Token token) override;
+    std::shared_ptr<Expression> process(std::shared_ptr<LiteralInt> expr, Token token) override;
+    std::shared_ptr<Expression> process(std::shared_ptr<LiteralFloat> expr, Token token) override;
+    std::shared_ptr<Expression> process(std::shared_ptr<LiteralString> expr, Token token) override;
+    std::shared_ptr<Expression> process(std::shared_ptr<LiteralBool> expr, Token token) override;
+    std::shared_ptr<Expression> process(std::shared_ptr<LiteralDouble> expr, Token token) override;
 
-    Expression* process(LiteralInt* expr, Token token) override;
-    Expression* process(LiteralFloat* expr, Token token) override;
-    Expression* process(LiteralString* expr, Token token) override;
-    Expression* process(LiteralBool* expr, Token token) override;
-    Expression* process(LiteralDouble* expr, Token token) override;
-    Expression* process(Token token) override;
+    std::shared_ptr<Expression> process(Token token) override;
 
     friend std::ostream& operator<<(std::ostream& os, const LiteralDouble* expr);
     friend std::ostream& operator<<(std::ostream& os, const LiteralDouble& expr);

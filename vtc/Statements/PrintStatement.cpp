@@ -1,29 +1,26 @@
 #include "PrintStatement.h"
 #include "Visitor/Visitor.h"
 
-PrintStatement::PrintStatement(Expression* expression): expression(expression)
+PrintStatement::PrintStatement(std::shared_ptr<Expression> expression)
+    : expression(std::move(expression))
 {
 }
 
-PrintStatement::~PrintStatement()
-{
-}
+PrintStatement::~PrintStatement() = default;
 
 std::any PrintStatement::accept(StatementVisitor* visitor)
 {
-    return visitor->visit(this);
+    return visitor->visit(shared_from_this());
 }
 
 bool PrintStatement::equals(const Statement& other) const
 {
     const auto* otherPrintStmt = dynamic_cast<const PrintStatement*>(&other);
-    if (otherPrintStmt == nullptr)
+    if (!otherPrintStmt)
     {
         return false;
     }
 
-    // Compare the `expression` fields
-    return ((this->expression == nullptr && otherPrintStmt->expression == nullptr) ||
-        (this->expression != nullptr && otherPrintStmt->expression != nullptr &&
-            *this->expression == *otherPrintStmt->expression));
+    return ((!expression && !otherPrintStmt->expression) ||
+        (expression && otherPrintStmt->expression && expression->equals(*otherPrintStmt->expression)));
 }
