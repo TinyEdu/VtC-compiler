@@ -14,13 +14,16 @@ add_definitions(-std=gnu++20)
 
 find_package(Qt6 COMPONENTS
         Quick
+        QuickControls2
         Gui
         REQUIRED)
 
 set(SOURCE_FILES
         main.cpp
         gui/Core/GuiMain/GuiMain.cpp
-        gui/Core/GuiMain/GuiMain.h)
+        gui/Core/GuiMain/GuiMain.h
+        gui/MovableBlock/MovableBlock.cpp
+        gui/MovableBlock/MovableBlock.h)
 
 qt_policy(SET QTP0001 NEW)
 qt_add_executable(vtc-compiler ${SOURCE_FILES})
@@ -37,7 +40,8 @@ target_compile_definitions(vtc-compiler PRIVATE DEBUG_MODE)
 target_link_libraries(vtc-compiler PRIVATE
         vtc
         Qt6::Gui
-        Qt6::Quick)
+        Qt6::Quick
+        Qt6::QuickControls2)
 
 # Add QML module
 qt_add_qml_module(vtc-compiler
@@ -45,6 +49,7 @@ qt_add_qml_module(vtc-compiler
         VERSION 1.0
         QML_FILES
         gui/qmls/main.qml
+        gui/qmls/MovableBlock.qml
 )
 
 qt_add_resources(vtc-compiler "resources"
@@ -52,6 +57,7 @@ qt_add_resources(vtc-compiler "resources"
         "/"
         FILES
         gui/qmls/main.qml
+        gui/qmls/MovableBlock.qml
 )
 
 

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/gui">
         <file>gui/qmls/main.qml</file>
+        <file>gui/qmls/MovableBlock.qml</file>
     </qresource>
 </RCC>
