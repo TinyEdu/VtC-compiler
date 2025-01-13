@@ -1,66 +1,38 @@
 import QtQuick 2.15
-import QtQuick.Controls 6.5
-import QtQuick.Layouts 1.15
-
+import QtQuick.Controls 2.15
 
 ApplicationWindow {
     visible: true
     width: 600
     height: 400
-    title: "Draggable Blocks with Labels"
+    title: "Reusable Movable Block Example"
 
-    ColumnLayout {
+    Rectangle {
         anchors.fill: parent
+        color: "#f0f0f0"
 
-        TabBar {
-            id: tabBar
-            Layout.fillWidth: true
-
-            TabButton { text: "Board" }
-            TabButton { text: "Text Box" }
+        MovableBlock {
+            id: block1
+            x: 100
+            y: 150
+            name: "Block 1"
         }
 
-        SwipeView {
-            id: swipeView
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            currentIndex: tabBar.currentIndex
+        MovableBlock {
+            id: block2
+            x: 300
+            y: 150
+            name: "Block 2"
+        }
 
-            // First Tab: Draggable Blocks
-            Rectangle {
-                id: board
-                color: "#f5f5f5" // Light gray board
-                border.color: "#ccc"
-                border.width: 2
+        Button {
+            text: "Change Block 1 Color"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
 
-                // Add multiple MovableBlocks dynamically
-                MovableBlock {
-                    blockName: "Block 1"
-                    x: 50
-                    y: 50
-                    boundaryParent: board
-                }
-
-                MovableBlock {
-                    blockName: "Block 2"
-                    x: 150
-                    y: 150
-                    boundaryParent: board
-                }
-            }
-
-            // Second Tab: Text Box
-            Rectangle {
-                color: "#ffffff" // White background
-
-                TextArea {
-                    anchors.fill: parent
-                    anchors.margins: 10
-                    placeholderText: "Type something here..."
-                    font.pixelSize: 16
-                    wrapMode: TextEdit.WordWrap
-                }
-            }
+            // Toggle block1's color between blue and red
+            onClicked: block1.blockColor = "red"
         }
     }
 }

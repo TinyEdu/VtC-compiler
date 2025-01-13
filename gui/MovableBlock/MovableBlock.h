@@ -1,36 +1,34 @@
 #ifndef MOVABLEBLOCK_H
 #define MOVABLEBLOCK_H
 
+#include <iostream>
 #include <QQuickItem>
+#include <QString>
 
 class MovableBlock : public QQuickItem {
     Q_OBJECT
-    Q_PROPERTY(QString blockName READ blockName WRITE setBlockName NOTIFY blockNameChanged)
-    Q_PROPERTY(QQuickItem *boundaryParent READ boundaryParent WRITE setBoundaryParent NOTIFY boundaryParentChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 
 public:
-    explicit MovableBlock(QQuickItem *parent = nullptr);
+    explicit MovableBlock(QQuickItem *parent = nullptr)
+        : QQuickItem(parent), m_name("DefaultName")
+    {
+        std::cout << "he";
+    }
 
-    QString blockName() const;
-    void setBlockName(const QString &name);
-
-    QQuickItem *boundaryParent() const;
-    void setBoundaryParent(QQuickItem *parent);
+    QString name() const { return m_name; }
+    void setName(const QString &newName) {
+        if (m_name != newName) {
+            m_name = newName;
+            emit nameChanged();
+        }
+    }
 
     signals:
-        void blockNameChanged();
-    void boundaryParentChanged();
-
-protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
+        void nameChanged();
 
 private:
-    QString m_blockName;
-    QQuickItem *m_boundaryParent = nullptr;
-    bool m_dragging = false;
-    QPointF m_dragStartPos;
+    QString m_name;
 };
 
 #endif // MOVABLEBLOCK_H

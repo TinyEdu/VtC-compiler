@@ -10,9 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_PREFIX_PATH "C:\\Qt\\6.8.1\\mingw_64")
 
 
-add_definitions(-std=gnu++20)
-
 find_package(Qt6 COMPONENTS
+        Core
         Quick
         QuickControls2
         Gui
@@ -39,26 +38,18 @@ target_compile_definitions(vtc-compiler PRIVATE DEBUG_MODE)
 
 target_link_libraries(vtc-compiler PRIVATE
         vtc
+        Qt6::Core
         Qt6::Gui
         Qt6::Quick
         Qt6::QuickControls2)
 
 # Add QML module
 qt_add_qml_module(vtc-compiler
-        URI gui
+        URI cpp.MovableBlock
         VERSION 1.0
         QML_FILES
         gui/qmls/main.qml
         gui/qmls/MovableBlock.qml
 )
-
-qt_add_resources(vtc-compiler "resources"
-        PREFIX
-        "/"
-        FILES
-        gui/qmls/main.qml
-        gui/qmls/MovableBlock.qml
-)
-
 
 

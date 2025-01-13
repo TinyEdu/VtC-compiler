@@ -17,11 +17,29 @@ int GuiMain::run(int argc, char* argv[]) {
 
     QQmlApplicationEngine engine;
 
-    // Register MovableBlock with QML
-    // qmlRegisterType<MovableBlock>("qrc:/gui/qmls/MovableBlock.qml", 1, 0, "ABC_ABC_ABC");
-    qmlRegisterType<MovableBlock>("CustomControls", 1, 0, "MovableBlock");
+    qmlRegisterType<MovableBlock>("com.example.movableblock", 1, 0, "MovableBlock");
 
-    engine.load(QUrl(QStringLiteral("qrc:/gui/qmls/main.qml")));
+
+    auto url1 = QUrl(QStringLiteral("qrc:/qt/qml/cpp/MovableBlock/gui/qmls/MovableBlock.qml"));
+
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+                     &app, [url1](QObject *obj, const QUrl &objUrl) {
+                         if (!obj && url1 == objUrl)
+                             QCoreApplication::exit(-1);
+                     }, Qt::QueuedConnection);
+    engine.load(url1);
+
+
+    auto url2 = QUrl(QStringLiteral("qrc:/qt/qml/cpp/MovableBlock/gui/qmls/main.qml"));
+
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+                     &app, [url2](QObject *obj, const QUrl &objUrl) {
+                         if (!obj && url2 == objUrl)
+                             QCoreApplication::exit(-1);
+                     }, Qt::QueuedConnection);
+    engine.load(url2);
+
+
     if (engine.rootObjects().isEmpty())
         return -1;
 
