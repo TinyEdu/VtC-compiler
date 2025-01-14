@@ -49,6 +49,7 @@ qt_add_qml_module(vtc-compiler
         VERSION 1.0
         QML_FILES
         gui/qmls/main.qml
+        gui/qmls/BezierCurve.qml
         gui/qmls/MovableBlock.qml
 )
 
