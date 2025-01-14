@@ -4,7 +4,8 @@
 #include <QQuickItem>
 #include <QList>
 
-class CollisionManager : public QObject {
+class CollisionManager : public QObject
+{
     Q_OBJECT
 
 public:

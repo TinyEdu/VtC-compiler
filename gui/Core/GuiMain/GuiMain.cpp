@@ -13,7 +13,8 @@
 
 using namespace Qt::StringLiterals;
 
-int GuiMain::run(int argc, char* argv[]) {
+int GuiMain::run(int argc, char* argv[])
+{
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
@@ -24,12 +25,14 @@ int GuiMain::run(int argc, char* argv[]) {
 
     qmlRegisterType<MovableBlock>("MovableBlock", 1, 0, "MovableBlock");
     qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
-    qmlRegisterSingletonInstance<CollisionManager>("CollisionManager", 1, 0, "CollisionManager", CollisionManager::instance());
+    qmlRegisterSingletonInstance<CollisionManager>("CollisionManager", 1, 0, "CollisionManager",
+                                                   CollisionManager::instance());
 
 
     auto url = QUrl(QStringLiteral("qrc:/qt/qml/cpp/MovableBlock/gui/qmls/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
+                     &app, [url](QObject* obj, const QUrl& objUrl)
+                     {
                          if (!obj && url == objUrl)
                              QCoreApplication::exit(-1);
                      }, Qt::QueuedConnection);

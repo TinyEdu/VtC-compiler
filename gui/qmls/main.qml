@@ -1,37 +1,36 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 6.0
+import QtQuick.Controls 6.0
+import MovableBlock 1.0
 
 ApplicationWindow {
     visible: true
-    width: 640
-    height: 480
-    title: "Dynamic MovableBlock Example"
+    width: 800
+    height: 600
+    title: "MovableBlock Example"
 
     Rectangle {
         id: canvas
         anchors.fill: parent
-    }
+        color: "#f0f0f0"
 
-    Button {
-        text: "Add Block"
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        onClicked: {
-            let newBlock = blockFactory.createBlock(); // Call exposed factory method
-            createBlockUI(newBlock);
+        Button {
+            text: "Add Block"
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            onClicked: createBlockUI();
         }
     }
 
-    function createBlockUI(block) {
+    function createBlockUI() {
+        let block = blockFactory.createBlock();
         let component = Qt.createComponent(block.qmlName);
         if (component.status === Component.Ready) {
             let blockItem = component.createObject(canvas, {
-                x: Math.random() * (canvas.width - 50),
-                y: Math.random() * (canvas.height - 50)
+                blockLogic: block,
+                initialX: 100,
+                initialY: 100
             });
-            blockItem.blockLogic = block;
-        } else {
-            console.error("Component is not ready:", component.errorString());
         }
+
     }
 }

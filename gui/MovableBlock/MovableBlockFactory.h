@@ -11,11 +11,15 @@
 #include "MovableBlock.h"
 
 
-class MovableBlockFactory : public QObject {
+class MovableBlockFactory : public QObject
+{
     Q_OBJECT
+
 public:
-    explicit MovableBlockFactory(QQmlEngine *engine, QObject *parent = nullptr)
-        : QObject(parent), m_engine(engine) {}
+    explicit MovableBlockFactory(QQmlEngine* engine, QObject* parent = nullptr)
+        : QObject(parent), m_engine(engine)
+    {
+    }
 
     Q_INVOKABLE QObject* createBlock()
     {
@@ -24,9 +28,8 @@ public:
     };
 
 private:
-    QQmlEngine *m_engine;
+    QQmlEngine* m_engine;
 };
-
 
 
 #endif //MOVABLEBLOCKFACTORY_H

@@ -1,5 +1,4 @@
 import QtQuick 6.0
-import CollisionManager 1.0
 
 Rectangle {
     id: movableBlock
@@ -9,6 +8,7 @@ Rectangle {
 
     property real initialX: 0
     property real initialY: 0
+    property var blockLogic // To hold the C++ MovableBlock instance
 
     Component.onCompleted: {
         x = initialX;
@@ -19,16 +19,7 @@ Rectangle {
         anchors.fill: parent
         drag.target: parent
 
-        onReleased: {
-            let collidedAnchor = CollisionManager.checkCollision(movableBlock);
-            if (collidedAnchor) {
-                x = collidedAnchor.x;
-                y = collidedAnchor.y;
-            } else {
-                x = initialX;
-                y = initialY;
-            }
-        }
+        onReleased: blockLogic.ReleasedMouse();
+
     }
 }
-
