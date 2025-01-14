@@ -1,13 +1,14 @@
 #include "GuiMain.h"
 
-#include <QGuiApplication>
 #include <QQmlContext>
-#include <QQuickItem>
 #include <QQmlApplicationEngine>
 #include <QtCore/QUrl>
 #include <QtCore/QString>
 
+#include "Anchor/Anchor.h"
+#include "Collision/CollisionManager.h"
 #include "MovableBlock/MovableBlock.h"
+#include "MovableBlock/MovableBlockFactory.h"
 
 
 using namespace Qt::StringLiterals;
@@ -17,27 +18,22 @@ int GuiMain::run(int argc, char* argv[]) {
 
     QQmlApplicationEngine engine;
 
-    qmlRegisterType<MovableBlock>("com.example.movableblock", 1, 0, "MovableBlock");
+    MovableBlockFactory movableBlockFactory(&engine);
+    engine.rootContext()->setContextProperty("blockFactory", &movableBlockFactory);
 
 
-    auto url1 = QUrl(QStringLiteral("qrc:/qt/qml/cpp/MovableBlock/gui/qmls/MovableBlock.qml"));
+    qmlRegisterType<MovableBlock>("MovableBlock", 1, 0, "MovableBlock");
+    qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
+    qmlRegisterSingletonInstance<CollisionManager>("CollisionManager", 1, 0, "CollisionManager", CollisionManager::instance());
 
+
+    auto url = QUrl(QStringLiteral("qrc:/qt/qml/cpp/MovableBlock/gui/qmls/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url1](QObject *obj, const QUrl &objUrl) {
-                         if (!obj && url1 == objUrl)
+                     &app, [url](QObject *obj, const QUrl &objUrl) {
+                         if (!obj && url == objUrl)
                              QCoreApplication::exit(-1);
                      }, Qt::QueuedConnection);
-    engine.load(url1);
-
-
-    auto url2 = QUrl(QStringLiteral("qrc:/qt/qml/cpp/MovableBlock/gui/qmls/main.qml"));
-
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url2](QObject *obj, const QUrl &objUrl) {
-                         if (!obj && url2 == objUrl)
-                             QCoreApplication::exit(-1);
-                     }, Qt::QueuedConnection);
-    engine.load(url2);
+    engine.load(url);
 
 
     if (engine.rootObjects().isEmpty())

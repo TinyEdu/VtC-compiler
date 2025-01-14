@@ -3,36 +3,35 @@ import QtQuick.Controls 2.15
 
 ApplicationWindow {
     visible: true
-    width: 600
-    height: 400
-    title: "Reusable Movable Block Example"
+    width: 640
+    height: 480
+    title: "Dynamic MovableBlock Example"
 
     Rectangle {
+        id: canvas
         anchors.fill: parent
-        color: "#f0f0f0"
+    }
 
-        MovableBlock {
-            id: block1
-            x: 100
-            y: 150
-            name: "Block 1"
+    Button {
+        text: "Add Block"
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        onClicked: {
+            let newBlock = blockFactory.createBlock(); // Call exposed factory method
+            createBlockUI(newBlock);
         }
+    }
 
-        MovableBlock {
-            id: block2
-            x: 300
-            y: 150
-            name: "Block 2"
-        }
-
-        Button {
-            text: "Change Block 1 Color"
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-
-            // Toggle block1's color between blue and red
-            onClicked: block1.blockColor = "red"
+    function createBlockUI(block) {
+        let component = Qt.createComponent(block.qmlName);
+        if (component.status === Component.Ready) {
+            let blockItem = component.createObject(canvas, {
+                x: Math.random() * (canvas.width - 50),
+                y: Math.random() * (canvas.height - 50)
+            });
+            blockItem.blockLogic = block;
+        } else {
+            console.error("Component is not ready:", component.errorString());
         }
     }
 }
