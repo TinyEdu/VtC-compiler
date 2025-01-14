@@ -14,14 +14,13 @@ Rectangle {
     property var anchorLogic
 
     Component.onCompleted: {
-        anchorLogic.Associate(this);
+        if(!anchorLogic) {
+            anchorLogic = anchorFactory.newComponent();
+        }
+
         x = initialX;
         y = initialY;
-    }
 
-    Text {
-        anchors.centerIn: parent
-        text: "Anchor"
-        color: "white"
+        anchorLogic.Associate(this);
     }
 }

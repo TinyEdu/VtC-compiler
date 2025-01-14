@@ -10,8 +10,6 @@ class MovableBlock : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QString qmlName READ qmlName CONSTANT)
-    Q_PROPERTY(qreal initialX READ initialX WRITE setInitialX NOTIFY initialXChanged)
-    Q_PROPERTY(qreal initialY READ initialY WRITE setInitialY NOTIFY initialYChanged)
 
 public:
     explicit MovableBlock(QQuickItem* parent = nullptr)
@@ -25,16 +23,21 @@ public:
     }
 
     QString qmlName() const { return m_qmlName; }
-    qreal initialX() const { return m_initialX; }
-    qreal initialY() const { return m_initialY; }
 
     Q_INVOKABLE void ReleasedMouse()
     {
-        if (QQuickItem const* collidedAnchor = CollisionManager::instance()->checkCollision(qml_obj))
+        if (QQuickItem* collidedAnchor = CollisionManager::instance()->checkCollision(qml_obj))
         {
-            // Align to the collided anchor's position
-            qml_obj->setX(collidedAnchor->property("x").toReal());
-            qml_obj->setY(collidedAnchor->property("y").toReal());
+            // Get the position of the anchor in the root coordinate space
+            QPointF anchorPositionInRoot = collidedAnchor->mapToItem(nullptr, 0, 0);
+
+            // Map the root position back to qml_obj's parent coordinate space
+            QPointF alignedPosition = qml_obj->parentItem()->mapFromItem(
+                nullptr, anchorPositionInRoot.x(), anchorPositionInRoot.y());
+
+            // Align qml_obj to the transformed position
+            qml_obj->setX(alignedPosition.x());
+            qml_obj->setY(alignedPosition.y());
         }
         else
         {

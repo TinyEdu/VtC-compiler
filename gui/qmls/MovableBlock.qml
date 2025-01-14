@@ -4,7 +4,7 @@ Rectangle {
     id: movableBlock
     width: 100
     height: 100
-    z: 2
+    z: 200
     color: "#4682b4"
 
     property real initialX: 0
@@ -14,9 +14,15 @@ Rectangle {
     property var blockLogic
 
     Component.onCompleted: {
-        blockLogic.Associate(this)
+        if(!blockLogic) {
+            blockLogic = blockFactory.newComponent();
+
+        }
+
         x = initialX;
         y = initialY;
+
+        blockLogic.Associate(this)
     }
 
     MouseArea {
