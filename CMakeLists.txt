@@ -19,17 +19,16 @@ find_package(Qt6 COMPONENTS
 
 set(SOURCE_FILES
         main.cpp
-        gui/Core/GuiMain/GuiMain.cpp
         gui/Core/GuiMain/GuiMain.h
-        gui/MovableBlock/MovableBlock.cpp
+        gui/Core/GuiMain/GuiMain.cpp
         gui/MovableBlock/MovableBlock.h
         gui/Anchor/Anchor.h
-        gui/Anchor/Anchor.cpp
-        gui/Collision/CollisionManager.cpp
         gui/Collision/CollisionManager.h
-        gui/MovableBlock/MovableBlockFactory.cpp
+        gui/Collision/CollisionManager.cpp
         gui/MovableBlock/MovableBlockFactory.h
-        gui/MovableBlock/MovableBlockFactory.h)
+        gui/MovableBlock/MovableBlockFactory.cpp
+        gui/Anchor/AnchorFactory.h
+)
 
 qt_policy(SET QTP0001 NEW)
 qt_add_executable(vtc-compiler ${SOURCE_FILES})
@@ -61,10 +60,9 @@ qt_add_qml_module(vtc-compiler
         SOURCES
         gui/Core/GuiMain/GuiMain.cpp
         gui/Core/GuiMain/GuiMain.h
-        gui/MovableBlock/MovableBlock.cpp
         gui/MovableBlock/MovableBlock.h
         gui/Anchor/Anchor.h
-        gui/Anchor/Anchor.cpp
+        gui/Anchor/AnchorFactory.h
         gui/Collision/CollisionManager.cpp
         gui/Collision/CollisionManager.h
 )

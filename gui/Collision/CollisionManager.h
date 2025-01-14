@@ -17,8 +17,10 @@ public:
 
 private:
     explicit CollisionManager(QObject* parent = nullptr);
-    QList<QQuickItem*> m_anchors;
+
     bool isColliding(QQuickItem* a, QQuickItem* b);
+
+    QList<QQuickItem*> m_anchors;
 };
 
 #endif // COLLISIONMANAGER_H

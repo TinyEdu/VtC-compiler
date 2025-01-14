@@ -1,12 +1,6 @@
-//
-// Created by nikod on 14/01/2025.
-//
-
 #ifndef MOVABLEBLOCKFACTORY_H
 #define MOVABLEBLOCKFACTORY_H
 
-
-#include <QObject>
 #include <QQmlEngine>
 #include "MovableBlock.h"
 
@@ -21,7 +15,7 @@ public:
     {
     }
 
-    Q_INVOKABLE QObject* createBlock()
+    Q_INVOKABLE QObject* newComponent()
     {
         QObject* block = new MovableBlock();
         return block;

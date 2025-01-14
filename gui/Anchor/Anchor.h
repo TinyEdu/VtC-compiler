@@ -1,23 +1,29 @@
 #ifndef ANCHOR_H
 #define ANCHOR_H
 
-#include <QQuickItem>
-#include <QColor>
+#include "Collision/CollisionManager.h"
 
-class Anchor : public QQuickItem {
+class Anchor : public QQuickItem
+{
     Q_OBJECT
-    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
+    Q_PROPERTY(QString qmlName READ qmlName CONSTANT)
 
 public:
-    Anchor();
-    QColor color() const;
-    void setColor(const QColor &color);
+    explicit Anchor(QQuickItem* parent = nullptr) : QQuickItem(parent)
+    {
+    }
 
-    signals:
-        void colorChanged();
+    Q_INVOKABLE void Associate(QObject* qml)
+    {
+        qml_obj = qobject_cast<QQuickItem*>(qml);
+        CollisionManager::instance()->registerAnchor(qml_obj);
+    }
+
+    QString qmlName() const { return m_qmlName; }
 
 private:
-    QColor m_color;
+    QQuickItem* qml_obj;
+    const QString m_qmlName = QString("Anchor.qml");
 };
 
 #endif // ANCHOR_H

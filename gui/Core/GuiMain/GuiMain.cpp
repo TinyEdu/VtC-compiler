@@ -6,6 +6,7 @@
 #include <QtCore/QString>
 
 #include "Anchor/Anchor.h"
+#include "Anchor/AnchorFactory.h"
 #include "Collision/CollisionManager.h"
 #include "MovableBlock/MovableBlock.h"
 #include "MovableBlock/MovableBlockFactory.h"
@@ -21,6 +22,9 @@ int GuiMain::run(int argc, char* argv[])
 
     MovableBlockFactory movableBlockFactory(&engine);
     engine.rootContext()->setContextProperty("blockFactory", &movableBlockFactory);
+
+    AnchorFactory anchorFactory(&engine);
+    engine.rootContext()->setContextProperty("anchorFactory", &anchorFactory);
 
 
     qmlRegisterType<MovableBlock>("MovableBlock", 1, 0, "MovableBlock");

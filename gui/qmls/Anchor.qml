@@ -1,15 +1,27 @@
 import QtQuick 6.0
-import Anchor 1.0
 
-Item {
+Rectangle {
     id: anchor
     width: 100
     height: 100
+    z: 1
+    color: "#ffa500"
 
-    // Visual representation of the anchor
-    Rectangle {
-        anchors.fill: parent
-        color: anchor.color // Bind to the C++ property
-        border.color: "black"
+    property real initialX: 0
+    property real initialY: 0
+
+    // Property to hold the C++ logic object
+    property var anchorLogic
+
+    Component.onCompleted: {
+        anchorLogic.Associate(this);
+        x = initialX;
+        y = initialY;
+    }
+
+    Text {
+        anchors.centerIn: parent
+        text: "Anchor"
+        color: "white"
     }
 }

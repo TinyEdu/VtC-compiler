@@ -13,16 +13,28 @@ ApplicationWindow {
         anchors.fill: parent
         color: "#f0f0f0"
 
+        // Button to add a new MovableBlock
         Button {
             text: "Add Block"
             anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
+            anchors.margins: 10
             onClicked: createBlockUI();
+        }
+
+        // Button to add a new Anchor
+        Button {
+            text: "Add Anchor"
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.margins: 10
+            onClicked: createAnchorUI();
         }
     }
 
+    // Function to create and display a MovableBlock
     function createBlockUI() {
-        let block = blockFactory.createBlock();
+        let block = blockFactory.newComponent();
         let component = Qt.createComponent(block.qmlName);
         if (component.status === Component.Ready) {
             let blockItem = component.createObject(canvas, {
@@ -31,6 +43,17 @@ ApplicationWindow {
                 initialY: 100
             });
         }
+    }
 
+    function createAnchorUI() {
+        let anchor = anchorFactory.newComponent();
+        let component = Qt.createComponent(anchor.qmlName);
+        if (component.status === Component.Ready) {
+            let anchorItem = component.createObject(canvas, {
+                anchorLogic: anchor,
+                initialX: Math.floor(Math.random() * (600)),
+                initialY: 100
+            });
+        }
     }
 }

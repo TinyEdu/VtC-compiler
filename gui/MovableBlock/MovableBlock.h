@@ -3,7 +3,6 @@
 
 #include <QQuickItem>
 #include <QString>
-#include <QDebug>
 #include "Collision/CollisionManager.h"
 
 
@@ -20,52 +19,38 @@ public:
     {
     }
 
+    Q_INVOKABLE void Associate(QObject* qml)
+    {
+        qml_obj = qobject_cast<QQuickItem*>(qml);
+    }
+
     QString qmlName() const { return m_qmlName; }
-
     qreal initialX() const { return m_initialX; }
-
-    void setInitialX(qreal x)
-    {
-        if (m_initialX != x)
-        {
-            m_initialX = x;
-            emit initialXChanged();
-        }
-    }
-
     qreal initialY() const { return m_initialY; }
-
-    void setInitialY(qreal y)
-    {
-        if (m_initialY != y)
-        {
-            m_initialY = y;
-            emit initialYChanged();
-        }
-    }
 
     Q_INVOKABLE void ReleasedMouse()
     {
-        qDebug() << "Mouse released on MovableBlock!";
-
-        QObject const* collidedAnchor = CollisionManager::instance()->checkCollision(this);
-        if (collidedAnchor)
+        if (QQuickItem const* collidedAnchor = CollisionManager::instance()->checkCollision(qml_obj))
         {
             // Align to the collided anchor's position
-            setX(collidedAnchor->property("x").toReal());
-            setY(collidedAnchor->property("y").toReal());
+            qml_obj->setX(collidedAnchor->property("x").toReal());
+            qml_obj->setY(collidedAnchor->property("y").toReal());
         }
         else
         {
-            // Revert to initial position
-            setX(m_initialX);
-            setY(m_initialY);
+            // Set the last position if anchor not found
+            qml_obj->setX(m_initialX);
+            qml_obj->setY(m_initialY);
         }
     }
 
-signals:
-    void initialXChanged();
-    void initialYChanged();
+    Q_INVOKABLE void PressedMouse()
+    {
+        m_initialX = qml_obj->x();
+        m_initialY = qml_obj->y();
+    }
+
+    QQuickItem* qml_obj;
 
 private:
     const QString m_qmlName = QString("MovableBlock.qml");
