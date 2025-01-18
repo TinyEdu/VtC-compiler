@@ -62,8 +62,8 @@ Item {
 
     }
 
-    MouseArea {
-        anchors.fill: parent
-        drag.target: movableBlock
-    }
+    // MouseArea {
+    //     anchors.fill: parent
+    //     drag.target: movableBlock
+    // }
 }

@@ -1,31 +1,34 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 6.0
+import QtQuick.Controls 6.0
 
 ApplicationWindow {
+    width: 640
+    height: 480
     visible: true
-    width: 800
-    height: 600
-    color: "black"
 
-    BlockDiagram {
-        width: 140
-        height: 80
-        name: "function1"
-    }
+    Rectangle {
+        id: parentItem
+        width: 222
+        height: 222
+        color: "#dddddd"
 
-    BlockDiagram {
-        width: 140
-        height: 80
-        name: "function2"
-        blockColor: "yellow"
-        barColor: "orange"
-    }
+        Anchor {
+            id: movableChildA
+            x: 50
+            y: 50
+        }
 
-    BezierConnection {
-        startX: 40
-        startY: 100
-        endX: 200
-        endY: 100
-        anchors.fill: parent
+        MouseArea {
+            id: dragAreaB
+            anchors.fill: parent
+            drag.target: parent
+
+            onPressed: {
+                if (!movableChildA.containsMouse) {
+                    console.log("b");
+                }
+            }
+        }
+
     }
 }

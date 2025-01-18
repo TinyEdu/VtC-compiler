@@ -5,10 +5,12 @@ Item {
 
     property int lineWidth: 8
     property color lineColor: "#FFF"
-    property int point1x
-    property int point1y
-    property int point2x
-    property int point2y
+    property int startPointX
+    property int startPointY
+    property int endPointX
+    property int endPointY
+    z: 3
+    
     property bool dottedAnimation: false
 
     Item {
@@ -23,13 +25,13 @@ Item {
     PathView {
         id: rooPath
         anchors.fill: parent
-        model: (Math.abs(point1x - point2x)+ Math.abs(point1y - point2y))/priv.multiple
+        model: (Math.abs(startPointX - endPointX)+ Math.abs(startPointY - endPointY))/priv.multiple
         interactive: false
         delegate: Rectangle{ color:lineColor;width:lineWidth;height:lineWidth;radius: lineWidth/2;smooth: true }
         path: Path {
-            startX: point1x; startY: point1y
+            startX: startPointX; startY: startPointY
             PathLine {
-                x:point2x; y: point2y
+                x:endPointX; y: endPointY
             }
         }
 
