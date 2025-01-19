@@ -34,7 +34,8 @@ Rectangle {
 
         property bool followMouse: false
 
-        onPressed: {
+        onPressed: function (mouse) {
+
             followMouse = true;
 
             if (connection == null) {
@@ -44,10 +45,10 @@ Rectangle {
                 let component = Qt.createComponent("BezierConnection.qml");
                 if (component.status === Component.Ready) {
                     connection = component.createObject(rootItem, {
-                        "startPointX": anchorCenter.x,
-                        "startPointY": anchorCenter.y,
-                        "endPointX": anchorCenter.x,
-                        "endPointY": anchorCenter.y
+                        startPointX: anchorCenter.x,
+                        startPointY: anchorCenter.y,
+                        endPointX: anchorCenter.x,
+                        endPointY: anchorCenter.y
                     });
 
                     connections.push(connection)
@@ -67,6 +68,7 @@ Rectangle {
             if (item != null) {
                 // update with nodes
                 connection.updateWithAnchors(anchor, item)
+                item.connection = connection
             } else {
                 connection.destroy();
                 connection = null;

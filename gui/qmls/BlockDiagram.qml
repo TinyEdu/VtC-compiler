@@ -1,9 +1,10 @@
 import QtQuick 6.0
+import QtQuick.Effects 6.5
 
 Rectangle {
     property string name: "function"
-    property color blockColor: "blue"
-    property color barColor: "darkblue"
+    property color blockColor: "#CCE2CB"
+    property color barColor: "#B6CfB6"
 
     id: blockDiagram
     width: 100
@@ -11,20 +12,33 @@ Rectangle {
     radius: 10
     color: blockColor
 
+
+    MultiEffect {
+        id: shadowEffect
+        source: blockDiagram
+        anchors.fill: blockDiagram
+        shadowEnabled: true
+        shadowColor: "#62717E"  // Soft shadow effect
+        shadowBlur: 0.3
+        shadowVerticalOffset: 6
+        shadowHorizontalOffset: 4
+    }
+
+
     Rectangle {
         id: topBar
         width: parent.width
-        height: 20
+        height: 25
         color: barColor
         anchors.top: parent.top
         radius: 10
-        border.width: 1
-        border.color: "black"
+        border.width: 1.5
+        border.color: "#62717E"
 
         Text {
             anchors.centerIn: parent
             text: name
-            color: "white"
+            color: "#62717E"
             font.bold: true
             font.pointSize: 10
         }
@@ -36,8 +50,8 @@ Rectangle {
         width: 15
         height: 15
         color: "white"
-        z: 100
-        radius: 5
+        z: 4
+        radius: 10
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.verticalCenter: parent.verticalCenter
@@ -46,11 +60,11 @@ Rectangle {
     // Smaller square 2
     Anchor {
         id: anchor2
-        width: 44
-        height: 44
-        z: 100
+        width: 15
+        height: 15
+        z: 4
         color: "white"
-        radius: 5
+        radius: 10
         anchors.right: parent.right
         anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter

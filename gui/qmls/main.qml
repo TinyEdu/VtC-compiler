@@ -8,24 +8,19 @@ ApplicationWindow {
 
     property var bezierConnections: []
 
-    Anchor {
-        id: anchor
-        connections: bezierConnections
-        isLeft: true
-        x: 50
-        y: 50
-    }
-
-    Anchor {
-        id: anchor2
-        connections: bezierConnections
-        isLeft: false
-        x: 211
-        y: 222
-    }
-
     BlockDiagram {
+        name: "function1"
         x: 333
         y: 333
+    }
+    BlockDiagram {
+        name: "function2"
+        x: 100
+        y: 100
+    }
+    BlockDiagram {
+        name: "function3"
+        x: 400
+        y: 144
     }
 }

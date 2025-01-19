@@ -58,7 +58,7 @@ Item {
             var control2Y = endPointY;
 
             ctx.bezierCurveTo(control1X, control1Y, control2X, control2Y, endPointX, endPointY);
-            ctx.strokeStyle = "red";
+            ctx.strokeStyle = "#62717E";
             ctx.lineWidth = 3;
             ctx.stroke();
         }
