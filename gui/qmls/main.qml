@@ -23,4 +23,9 @@ ApplicationWindow {
         x: 211
         y: 222
     }
+
+    BlockDiagram {
+        x: 333
+        y: 333
+    }
 }

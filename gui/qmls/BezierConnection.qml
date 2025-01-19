@@ -16,12 +16,18 @@ Item {
     property var rightAnchor
 
     function update() {
-        startPointX = leftAnchor.x + leftAnchor.width / 2
-        startPointY = leftAnchor.y + leftAnchor.height / 2
-        endPointX = rightAnchor.x + rightAnchor.width / 2
-        endPointY = rightAnchor.y + rightAnchor.height / 2
+        const rootItem = bezierConnection.Window.contentItem;
 
-        canvas.requestPaint()
+        // Convert local coordinates to root window coordinates
+        let leftGlobal = leftAnchor.mapToItem(rootItem, leftAnchor.width / 2, leftAnchor.height / 2);
+        let rightGlobal = rightAnchor.mapToItem(rootItem, rightAnchor.width / 2, rightAnchor.height / 2);
+
+        startPointX = leftGlobal.x;
+        startPointY = leftGlobal.y;
+        endPointX = rightGlobal.x;
+        endPointY = rightGlobal.y;
+
+        canvas.requestPaint();
     }
 
     function updateWithAnchors(_leftAnchor, _rightAnchor) {

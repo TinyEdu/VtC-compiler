@@ -6,6 +6,7 @@ Rectangle {
     id: anchor
     width: 50
     height: 50
+    z: 100
     color: "blue"
 
     property bool isLeft: true
@@ -18,6 +19,12 @@ Rectangle {
     Component.onCompleted: {
         anchorLogic = anchorFactory.newComponent();
         anchorLogic.Associate(this);
+    }
+
+    function update() {
+        if (connection != null) {
+            connection.update();
+        }
     }
 
     MouseArea {
