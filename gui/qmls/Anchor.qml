@@ -5,29 +5,10 @@ Rectangle {
     id: anchor
     width: 50
     height: 50
-    x: 50
-    y: 50
-    z: parent.z + 1
     color: "blue"
 
-    property var anchorLogic
-
-    Component.onCompleted: {
-        if (!anchorFactory) {
-            console.error("anchorFactory is undefined!");
-            return;
-        }
-
-        if (!anchorLogic) {
-            anchorLogic = anchorFactory.newComponent();
-            if (!anchorLogic) {
-                console.error("Failed to initialize anchorLogic!");
-                return;
-            }
-        }
-
-        anchorLogic.Associate(this);
-    }
+    property var bezierConnections: []
+    property var bezierConnection
 
     MouseArea {
         id: dragArea
@@ -37,39 +18,43 @@ Rectangle {
         property bool followMouse: false
 
         onPressed: {
-            console.log("onPressed");
             followMouse = true;
-        }
 
-        onReleased: {
-            console.log("onReleased");
-            followMouse = false;
-        }
+            if (bezierConnection == null) {
+                console.log("Creating new Bézier connection...");
 
-        onPositionChanged: function(mouse) {
-            if (followMouse) {
-                // Map the mouse position to the BezierConnection's coordinate system
-                const localPos = bezierCurve.mapFromItem(null, mouse.x, mouse.y);
+                const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
+                const anchorCenter = anchor.mapToItem(rootItem, anchor.width / 2, anchor.height / 2);
 
-                // Update the start point of the Bezier curve
-                bezierCurve.endPointX = localPos.x;
-                bezierCurve.endPointY = localPos.y;
-
-                // Request the canvas to repaint
-                bezierCurve.canvas.requestPaint();
+                let component = Qt.createComponent("BezierConnection.qml");
+                if (component.status === Component.Ready) {
+                    bezierConnection = component.createObject(rootItem, {
+                        "startPointX": anchorCenter.x,
+                        "startPointY": anchorCenter.y,
+                        "endPointX": anchorCenter.x + 100,
+                        "endPointY": anchorCenter.y + 100
+                    });
+                }
             }
         }
 
-    }
+        onReleased: {
+            followMouse = false;
+        }
 
-    BezierConnection {
-        id: bezierCurve
-        anchors.fill: parent
+        onPositionChanged: function (mouse) {
+            if (followMouse && bezierConnection) {
+                console.log("Moving anchor");
 
-        // Initialize the start and end points
-        startPointX: x
-        startPointY: y
-        endPointX: x + 1
-        endPointY: y + 1
+                // Convert local position to parent (root) coordinates
+                const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
+                const globalMousePos = anchor.mapToItem(rootItem, mouse.x, mouse.y);
+
+                bezierConnection.endPointX = globalMousePos.x;
+                bezierConnection.endPointY = globalMousePos.y;
+
+                bezierConnection.canvas.requestPaint();
+            }
+        }
     }
 }

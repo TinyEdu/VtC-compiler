@@ -2,33 +2,23 @@ import QtQuick 6.0
 import QtQuick.Controls 6.0
 
 ApplicationWindow {
-    width: 640
-    height: 480
     visible: true
+    width: 800
+    height: 600
 
-    Rectangle {
-        id: parentItem
-        width: 222
-        height: 222
-        color: "#dddddd"
+    property var bezierConnections: []
 
-        Anchor {
-            id: movableChildA
-            x: 50
-            y: 50
-        }
+    Anchor {
+        id: anchor
+        bezierConnections: bezierConnections
+        x: 50
+        y: 50
+    }
 
-        MouseArea {
-            id: dragAreaB
-            anchors.fill: parent
-            drag.target: parent
-
-            onPressed: {
-                if (!movableChildA.containsMouse) {
-                    console.log("b");
-                }
-            }
-        }
-
+    Anchor {
+        id: anchor2
+        bezierConnections: bezierConnections
+        x: 211
+        y: 222
     }
 }

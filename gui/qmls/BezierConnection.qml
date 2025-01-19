@@ -7,36 +7,32 @@ Item {
     height: 600
     z: 2
 
-    property int startPointX: 100
-    property int startPointY: 100
-    property int endPointX: 300
-    property int endPointY: 300
+    property int startPointX
+    property int startPointY
+    property int endPointX
+    property int endPointY
 
-    property alias canvas: connection
+    property alias canvas: connectionCanvas
 
     Canvas {
-        id: connection
+        id: connectionCanvas
         anchors.fill: parent
+
         onPaint: {
             var ctx = getContext("2d");
             ctx.clearRect(0, 0, width, height);
 
-            // Bézier Curve Points
-            var curveStartX = startPointX;
-            var curveStartY = startPointY;
-            var curveEndX = endPointX;
-            var curveEndY = endPointY;
-
-            // Control points for the curve
-            var control1X = curveStartX + (curveEndX - curveStartX) / 3;
-            var control1Y = curveStartY;
-            var control2X = curveEndX - (curveEndX - curveStartX) / 3;
-            var control2Y = curveEndY;
-
             // Draw Bézier curve
             ctx.beginPath();
-            ctx.moveTo(curveStartX, curveStartY);
-            ctx.bezierCurveTo(control1X, control1Y, control2X, control2Y, curveEndX, curveEndY);
+            ctx.moveTo(startPointX, startPointY);
+
+            // Control points for a smooth curve
+            var control1X = startPointX + (endPointX - startPointX) / 3;
+            var control1Y = startPointY;
+            var control2X = endPointX - (endPointX - startPointX) / 3;
+            var control2Y = endPointY;
+
+            ctx.bezierCurveTo(control1X, control1Y, control2X, control2Y, endPointX, endPointY);
             ctx.strokeStyle = "red";
             ctx.lineWidth = 3;
             ctx.stroke();
