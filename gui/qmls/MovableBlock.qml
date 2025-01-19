@@ -14,14 +14,7 @@ Rectangle {
     property var blockLogic
 
     Component.onCompleted: {
-        if(!blockLogic) {
-            blockLogic = blockFactory.newComponent();
-
-        }
-
-        x = initialX;
-        y = initialY;
-
+        blockLogic = blockFactory.newComponent();
         blockLogic.Associate(this)
     }
 

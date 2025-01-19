@@ -57,7 +57,6 @@ qt_add_qml_module(vtc-compiler
         gui/qmls/main.qml
         gui/qmls/Anchor.qml
         gui/qmls/MovableBlock.qml
-        gui/qmls/BezierCurve.qml
         gui/qmls/BezierConnection.qml
         gui/qmls/BlockDiagram.qml
         SOURCES

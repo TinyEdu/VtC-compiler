@@ -1,5 +1,6 @@
 import QtQuick 6.0
 import QtQuick.Controls 6.0
+import CollisionManager 1.0
 
 Rectangle {
     id: anchor
@@ -7,8 +8,17 @@ Rectangle {
     height: 50
     color: "blue"
 
-    property var bezierConnections: []
-    property var bezierConnection
+    property bool isLeft: true
+
+    property var connections: []
+    property var anchorLogic
+    property BezierConnection connection
+
+
+    Component.onCompleted: {
+        anchorLogic = anchorFactory.newComponent();
+        anchorLogic.Associate(this);
+    }
 
     MouseArea {
         id: dragArea
@@ -20,40 +30,52 @@ Rectangle {
         onPressed: {
             followMouse = true;
 
-            if (bezierConnection == null) {
-                console.log("Creating new Bézier connection...");
-
+            if (connection == null) {
                 const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
                 const anchorCenter = anchor.mapToItem(rootItem, anchor.width / 2, anchor.height / 2);
 
                 let component = Qt.createComponent("BezierConnection.qml");
                 if (component.status === Component.Ready) {
-                    bezierConnection = component.createObject(rootItem, {
+                    connection = component.createObject(rootItem, {
                         "startPointX": anchorCenter.x,
                         "startPointY": anchorCenter.y,
-                        "endPointX": anchorCenter.x + 100,
-                        "endPointY": anchorCenter.y + 100
+                        "endPointX": anchorCenter.x,
+                        "endPointY": anchorCenter.y
                     });
+
+                    connections.push(connection)
                 }
             }
         }
 
-        onReleased: {
+        onReleased: function (mouse) {
             followMouse = false;
+
+            // Convert local position to parent (root) coordinates
+            const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
+            const globalMousePos = anchor.mapToItem(rootItem, mouse.x, mouse.y);
+
+            const item = CollisionManager.isOverAnAnchor(globalMousePos.x, globalMousePos.y, anchor)
+
+            if (item != null) {
+                // update with nodes
+                connection.updateWithAnchors(anchor, item)
+            } else {
+                connection.destroy();
+                connection = null;
+            }
         }
 
         onPositionChanged: function (mouse) {
-            if (followMouse && bezierConnection) {
-                console.log("Moving anchor");
-
+            if (followMouse && connection) {
                 // Convert local position to parent (root) coordinates
                 const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
                 const globalMousePos = anchor.mapToItem(rootItem, mouse.x, mouse.y);
 
-                bezierConnection.endPointX = globalMousePos.x;
-                bezierConnection.endPointY = globalMousePos.y;
+                connection.endPointX = globalMousePos.x;
+                connection.endPointY = globalMousePos.y;
 
-                bezierConnection.canvas.requestPaint();
+                connection.canvas.requestPaint();
             }
         }
     }

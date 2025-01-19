@@ -14,12 +14,12 @@ public:
     void unregisterAnchor(QQuickItem* anchor);
 
     Q_INVOKABLE QQuickItem* checkCollision(QQuickItem* movable);
-
+    Q_INVOKABLE QQuickItem* isOverAnAnchor(int x, int y, QQuickItem* excludeItem);
 private:
     explicit CollisionManager(QObject* parent = nullptr);
 
     bool isColliding(QQuickItem* a, QQuickItem* b);
-
+    bool isColliding(int x, int y, QQuickItem* b);
     QList<QQuickItem*> m_anchors;
 };
 

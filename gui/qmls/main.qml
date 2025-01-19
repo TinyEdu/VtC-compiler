@@ -10,14 +10,16 @@ ApplicationWindow {
 
     Anchor {
         id: anchor
-        bezierConnections: bezierConnections
+        connections: bezierConnections
+        isLeft: true
         x: 50
         y: 50
     }
 
     Anchor {
         id: anchor2
-        bezierConnections: bezierConnections
+        connections: bezierConnections
+        isLeft: false
         x: 211
         y: 222
     }

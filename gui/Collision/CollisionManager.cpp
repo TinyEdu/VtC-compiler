@@ -63,3 +63,33 @@ QQuickItem* CollisionManager::checkCollision(QQuickItem* movable)
     }
     return nullptr;
 }
+
+QQuickItem* CollisionManager::isOverAnAnchor(int x, int y, QQuickItem* excludeItem)
+{
+    for (QQuickItem* anchor : m_anchors)
+    {
+        if (anchor == excludeItem) {
+            continue;  // Skip checking against itself
+        }
+
+        if (isColliding(x, y, anchor)) {
+            return anchor;
+        }
+    }
+
+    return nullptr;
+}
+
+bool CollisionManager::isColliding(int x, int y, QQuickItem* b)
+{
+    if (!b || !b->parentItem())
+    {
+        return false;
+    }
+
+    // Get the anchor's bounding rectangle in the scene coordinates
+    QRectF rectB = b->mapRectToScene(b->boundingRect());
+
+    // Check if the point (x, y) lies inside the anchor's bounding rectangle
+    return rectB.contains(x, y);
+}
