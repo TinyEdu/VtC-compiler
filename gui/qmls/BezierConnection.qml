@@ -3,8 +3,8 @@ import QtQuick.Controls 6.0
 
 Item {
     id: bezierConnection
-    width: 800
-    height: 600
+    width: draggableCanvas.width
+    height: draggableCanvas.height
     z: 2
 
     property int startPointX
@@ -16,9 +16,9 @@ Item {
     property var rightAnchor
 
     function update() {
-        const rootItem = bezierConnection.Window.contentItem;
+        const rootItem = draggableCanvas;
 
-        // Convert local coordinates to root window coordinates
+        // Convert local coordinates to draggableCanvas coordinates
         let leftGlobal = leftAnchor.mapToItem(rootItem, leftAnchor.width / 2, leftAnchor.height / 2);
         let rightGlobal = rightAnchor.mapToItem(rootItem, rightAnchor.width / 2, rightAnchor.height / 2);
 
@@ -31,10 +31,10 @@ Item {
     }
 
     function updateWithAnchors(_leftAnchor, _rightAnchor) {
-        leftAnchor = _leftAnchor
-        rightAnchor = _rightAnchor
+        leftAnchor = _leftAnchor;
+        rightAnchor = _rightAnchor;
 
-        update()
+        update();
     }
 
     property alias canvas: connectionCanvas
@@ -47,7 +47,7 @@ Item {
             var ctx = getContext("2d");
             ctx.clearRect(0, 0, width, height);
 
-            // Draw Bézier curve
+            // Draw Bezier curve
             ctx.beginPath();
             ctx.moveTo(startPointX, startPointY);
 

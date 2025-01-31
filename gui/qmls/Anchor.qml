@@ -39,7 +39,7 @@ Rectangle {
             followMouse = true;
 
             if (connection == null) {
-                const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
+                const rootItem = draggableCanvas;
                 const anchorCenter = anchor.mapToItem(rootItem, anchor.width / 2, anchor.height / 2);
 
                 let component = Qt.createComponent("BezierConnection.qml");
@@ -77,13 +77,15 @@ Rectangle {
 
         onPositionChanged: function (mouse) {
             if (followMouse && connection) {
-                // Convert local position to parent (root) coordinates
-                const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
-                const globalMousePos = anchor.mapToItem(rootItem, mouse.x, mouse.y);
+                const rootItem = draggableCanvas;
+                let globalMousePos = dragArea.mapToItem(rootItem, mouse.x, mouse.y);
 
-                connection.endPointX = globalMousePos.x;
-                connection.endPointY = globalMousePos.y;
+                // Ensure anchor remains inside draggableCanvas
+                globalMousePos.x = Math.max(0, Math.min(globalMousePos.x, draggableCanvas.width - anchor.width));
+                globalMousePos.y = Math.max(0, Math.min(globalMousePos.y, draggableCanvas.height - anchor.height));
 
+                connection.endPointX = globalMousePos.x + anchor.width / 2;
+                connection.endPointY = globalMousePos.y + anchor.height / 2;
                 connection.canvas.requestPaint();
             }
         }

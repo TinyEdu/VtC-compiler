@@ -12,18 +12,16 @@ Rectangle {
     radius: 10
     color: blockColor
 
-
     MultiEffect {
         id: shadowEffect
         source: blockDiagram
         anchors.fill: blockDiagram
         shadowEnabled: true
-        shadowColor: "#62717E"  // Soft shadow effect
+        shadowColor: "#62717E"
         shadowBlur: 0.3
         shadowVerticalOffset: 6
         shadowHorizontalOffset: 4
     }
-
 
     Rectangle {
         id: topBar
@@ -75,9 +73,18 @@ Rectangle {
         anchors.fill: parent
         drag.target: blockDiagram
 
-        onPositionChanged : {
-            anchor1.update()
-            anchor2.update()
+        onPositionChanged: {
+
+            // Constrain movement within draggableCanvas
+            if (blockDiagram.x < 0) blockDiagram.x = 0;
+            if (blockDiagram.y < 0) blockDiagram.y = 0;
+            if (blockDiagram.x + blockDiagram.width > draggableCanvas.width)
+                blockDiagram.x = draggableCanvas.width - blockDiagram.width;
+            if (blockDiagram.y + blockDiagram.height > draggableCanvas.height)
+                blockDiagram.y = draggableCanvas.height - blockDiagram.height;
+
+            anchor1.update();
+            anchor2.update();
         }
     }
 }
