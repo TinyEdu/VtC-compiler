@@ -10,11 +10,9 @@ Rectangle {
     color: "blue"
 
     property bool isLeft: true
-
     property var connections: []
     property var anchorLogic
     property BezierConnection connection
-
 
     Component.onCompleted: {
         anchorLogic = anchorFactory.newComponent();
@@ -35,7 +33,6 @@ Rectangle {
         property bool followMouse: false
 
         onPressed: function (mouse) {
-
             followMouse = true;
 
             if (connection == null) {
@@ -50,8 +47,7 @@ Rectangle {
                         endPointX: anchorCenter.x,
                         endPointY: anchorCenter.y
                     });
-
-                    connections.push(connection)
+                    connections.push(connection);
                 }
             }
         }
@@ -63,12 +59,18 @@ Rectangle {
             const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
             const globalMousePos = anchor.mapToItem(rootItem, mouse.x, mouse.y);
 
-            const item = CollisionManager.isOverAnAnchor(globalMousePos.x, globalMousePos.y, anchor)
+            const item = CollisionManager.isOverAnAnchor(globalMousePos.x, globalMousePos.y, anchor);
 
             if (item != null) {
-                // update with nodes
-                connection.updateWithAnchors(anchor, item)
-                item.connection = connection
+                // Remove the old connection of the second anchor
+                if (item.connection) {
+                    item.connection.destroy();
+                    item.connection = null;
+                }
+
+                // Update with new connection
+                connection.updateWithAnchors(anchor, item);
+                item.connection = connection;
             } else {
                 connection.destroy();
                 connection = null;

@@ -1,8 +1,10 @@
 import QtQuick 6.0
 import QtQuick.Controls 6.0
 import QtQuick.Layouts 6.0
+import QtQuick.Controls.Material 6.0
 
 ApplicationWindow {
+    Material.theme: Material.Light  // Set global theme here
     visible: true
     width: 800
     height: 600
@@ -38,18 +40,18 @@ ApplicationWindow {
             Layout.fillHeight: true
             color: "lightgray"
 
-            BlockDiagram {
-                name: "function1"
+
+            StartDiagram {
                 x: 333
                 y: 333
             }
-            BlockDiagram {
-                name: "function2"
+
+            SetVarDiagram {
                 x: 100
                 y: 100
             }
-            BlockDiagram {
-                name: "function3"
+
+            EndDiagram {
                 x: 400
                 y: 144
             }

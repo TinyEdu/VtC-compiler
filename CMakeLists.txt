@@ -58,6 +58,9 @@ qt_add_qml_module(vtc-compiler
         gui/qmls/Anchor.qml
         gui/qmls/BezierConnection.qml
         gui/qmls/BlockDiagram.qml
+        gui/qmls/StartDiagram.qml
+        gui/qmls/EndDiagram.qml
+        gui/qmls/SetVarDiagram.qml
         SOURCES
         gui/Core/GuiMain/GuiMain.cpp
         gui/Core/GuiMain/GuiMain.h

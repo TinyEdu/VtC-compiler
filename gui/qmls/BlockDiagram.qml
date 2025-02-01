@@ -1,26 +1,41 @@
 import QtQuick 6.0
 import QtQuick.Effects 6.5
+import QtQuick.Controls 6.0  // Use this instead of setting Material globally
 
 Rectangle {
+    id: blockDiagram
     property string name: "function"
     property color blockColor: "#CCE2CB"
     property color barColor: "#B6CfB6"
 
-    id: blockDiagram
+    signal anchorNeedsUpdate()
+    property var registeredSlots: []
+
     width: 100
     height: 100
     radius: 10
     color: blockColor
+    z: 1  // Ensure block is always above the shadow
+
+    // Static shadow source to prevent scaling issues
+    Rectangle {
+        id: shadowSource
+        width: blockDiagram.width
+        height: blockDiagram.height
+        radius: blockDiagram.radius
+        visible: false
+    }
 
     MultiEffect {
         id: shadowEffect
-        source: blockDiagram
+        source: shadowSource
         anchors.fill: blockDiagram
         shadowEnabled: true
         shadowColor: "#62717E"
         shadowBlur: 0.3
         shadowVerticalOffset: 6
         shadowHorizontalOffset: 4
+        z: -1  // Ensure shadow stays behind the block
     }
 
     Rectangle {
@@ -42,40 +57,27 @@ Rectangle {
         }
     }
 
-    // Smaller square 1
-    Anchor {
-        id: anchor1
-        width: 15
-        height: 15
-        color: "white"
-        z: 4
-        radius: 10
-        anchors.left: parent.left
-        anchors.leftMargin: 10
-        anchors.verticalCenter: parent.verticalCenter
+    function registerSlot(slotFunction) {
+        registeredSlots.push(slotFunction);
     }
 
-    // Smaller square 2
-    Anchor {
-        id: anchor2
-        width: 15
-        height: 15
-        z: 4
-        color: "white"
-        radius: 10
-        anchors.right: parent.right
-        anchors.rightMargin: 10
-        anchors.verticalCenter: parent.verticalCenter
+    function updateAnchors() {
+        for (var i = 0; i < registeredSlots.length; i++) {
+            registeredSlots[i]();
+        }
     }
 
+    Connections {
+        target: blockDiagram
+        function onWidthChanged() { shadowEffect.update(); }
+        function onHeightChanged() { shadowEffect.update(); }
+    }
 
     MouseArea {
         anchors.fill: parent
         drag.target: blockDiagram
 
         onPositionChanged: {
-
-            // Constrain movement within draggableCanvas
             if (blockDiagram.x < 0) blockDiagram.x = 0;
             if (blockDiagram.y < 0) blockDiagram.y = 0;
             if (blockDiagram.x + blockDiagram.width > draggableCanvas.width)
@@ -83,8 +85,7 @@ Rectangle {
             if (blockDiagram.y + blockDiagram.height > draggableCanvas.height)
                 blockDiagram.y = draggableCanvas.height - blockDiagram.height;
 
-            anchor1.update();
-            anchor2.update();
+            updateAnchors();
         }
     }
 }
