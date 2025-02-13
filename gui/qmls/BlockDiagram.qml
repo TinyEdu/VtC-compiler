@@ -1,6 +1,6 @@
 import QtQuick 6.0
 import QtQuick.Effects 6.5
-import QtQuick.Controls 6.0  // Use this instead of setting Material globally
+import QtQuick.Controls 6.0
 
 Rectangle {
     id: blockDiagram
@@ -15,7 +15,7 @@ Rectangle {
     height: 100
     radius: 10
     color: blockColor
-    z: 1  // Ensure block is always above the shadow
+    z: 1
 
     // Static shadow source to prevent scaling issues
     Rectangle {
@@ -35,7 +35,7 @@ Rectangle {
         shadowBlur: 0.3
         shadowVerticalOffset: 6
         shadowHorizontalOffset: 4
-        z: -1  // Ensure shadow stays behind the block
+        z: -1
     }
 
     Rectangle {

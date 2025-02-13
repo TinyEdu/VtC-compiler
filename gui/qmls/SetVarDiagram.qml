@@ -4,7 +4,7 @@ import QtQuick.Controls 6.0
 BlockDiagram {
     id: setVarDiagram
     name: "Set Variable"
-    width: 200
+    width: 240
     height: 80
     color: "lightblue"
 
@@ -27,13 +27,13 @@ BlockDiagram {
         anchors.left: parent.left
         anchors.leftMargin: 10
         anchors.verticalCenter: parent.verticalCenter
-        height: 15
+        height: 20
         spacing: 5
 
         Button {
             id: freezeButton
             width: 20
-            height: 20 // Optional: Set a fixed height for uniformity
+            height: 20
             text: isFrozen ? "/" : "o"
             hoverEnabled: false
             focusPolicy: Qt.NoFocus
@@ -55,6 +55,17 @@ BlockDiagram {
             width: 80
             placeholderText: "Enter text"
             enabled: !isFrozen
+        }
+
+        ComboBox {
+            id: typeSelector
+            model: ["Integer", "String", "Float"]
+            width: 50
+            enabled: !isFrozen
+
+            onCurrentIndexChanged: {
+                console.log("Selected type: " + typeSelector.currentText)
+            }
         }
     }
 

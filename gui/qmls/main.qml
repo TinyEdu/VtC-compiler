@@ -4,7 +4,7 @@ import QtQuick.Layouts 6.0
 import QtQuick.Controls.Material 6.0
 
 ApplicationWindow {
-    Material.theme: Material.Light  // Set global theme here
+    Material.theme: Material.Light
     visible: true
     width: 800
     height: 600

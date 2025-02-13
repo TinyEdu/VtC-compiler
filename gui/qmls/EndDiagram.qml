@@ -22,6 +22,4 @@ BlockDiagram {
         anchors.rightMargin: 10
         anchors.verticalCenter: parent.verticalCenter
     }
-
-    // I want to make on right  a text field, where I can put text and a button to accept(freeze/unfreeze it)
 }
