@@ -2,7 +2,9 @@ import QtQuick 6.0
 import QtQuick.Controls 6.0
 import QtQuick.Layouts 6.0
 import QtQuick.Controls.Material 6.0
+
 import "Blocks"
+import "Blocks/Operations"
 
 ApplicationWindow {
     Material.theme: Material.Light
@@ -59,6 +61,26 @@ ApplicationWindow {
             EndBlock {
                 x: 100
                 y: 400
+            }
+
+            BinaryOperationBlock {
+                x: 230
+                y: 200
+            }
+
+            AddingBinaryOperationBlock {
+                x: 230
+                y: 330
+            }
+
+            UnaryOperationBlock {
+                x: 330
+                y: 330
+            }
+
+            NegationUnaryOperationBlock {
+                x: 330
+                y: 200
             }
         }
     }

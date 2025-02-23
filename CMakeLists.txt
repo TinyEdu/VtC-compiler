@@ -65,6 +65,10 @@ qt_add_qml_module(vtc-compiler
         gui/qmls/Blocks/ListenEventBlock.qml
         gui/qmls/Blocks/StartBlock.qml
         gui/qmls/Blocks/EndBlock.qml
+        gui/qmls/Blocks/Operations/BinaryOperationBlock.qml
+        gui/qmls/Blocks/Operations/AddingBinaryOperationBlock.qml
+        gui/qmls/Blocks/Operations/UnaryOperationBlock.qml
+        gui/qmls/Blocks/Operations/NegationUnaryOperationBlock.qml
         SOURCES
         gui/Core/GuiMain/GuiMain.cpp
         gui/Core/GuiMain/GuiMain.h
