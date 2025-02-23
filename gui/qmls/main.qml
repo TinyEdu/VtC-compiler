@@ -82,6 +82,16 @@ ApplicationWindow {
                 x: 330
                 y: 200
             }
+
+            CreateVariableBySignalBlock {
+                x: 100
+                y: 500
+            }
+
+            CreateVariableByValueBlock {
+                x: 100
+                y: 500
+            }
         }
     }
 }

@@ -65,6 +65,8 @@ qt_add_qml_module(vtc-compiler
         gui/qmls/Blocks/ListenEventBlock.qml
         gui/qmls/Blocks/StartBlock.qml
         gui/qmls/Blocks/EndBlock.qml
+        gui/qmls/Blocks/CreateVariableBySignalBlock.qml
+        gui/qmls/Blocks/CreateVariableByValueBlock.qml
         gui/qmls/Blocks/Operations/BinaryOperationBlock.qml
         gui/qmls/Blocks/Operations/AddingBinaryOperationBlock.qml
         gui/qmls/Blocks/Operations/UnaryOperationBlock.qml
