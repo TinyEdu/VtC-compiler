@@ -61,6 +61,10 @@ qt_add_qml_module(vtc-compiler
         gui/qmls/StartDiagram.qml
         gui/qmls/EndDiagram.qml
         gui/qmls/SetVarDiagram.qml
+        gui/qmls/Blocks/CallEventBlock.qml
+        gui/qmls/Blocks/ListenEventBlock.qml
+        gui/qmls/Blocks/StartBlock.qml
+        gui/qmls/Blocks/EndBlock.qml
         SOURCES
         gui/Core/GuiMain/GuiMain.cpp
         gui/Core/GuiMain/GuiMain.h

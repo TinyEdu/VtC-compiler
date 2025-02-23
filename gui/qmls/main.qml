@@ -2,6 +2,7 @@ import QtQuick 6.0
 import QtQuick.Controls 6.0
 import QtQuick.Layouts 6.0
 import QtQuick.Controls.Material 6.0
+import "Blocks"
 
 ApplicationWindow {
     Material.theme: Material.Light
@@ -40,20 +41,24 @@ ApplicationWindow {
             Layout.fillHeight: true
             color: "lightgray"
 
-
-            StartDiagram {
-                x: 333
-                y: 333
-            }
-
-            SetVarDiagram {
+            CallEventBlock {
                 x: 100
                 y: 100
             }
 
-            EndDiagram {
-                x: 400
-                y: 144
+            ListenEventBlock {
+                x: 100
+                y: 200
+            }
+
+            StartBlock {
+                x: 100
+                y: 300
+            }
+
+            EndBlock {
+                x: 100
+                y: 400
             }
         }
     }

@@ -13,9 +13,9 @@ Rectangle {
 
     width: 100
     height: 100
-    radius: 10
-    color: blockColor
     z: 1
+    radius: 2
+    color: blockColor
 
     // Static shadow source to prevent scaling issues
     Rectangle {
@@ -44,7 +44,7 @@ Rectangle {
         height: 25
         color: barColor
         anchors.top: parent.top
-        radius: 10
+        radius: 2
         border.width: 1.5
         border.color: "#62717E"
 
@@ -62,15 +62,15 @@ Rectangle {
     }
 
     function updateAnchors() {
-        for (var i = 0; i < registeredSlots.length; i++) {
-            registeredSlots[i]();
-        }
+        registeredSlots.forEach(function(slot) {
+            slot();
+        });
     }
 
     Connections {
         target: blockDiagram
-        function onWidthChanged() { shadowEffect.update(); }
-        function onHeightChanged() { shadowEffect.update(); }
+        onWidthChanged: shadowEffect.update
+        onHeightChanged: shadowEffect.update
     }
 
     MouseArea {

@@ -42,7 +42,6 @@ int GuiMain::run(int argc, char* argv[])
                      }, Qt::QueuedConnection);
     engine.load(url);
 
-
     if (engine.rootObjects().isEmpty())
         return -1;
 
