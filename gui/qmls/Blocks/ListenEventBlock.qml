@@ -4,7 +4,7 @@ import "../"
 
 BlockDiagram {
     id: listenEventBlock
-    name: "Listen Event"
+    name: "Listen"
     width: 90
     height: 50
     color: "lightblue"

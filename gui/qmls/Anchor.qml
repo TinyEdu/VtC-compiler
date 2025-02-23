@@ -8,6 +8,8 @@ Rectangle {
     height: 20
     z: 100
     radius: 2
+    border.width: 1.5
+    border.color: "#62717E"
     color: "white"
 
     property bool isLeft: true
@@ -21,7 +23,7 @@ Rectangle {
     }
 
     function update() {
-        if (connection != null) {
+        if (connection !== null) {
             connection.update();
         }
     }
@@ -30,10 +32,13 @@ Rectangle {
         id: dragArea
         anchors.fill: parent
         drag.target: null
+        z: 101
+        preventStealing: true
+        hoverEnabled: true
 
         property bool followMouse: false
 
-        onPressed: function (mouse) {
+        onPressed: function(mouse) {
             followMouse = true;
 
             if (connection == null) {
@@ -53,23 +58,20 @@ Rectangle {
             }
         }
 
-        onReleased: function (mouse) {
+        onReleased: function(mouse) {
             followMouse = false;
 
             // Convert local position to parent (root) coordinates
-            const rootItem = anchor.Window ? anchor.Window.contentItem : anchor.parent;
+            const rootItem = (anchor.Window ? anchor.Window.contentItem : anchor.parent);
             const globalMousePos = anchor.mapToItem(rootItem, mouse.x, mouse.y);
 
             const item = CollisionManager.isOverAnAnchor(globalMousePos.x, globalMousePos.y, anchor);
 
-            if (item != null) {
-                // Remove the old connection of the second anchor
+            if (item !== null) {
                 if (item.connection) {
                     item.connection.destroy();
                     item.connection = null;
                 }
-
-                // Update with new connection
                 connection.updateWithAnchors(anchor, item);
                 item.connection = connection;
             } else {
@@ -78,7 +80,7 @@ Rectangle {
             }
         }
 
-        onPositionChanged: function (mouse) {
+        onPositionChanged: function(mouse) {
             if (followMouse && connection) {
                 const rootItem = draggableCanvas;
                 let globalMousePos = dragArea.mapToItem(rootItem, mouse.x, mouse.y);

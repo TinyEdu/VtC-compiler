@@ -4,7 +4,7 @@ import "../"
 
 BlockDiagram {
     id: callEventBlock
-    name: "Call Event"
+    name: "Call"
     width: 90
     height: 50
     color: "lightblue"

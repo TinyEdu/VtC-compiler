@@ -38,6 +38,16 @@ Rectangle {
         z: -1
     }
 
+    Anchor {
+        id: leftAnchor
+        anchors.left: parent.left
+    }
+
+    Anchor {
+        id: rightAnchor
+        anchors.right: parent.right
+    }
+
     Rectangle {
         id: topBar
         width: parent.width
@@ -48,31 +58,18 @@ Rectangle {
         border.width: 1.5
         border.color: "#62717E"
 
-        Component.onCompleted: {
-            blockDiagram.registerSlot(leftAnchor.update)
-            blockDiagram.registerSlot(rightAnchor.update)
+        Text {
+            text: name
+            color: "#62717E"
+            font.bold: true
+            font.pointSize: 10
+            anchors.centerIn: parent
         }
+    }
 
-        Row {
-            anchors.fill: parent
-                Anchor {
-                    id: leftAnchor
-                    anchors.left: parent.left
-                }
-
-                Text {
-                    text: name
-                    color: "#62717E"
-                    font.bold: true
-                    font.pointSize: 10
-
-                    anchors.centerIn: parent
-                }
-                Anchor {
-                    id: rightAnchor
-                    anchors.right: parent.right
-                }
-        }
+    Component.onCompleted: {
+        registerSlot(leftAnchor.update)
+        registerSlot(rightAnchor.update)
     }
 
     function registerSlot(slotFunction) {
@@ -91,9 +88,11 @@ Rectangle {
         onHeightChanged: shadowEffect.update
     }
 
+    // Lower the z value to allow child anchors to receive mouse events
     MouseArea {
         anchors.fill: parent
         drag.target: blockDiagram
+        z: 0
 
         onPositionChanged: {
             if (blockDiagram.x < 0) blockDiagram.x = 0;
