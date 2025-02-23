@@ -88,4 +88,6 @@ BlockDiagram {
             }
         }
     }
+
+    property bool isFrozen: false
 }

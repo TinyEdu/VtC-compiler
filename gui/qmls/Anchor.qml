@@ -4,10 +4,11 @@ import CollisionManager 1.0
 
 Rectangle {
     id: anchor
-    width: 50
-    height: 50
+    width: 20
+    height: 20
     z: 100
-    color: "blue"
+    radius: 2
+    color: "white"
 
     property bool isLeft: true
     property var connections: []

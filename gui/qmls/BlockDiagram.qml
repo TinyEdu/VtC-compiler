@@ -41,19 +41,37 @@ Rectangle {
     Rectangle {
         id: topBar
         width: parent.width
-        height: 25
+        height: 20
         color: barColor
         anchors.top: parent.top
         radius: 2
         border.width: 1.5
         border.color: "#62717E"
 
-        Text {
-            anchors.centerIn: parent
-            text: name
-            color: "#62717E"
-            font.bold: true
-            font.pointSize: 10
+        Component.onCompleted: {
+            blockDiagram.registerSlot(leftAnchor.update)
+            blockDiagram.registerSlot(rightAnchor.update)
+        }
+
+        Row {
+            anchors.fill: parent
+                Anchor {
+                    id: leftAnchor
+                    anchors.left: parent.left
+                }
+
+                Text {
+                    text: name
+                    color: "#62717E"
+                    font.bold: true
+                    font.pointSize: 10
+
+                    anchors.centerIn: parent
+                }
+                Anchor {
+                    id: rightAnchor
+                    anchors.right: parent.right
+                }
         }
     }
 

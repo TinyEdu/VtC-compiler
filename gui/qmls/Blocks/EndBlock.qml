@@ -20,6 +20,6 @@ BlockDiagram {
         color: "white"
         radius: 2
         anchors.bottom: parent.bottom
-        anchors.right: parent.right
+        anchors.left: parent.left
     }
 }

@@ -3,5 +3,5 @@ import QtQuick.Controls 6.0
 
 BinaryOperationBlock {
     id: addingBinaryOperationBlock
-    operationName: "+"
+    operationName: "Add"
 }

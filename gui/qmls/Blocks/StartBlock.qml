@@ -4,7 +4,7 @@ import "../"
 
 BlockDiagram {
     id: startBlock
-    name: "Call Event"
+    name: "Start"
     width: 90
     height: 50
     color: "lightblue"
@@ -20,6 +20,6 @@ BlockDiagram {
         color: "white"
         radius: 2
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
+        anchors.right: parent.right
     }
 }

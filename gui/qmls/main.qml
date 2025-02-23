@@ -43,54 +43,54 @@ ApplicationWindow {
             Layout.fillHeight: true
             color: "lightgray"
 
-            CallEventBlock {
-                x: 100
-                y: 100
-            }
-
-            ListenEventBlock {
-                x: 100
-                y: 200
-            }
-
             StartBlock {
-                x: 100
-                y: 300
+                x: 50
+                y: 20
             }
 
             EndBlock {
-                x: 100
-                y: 400
+                x: 50
+                y: 100
+            }
+
+            CallEventBlock {
+                x: 50
+                y: 180
+            }
+
+            ListenEventBlock {
+                x: 50
+                y: 260
             }
 
             BinaryOperationBlock {
-                x: 230
-                y: 200
+                x: 50
+                y: 340
             }
 
             AddingBinaryOperationBlock {
-                x: 230
-                y: 330
+                x: 50
+                y: 460
             }
 
             UnaryOperationBlock {
-                x: 330
-                y: 330
+                x: 200
+                y: 20
             }
 
             NegationUnaryOperationBlock {
-                x: 330
-                y: 200
+                x: 200
+                y: 100
             }
 
             CreateVariableBySignalBlock {
-                x: 100
-                y: 500
+                x: 200
+                y: 180
             }
 
             CreateVariableByValueBlock {
-                x: 100
-                y: 500
+                x: 200
+                y: 310
             }
         }
     }

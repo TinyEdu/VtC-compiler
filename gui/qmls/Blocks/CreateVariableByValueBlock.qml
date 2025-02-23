@@ -48,6 +48,7 @@ BlockDiagram {
     }
 
     property bool isFrozen: false
+
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
