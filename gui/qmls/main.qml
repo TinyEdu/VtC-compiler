@@ -44,73 +44,88 @@ ApplicationWindow {
             color: "lightgray"
 
             StartBlock {
-                x: 50
+                x: 15
                 y: 20
             }
 
             EndBlock {
-                x: 50
+                x: 15
                 y: 100
             }
 
             CallEventBlock {
-                x: 50
+                x: 15
                 y: 180
             }
 
             ListenEventBlock {
-                x: 50
+                x: 15
                 y: 260
             }
 
             BinaryOperationBlock {
-                x: 50
+                x: 15
                 y: 340
             }
 
             AddingBinaryOperationBlock {
-                x: 50
+                x: 15
                 y: 460
             }
 
             UnaryOperationBlock {
-                x: 200
+                x: 150
                 y: 20
             }
 
             NegationUnaryOperationBlock {
-                x: 200
+                x: 150
                 y: 100
             }
 
             CreateVariableBySignalBlock {
-                x: 200
+                x: 150
                 y: 180
             }
 
             CreateVariableByValueBlock {
-                x: 200
-                y: 310
+                x: 150
+                y: 270
             }
 
-            SetVariableBySignalBlock {
-                x: 340
-                y: 180
-            }
-
-            SetVariableByValueBlock {
-                x: 340
-                y: 310
-            }
-
-            GetVariableBlock {
-                x: 340
-                y: 100
+            IfBlock {
+                x: 150
+                y: 370
             }
 
             ValueBlock {
-                x: 340
+                x: 150
+                y: 460
+            }
+
+            GetVariableBlock {
+                x: 150
+                y: 530
+            }
+
+            SetVariableBySignalBlock {
+                x: 300
                 y: 20
+            }
+
+            SetVariableByValueBlock {
+                x: 300
+                y: 120
+            }
+
+            SkipBlock {
+                x: 300
+                y: 210
+            }
+
+            BreakBlock {
+                x: 300
+                y: 290
             }
         }
     }
