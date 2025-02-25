@@ -4,65 +4,28 @@ import "../"
 
 BlockDiagram {
     id: createVariableBySignalBlock
-    name: "Create"
-    width: 150
-    height: 100
+    name: "Create Var"
+    width: 120
+    height: 70
     color: "lightblue"
 
+    property bool isFrozen: false
+
     Component.onCompleted: {
-        createVariableBySignalBlock.registerSlot(rAnchor.update)
-        createVariableBySignalBlock.registerSlot(l1Anchor.update)
-        createVariableBySignalBlock.registerSlot(l2Anchor.update)
-    }
-
-    Anchor {
-        id: rAnchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.bottomMargin: 20
-    }
-
-    Anchor {
-        id: l1Anchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-    }
-
-    Anchor {
-        id: l2Anchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.bottomMargin: 40
+        createVariableBySignalBlock.registerSlot(lAnchor.update)
     }
 
     Column {
-        property bool isFrozen: false
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.margins: 3
+        spacing: 3
 
-        anchors.centerIn: parent
-        spacing: 5
-
-        Text {
-            text: "Variable name:"
-            color: "#62717E"
-            font.bold: true
-            font.pointSize: 10
-            horizontalAlignment: Text.AlignHCenter
-        }
         Row {
+            spacing: 3
             Button {
                 id: freezeButton
+
                 width: 20
                 height: 20
                 text: isFrozen ? "/" : "o"
@@ -75,19 +38,33 @@ BlockDiagram {
 
                 background: Rectangle {
                     color: freezeButton.checked ? "#999999" : "#eeeeee"
-                    border.color: "black"
-                    border.width: 1
+                    border.color: "#84818E"
+                    border.width: 1.5
                     radius: 5
                 }
             }
+
             TextField {
-                id: textField
+                id: nameField
                 width: 80
                 placeholderText: "name"
                 enabled: !isFrozen
             }
         }
-    }
 
-    property bool isFrozen: false
+        Row {
+            spacing: 3
+            Anchor {
+                id: lAnchor
+            }
+            Text {
+                text: "Initial value"
+                color: "#62717E"
+                font.pointSize: 10
+                font.bold: true
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+    }
 }

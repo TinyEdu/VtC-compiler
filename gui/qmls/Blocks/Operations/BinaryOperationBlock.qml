@@ -6,7 +6,7 @@ BlockDiagram {
     id: binaryOperationBlock
     name: "OP"
     width: 90
-    height: 90
+    height: 82
     color: "lightblue"
 
     property string operationName: ".."
