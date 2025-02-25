@@ -24,7 +24,7 @@ BlockDiagram {
 
                 width: 20
                 height: 20
-                text: isFrozen ? "/" : "o"
+                text: isFrozen ? "X" : "Y"
                 hoverEnabled: false
                 focusPolicy: Qt.NoFocus
                 checkable: true

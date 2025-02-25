@@ -3,8 +3,8 @@ import QtQuick.Controls 6.0
 import "../"
 
 BlockDiagram {
-    id: createVariableBySignalBlock
-    name: "Create Var"
+    id: setVariableBySignalBlock
+    name: "Set Var"
     width: 120
     height: 70
     color: "lightblue"
@@ -12,7 +12,7 @@ BlockDiagram {
     property bool isFrozen: false
 
     Component.onCompleted: {
-        createVariableBySignalBlock.registerSlot(lAnchor.update)
+        setVariableBySignalBlock.registerSlot(lAnchor.update)
     }
 
     Column {
@@ -58,7 +58,7 @@ BlockDiagram {
                 id: lAnchor
             }
             Text {
-                text: "Initial value"
+                text: "New value"
                 color: "#62717E"
                 font.pointSize: 10
                 font.bold: true

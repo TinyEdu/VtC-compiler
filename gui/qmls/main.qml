@@ -92,6 +92,26 @@ ApplicationWindow {
                 x: 200
                 y: 310
             }
+
+            SetVariableBySignalBlock {
+                x: 340
+                y: 180
+            }
+
+            SetVariableByValueBlock {
+                x: 340
+                y: 310
+            }
+
+            GetVariableBlock {
+                x: 340
+                y: 100
+            }
+
+            ValueBlock {
+                x: 340
+                y: 20
+            }
         }
     }
 }

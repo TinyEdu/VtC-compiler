@@ -3,17 +3,13 @@ import QtQuick.Controls 6.0
 import "../"
 
 BlockDiagram {
-    id: createVariableBySignalBlock
-    name: "Create Var"
+    id: setVariableByValueBlock
+    name: "Set Var"
     width: 120
     height: 70
     color: "lightblue"
 
     property bool isFrozen: false
-
-    Component.onCompleted: {
-        createVariableBySignalBlock.registerSlot(lAnchor.update)
-    }
 
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -52,19 +48,11 @@ BlockDiagram {
             }
         }
 
-        Row {
-            spacing: 3
-            Anchor {
-                id: lAnchor
-            }
-            Text {
-                text: "Initial value"
-                color: "#62717E"
-                font.pointSize: 10
-                font.bold: true
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
+        TextField {
+            id: initialValueField
+            width: 100
+            placeholderText: "New value"
+            enabled: !isFrozen
         }
     }
 }
