@@ -76,6 +76,7 @@ qt_add_qml_module(vtc-compiler
         gui/qmls/Blocks/PrintBlock.qml
         gui/qmls/Blocks/SkipBlock.qml
         gui/qmls/Blocks/WhileBlock.qml
+        gui/qmls/Blocks/ForLoopBlock.qml
         gui/qmls/Blocks/SleepBySignalBlock.qml
         gui/qmls/Blocks/SleepByValueBlock.qml
         gui/qmls/Blocks/Operations/BinaryOperationBlock.qml

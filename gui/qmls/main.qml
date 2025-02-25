@@ -147,6 +147,11 @@ ApplicationWindow {
                 x: 440
                 y: 100
             }
+
+            ForLoopBlock {
+                x: 440
+                y: 180
+            }
         }
     }
 }
