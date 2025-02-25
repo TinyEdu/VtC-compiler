@@ -7,15 +7,24 @@ Rectangle {
     width: 20
     height: 20
     z: 100
-    radius: 2
+    radius: 4
     border.width: 1.5
-    border.color: "#62717E"
+    border.color: "#84818E"
     color: "white"
 
     property bool isLeft: true
     property var connections: []
     property var anchorLogic
     property BezierConnection connection
+
+    Rectangle {
+        id: anchorCircle
+        width: 6
+        height: 6
+        color: "#62717E"
+        radius: 9
+        anchors.centerIn: parent
+    }
 
     Component.onCompleted: {
         anchorLogic = anchorFactory.newComponent();
@@ -67,7 +76,7 @@ Rectangle {
 
             const item = CollisionManager.isOverAnAnchor(globalMousePos.x, globalMousePos.y, anchor);
 
-            if (item !== null) {
+            if (item !== null && item.visible && item.enabled) {
                 if (item.connection) {
                     item.connection.destroy();
                     item.connection = null;

@@ -7,6 +7,8 @@ Rectangle {
     property string name: "function"
     property color blockColor: "#CCE2CB"
     property color barColor: "#B6CfB6"
+    property bool enableLeftAnchor: true
+    property bool enableRightAnchor: true
 
     signal anchorNeedsUpdate()
     property var registeredSlots: []
@@ -14,8 +16,30 @@ Rectangle {
     width: 100
     height: 100
     z: 1
-    radius: 2
+    radius: 4
     color: blockColor
+    border.color: "#84818E"
+
+    Anchor {
+        id: leftAnchor
+        anchors.left: parent.left
+        radius: parent.radius
+        border.width: parent.border.width
+        border.color: parent.border.color
+        enabled: enableLeftAnchor
+        visible: enableLeftAnchor
+    }
+
+    Anchor {
+        id: rightAnchor
+        anchors.right: parent.right
+        radius: parent.radius
+        border.width: parent.border.width
+        border.color: parent.border.color
+        enabled: enableRightAnchor
+        visible: enableRightAnchor
+
+    }
 
     // Static shadow source to prevent scaling issues
     Rectangle {
@@ -38,27 +62,18 @@ Rectangle {
         z: -1
     }
 
-    Anchor {
-        id: leftAnchor
-        anchors.left: parent.left
-    }
-
-    Anchor {
-        id: rightAnchor
-        anchors.right: parent.right
-    }
-
     Rectangle {
+
         id: topBar
         width: parent.width
         height: 20
         color: barColor
         anchors.top: parent.top
-        radius: 2
-        border.width: 1.5
-        border.color: "#62717E"
+        radius: parent.radius
+        border.width: parent.border.width
+        border.color: parent.border.color
 
-        Text {
+            Text {
             text: name
             color: "#62717E"
             font.bold: true
@@ -68,8 +83,8 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        registerSlot(leftAnchor.update)
-        registerSlot(rightAnchor.update)
+        if(enableLeftAnchor) registerSlot(leftAnchor.update)
+        if(enableRightAnchor) registerSlot(rightAnchor.update)
     }
 
     function registerSlot(slotFunction) {

@@ -4,7 +4,7 @@ import "../"
 
 BlockDiagram {
     id: createVariableByValueBlock
-    name: "Set Variable"
+    name: "Create"
     width: 150
     height: 100
     color: "lightblue"
@@ -17,10 +17,6 @@ BlockDiagram {
 
     Anchor {
         id: rAnchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: 20
@@ -28,20 +24,12 @@ BlockDiagram {
 
     Anchor {
         id: l1Anchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
         anchors.bottom: parent.bottom
         anchors.left: parent.left
     }
 
     Anchor {
         id: l2Anchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.bottomMargin: 40

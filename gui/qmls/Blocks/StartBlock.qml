@@ -8,18 +8,6 @@ BlockDiagram {
     width: 90
     height: 50
     color: "lightblue"
-
-    Component.onCompleted: {
-        startBlock.registerSlot(anchor.update)
-    }
-
-    Anchor {
-        id: anchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-    }
+    enableLeftAnchor: false
+    enableRightAnchor: true
 }

@@ -9,25 +9,15 @@ BlockDiagram {
     height: 50
     color: "lightblue"
 
-    Component.onCompleted: {
-        listenEventBlock.registerSlot(anchor.update)
-    }
-
-    Anchor {
-        id: anchor
-        width: 20
-        height: 20
-        color: "white"
-        radius: 2
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-    }
+    enableLeftAnchor: false
+    enableRightAnchor: true
 
     ComboBox {
         id: typeSelector
         width: 60
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+        anchors.margins: 3
 
         model: ["Call1", "Call2", "Call3"]
         onCurrentIndexChanged: {

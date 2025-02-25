@@ -4,7 +4,7 @@ import "../"
 
 BlockDiagram {
     id: createVariableBySignalBlock
-    name: "Set Variable"
+    name: "Create"
     width: 150
     height: 100
     color: "lightblue"
