@@ -127,6 +127,26 @@ ApplicationWindow {
                 x: 300
                 y: 290
             }
+
+            WhileBlock {
+                x: 300
+                y: 350
+            }
+
+            PrintBlock {
+                x: 300
+                y: 440
+            }
+
+            SleepBySignalBlock {
+                x: 440
+                y: 20
+            }
+
+            SleepByValueBlock {
+                x: 440
+                y: 100
+            }
         }
     }
 }

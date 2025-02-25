@@ -3,19 +3,19 @@ import QtQuick.Controls 6.0
 import "../"
 
 BlockDiagram {
-    id: ifBlock
-    name: "If"
+    id: whileBlock
+    name: "While"
     width: 130
     height: 70
     color: "lightblue"
 
     enableLeftAnchor: true
-    enableRightAnchor: false
+    enableRightAnchor: true
 
     Component.onCompleted: {
-        ifBlock.registerSlot(r1Anchor.update)
-        ifBlock.registerSlot(r2Anchor.update)
-        ifBlock.registerSlot(l1Anchor.update)
+        whileBlock.registerSlot(r1Anchor.update)
+        whileBlock.registerSlot(r2Anchor.update)
+        whileBlock.registerSlot(l1Anchor.update)
     }
 
     Row {
@@ -44,7 +44,7 @@ BlockDiagram {
         Column {
             spacing: 4
             Text {
-                text: "True"
+                text: "Start"
                 color: "#62717E"
                 font.bold: true
                 font.pointSize: 10
@@ -54,7 +54,7 @@ BlockDiagram {
             }
 
             Text {
-                text: "False"
+                text: "End"
                 color: "#62717E"
                 font.bold: true
                 font.pointSize: 10

@@ -3,18 +3,14 @@ import QtQuick.Controls 6.0
 import "../"
 
 BlockDiagram {
-    id: valueBlock
-    name: "Value"
+    id: sleepByValueBlock
+    name: "Sleep"
     width: 90
     height: 50
     color: "lightblue"
 
-    enableLeftAnchor: false
-    enableRightAnchor: false
-
-    Component.onCompleted: {
-        valueBlock.registerSlot(rAnchor.update)
-    }
+    enableLeftAnchor: true
+    enableRightAnchor: true
 
     TextField {
         id: nameField
@@ -23,13 +19,6 @@ BlockDiagram {
 
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.margins: 3
-    }
-
-    Anchor {
-        id: rAnchor
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
         anchors.margins: 3
     }
 }
