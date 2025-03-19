@@ -1,8 +1,0 @@
-var a = 1 + (2 / (2 - 1 + 1)) - 1 * 2 + 999;
-print a;
-
-a = a * a;
-print a;
-
-a = a * 0;
-print a;

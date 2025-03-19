@@ -1,0 +1,47 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 29,
+    "patch": 1
+  },
+  "configurePresets": [
+    {
+      "name": "Debug",
+      "description": "Default preset with Vcpkg integration",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/.build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_STANDARD": "17",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_AUTORCC": "ON",
+        "CMAKE_VERBOSE_MAKEFILE": "ON",
+
+        "CMAKE_CXX_FLAGS": "-DUSE_JSON_INPUT -DWITH_GUI /EHsc"
+      },
+      "environment": {
+        "VCPKG_ROOT": "C:/dev/vcpkg",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-dbg"
+      }
+    },
+    {
+      "name": "Release",
+      "description": "Release preset with Vcpkg integration",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/.release-build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_BUILD_TYPE": "Release",
+
+        "CMAKE_CXX_FLAGS": "-DUSE_JSON_INPUT -DWITH_GUI"
+      },
+      "environment": {
+        "VCPKG_ROOT": "C:/dev/vcpkg",
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
+      }
+    }
+
+  ]
+}

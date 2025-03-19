@@ -1,96 +1,50 @@
-cmake_minimum_required(VERSION 3.29)
-project(vtc-compiler)
+cmake_minimum_required(VERSION 3.29.1)
+project(vtc VERSION 1.0.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_PREFIX_PATH "C:\\Qt\\6.8.1\\mingw_64")
+find_package(Qt6 CONFIG REQUIRED COMPONENTS Gui Quick)
+
+# Set necessary paths to ensure correct deployment
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(QT_PLUGIN_PATH "${Qt6_DIR}/../../debug/Qt6/plugins")
+    set(QML_IMPORT_PATH "${Qt6_DIR}/../../debug/Qt6/qml")
+    set(QML2_IMPORT_PATH "${Qt6_DIR}/../../debug/Qt6/qml")
+    find_program(TOOL_WINDEPLOYQT NAMES windeployqt.debug.bat)
+else ()
+    set(QT_PLUGIN_PATH "${Qt6_DIR}/../../Qt6/plugins")
+    set(QML_IMPORT_PATH "${Qt6_DIR}/../../Qt6/qml")
+    set(QML2_IMPORT_PATH "${Qt6_DIR}/../../Qt6/qml")
+    find_program(TOOL_WINDEPLOYQT NAMES windeployqt)
+endif ()
+
+message(STATUS "QT6_DIR: ${Qt6_DIR}")
+message(STATUS "QT_PLUGIN_PATH: ${QT_PLUGIN_PATH}")
+message(STATUS "QML_IMPORT_PATH: ${QML_IMPORT_PATH}")
+message(STATUS "QML2_IMPORT_PATH: ${QML2_IMPORT_PATH}")
+
+qt_standard_project_setup()
+qt_policy(SET QTP0001 OLD)
 
 
-find_package(Qt6 COMPONENTS
-        Core
-        Quick
-        QuickControls2
-        Gui
-        REQUIRED)
+add_subdirectory(ast)
+add_subdirectory(interface)
+add_subdirectory(cli)
+add_subdirectory(gui)
+add_subdirectory(interpreter)
+add_subdirectory(jsonParser)
+add_subdirectory(textParser)
 
-set(SOURCE_FILES
+qt_add_executable(${PROJECT_NAME}
+        gui/resources.qrc
         main.cpp
-        gui/Core/GuiMain/GuiMain.h
-        gui/Core/GuiMain/GuiMain.cpp
-        gui/MovableBlock/MovableBlock.h
-        gui/Anchor/Anchor.h
-        gui/Collision/CollisionManager.h
-        gui/Collision/CollisionManager.cpp
-        gui/MovableBlock/MovableBlockFactory.h
-        gui/MovableBlock/MovableBlockFactory.cpp
-        gui/Anchor/AnchorFactory.h
 )
 
-qt_policy(SET QTP0001 NEW)
-qt_add_executable(vtc-compiler ${SOURCE_FILES})
-
-include_directories(vtc)
-include_directories(gui)
-
-add_subdirectory(vtc)
-add_subdirectory(tests)
-
-target_compile_definitions(vtc-compiler PRIVATE ENABLE_ANSI_COLOR)
-target_compile_definitions(vtc-compiler PRIVATE DEBUG_MODE)
-
-target_link_libraries(vtc-compiler PRIVATE
-        vtc
-        Qt6::Core
-        Qt6::Gui
-        Qt6::Quick
-        Qt6::QuickControls2)
-
-# Add QML module
-qt_add_qml_module(vtc-compiler
-        URI cpp.MovableBlock
-        VERSION 1.0
-        QML_FILES
-        gui/qmls/main.qml
-        gui/qmls/Anchor.qml
-        gui/qmls/BezierConnection.qml
-        gui/qmls/BlockDiagram.qml
-        gui/qmls/StartDiagram.qml
-        gui/qmls/EndDiagram.qml
-        gui/qmls/SetVarDiagram.qml
-        gui/qmls/Blocks/CallEventBlock.qml
-        gui/qmls/Blocks/ListenEventBlock.qml
-        gui/qmls/Blocks/StartBlock.qml
-        gui/qmls/Blocks/EndBlock.qml
-        gui/qmls/Blocks/CreateVariableBySignalBlock.qml
-        gui/qmls/Blocks/CreateVariableByValueBlock.qml
-        gui/qmls/Blocks/SetVariableBySignalBlock.qml
-        gui/qmls/Blocks/SetVariableByValueBlock.qml
-        gui/qmls/Blocks/GetVariableBlock.qml
-        gui/qmls/Blocks/ValueBlock.qml
-        gui/qmls/Blocks/IfBlock.qml
-        gui/qmls/Blocks/BreakBlock.qml
-        gui/qmls/Blocks/PrintBlock.qml
-        gui/qmls/Blocks/SkipBlock.qml
-        gui/qmls/Blocks/WhileBlock.qml
-        gui/qmls/Blocks/ForLoopBlock.qml
-        gui/qmls/Blocks/SleepBySignalBlock.qml
-        gui/qmls/Blocks/SleepByValueBlock.qml
-        gui/qmls/Blocks/Operations/BinaryOperationBlock.qml
-        gui/qmls/Blocks/Operations/AddingBinaryOperationBlock.qml
-        gui/qmls/Blocks/Operations/UnaryOperationBlock.qml
-        gui/qmls/Blocks/Operations/NegationUnaryOperationBlock.qml
-        SOURCES
-        gui/Core/GuiMain/GuiMain.cpp
-        gui/Core/GuiMain/GuiMain.h
-        gui/MovableBlock/MovableBlock.h
-        gui/Anchor/Anchor.h
-        gui/Anchor/AnchorFactory.h
-        gui/Collision/CollisionManager.cpp
-        gui/Collision/CollisionManager.h
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Gui Qt6::Quick
+        ast
+        cli
+        gui
+        interpreter
+        jsonParser
+        textParser
 )
 
-
+include(cmake/Deployment.cmake)

@@ -1,8 +1,0 @@
-var a = true and false;
-print a;
-
-var b = true or false;
-print b;
-
-var c = !true;
-print c;

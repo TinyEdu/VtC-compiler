@@ -1,6 +1,33 @@
-<RCC>
-    <qresource prefix="/gui">
-        <file>gui/qmls/main.qml</file>
-        <file>gui/qmls/MovableBlock.qml</file>
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/BezierConnection.qml</file>
+        <file>qml/BlockDiagram.qml</file>
+        <file>qml/Anchor.qml</file>
+
+        <file>qml/Blocks/BreakBlock.qml</file>
+        <file>qml/Blocks/CallEventBlock.qml</file>
+        <file>qml/Blocks/CreateVariableBySignalBlock.qml</file>
+        <file>qml/Blocks/CreateVariableByValueBlock.qml</file>
+        <file>qml/Blocks/EndBlock.qml</file>
+        <file>qml/Blocks/ForLoopBlock.qml</file>
+        <file>qml/Blocks/GetVariableBlock.qml</file>
+        <file>qml/Blocks/IfBlock.qml</file>
+        <file>qml/Blocks/ListenEventBlock.qml</file>
+        <file>qml/Blocks/PrintBlock.qml</file>
+        <file>qml/Blocks/SetVariableBySignalBlock.qml</file>
+        <file>qml/Blocks/SetVariableByValueBlock.qml</file>
+        <file>qml/Blocks/SkipBlock.qml</file>
+        <file>qml/Blocks/SleepBySignalBlock.qml</file>
+        <file>qml/Blocks/SleepByValueBlock.qml</file>
+        <file>qml/Blocks/StartBlock.qml</file>
+        <file>qml/Blocks/ValueBlock.qml</file>
+        <file>qml/Blocks/WhileBlock.qml</file>
+
+        <file>qml/Blocks/Operations/AddingBinaryOperationBlock.qml</file>
+        <file>qml/Blocks/Operations/BinaryOperationBlock.qml</file>
+        <file>qml/Blocks/Operations/NegationUnaryOperationBlock.qml</file>
+        <file>qml/Blocks/Operations/UnaryOperationBlock.qml</file>
     </qresource>
 </RCC>
