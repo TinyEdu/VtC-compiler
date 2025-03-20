@@ -9,8 +9,13 @@ Rectangle {
     border.color: "#B0B0B0"
     radius: 4
 
-    property Component blockDiagramComponent: Qt.createComponent("BlockDiagram.qml")
+    // Exposed properties for customization.
+    property string blockName: ""
+    property url blockDiagramUrl: "BlockDiagram.qml"
     property var currentBlock: null
+
+    // Internal property to hold the created component.
+    property Component blockDiagramComponent: null
 
     Item {
         id: blockHolder
@@ -25,7 +30,7 @@ Rectangle {
 
     Label {
         id: label
-        text: previewBlock.name
+        text: blockName
         height: 20
         anchors {
             left: parent.left
@@ -41,10 +46,19 @@ Rectangle {
     property var previewBlock: null
 
     Component.onCompleted: {
-        previewBlock = blockDiagramComponent.createObject(blockHolder, {
-            "scale": 0.7,
-            "anchors.centerIn": blockHolder
-        });
+        if (blockDiagramUrl !== "") {
+            blockDiagramComponent = Qt.createComponent(blockDiagramUrl);
+        }
+
+        if (blockDiagramComponent) {
+            previewBlock = blockDiagramComponent.createObject(blockHolder, {
+                "scale": 0.7,
+                "anchors.centerIn": blockHolder
+            });
+            if (previewBlock) {
+                previewBlock.name = blockName;
+            }
+        }
     }
 
     MouseArea {

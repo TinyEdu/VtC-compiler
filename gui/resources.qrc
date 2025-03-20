@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>qml/SearchableList.qml</file>
         <file>qml/BezierConnection.qml</file>
         <file>qml/BlockDiagram.qml</file>
         <file>qml/BlockCreator.qml</file>
