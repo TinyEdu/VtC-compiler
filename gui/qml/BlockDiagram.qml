@@ -99,9 +99,10 @@ Rectangle {
 
     Connections {
         target: blockDiagram
-        onWidthChanged: shadowEffect.update
-        onHeightChanged: shadowEffect.update
+        function onWidthChanged() { shadowEffect.update(); }
+        function onHeightChanged() { shadowEffect.update(); }
     }
+
 
     // Lower the z value to allow child anchors to receive mouse events
     MouseArea {
