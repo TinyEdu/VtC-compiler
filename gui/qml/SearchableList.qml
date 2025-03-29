@@ -11,12 +11,12 @@ Item {
 
     ListModel {
         id: originalModel
-        ListElement { name: "Break"; blockDiagramUrl: "Blocks/BreakBlock.qml" }
-        ListElement { name: "Call Event"; blockDiagramUrl: "Blocks/CallEventBlock.qml" }
-        ListElement { name: "End"; blockDiagramUrl: "Blocks/EndBlock.qml" }
-        ListElement { name: "End"; blockDiagramUrl: "Blocks/EndBlock.qml" }
-        ListElement { name: "If"; blockDiagramUrl: "Blocks/IfBlock.qml" }
-        ListElement { name: "Start"; blockDiagramUrl: "Blocks/StartBlock.qml" }
+        ListElement { name: "Break"; blockDiagramUrl: "Blocks/BreakBlock.qml"; previewScaleFactor: 1.33 }
+        ListElement { name: "Call Event"; blockDiagramUrl: "Blocks/CallEventBlock.qml"; previewScaleFactor: 1.33 }
+        ListElement { name: "End"; blockDiagramUrl: "Blocks/EndBlock.qml"; previewScaleFactor: 1.33 }
+        ListElement { name: "End"; blockDiagramUrl: "Blocks/EndBlock.qml"; previewScaleFactor: 1.33 }
+        ListElement { name: "If"; blockDiagramUrl: "Blocks/IfBlock.qml"; previewScaleFactor: 1.1 }
+        ListElement { name: "Start"; blockDiagramUrl: "Blocks/StartBlock.qml"; previewScaleFactor: 1.33 }
     }
 
     ListModel {
@@ -31,7 +31,8 @@ Item {
                 item.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1) {
                 filteredModel.append({
                     "name": item.name,
-                    "blockDiagramUrl": item.blockDiagramUrl
+                    "blockDiagramUrl": item.blockDiagramUrl,
+                    "previewScaleFactor": item.previewScaleFactor
                 });
             }
         }
@@ -44,6 +45,12 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
+
+        height: 40
+        font.pixelSize: 18
+        verticalAlignment: Text.AlignVCenter
+        padding: 10
+
         onTextChanged: {
             searchText = text;
             updateFilter();
@@ -67,6 +74,7 @@ Item {
             delegate: BlockCreator {
                 blockName: model.name
                 blockDiagramUrl: model.blockDiagramUrl
+                previewScaleFactor: model.previewScaleFactor
                 draggableCanvas: root.draggableCanvas
                 rootObj: root.rootObj
             }

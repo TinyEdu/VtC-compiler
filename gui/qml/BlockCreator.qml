@@ -3,46 +3,44 @@ import QtQuick.Controls 6.0
 
 Rectangle {
     id: blockCreator
-    anchors.left: parent.left
-    anchors.right: parent.right
-    height: Math.max(label.height + blockHolder.implicitHeight + 10, 100)
-    color: "#E0E0E0"
-    border.color: "#B0B0B0"
-    radius: 8
+    width: parent ? parent.width : 100
 
     property string blockName: ""
     property url blockDiagramUrl: "BlockDiagram.qml"
     property var currentBlock: null
-
     property Item draggableCanvas
     property Item rootObj
 
     property Component blockDiagramComponent: null
     property var previewBlock: null
+    property var previewScaleFactor: null
 
-    Item {
-        id: blockHolder
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-            bottom: label.top
-            margins: 6
+    color: "#E0E0E0"
+    border.color: "#000000"
+    radius: 8
+
+    Column {
+        id: layoutColumn
+        anchors.fill: parent
+        anchors.margins: 5
+        spacing: 5
+
+        Item {
+            id: blockHolder
+            width: parent.width
+            implicitHeight: previewBlock ? previewBlock.implicitHeight : 0
         }
-        height: implicitHeight
-    }
 
-    Label {
-        id: label
-        text: blockName
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        height: 22
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        font.pixelSize: 12
-        color: "#404040"
+        Label {
+            id: label
+            text: blockName
+            font.weight: Font.Bold
+            font.pixelSize: 16
+            height: 22
+            color: "#404040"
+            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
 
     Component.onCompleted: {
@@ -69,21 +67,23 @@ Rectangle {
         if (previewBlock) previewBlock.destroy();
 
         previewBlock = blockDiagramComponent.createObject(blockHolder, {
-            scale: Math.min(blockCreator.width, blockCreator.height) / 150
+            "anchors.centerIn": blockHolder,
+            "scale": previewScaleFactor
+    });
+
+    if (previewBlock) {
+        previewBlock.name = blockName;
+
+        Qt.callLater(() => {
+            blockHolder.implicitHeight = previewBlock.implicitHeight || previewBlock.height;
+            blockCreator.height = label.height + blockHolder.implicitHeight + 20; // includes spacing and margins
         });
-
-        if (previewBlock) {
-            previewBlock.name = blockName;
-
-            // ✅ Manual centering
-            previewBlock.x = (blockHolder.width - previewBlock.width * previewBlock.scale) / 2;
-            previewBlock.y = (blockHolder.height - previewBlock.height * previewBlock.scale) / 2;
-        } else {
-            console.error("Failed to create previewBlock.");
-        }
+    } else {
+        console.error("Failed to create previewBlock.");
     }
+}
 
-    MouseArea {
+MouseArea {
         anchors.fill: parent
         preventStealing: true
         hoverEnabled: true
