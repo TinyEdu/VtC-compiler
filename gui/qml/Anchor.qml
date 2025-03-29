@@ -1,11 +1,16 @@
+// Anchor.qml
 import QtQuick 6.0
 import QtQuick.Controls 6.0
 import CollisionManager 1.0
 
 Rectangle {
     id: anchor
-    width: 20
-    height: 20
+
+    implicitWidth: 20
+    implicitHeight: 20
+    width: implicitWidth
+    height: implicitHeight
+
     z: 100
     radius: 4
     border.width: 1.5
@@ -19,11 +24,11 @@ Rectangle {
 
     Rectangle {
         id: anchorCircle
-        width: 6
-        height: 6
-        color: "#62717E"
-        radius: 9
         anchors.centerIn: parent
+        width: Math.min(parent.width, parent.height) * 0.3
+        height: width
+        radius: width / 2
+        color: "#62717E"
     }
 
     Component.onCompleted: {
@@ -70,7 +75,6 @@ Rectangle {
         onReleased: function(mouse) {
             followMouse = false;
 
-            // Convert local position to parent (root) coordinates
             const rootItem = (anchor.Window ? anchor.Window.contentItem : anchor.parent);
             const globalMousePos = anchor.mapToItem(rootItem, mouse.x, mouse.y);
 
@@ -94,7 +98,6 @@ Rectangle {
                 const rootItem = draggableCanvas;
                 let globalMousePos = dragArea.mapToItem(rootItem, mouse.x, mouse.y);
 
-                // Ensure anchor remains inside draggableCanvas
                 globalMousePos.x = Math.max(0, Math.min(globalMousePos.x, draggableCanvas.width - anchor.width));
                 globalMousePos.y = Math.max(0, Math.min(globalMousePos.y, draggableCanvas.height - anchor.height));
 

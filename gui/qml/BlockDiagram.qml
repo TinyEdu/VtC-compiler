@@ -1,47 +1,58 @@
+// BlockDiagram.qml
 import QtQuick 6.0
 import QtQuick.Effects 6.5
 import QtQuick.Controls 6.0
 
 Rectangle {
     id: blockDiagram
+
+    // Config
     property string name: "function"
     property color blockColor: "#CCE2CB"
     property color barColor: "#B6CfB6"
     property bool enableLeftAnchor: true
     property bool enableRightAnchor: true
-
     signal anchorNeedsUpdate()
     property var registeredSlots: []
 
-    width: 100
-    height: 100
-    z: 1
+    // Sizing
+    implicitWidth: 100
+    implicitHeight: 100
+    width: implicitWidth
+    height: implicitHeight
     radius: 4
+    z: 1
     color: blockColor
     border.color: "#84818E"
 
     Anchor {
         id: leftAnchor
         anchors.left: parent.left
+        enabled: enableLeftAnchor
+        visible: enableLeftAnchor
+
+        height: parent.height * 0.33
+        width: parent.height * 0.33
+        anchors.top: parent.top
         radius: parent.radius
         border.width: parent.border.width
         border.color: parent.border.color
-        enabled: enableLeftAnchor
-        visible: enableLeftAnchor
     }
 
     Anchor {
         id: rightAnchor
         anchors.right: parent.right
-        radius: parent.radius
-        border.width: parent.border.width
-        border.color: parent.border.color
         enabled: enableRightAnchor
         visible: enableRightAnchor
 
+        height: parent.height * 0.33
+        width: parent.height * 0.33
+        anchors.top: parent.top
+        radius: parent.radius
+        border.width: parent.border.width
+        border.color: parent.border.color
     }
 
-    // Static shadow source to prevent scaling issues
     Rectangle {
         id: shadowSource
         width: blockDiagram.width
@@ -63,28 +74,30 @@ Rectangle {
     }
 
     Rectangle {
-
         id: topBar
         width: parent.width
-        height: 20
+        height: parent.height * 0.33
         color: barColor
         anchors.top: parent.top
         radius: parent.radius
         border.width: parent.border.width
         border.color: parent.border.color
 
-            Text {
+        Text {
             text: name
             color: "#62717E"
             font.bold: true
-            font.pointSize: 10
             anchors.centerIn: parent
+            font.pixelSize: Math.max(10, topBar.height * 0.6)
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.NoWrap
         }
     }
 
     Component.onCompleted: {
-        if(enableLeftAnchor) registerSlot(leftAnchor.update)
-        if(enableRightAnchor) registerSlot(rightAnchor.update)
+        if (enableLeftAnchor) registerSlot(leftAnchor.update)
+        if (enableRightAnchor) registerSlot(rightAnchor.update)
     }
 
     function registerSlot(slotFunction) {
@@ -103,8 +116,6 @@ Rectangle {
         function onHeightChanged() { shadowEffect.update(); }
     }
 
-
-    // Lower the z value to allow child anchors to receive mouse events
     MouseArea {
         anchors.fill: parent
         drag.target: blockDiagram
