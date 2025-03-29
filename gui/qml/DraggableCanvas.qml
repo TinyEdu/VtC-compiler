@@ -9,11 +9,13 @@ Item {
     property real canvasWidth: 2000
     property real canvasHeight: 2000
     property real maxScale: 4.0
-
     property real currentScale: 1.0
     readonly property real minScale: Math.max(width / canvasWidth, height / canvasHeight)
+    property alias contentItem: canvasGroup
 
-    property alias contentItem: scaleGroup
+    // Manual offsets for transform
+    property real offsetX: 0
+    property real offsetY: 0
 
     Flickable {
         id: flickable
@@ -21,25 +23,29 @@ Item {
         interactive: false
         clip: true
 
-        contentWidth: Math.max(canvasWidth * currentScale, width)
-        contentHeight: Math.max(canvasHeight * currentScale, height)
+        // Fixed large surface
+        contentWidth: canvasWidth * maxScale
+        contentHeight: canvasHeight * maxScale
+
+        onContentXChanged: updateAllAnchors()
+        onContentYChanged: updateAllAnchors()
 
         Item {
-            id: container
+            id: canvasContainer
             width: flickable.contentWidth
             height: flickable.contentHeight
-            anchors.centerIn: parent
 
             Item {
-                id: scaleGroup
-                width: root.canvasWidth
-                height: root.canvasHeight
-                anchors.centerIn: parent
-                transformOrigin: Item.TopLeft
-                scale: root.currentScale
+                id: canvasGroup
+                width: canvasWidth
+                height: canvasHeight
+
+                transform: [
+                    Translate { x: offsetX; y: offsetY },
+                    Scale { xScale: currentScale; yScale: currentScale; origin.x: 0; origin.y: 0 }
+                ]
 
                 Rectangle {
-                    id: canvas
                     anchors.fill: parent
                     color: "#eeeeee"
                     border.color: "black"
@@ -47,17 +53,17 @@ Item {
                     Canvas {
                         anchors.fill: parent
                         onPaint: {
-                            var ctx = getContext("2d");
+                            const ctx = getContext("2d");
                             ctx.clearRect(0, 0, width, height);
                             ctx.strokeStyle = "#cccccc";
                             ctx.lineWidth = 1;
-                            for (var x = 0; x <= width; x += 100) {
+                            for (let x = 0; x <= width; x += 100) {
                                 ctx.beginPath();
                                 ctx.moveTo(x, 0);
                                 ctx.lineTo(x, height);
                                 ctx.stroke();
                             }
-                            for (var y = 0; y <= height; y += 100) {
+                            for (let y = 0; y <= height; y += 100) {
                                 ctx.beginPath();
                                 ctx.moveTo(0, y);
                                 ctx.lineTo(width, y);
@@ -69,73 +75,69 @@ Item {
             }
         }
 
-        ScrollBar.vertical: ScrollBar {
-            policy: ScrollBar.AlwaysOn
-        }
-
-        ScrollBar.horizontal: ScrollBar {
-            policy: ScrollBar.AlwaysOn
-        }
+        ScrollBar.vertical: ScrollBar { policy: ScrollBar.AlwaysOn }
+        ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOn }
 
         MouseArea {
             anchors.fill: parent
+            acceptedButtons: Qt.MiddleButton
             hoverEnabled: true
             preventStealing: true
-            acceptedButtons: Qt.MiddleButton
 
-            property real pressX
-            property real pressY
-            property real startX
-            property real startY
-
-            function clampScroll() {
-                flickable.contentX = Math.max(0, Math.min(flickable.contentX, flickable.contentWidth - flickable.width));
-                flickable.contentY = Math.max(0, Math.min(flickable.contentY, flickable.contentHeight - flickable.height));
-
-                updateAllAnchors();
-            }
+            property real lastX: 0
+            property real lastY: 0
+            property bool dragging: false
 
             onPressed: function(mouse) {
                 if (mouse.button === Qt.MiddleButton) {
-                    pressX = mouse.x;
-                    pressY = mouse.y;
-                    startX = flickable.contentX;
-                    startY = flickable.contentY;
+                    dragging = true;
+                    lastX = mouse.x;
+                    lastY = mouse.y;
                 }
+            }
 
-                updateAllAnchors();
+            onReleased: function(mouse) {
+                dragging = false;
             }
 
             onPositionChanged: function(mouse) {
-                if (mouse.buttons & Qt.MiddleButton) {
-                    flickable.contentX = startX - (mouse.x - pressX);
-                    flickable.contentY = startY - (mouse.y - pressY);
-                    clampScroll();
+                if (dragging) {
+                    const dx = (mouse.x - lastX);
+                    const dy = (mouse.y - lastY);
+                    offsetX += dx / currentScale;
+                    offsetY += dy / currentScale;
+                    lastX = mouse.x;
+                    lastY = mouse.y;
                 }
 
-                updateAllAnchors();
+                updateAllAnchors()
             }
 
             onWheel: function(wheel) {
+                wheel.accepted = true;
+
                 if (wheel.modifiers & Qt.ControlModifier) {
-                    wheel.accepted = true;
+                    const factor = wheel.angleDelta.y > 0 ? 1.1 : 1 / 1.1;
+                    const newScale = Math.max(minScale, Math.min(maxScale, currentScale * factor));
 
-                    let factor = (wheel.angleDelta.y > 0) ? 1.1 : 1 / 1.1;
-                    let newScale = root.currentScale * factor;
-                    newScale = Math.max(root.minScale, Math.min(root.maxScale, newScale));
+                    if (Math.abs(newScale - currentScale) > 0.0001) {
+                        const mouseX = wheel.x;
+                        const mouseY = wheel.y;
 
-                    if (Math.abs(newScale - root.currentScale) > 0.0001) {
-                        root.currentScale = newScale;
-                        clampScroll();
+                        // Zoom relative to mouse pointer
+                        const sx = (mouseX - offsetX * currentScale) / currentScale;
+                        const sy = (mouseY - offsetY * currentScale) / currentScale;
+
+                        offsetX -= sx * (newScale - currentScale);
+                        offsetY -= sy * (newScale - currentScale);
+                        currentScale = newScale;
                     }
                 } else {
-                    wheel.accepted = true;
-                    flickable.contentY -= wheel.angleDelta.y;
-                    flickable.contentX -= wheel.angleDelta.x;
-                    clampScroll();
+                    offsetX -= wheel.angleDelta.x / currentScale;
+                    offsetY -= wheel.angleDelta.y / currentScale;
                 }
 
-                updateAllAnchors();
+                updateAllAnchors()
             }
         }
     }
@@ -148,5 +150,4 @@ Item {
             }
         }
     }
-
 }
