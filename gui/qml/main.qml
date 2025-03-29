@@ -1,11 +1,11 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
 
-ApplicationWindow {
+Window {
+    width: 800
+    height: 600
     visible: true
-    width: 1920
-    height: 1080
-    title: qsTr("Searchable BlockCreator List Example")
 
     DraggableCanvas {
         id: draggableCanvas
