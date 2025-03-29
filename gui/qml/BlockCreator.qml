@@ -3,11 +3,12 @@ import QtQuick.Controls 6.0
 
 Rectangle {
     id: blockCreator
-    width: 100
-    height: 120
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: Math.max(label.height + blockHolder.implicitHeight + 10, 100)
     color: "#E0E0E0"
     border.color: "#B0B0B0"
-    radius: 4
+    radius: 8
 
     property string blockName: ""
     property url blockDiagramUrl: "BlockDiagram.qml"
@@ -26,19 +27,18 @@ Rectangle {
             left: parent.left
             right: parent.right
             bottom: label.top
-            margins: 5
+            margins: 6
         }
+        height: implicitHeight
     }
 
     Label {
         id: label
         text: blockName
-        height: 20
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: 22
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font.pixelSize: 12
@@ -66,18 +66,22 @@ Rectangle {
     }
 
     function createPreviewBlock() {
+        if (previewBlock) previewBlock.destroy();
+
         previewBlock = blockDiagramComponent.createObject(blockHolder, {
-            scale: 0.7,
-            "anchors.centerIn": blockHolder
+            scale: Math.min(blockCreator.width, blockCreator.height) / 150
         });
 
         if (previewBlock) {
             previewBlock.name = blockName;
+
+            // ✅ Manual centering
+            previewBlock.x = (blockHolder.width - previewBlock.width * previewBlock.scale) / 2;
+            previewBlock.y = (blockHolder.height - previewBlock.height * previewBlock.scale) / 2;
         } else {
             console.error("Failed to create previewBlock.");
         }
     }
-
 
     MouseArea {
         anchors.fill: parent
@@ -87,10 +91,7 @@ Rectangle {
         property point pressOffset: Qt.point(0, 0)
 
         onPressed: (mouse) => {
-            // Global position of the mouse
             const globalPos = blockCreator.mapToGlobal(mouse.x, mouse.y);
-
-            // ✅ Correct: position inside rootObj (because we're parenting there)
             const scenePos = rootObj.mapFromGlobal(globalPos.x, globalPos.y);
 
             if (blockDiagramComponent) {
@@ -108,32 +109,25 @@ Rectangle {
             }
         }
 
-
         onPositionChanged: (mouse) => {
             if (!currentBlock) return;
 
-            // Global position of the mouse
             const globalPos = blockCreator.mapToGlobal(mouse.x, mouse.y);
-
-            // ✅ Map into `rootObj` since currentBlock is a child of rootObj
             const scenePos = rootObj.mapFromGlobal(globalPos.x, globalPos.y);
 
             currentBlock.x = scenePos.x - pressOffset.x;
             currentBlock.y = scenePos.y - pressOffset.y;
         }
 
-
         onReleased: function(mouse) {
             const dropTarget = findCanvasDropTarget(mouse.x, mouse.y);
 
             if (dropTarget) {
-                console.log("HI");
                 const globalPos = blockCreator.mapToGlobal(mouse.x, mouse.y);
                 const contentItem = dropTarget.contentItem;
                 const localPos = contentItem.mapFromGlobal(globalPos.x, globalPos.y);
 
-                currentBlock.parent = dropTarget.contentItem;
-
+                currentBlock.parent = contentItem;
                 currentBlock.x = localPos.x - pressOffset.x / dropTarget.currentScale;
                 currentBlock.y = localPos.y - pressOffset.y / dropTarget.currentScale;
                 currentBlock.z = 3;
@@ -156,7 +150,6 @@ Rectangle {
                     }
                 }
 
-                // Recursively search children
                 if (item.children) {
                     for (let i = item.children.length - 1; i >= 0; --i) {
                         const result = findIn(item.children[i]);
@@ -169,6 +162,5 @@ Rectangle {
 
             return findIn(rootObj);
         }
-
     }
 }

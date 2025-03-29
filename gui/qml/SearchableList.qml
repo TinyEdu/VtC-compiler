@@ -3,8 +3,7 @@ import QtQuick.Controls 6.0
 
 Item {
     id: root
-    width: 400
-    height: 600
+    anchors.fill: parent
 
     property string searchText: ""
     property Item draggableCanvas
@@ -14,6 +13,7 @@ Item {
         id: originalModel
         ListElement { name: "Break"; blockDiagramUrl: "Blocks/BreakBlock.qml" }
         ListElement { name: "Call Event"; blockDiagramUrl: "Blocks/CallEventBlock.qml" }
+        ListElement { name: "End"; blockDiagramUrl: "Blocks/EndBlock.qml" }
         ListElement { name: "End"; blockDiagramUrl: "Blocks/EndBlock.qml" }
         ListElement { name: "If"; blockDiagramUrl: "Blocks/IfBlock.qml" }
         ListElement { name: "Start"; blockDiagramUrl: "Blocks/StartBlock.qml" }
@@ -25,8 +25,8 @@ Item {
 
     function updateFilter() {
         filteredModel.clear();
-        for (var i = 0; i < originalModel.count; i++) {
-            var item = originalModel.get(i);
+        for (let i = 0; i < originalModel.count; ++i) {
+            const item = originalModel.get(i);
             if (searchText === "" ||
                 item.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1) {
                 filteredModel.append({
@@ -37,40 +37,41 @@ Item {
         }
     }
 
-    Column {
-        anchors.fill: parent
-        spacing: 10
-
-        TextField {
-            id: searchField
-            placeholderText: "Search..."
-            text: searchText
-            onTextChanged: {
-                searchText = text;
-                updateFilter();
-            }
+    TextField {
+        id: searchField
+        placeholderText: "Search..."
+        text: searchText
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        onTextChanged: {
+            searchText = text;
+            updateFilter();
         }
+    }
 
-        Component.onCompleted: updateFilter();
+    ScrollView {
+        id: scrollView
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: searchField.bottom
+        anchors.topMargin: 8
+        anchors.bottom: parent.bottom
 
-        ScrollView {
-            id: scrollArea
-            width: parent.width
-            height: parent.height - searchField.height - 20
+        ListView {
+            id: listView
+            model: filteredModel
+            spacing: 6
+            clip: true
 
-            ListView {
-                id: listView
-                width: parent.width
-                height: parent.height
-                model: filteredModel
-                delegate: BlockCreator {
-                    blockName: model.name
-                    blockDiagramUrl: model.blockDiagramUrl
-                    draggableCanvas: root.draggableCanvas
-                    rootObj: root.rootObj
-                }
-
+            delegate: BlockCreator {
+                blockName: model.name
+                blockDiagramUrl: model.blockDiagramUrl
+                draggableCanvas: root.draggableCanvas
+                rootObj: root.rootObj
             }
         }
     }
+
+    Component.onCompleted: updateFilter()
 }
