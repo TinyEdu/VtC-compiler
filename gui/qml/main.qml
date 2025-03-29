@@ -1,22 +1,25 @@
 import QtQuick 6.0
-import QtQuick.Window 6.0
+import QtQuick.Controls 6.0
 
-Window {
-    width: 800
-    height: 600
+ApplicationWindow {
     visible: true
-    title: "Block Diagram Creator"
+    width: 1920
+    height: 1080
+    title: qsTr("Searchable BlockCreator List Example")
+
+    DraggableCanvas {
+        id: draggableCanvas
+    }
 
     Rectangle {
-        id: draggableCanvas
-        anchors.fill: parent
-        color: "#FFFFFF"
+        id: searchableContainer
+        width: parent.width * 0.3
+        height: parent.height
+        anchors.left: parent.left
 
-        BlockCreator {
-            id: blockCreator
-            x: 20
-            y: 20
-            blockDiagramComponent: Qt.createComponent("Blocks/BreakBlock.qml")
+        SearchableList {
+            anchors.fill: parent
+            draggableCanvas : draggableCanvas.parent
         }
     }
 }

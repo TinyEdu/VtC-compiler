@@ -5,6 +5,8 @@
         <file>qml/BezierConnection.qml</file>
         <file>qml/BlockDiagram.qml</file>
         <file>qml/BlockCreator.qml</file>
+        <file>qml/SearchableList.qml</file>
+        <file>qml/DraggableCanvas.qml</file>
         <file>qml/Anchor.qml</file>
 
         <file>qml/Blocks/BreakBlock.qml</file>
