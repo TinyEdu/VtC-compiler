@@ -5,20 +5,26 @@ Item {
     id: bezierConnection
     width: draggableCanvas.width
     height: draggableCanvas.height
-    z: 2
+    z: 115
+    visible: true
+    clip: false
 
+    property string typeName: "BezierConnection"
+
+    // Connection coordinates
     property int startPointX
     property int startPointY
     property int endPointX
     property int endPointY
 
+    // Anchors
     property var leftAnchor
     property var rightAnchor
 
+    // Public method to update coordinates
     function update() {
         const rootItem = draggableCanvas;
 
-        // Convert local coordinates to draggableCanvas coordinates
         let leftGlobal = leftAnchor.mapToItem(rootItem, leftAnchor.width / 2, leftAnchor.height / 2);
         let rightGlobal = rightAnchor.mapToItem(rootItem, rightAnchor.width / 2, rightAnchor.height / 2);
 
@@ -30,15 +36,17 @@ Item {
         canvas.requestPaint();
     }
 
+    // Assign anchors and trigger update
     function updateWithAnchors(_leftAnchor, _rightAnchor) {
         leftAnchor = _leftAnchor;
         rightAnchor = _rightAnchor;
-
         update();
     }
 
+    // External access to canvas if needed
     property alias canvas: connectionCanvas
 
+    // Drawing surface
     Canvas {
         id: connectionCanvas
         anchors.fill: parent
@@ -51,7 +59,7 @@ Item {
             ctx.beginPath();
             ctx.moveTo(startPointX, startPointY);
 
-            // Control points for a smooth curve
+            // Smooth control points
             var control1X = startPointX + (endPointX - startPointX) / 3;
             var control1Y = startPointY;
             var control2X = endPointX - (endPointX - startPointX) / 3;

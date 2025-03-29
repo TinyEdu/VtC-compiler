@@ -1,4 +1,3 @@
-// DraggableCanvas.qml
 import QtQuick
 import QtQuick.Controls
 
@@ -6,7 +5,6 @@ Item {
     id: root
     anchors.fill: parent
 
-    // Configuration
     property string typeName: "draggableCanvas"
     property real canvasWidth: 2000
     property real canvasHeight: 2000
@@ -14,6 +12,8 @@ Item {
 
     property real currentScale: 1.0
     readonly property real minScale: Math.max(width / canvasWidth, height / canvasHeight)
+
+    property alias contentItem: scaleGroup
 
     Flickable {
         id: flickable
@@ -30,34 +30,39 @@ Item {
             height: flickable.contentHeight
             anchors.centerIn: parent
 
-            Rectangle {
-                id: canvas
+            Item {
+                id: scaleGroup
                 width: root.canvasWidth
                 height: root.canvasHeight
-                color: "#eeeeee"
-                border.color: "black"
-                transformOrigin: Item.Center
-                scale: root.currentScale
                 anchors.centerIn: parent
+                transformOrigin: Item.TopLeft
+                scale: root.currentScale
 
-                Canvas {
+                Rectangle {
+                    id: canvas
                     anchors.fill: parent
-                    onPaint: {
-                        var ctx = getContext("2d");
-                        ctx.clearRect(0, 0, width, height);
-                        ctx.strokeStyle = "#cccccc";
-                        ctx.lineWidth = 1;
-                        for (var x = 0; x <= width; x += 100) {
-                            ctx.beginPath();
-                            ctx.moveTo(x, 0);
-                            ctx.lineTo(x, height);
-                            ctx.stroke();
-                        }
-                        for (var y = 0; y <= height; y += 100) {
-                            ctx.beginPath();
-                            ctx.moveTo(0, y);
-                            ctx.lineTo(width, y);
-                            ctx.stroke();
+                    color: "#eeeeee"
+                    border.color: "black"
+
+                    Canvas {
+                        anchors.fill: parent
+                        onPaint: {
+                            var ctx = getContext("2d");
+                            ctx.clearRect(0, 0, width, height);
+                            ctx.strokeStyle = "#cccccc";
+                            ctx.lineWidth = 1;
+                            for (var x = 0; x <= width; x += 100) {
+                                ctx.beginPath();
+                                ctx.moveTo(x, 0);
+                                ctx.lineTo(x, height);
+                                ctx.stroke();
+                            }
+                            for (var y = 0; y <= height; y += 100) {
+                                ctx.beginPath();
+                                ctx.moveTo(0, y);
+                                ctx.lineTo(width, y);
+                                ctx.stroke();
+                            }
                         }
                     }
                 }
@@ -86,6 +91,8 @@ Item {
             function clampScroll() {
                 flickable.contentX = Math.max(0, Math.min(flickable.contentX, flickable.contentWidth - flickable.width));
                 flickable.contentY = Math.max(0, Math.min(flickable.contentY, flickable.contentHeight - flickable.height));
+
+                updateAllAnchors();
             }
 
             onPressed: function(mouse) {
@@ -95,6 +102,8 @@ Item {
                     startX = flickable.contentX;
                     startY = flickable.contentY;
                 }
+
+                updateAllAnchors();
             }
 
             onPositionChanged: function(mouse) {
@@ -103,6 +112,8 @@ Item {
                     flickable.contentY = startY - (mouse.y - pressY);
                     clampScroll();
                 }
+
+                updateAllAnchors();
             }
 
             onWheel: function(wheel) {
@@ -123,7 +134,19 @@ Item {
                     flickable.contentX -= wheel.angleDelta.x;
                     clampScroll();
                 }
+
+                updateAllAnchors();
             }
         }
     }
+
+    function updateAllAnchors() {
+        for (let i = 0; i < contentItem.children.length; ++i) {
+            const child = contentItem.children[i];
+            if (child && child.typeName === "blockDiagram" && typeof child.updateAnchors === "function") {
+                child.updateAnchors();
+            }
+        }
+    }
+
 }

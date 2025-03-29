@@ -8,6 +8,7 @@ Item {
 
     property string searchText: ""
     property Item draggableCanvas
+    property Item rootObj
 
     ListModel {
         id: originalModel
@@ -66,6 +67,7 @@ Item {
                     blockName: model.name
                     blockDiagramUrl: model.blockDiagramUrl
                     draggableCanvas: root.draggableCanvas
+                    rootObj: root.rootObj
                 }
 
             }

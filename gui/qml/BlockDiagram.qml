@@ -6,6 +6,8 @@ import QtQuick.Controls 6.0
 Rectangle {
     id: blockDiagram
 
+    property string typeName: "blockDiagram"
+
     // Config
     property string name: "function"
     property color blockColor: "#CCE2CB"
@@ -21,7 +23,7 @@ Rectangle {
     width: implicitWidth
     height: implicitHeight
     radius: 4
-    z: 1
+    z: 114
     color: blockColor
     border.color: "#84818E"
 
@@ -122,12 +124,16 @@ Rectangle {
         z: 0
 
         onPositionChanged: {
-            if (blockDiagram.x < 0) blockDiagram.x = 0;
-            if (blockDiagram.y < 0) blockDiagram.y = 0;
-            if (blockDiagram.x + blockDiagram.width > draggableCanvas.width)
-                blockDiagram.x = draggableCanvas.width - blockDiagram.width;
-            if (blockDiagram.y + blockDiagram.height > draggableCanvas.height)
-                blockDiagram.y = draggableCanvas.height - blockDiagram.height;
+            if (typeof draggableCanvas !== "undefined") {
+                const scale = draggableCanvas.currentScale;
+                const maxX = draggableCanvas.canvasWidth - blockDiagram.width / scale;
+                const maxY = draggableCanvas.canvasHeight - blockDiagram.height / scale;
+
+                if (blockDiagram.x < 0) blockDiagram.x = 0;
+                if (blockDiagram.y < 0) blockDiagram.y = 0;
+                if (blockDiagram.x > maxX) blockDiagram.x = maxX;
+                if (blockDiagram.y > maxY) blockDiagram.y = maxY;
+            }
 
             updateAnchors();
         }

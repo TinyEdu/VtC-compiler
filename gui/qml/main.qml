@@ -7,8 +7,15 @@ Window {
     height: 600
     visible: true
 
-    DraggableCanvas {
-        id: draggableCanvas
+    Rectangle {
+        id: searchableContainer2
+        width: parent.width * 0.7
+        height: parent.height
+        anchors.right: parent.right
+
+        DraggableCanvas {
+            id: draggableCanvas
+        }
     }
 
     Rectangle {
@@ -16,10 +23,12 @@ Window {
         width: parent.width * 0.3
         height: parent.height
         anchors.left: parent.left
+        z: 2
 
         SearchableList {
             anchors.fill: parent
-            draggableCanvas : draggableCanvas.parent
+            draggableCanvas : draggableCanvas
+            rootObj: searchableContainer.parent
         }
     }
 }
