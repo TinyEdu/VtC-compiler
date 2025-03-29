@@ -39,6 +39,9 @@ int GraphicalUserInterface::run(int argc, char* argv[])
                              QCoreApplication::exit(-1);
                      }, Qt::QueuedConnection);
 
+    // Specifying a native qml style
+    qputenv("QT_QUICK_CONTROLS_STYLE", "Fusion");
+
     // QML import paths for the Qt6 libraries from vcpkg
     const QString relativeImportPath = QCoreApplication::applicationDirPath() +
         "/../vcpkg_installed/x64-windows/debug/Qt6/qml";

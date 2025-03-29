@@ -72,8 +72,6 @@ Rectangle {
     });
 
     if (previewBlock) {
-        previewBlock.name = blockName;
-
         Qt.callLater(() => {
             blockHolder.implicitHeight = previewBlock.implicitHeight || previewBlock.height;
             blockCreator.height = label.height + blockHolder.implicitHeight + 20; // includes spacing and margins
