@@ -22,6 +22,8 @@ Rectangle {
     property var anchorLogic
     property BezierConnection connection
 
+    property var anchorId
+
     Rectangle {
         id: anchorCircle
         anchors.centerIn: parent

@@ -1,5 +1,7 @@
 #include "CollisionManager.h"
 
+#include <QUuid>
+
 CollisionManager* CollisionManager::instance()
 {
     static CollisionManager manager;
@@ -14,6 +16,12 @@ void CollisionManager::registerAnchor(QQuickItem* anchor)
 {
     if (anchor && !m_anchors.contains(anchor))
     {
+        // Generate and assign UUID
+        if (!anchor->property("anchorId").isValid()) {
+            QUuid uuid = QUuid::createUuid();
+            anchor->setProperty("anchorId", uuid.toString(QUuid::WithoutBraces));
+        }
+
         m_anchors.append(anchor);
 
         // Ensure we remove the anchor when it is destroyed
