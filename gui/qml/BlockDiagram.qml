@@ -16,6 +16,7 @@ Rectangle {
     property color barColor: "#B6CfB6"
     property bool enableLeftAnchor: true
     property bool enableRightAnchor: true
+    property bool shouldBeRegistered: true
     signal anchorNeedsUpdate()
     property var registeredSlots: []
 
@@ -105,8 +106,10 @@ Rectangle {
         if (enableLeftAnchor) registerSlot(leftAnchor.update)
         if (enableRightAnchor) registerSlot(rightAnchor.update)
 
-        blockDiagramLogic = blockDiagramFactory.newComponent();
-        blockDiagramLogic.Associate(this);
+        if (shouldBeRegistered) {
+            blockDiagramLogic = blockDiagramFactory.newComponent();
+            blockDiagramLogic.Associate(this);
+        }
     }
 
     function registerSlot(slotFunction) {
