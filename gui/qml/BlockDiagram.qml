@@ -1,7 +1,9 @@
 // BlockDiagram.qml
-import QtQuick 6.0
-import QtQuick.Effects 6.5
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Effects
+import QtQuick.Controls
+
+import BlockDiagramManager
 
 Rectangle {
     id: blockDiagram
@@ -16,6 +18,8 @@ Rectangle {
     property bool enableRightAnchor: true
     signal anchorNeedsUpdate()
     property var registeredSlots: []
+
+    property var blockDiagramLogic
 
     // Sizing
     implicitWidth: 100
@@ -100,6 +104,9 @@ Rectangle {
     Component.onCompleted: {
         if (enableLeftAnchor) registerSlot(leftAnchor.update)
         if (enableRightAnchor) registerSlot(rightAnchor.update)
+
+        blockDiagramLogic = blockDiagramFactory.newComponent();
+        blockDiagramLogic.Associate(this);
     }
 
     function registerSlot(slotFunction) {

@@ -1,7 +1,6 @@
 #ifndef ANCHOR_FACTORY_H
 #define ANCHOR_FACTORY_H
 
-#include <QQmlEngine>
 #include "Anchor.h"
 
 

@@ -7,6 +7,8 @@
 
 #include "Anchor/Anchor.h"
 #include "Anchor/AnchorFactory.h"
+#include "BlockDiagram/BlockDiagramFactory.h"
+#include "BlockDiagramManager/BlockDiagramManager.h"
 #include "Collision/CollisionManager.h"
 #include "MovableBlock/MovableBlock.h"
 #include "MovableBlock/MovableBlockFactory.h"
@@ -18,18 +20,20 @@ int GraphicalUserInterface::run(int argc, char* argv[])
 
     QQmlApplicationEngine engine;
 
-    MovableBlockFactory movableBlockFactory(&engine);
-    engine.rootContext()->setContextProperty("blockFactory", &movableBlockFactory);
-
-    AnchorFactory anchorFactory(&engine);
-    engine.rootContext()->setContextProperty("anchorFactory", &anchorFactory);
-
-
     qmlRegisterType<MovableBlock>("MovableBlock", 1, 0, "MovableBlock");
     qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
+    qmlRegisterType<Anchor>("BlockDiagram", 1, 0, "BlockDiagram");
+
+    BlockDiagramFactory blockDiagramFactory(&engine);
+    engine.rootContext()->setContextProperty("blockDiagramFactory", &blockDiagramFactory);
+
+    AnchorFactory anchorFactory(&engine);
+    engine.rootContext()->setContextProperty("anchorFactory", &blockDiagramFactory);
+
     qmlRegisterSingletonInstance<CollisionManager>("CollisionManager", 1, 0, "CollisionManager",
                                                    CollisionManager::instance());
-
+    qmlRegisterSingletonInstance<BlockDiagramManager>("BlockDiagramManager", 1, 0, "BlockDiagramManager",
+                                                   BlockDiagramManager::instance());
 
     auto url = QUrl(QStringLiteral("qrc:qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

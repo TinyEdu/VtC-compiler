@@ -31,11 +31,19 @@ add_library(${PROJECT_NAME} SHARED
 
         src/Anchor/Anchor.h
         src/Anchor/AnchorFactory.h
+
         src/Collision/CollisionManager.cpp
         src/Collision/CollisionManager.h
+
         src/MovableBlock/MovableBlock.h
         src/MovableBlock/MovableBlockFactory.cpp
         src/MovableBlock/MovableBlockFactory.h
+
+        src/BlockDiagram/BlockDiagram.h
+        src/BlockDiagram/BlockDiagramFactory.h
+
+        src/BlockDiagramManager/BlockDiagramManager.h
+        src/BlockDiagramManager/BlockDiagramManager.cpp
 
         resources.qrc
 )
