@@ -1,5 +1,5 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
@@ -12,16 +12,14 @@ BlockDiagram {
     enableLeftAnchor: false
     enableRightAnchor: true
 
-    ComboBox {
-        id: typeSelector
-        width: 60
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.margins: 3
+    TextField {
+        id: eventField
+        objectName: "eventField"
+        placeholderText: "event name"
+        width: 80
 
-        model: ["Call1", "Call2", "Call3"]
-        onCurrentIndexChanged: {
-            console.log("Selected type: " + typeSelector.currentText)
-        }
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.margins: 3
     }
 }

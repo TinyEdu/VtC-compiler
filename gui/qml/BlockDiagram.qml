@@ -9,6 +9,8 @@ Rectangle {
     id: blockDiagram
 
     property string typeName: "blockDiagram"
+    property alias leftAnchor: leftAnchor
+    property alias rightAnchor: rightAnchor
 
     // Config
     property string name: "function"

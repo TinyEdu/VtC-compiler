@@ -17,19 +17,27 @@ BlockDiagram {
     }
 
     TextField {
-        id: nameField
-        width: 80
+        id: valueField
+        objectName: "valueField"
         placeholderText: "value"
 
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.margins: 3
+        anchors.leftMargin: 3
+        anchors.bottomMargin: 8
+
+        width: valueBlock.width * 0.64
+        height: valueBlock.height * 0.33
     }
 
     Anchor {
         id: passingAnchor
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.margins: 3
+        anchors.rightMargin: 3
+        anchors.bottomMargin: 8
+
+        width: valueBlock.height * 0.33
+        height: valueBlock.height * 0.33
     }
 }

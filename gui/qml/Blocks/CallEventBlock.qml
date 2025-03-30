@@ -13,12 +13,13 @@ BlockDiagram {
     enableRightAnchor: false
 
     TextField {
-        id: callSelector
+        id: eventField
+        objectName: "eventField"
+        placeholderText: "event name"
         width: 80
-        placeholderText: "Call name"
 
         anchors.bottom: parent.bottom
-        anchors.left: parent.left
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.margins: 3
     }
 }

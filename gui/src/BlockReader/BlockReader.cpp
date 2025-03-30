@@ -131,7 +131,7 @@ Block* BlockReader::BuildCall(QQuickItem* block, QString name)
     result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
     result->rightAnchor = emptyQUuid();
 
-    result->eventName = readChildProperty(block, "callSelector", "text");
+    result->eventName = readChildProperty(block, "eventField", "text");
 
     return result;
 }
@@ -221,7 +221,7 @@ Block* BlockReader::BuildListen(QQuickItem* block, QString name)
     result->leftAnchor = emptyQUuid();
     result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
 
-    result->eventName = readProperty(block, "eventName");
+    result->eventName = readChildProperty(block, "eventField", "text");
 
     return result;
 }
@@ -292,7 +292,7 @@ Block* BlockReader::BuildValue(QQuickItem* block, QString name)
     result->rightAnchor = emptyQUuid();
 
     result->passingAnchor = QUuid(readChildProperty(block, "passingAnchor", "anchorId"));
-    result->value = readChildProperty(block, "variableField", "text");
+    result->value = readChildProperty(block, "valueField", "text");
 
     return result;
 }
