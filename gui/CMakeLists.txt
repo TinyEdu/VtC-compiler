@@ -26,8 +26,10 @@ qt_policy(SET QTP0001 OLD)
 
 
 add_library(${PROJECT_NAME} SHARED
-        src/GraphicalUserInterface.cpp
+        resources.qrc
+
         include/GraphicalUserInterface.h
+        src/GraphicalUserInterface.cpp
 
         src/Anchor/Anchor.h
         src/Anchor/AnchorFactory.h
@@ -36,8 +38,9 @@ add_library(${PROJECT_NAME} SHARED
         src/Collision/CollisionManager.h
 
         src/MovableBlock/MovableBlock.h
-        src/MovableBlock/MovableBlockFactory.cpp
+
         src/MovableBlock/MovableBlockFactory.h
+        src/MovableBlock/MovableBlockFactory.cpp
 
         src/BlockDiagram/BlockDiagram.h
         src/BlockDiagram/BlockDiagramFactory.h
@@ -45,7 +48,11 @@ add_library(${PROJECT_NAME} SHARED
         src/BlockDiagramManager/BlockDiagramManager.h
         src/BlockDiagramManager/BlockDiagramManager.cpp
 
-        resources.qrc
+        src/BlockReader/BlockReader.h
+        src/BlockReader/BlockReader.cpp
+
+        src/Blocks/Block.h
+        src/BlockReader/BlockReaderException.h
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_GUI_EXPORTS)
