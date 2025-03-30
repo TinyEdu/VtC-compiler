@@ -15,6 +15,11 @@ void CollisionManager::registerAnchor(QQuickItem* anchor)
     if (anchor && !m_anchors.contains(anchor))
     {
         m_anchors.append(anchor);
+
+        // Ensure we remove the anchor when it is destroyed
+        connect(anchor, &QObject::destroyed, this, [this, anchor]() {
+            m_anchors.removeAll(anchor);
+        });
     }
 }
 
@@ -25,17 +30,7 @@ void CollisionManager::unregisterAnchor(QQuickItem* anchor)
 
 bool CollisionManager::isColliding(QQuickItem* a, QQuickItem* b)
 {
-    if (!a || !b)
-    {
-        return false;
-    }
-
-    if (!a->parentItem() || !b->parentItem())
-    {
-        return false;
-    }
-
-    if (!a->window() || !b->window())
+    if (!a || !b || !a->parentItem() || !b->parentItem() || !a->window() || !b->window())
     {
         return false;
     }
@@ -51,11 +46,13 @@ bool CollisionManager::isColliding(QQuickItem* a, QQuickItem* b)
     return rectA.intersects(rectB);
 }
 
-
 QQuickItem* CollisionManager::checkCollision(QQuickItem* movable)
 {
-    for (QQuickItem* anchor : m_anchors)
+    for (const QPointer<QQuickItem>& anchor : m_anchors)
     {
+        if (!anchor || anchor == movable)
+            continue;
+
         if (isColliding(movable, anchor))
         {
             return anchor;
@@ -66,13 +63,13 @@ QQuickItem* CollisionManager::checkCollision(QQuickItem* movable)
 
 QQuickItem* CollisionManager::isOverAnAnchor(int x, int y, QQuickItem* excludeItem)
 {
-    for (QQuickItem* anchor : m_anchors)
+    for (const QPointer<QQuickItem>& anchor : m_anchors)
     {
-        if (anchor == excludeItem) {
-            continue;  // Skip checking against itself
-        }
+        if (!anchor || anchor == excludeItem)
+            continue;
 
-        if (isColliding(x, y, anchor)) {
+        if (isColliding(x, y, anchor))
+        {
             return anchor;
         }
     }
@@ -87,9 +84,6 @@ bool CollisionManager::isColliding(int x, int y, QQuickItem* b)
         return false;
     }
 
-    // Get the anchor's bounding rectangle in the scene coordinates
     QRectF rectB = b->mapRectToScene(b->boundingRect());
-
-    // Check if the point (x, y) lies inside the anchor's bounding rectangle
     return rectB.contains(x, y);
 }
