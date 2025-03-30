@@ -20,15 +20,14 @@ int GraphicalUserInterface::run(int argc, char* argv[])
 
     QQmlApplicationEngine engine;
 
-    qmlRegisterType<MovableBlock>("MovableBlock", 1, 0, "MovableBlock");
     qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
-    qmlRegisterType<Anchor>("BlockDiagram", 1, 0, "BlockDiagram");
+    qmlRegisterType<BlockDiagram>("BlockDiagram", 1, 0, "BlockDiagram");
 
     BlockDiagramFactory blockDiagramFactory(&engine);
     engine.rootContext()->setContextProperty("blockDiagramFactory", &blockDiagramFactory);
 
     AnchorFactory anchorFactory(&engine);
-    engine.rootContext()->setContextProperty("anchorFactory", &blockDiagramFactory);
+    engine.rootContext()->setContextProperty("anchorFactory", &anchorFactory);
 
     qmlRegisterSingletonInstance<CollisionManager>("CollisionManager", 1, 0, "CollisionManager",
                                                    CollisionManager::instance());
