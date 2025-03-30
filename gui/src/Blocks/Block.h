@@ -16,6 +16,8 @@ public:
     qreal x() const { return qml_obj ? qml_obj->x() : -1; }
     qreal y() const { return qml_obj ? qml_obj->y() : -1; }
 
+    void setQmlObj(QQuickItem* obj) { qml_obj = obj; }
+
     QString name;
     QUuid leftAnchor;
     QUuid rightAnchor;

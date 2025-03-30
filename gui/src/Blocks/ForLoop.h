@@ -5,6 +5,9 @@
 
 class ForLoop : public Block
 {
+public:
+    DEFINE_BLOCK_TYPE(ForLoop);
+
     // @TODO - implement for loop block
 };
 

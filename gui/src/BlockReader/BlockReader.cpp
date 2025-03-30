@@ -1,7 +1,24 @@
 #include "BlockReader.h"
 
+#include <utility>
+
 #include "BlockReaderException.h"
+#include "Blocks/BinaryOp.h"
 #include "Blocks/Break.h"
+#include "Blocks/Call.h"
+#include "Blocks/CreateVarBySignal.h"
+#include "Blocks/End.h"
+#include "Blocks/ForLoop.h"
+#include "Blocks/GetVar.h"
+#include "Blocks/If.h"
+#include "Blocks/Listen.h"
+#include "Blocks/Print.h"
+#include "Blocks/SetVarBySignal.h"
+#include "Blocks/Skip.h"
+#include "Blocks/Start.h"
+#include "Blocks/UnaryOp.h"
+#include "Blocks/Value.h"
+#include "Blocks/While.h"
 
 BlockReader::BlockReader()
 {
@@ -9,29 +26,60 @@ BlockReader::BlockReader()
     initializeHandlerRegister();
 }
 
-Block* BlockReader::extract(const QQuickItem& block) const
+Block* BlockReader::extract(QQuickItem* block) const
 {
-    const QVariant nameProperty = block.property("myvariable");
+    const QVariant nameProperty = block->property("name");
 
     if (!nameProperty.isValid())
     {
         throw BlockReaderException("BlockReader, extract error.");
     }
 
-    const std::string name = nameProperty.toString().toStdString();
-
-    return extract(block, name);
+    return extract(block, nameProperty.toString());
 }
 
-Block* BlockReader::extract(const QQuickItem& block, const std::string& name) const
+Block* BlockReader::extract(QQuickItem* block, const QString& name) const
 {
     const auto it = functionMap.find(name);
     if (it == functionMap.end())
     {
-        throw std::invalid_argument("Function not found: " + name);
+        throw std::invalid_argument("Function not found: " + name.toStdString());
     }
 
     return it->second(block, name);
+}
+
+QString BlockReader::readChildProperty(QQuickItem* block, QString childName, QString propertyName)
+{
+    const QObject* foundChildName = block->findChild<QObject*>(childName);
+    if (!foundChildName) {
+        throw BlockReaderException("Could not find 'leftAnchor' in BlockDiagram");
+    }
+
+    const QVariant foundPropertyName = foundChildName->property(propertyName.toStdString().c_str());
+    if (!foundPropertyName.isValid()) {
+        throw BlockReaderException("Property 'anchorId' is not set or accessible");
+
+    }
+
+    return foundPropertyName.toString();
+}
+
+QString BlockReader::readProperty(QQuickItem* block, QString propertyName)
+{
+    const QVariant foundPropertyName = block->property(propertyName.toStdString().c_str());
+    if (!foundPropertyName.isValid()) {
+        throw BlockReaderException("Property 'anchorId' is not set or accessible");
+
+    }
+
+    return foundPropertyName.toString();
+}
+
+
+QUuid BlockReader::emptyQUuid()
+{
+    return {};
 }
 
 // ------------------------------------------------------------------------------------
@@ -40,6 +88,7 @@ Block* BlockReader::extract(const QQuickItem& block, const std::string& name) co
 
 void BlockReader::initializeHandlerRegister()
 {
+    functionMap["Binary Op"] = &BlockReader::BuildBinaryOp;
     functionMap["Break"] = &BlockReader::BuildBreak;
     functionMap["Call"] = &BlockReader::BuildCall;
     functionMap["Create Var"] = &BlockReader::BuildCreateVar;
@@ -52,88 +101,238 @@ void BlockReader::initializeHandlerRegister()
     functionMap["Set Var"] = &BlockReader::BuildSetVar;
     functionMap["Skip"] = &BlockReader::BuildSkip;
     functionMap["Start"] = &BlockReader::BuildStart;
-    functionMap["Var"] = &BlockReader::BuildVar;
-    functionMap["While"] = &BlockReader::BuildWhile;
-    functionMap["Binary Op"] = &BlockReader::BuildBinaryOp;
     functionMap["Unary Op"] = &BlockReader::BuildUnaryOp;
+    functionMap["Value"] = &BlockReader::BuildValue;
+    functionMap["While"] = &BlockReader::BuildWhile;
 }
 
-Block* BlockReader::BuildBreak(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildBreak(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new Break();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = emptyQUuid();
+
+    return result;
 }
 
-Block* BlockReader::BuildCall(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildCall(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new Call();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = emptyQUuid();
+
+    result->eventName = readChildProperty(block, "callSelector", "text");
+
+    return result;
 }
 
-Block* BlockReader::BuildCreateVar(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildCreateVar(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new CreateVarBySignal();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = emptyQUuid();
+
+    // @TODO: Implement
+
+    return result;
 }
 
-Block* BlockReader::BuildEnd(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildEnd(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new End();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = emptyQUuid();
+
+    return result;
 }
 
-Block* BlockReader::BuildForLoop(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildForLoop(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new ForLoop();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = emptyQUuid();
+
+    // @TODO: Implement
+    return result;
 }
 
-Block* BlockReader::BuildGetVar(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildGetVar(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new GetVar();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = emptyQUuid();
+    result->rightAnchor = emptyQUuid();
+
+    result->passingAnchor = QUuid(readChildProperty(block, "passingAnchor", "anchorId"));
+    result->variable = readChildProperty(block, "variableField", "text");
+
+    return result;
 }
 
-Block* BlockReader::BuildIf(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildIf(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new If();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = emptyQUuid();
+
+    result->condition = QUuid(readChildProperty(block, "conditionAnchor", "anchorId"));
+    result->trueAnchor = QUuid(readChildProperty(block, "trueAnchor", "anchorId"));
+    result->falseAnchor = QUuid(readChildProperty(block, "falseAnchor", "anchorId"));
+
+    return result;
 }
 
-Block* BlockReader::BuildListen(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildListen(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new Listen();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = emptyQUuid();
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
+
+    result->eventName = readProperty(block, "eventName");
+
+    return result;
 }
 
-Block* BlockReader::BuildPrint(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildPrint(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new Print();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
+
+    result->value = QUuid(readChildProperty(block, "valueAnchor", "anchorId"));
+
+    return result;
 }
 
-Block* BlockReader::BuildSetVar(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildSetVar(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new SetVarBySignal();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
+
+    // @TODO: Implement
+    return result;
 }
 
-Block* BlockReader::BuildSkip(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildSkip(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new Skip();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = emptyQUuid();
+
+    return result;
 }
 
-Block* BlockReader::BuildStart(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildStart(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new Start();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = emptyQUuid();
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
+
+    return result;
 }
 
-Block* BlockReader::BuildVar(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildValue(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new Value();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = emptyQUuid();
+    result->rightAnchor = emptyQUuid();
+
+    result->passingAnchor = QUuid(readChildProperty(block, "passingAnchor", "anchorId"));
+    result->value = readChildProperty(block, "variableField", "text");
+
+    return result;
 }
 
-Block* BlockReader::BuildWhile(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildWhile(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new While();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = emptyQUuid();
+    result->rightAnchor = emptyQUuid();
+
+    // @TODO: Implement
+    return result;
 }
 
-Block* BlockReader::BuildBinaryOp(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildBinaryOp(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new BinaryOp();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = emptyQUuid();
+    result->rightAnchor = emptyQUuid();
+
+    // @TODO: Implement
+    return result;
 }
 
-Block* BlockReader::BuildUnaryOp(const QQuickItem& block, std::string name)
+Block* BlockReader::BuildUnaryOp(QQuickItem* block, QString name)
 {
-    return new Break();
+    const auto result = new UnaryOp();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = emptyQUuid();
+    result->rightAnchor = emptyQUuid();
+
+    // @TODO: Implement
+    return result;
 }

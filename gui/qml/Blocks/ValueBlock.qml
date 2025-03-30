@@ -13,7 +13,7 @@ BlockDiagram {
     enableRightAnchor: false
 
     Component.onCompleted: {
-        valueBlock.registerSlot(rAnchor.update)
+        valueBlock.registerSlot(passingAnchor.update)
     }
 
     TextField {
@@ -27,7 +27,7 @@ BlockDiagram {
     }
 
     Anchor {
-        id: rAnchor
+        id: passingAnchor
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.margins: 3

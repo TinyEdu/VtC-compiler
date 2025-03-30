@@ -12,11 +12,11 @@ BlockDiagram {
     property bool isFrozen: false
 
     Component.onCompleted: {
-        printBlock.registerSlot(lAnchor.update)
+        printBlock.registerSlot(valueAnchor.update)
     }
 
     Anchor {
-        id: lAnchor
+        id: valueAnchor
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.margins: 4

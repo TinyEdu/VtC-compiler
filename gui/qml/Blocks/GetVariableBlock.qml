@@ -13,24 +13,21 @@ BlockDiagram {
     enableRightAnchor: false
 
     Component.onCompleted: {
-        getVariableBlock.registerSlot(rAnchor.update)
+        getVariableBlock.registerSlot(passingAnchor.update)
     }
 
-    ComboBox {
-        id: typeSelector
+    TextField {
+        id: variableField
         width: 60
+        placeholderText: "Var name"
+
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.margins: 3
-
-        model: ["Call1", "Call2", "Call3"]
-        onCurrentIndexChanged: {
-            console.log("Selected type: " + typeSelector.currentText)
-        }
     }
 
     Anchor {
-        id: rAnchor
+        id: passingAnchor
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.margins: 3

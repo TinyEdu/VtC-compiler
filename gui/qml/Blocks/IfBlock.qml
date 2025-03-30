@@ -13,9 +13,9 @@ BlockDiagram {
     enableRightAnchor: false
 
     Component.onCompleted: {
-        ifBlock.registerSlot(r1Anchor.update)
-        ifBlock.registerSlot(r2Anchor.update)
-        ifBlock.registerSlot(l1Anchor.update)
+        ifBlock.registerSlot(conditionAnchor.update)
+        ifBlock.registerSlot(trueAnchor.update)
+        ifBlock.registerSlot(falseAnchor.update)
     }
 
     Row {
@@ -37,7 +37,7 @@ BlockDiagram {
             }
 
             Anchor {
-                id: l1Anchor
+                id: conditionAnchor
             }
         }
 
@@ -67,11 +67,11 @@ BlockDiagram {
         Column {
             spacing: 4
             Anchor {
-                id: r1Anchor
+                id: trueAnchor
             }
 
             Anchor {
-                id: r2Anchor
+                id: falseAnchor
             }
         }
     }
