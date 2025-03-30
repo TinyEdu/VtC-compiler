@@ -4,7 +4,7 @@ import "../"
 
 BlockDiagram {
     id: forLoopBlock
-    name: "For loop"
+    name: "For Loop"
     width: 150
     height: 70
     color: "lightblue"

@@ -12,7 +12,7 @@ BlockDiagram {
     property bool isFrozen: false
 
     Component.onCompleted: {
-        createVariableBySignalBlock.registerSlot(lAnchor.update)
+        createVariableBySignalBlock.registerSlot(signalAnchor.update)
     }
 
     Column {
@@ -55,7 +55,7 @@ BlockDiagram {
         Row {
             spacing: 3
             Anchor {
-                id: lAnchor
+                id: signalAnchor
             }
             Text {
                 text: "Initial value"

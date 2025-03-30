@@ -4,7 +4,7 @@ import "../../"
 
 BlockDiagram {
     id: binaryOperationBlock
-    name: "OP"
+    name: "Binary Op"
     width: 90
     height: 82
     color: "lightblue"

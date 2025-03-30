@@ -12,16 +12,13 @@ BlockDiagram {
     enableLeftAnchor: true
     enableRightAnchor: false
 
-    ComboBox {
-        id: typeSelector
-        width: 60
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.margins: 3
+    TextField {
+        id: callSelector
+        width: 80
+        placeholderText: "Call name"
 
-        model: ["Call1", "Call2", "Call3"]
-        onCurrentIndexChanged: {
-            console.log("Selected type: " + typeSelector.currentText)
-        }
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.margins: 3
     }
 }

@@ -50,9 +50,26 @@ add_library(${PROJECT_NAME} SHARED
 
         src/BlockReader/BlockReader.h
         src/BlockReader/BlockReader.cpp
+        src/BlockReader/BlockReaderException.h
 
         src/Blocks/Block.h
-        src/BlockReader/BlockReaderException.h
+        src/Blocks/BinaryOp.h
+        src/Blocks/Break.h
+        src/Blocks/Call.h
+        src/Blocks/CreateVarBySignal.h
+        src/Blocks/CreateVarByValue.h
+        src/Blocks/End.h
+        src/Blocks/ForLoop.h
+        src/Blocks/GetVar.h
+        src/Blocks/If.h
+        src/Blocks/Listen.h
+        src/Blocks/Print.h
+        src/Blocks/SetVar.h
+        src/Blocks/Skip.h
+        src/Blocks/Start.h
+        src/Blocks/UnaryOp.h
+        src/Blocks/Var.h
+        src/Blocks/While.h
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_GUI_EXPORTS)

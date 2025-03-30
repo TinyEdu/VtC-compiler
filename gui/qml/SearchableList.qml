@@ -25,8 +25,6 @@ Item {
         ListElement { name: "Set Variable (by signal)"; blockDiagramUrl: "Blocks/SetVariableBySignalBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Set Variable (by value)"; blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Skip"; blockDiagramUrl: "Blocks/SkipBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Sleep (by signal)"; blockDiagramUrl: "Blocks/SleepBySignalBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Sleep (by value)"; blockDiagramUrl: "Blocks/SleepByValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Start Block"; blockDiagramUrl: "Blocks/StartBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Value"; blockDiagramUrl: "Blocks/ValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
