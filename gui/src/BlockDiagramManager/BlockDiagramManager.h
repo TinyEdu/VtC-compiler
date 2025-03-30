@@ -14,6 +14,7 @@ public:
     void registerBlockDiagram(QQuickItem* block);
     void unregisterBlockDiagram(QQuickItem* block);
 
+    Q_INVOKABLE void save();
     Q_INVOKABLE QQuickItem* checkCollision(QQuickItem* movable);
     Q_INVOKABLE QQuickItem* isOverAnAnchor(int x, int y, QQuickItem* excludeItem);
 

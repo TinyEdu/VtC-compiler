@@ -1,9 +1,7 @@
 #ifndef BLOCKREADER_H
 #define BLOCKREADER_H
 
-#include <QQuickItem>
 #include "Blocks/Block.h"
-
 
 class BlockReader
 {
@@ -11,12 +9,23 @@ public:
     BlockReader();
     Block* extract(QQuickItem* block) const;
 
+    static BlockReader* Instance()
+    {
+        if(instance == nullptr)
+        {
+            instance = new BlockReader();
+        }
+        return instance;
+    }
+
 private:
+    static BlockReader* instance;
+
     Block* extract(QQuickItem* block, const QString& name) const;
     void initializeHandlerRegister();
 
     static QString readChildProperty(QQuickItem* block, QString childName, QString propertyName);
-    static QString readProperty(QQuickItem* block, QString propertyName)
+    static QString readProperty(QQuickItem* block, QString propertyName);
     static QUuid emptyQUuid();
 
     using Handler = std::function<Block*(QQuickItem*, QString)>;

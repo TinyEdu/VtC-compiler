@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
+import BlockDiagramManager
+
 Window {
     width: 1280
     height: 720
@@ -18,6 +20,18 @@ Window {
         border.width: 1
 
         height: 40
+
+        Button {
+            id: saveButton
+            text: "Save"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            width: parent.width * 0.25
+
+            onClicked: BlockDiagramManager.save()
+        }
     }
 
     Rectangle {

@@ -34,6 +34,8 @@ Rectangle {
 
     Anchor {
         id: leftAnchor
+        objectName: "leftAnchor"
+
         anchors.left: parent.left
         enabled: enableLeftAnchor
         visible: enableLeftAnchor
@@ -48,6 +50,8 @@ Rectangle {
 
     Anchor {
         id: rightAnchor
+        objectName: "rightAnchor"
+
         anchors.right: parent.right
         enabled: enableRightAnchor
         visible: enableRightAnchor

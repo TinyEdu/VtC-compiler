@@ -20,6 +20,8 @@
 #include "Blocks/Value.h"
 #include "Blocks/While.h"
 
+BlockReader* BlockReader::instance = nullptr;
+
 BlockReader::BlockReader()
 {
     // Register functions in constructor
@@ -53,12 +55,12 @@ QString BlockReader::readChildProperty(QQuickItem* block, QString childName, QSt
 {
     const QObject* foundChildName = block->findChild<QObject*>(childName);
     if (!foundChildName) {
-        throw BlockReaderException("Could not find 'leftAnchor' in BlockDiagram");
+        throw BlockReaderException("Could not find child in BlockDiagram");
     }
 
     const QVariant foundPropertyName = foundChildName->property(propertyName.toStdString().c_str());
     if (!foundPropertyName.isValid()) {
-        throw BlockReaderException("Property 'anchorId' is not set or accessible");
+        throw BlockReaderException("Property is not set or accessible");
 
     }
 
