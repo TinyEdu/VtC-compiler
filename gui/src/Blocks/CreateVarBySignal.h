@@ -5,7 +5,7 @@
 
 class CreateVarBySignal : public Block
 {
-
+public:
+    DEFINE_BLOCK_TYPE(CreateVarBySignal);
 };
-
 #endif //CREATEVARBYSIGNAL_H
