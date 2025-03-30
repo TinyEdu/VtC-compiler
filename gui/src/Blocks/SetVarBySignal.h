@@ -1,25 +1,25 @@
-#ifndef CREATEVARBYVALUE_H
-#define CREATEVARBYVALUE_H
+#ifndef SETVARBYSIGNAL_H
+#define SETVARBYSIGNAL_H
 
 #include "Block.h"
 
-class CreateVarByValue : public Block
+class SetVarBySignal : public Block
 {
 public:
-    DEFINE_BLOCK_TYPE(CreateVarByValue);
+    DEFINE_BLOCK_TYPE(SetVarBySignal);
 
     QString variable;
-    QString value;
+    QUuid value;
 
 public:
     QJsonObject toJson() const override
     {
         QJsonObject json = Block::toJson();
         json["variable"] =  variable;
-        json["value"] =  value;
+        json["value"] =  value.toString();
 
         return json;
     }
 };
 
-#endif //CREATEVARBYVALUE_H
+#endif //SETVARBYSIGNAL_H

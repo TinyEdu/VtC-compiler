@@ -3,9 +3,9 @@
 
 #include "Block.h"
 
-class Start : public Block
-{
-
+class Skip : public Block {
+public:
+    DEFINE_BLOCK_TYPE(Skip);
 };
 
 #endif //SKIP_H

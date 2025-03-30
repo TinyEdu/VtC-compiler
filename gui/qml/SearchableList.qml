@@ -28,12 +28,6 @@ Item {
         ListElement { name: "Start Block"; blockDiagramUrl: "Blocks/StartBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Value"; blockDiagramUrl: "Blocks/ValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
-
-        ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
-
         ListElement { name: "Adding Binary Operation"; blockDiagramUrl: "Blocks/Operations/AddingBinaryOperationBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Negation Operation"; blockDiagramUrl: "Blocks/Operations/NegationUnaryOperationBlock.qml"; previewScaleFactor: 1.33 }
     }

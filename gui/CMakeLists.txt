@@ -52,8 +52,8 @@ add_library(${PROJECT_NAME} SHARED
         src/BlockReader/BlockReader.cpp
         src/BlockReader/BlockReaderException.h
 
-        src/Blocks/Block.h
         src/Blocks/BinaryOp.h
+        src/Blocks/Block.h
         src/Blocks/Break.h
         src/Blocks/Call.h
         src/Blocks/CreateVarBySignal.h
@@ -64,11 +64,12 @@ add_library(${PROJECT_NAME} SHARED
         src/Blocks/If.h
         src/Blocks/Listen.h
         src/Blocks/Print.h
-        src/Blocks/SetVar.h
+        src/Blocks/SetVarBySignal.h
+        src/Blocks/SetVarByValue.h
         src/Blocks/Skip.h
         src/Blocks/Start.h
         src/Blocks/UnaryOp.h
-        src/Blocks/Var.h
+        src/Blocks/Value.h
         src/Blocks/While.h
 )
 

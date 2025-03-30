@@ -3,9 +3,10 @@
 
 #include "Block.h"
 
-class Start : public Block
+class Listen : public Block
 {
-
+public:
+    DEFINE_BLOCK_TYPE(Listen);
 };
 
 #endif //START_H

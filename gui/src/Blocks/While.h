@@ -3,9 +3,11 @@
 
 #include "Block.h"
 
-class While : public Block
-{
+class While : public Block {
+public:
+    DEFINE_BLOCK_TYPE(While);
 
+    // @TODO - implement While block
 };
 
 #endif //WHILE_H

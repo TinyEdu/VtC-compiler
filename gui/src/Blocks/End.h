@@ -3,9 +3,9 @@
 
 #include "Block.h"
 
-class End : public Block
-{
-
+class End : public Block {
+public:
+    DEFINE_BLOCK_TYPE(End);
 };
 
 #endif //END_H

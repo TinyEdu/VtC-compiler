@@ -1,3 +1,6 @@
+#ifndef BLOCK_H
+#define BLOCK_H
+
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QQuickItem>
@@ -13,7 +16,7 @@ public:
     qreal x() const { return qml_obj ? qml_obj->x() : -1; }
     qreal y() const { return qml_obj ? qml_obj->y() : -1; }
 
-    std::string name;
+    QString name;
     QUuid leftAnchor;
     QUuid rightAnchor;
 
@@ -28,7 +31,7 @@ public:
         json["x"] = x();
         json["y"] = y();
 
-        json["name"] = QString::fromStdString(name);
+        json["name"] = name;
 
         json["leftAnchor"] = leftAnchor.toString();
         json["rightAnchor"] = rightAnchor.toString();
@@ -40,3 +43,5 @@ public:
 
     virtual QString getBlockType() const = 0;
 };
+
+#endif //BLOCK_H

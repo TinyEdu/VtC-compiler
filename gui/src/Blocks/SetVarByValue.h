@@ -1,12 +1,12 @@
-#ifndef CREATEVARBYVALUE_H
-#define CREATEVARBYVALUE_H
+#ifndef SETVARBYVALUE_H
+#define SETVARBYVALUE_H
 
 #include "Block.h"
 
-class CreateVarByValue : public Block
+class SetVarByValue : public Block
 {
 public:
-    DEFINE_BLOCK_TYPE(CreateVarByValue);
+    DEFINE_BLOCK_TYPE(SetVarBySignal);
 
     QString variable;
     QString value;
@@ -22,4 +22,4 @@ public:
     }
 };
 
-#endif //CREATEVARBYVALUE_H
+#endif //SETVARBYVALUE_H
