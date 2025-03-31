@@ -25,8 +25,8 @@ BlockDiagram {
         anchors.left: parent.left
         anchors.leftMargin: 3
 
-        width: valueBlock.width * 0.64
-        height: valueBlock.height * 0.5
+        width: parent.width * 0.64
+        height: parent.height * 0.5
     }
 
     Anchor {
@@ -38,7 +38,7 @@ BlockDiagram {
 
         border.width: parent.border.width
 
-        width: valueBlock.height * 0.33
-        height: valueBlock.height * 0.33
+        width: parent.height * 0.33
+        height: parent.height * 0.33
     }
 }

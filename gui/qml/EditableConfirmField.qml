@@ -5,9 +5,11 @@ import QtQuick.Controls
 TextField {
     id: editableField
     placeholderText: "value"
-    height: contentItem.height  // Ensure TextField height adjusts to the content
-
+    height: contentItem.height
     property bool isConfirmed: false
+
+    padding: 6
+    verticalAlignment: Text.AlignVCenter
 
     onAccepted: {
         isConfirmed = true
@@ -23,15 +25,8 @@ TextField {
         }
     }
 
-    // Adjust padding
-    padding: 6
-
-    // Background color adjustment
     background: Rectangle {
         color: editableField.isConfirmed ? "#eeeeee" : "white"
         radius: 4
     }
-
-    // Ensure proper vertical alignment
-    verticalAlignment: Text.AlignVCenter
 }

@@ -26,6 +26,7 @@ private:
 
     static QString readChildProperty(QQuickItem* block, QString childName, QString propertyName);
     static QString readProperty(QQuickItem* block, QString propertyName);
+    static bool isChildPresent(QQuickItem* block, QString childName);
     static QUuid emptyQUuid();
 
     using Handler = std::function<Block*(QQuickItem*, QString)>;
@@ -48,6 +49,9 @@ private:
     static Block* BuildWhile(QQuickItem* block, QString name);
     static Block* BuildBinaryOp(QQuickItem* block, QString name);
     static Block* BuildUnaryOp(QQuickItem* block, QString name);
+
+    static Block* BuildPrintByValue(QQuickItem* block, QString name);
+    static Block* BuildPrintBySignal(QQuickItem* block, QString name);
 };
 
 #endif //BLOCKREADER_H

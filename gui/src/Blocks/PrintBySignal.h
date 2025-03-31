@@ -1,12 +1,12 @@
-#ifndef PRINT_H
-#define PRINT_H
+#ifndef PRINTBYSIGNAL_H
+#define PRINTBYSIGNAL_H
 
 #include "Block.h"
 
-class Print : public Block
+class PrintBySignal : public Block
 {
 public:
-    DEFINE_BLOCK_TYPE(Print);
+    DEFINE_BLOCK_TYPE(PrintBySignal);
 
     QUuid value;
 
@@ -20,4 +20,4 @@ public:
     }
 };
 
-#endif //PRINT_H
+#endif // PRINTBYSIGNAL_H

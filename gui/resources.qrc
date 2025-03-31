@@ -8,6 +8,7 @@
         <file>qml/SearchableList.qml</file>
         <file>qml/DraggableCanvas.qml</file>
         <file>qml/Anchor.qml</file>
+        <file>qml/EditableConfirmField.qml</file>
 
         <file>qml/Blocks/BreakBlock.qml</file>
         <file>qml/Blocks/CallEventBlock.qml</file>
@@ -18,7 +19,8 @@
         <file>qml/Blocks/GetVariableBlock.qml</file>
         <file>qml/Blocks/IfBlock.qml</file>
         <file>qml/Blocks/ListenEventBlock.qml</file>
-        <file>qml/Blocks/PrintBlock.qml</file>
+        <file>qml/Blocks/PrintBySignalBlock.qml</file>
+        <file>qml/Blocks/PrintByValueBlock.qml</file>
         <file>qml/Blocks/SetVariableBySignalBlock.qml</file>
         <file>qml/Blocks/SetVariableByValueBlock.qml</file>
         <file>qml/Blocks/SkipBlock.qml</file>

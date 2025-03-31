@@ -63,7 +63,8 @@ add_library(${PROJECT_NAME} SHARED
         src/Blocks/GetVar.h
         src/Blocks/If.h
         src/Blocks/Listen.h
-        src/Blocks/Print.h
+        src/Blocks/PrintBySignal.h
+        src/Blocks/PrintByValue.h
         src/Blocks/SetVarBySignal.h
         src/Blocks/SetVarByValue.h
         src/Blocks/Skip.h

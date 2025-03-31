@@ -12,7 +12,8 @@
 #include "Blocks/GetVar.h"
 #include "Blocks/If.h"
 #include "Blocks/Listen.h"
-#include "Blocks/Print.h"
+#include "Blocks/PrintBySignal.h"
+#include "Blocks/PrintByValue.h"
 #include "Blocks/SetVarBySignal.h"
 #include "Blocks/Skip.h"
 #include "Blocks/Start.h"
@@ -61,10 +62,15 @@ QString BlockReader::readChildProperty(QQuickItem* block, QString childName, QSt
     const QVariant foundPropertyName = foundChildName->property(propertyName.toStdString().c_str());
     if (!foundPropertyName.isValid()) {
         throw BlockReaderException("Property is not set or accessible");
-
     }
 
     return foundPropertyName.toString();
+}
+
+bool BlockReader::isChildPresent(QQuickItem* block, QString childName)
+{
+    const QObject* foundChildName = block->findChild<QObject*>(childName);
+    return foundChildName;
 }
 
 QString BlockReader::readProperty(QQuickItem* block, QString propertyName)
@@ -228,7 +234,32 @@ Block* BlockReader::BuildListen(QQuickItem* block, QString name)
 
 Block* BlockReader::BuildPrint(QQuickItem* block, QString name)
 {
-    const auto result = new Print();
+    if (isChildPresent(block, "valueField"))
+    {
+        return BuildPrintByValue(block, name);
+    }
+
+    return BuildPrintBySignal(block, name);
+}
+
+Block* BlockReader::BuildPrintByValue(QQuickItem* block, QString name)
+{
+    const auto result = new PrintByValue();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
+
+    result->value = readChildProperty(block, "valueField", "text");
+
+    return result;
+}
+
+Block* BlockReader::BuildPrintBySignal(QQuickItem* block, QString name)
+{
+    const auto result = new PrintBySignal();
 
     result->setQmlObj(block);
     result->name = std::move(name);
@@ -240,6 +271,7 @@ Block* BlockReader::BuildPrint(QQuickItem* block, QString name)
 
     return result;
 }
+
 
 Block* BlockReader::BuildSetVar(QQuickItem* block, QString name)
 {
