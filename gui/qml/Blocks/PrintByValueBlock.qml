@@ -9,8 +9,6 @@ BlockDiagram {
     height: 50
     color: "lightblue"
 
-    property bool isFrozen: false
-
     EditableConfirmField {
         id: valueField
         objectName: "valueField"
