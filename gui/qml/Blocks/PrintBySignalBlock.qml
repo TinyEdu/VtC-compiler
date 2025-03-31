@@ -19,7 +19,7 @@ BlockDiagram {
         id: valueAnchor
         objectName: "valueAnchor"
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 8
+        anchors.bottomMargin: 5
 
         anchors.left: parent.left
         anchors.leftMargin: 3

@@ -12,8 +12,11 @@ Item {
     ListModel {
         id: originalModel
 
+        ListElement { name: "Value"; blockDiagramUrl: "Blocks/ValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Print"; blockDiagramUrl: "Blocks/PrintByValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Print"; blockDiagramUrl: "Blocks/PrintBySignalBlock.qml"; previewScaleFactor: 1.33 }
+        ListElement { name: "If"; blockDiagramUrl: "Blocks/IfBlock.qml"; previewScaleFactor: 1.1 }
+
         ListElement { name: "Break"; blockDiagramUrl: "Blocks/BreakBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Call Event"; blockDiagramUrl: "Blocks/CallEventBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Create Variable (by signal)"; blockDiagramUrl: "Blocks/CreateVariableBySignalBlock.qml"; previewScaleFactor: 1.33 }
@@ -21,13 +24,11 @@ Item {
         ListElement { name: "End Block"; blockDiagramUrl: "Blocks/EndBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "For Loop"; blockDiagramUrl: "Blocks/ForLoopBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Get Variable"; blockDiagramUrl: "Blocks/GetVariableBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "If"; blockDiagramUrl: "Blocks/IfBlock.qml"; previewScaleFactor: 1.1 }
         ListElement { name: "Listen for Event"; blockDiagramUrl: "Blocks/ListenEventBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Set Variable (by signal)"; blockDiagramUrl: "Blocks/SetVariableBySignalBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Set Variable (by value)"; blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Skip"; blockDiagramUrl: "Blocks/SkipBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Start Block"; blockDiagramUrl: "Blocks/StartBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Value"; blockDiagramUrl: "Blocks/ValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Adding Binary Operation"; blockDiagramUrl: "Blocks/Operations/AddingBinaryOperationBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Negation Operation"; blockDiagramUrl: "Blocks/Operations/NegationUnaryOperationBlock.qml"; previewScaleFactor: 1.33 }
