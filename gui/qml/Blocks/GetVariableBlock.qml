@@ -1,5 +1,5 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
@@ -16,20 +16,31 @@ BlockDiagram {
         getVariableBlock.registerSlot(passingAnchor.update)
     }
 
-    TextField {
+    EditableConfirmField {
         id: variableField
-        width: 60
-        placeholderText: "Var name"
+        objectName: "variableField"
 
-        anchors.bottom: parent.bottom
+        anchors.verticalCenter: passingAnchor.verticalCenter
+
         anchors.left: parent.left
-        anchors.margins: 3
+        anchors.leftMargin: 3
+
+        width: parent.width * 0.64
+        height: parent.height * 0.5
     }
 
     Anchor {
         id: passingAnchor
+        objectName: "variableField"
+
         anchors.bottom: parent.bottom
         anchors.right: parent.right
-        anchors.margins: 3
+        anchors.rightMargin: 3
+        anchors.bottomMargin: 8
+
+        border.width: parent.border.width
+
+        width: parent.height * 0.33
+        height: parent.height * 0.33
     }
 }

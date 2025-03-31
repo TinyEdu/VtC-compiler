@@ -12,14 +12,17 @@ BlockDiagram {
     enableLeftAnchor: false
     enableRightAnchor: true
 
-    TextField {
+    EditableConfirmField {
         id: eventField
         objectName: "eventField"
-        placeholderText: "event name"
-        width: 80
+        placeholderText: "event"
+
+        anchors.horizontalCenter: parent.horizontalCenter
 
         anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.margins: 3
+        anchors.bottomMargin: 5
+
+        width: parent.width * 0.64
+        height: parent.height * 0.5
     }
 }
