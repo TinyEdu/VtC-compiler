@@ -336,10 +336,13 @@ Block* BlockReader::BuildWhile(QQuickItem* block, QString name)
     result->setQmlObj(block);
     result->name = std::move(name);
 
-    result->leftAnchor = emptyQUuid();
-    result->rightAnchor = emptyQUuid();
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
 
-    // @TODO: Implement
+    result->condition = QUuid(readChildProperty(block, "conditionAnchor", "anchorId"));
+    result->startAnchor = QUuid(readChildProperty(block, "startAnchor", "anchorId"));
+    result->endAnchor = QUuid(readChildProperty(block, "endAnchor", "anchorId"));
+
     return result;
 }
 

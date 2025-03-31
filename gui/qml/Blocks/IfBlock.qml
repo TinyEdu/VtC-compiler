@@ -5,7 +5,7 @@ import "../"
 BlockDiagram {
     id: ifBlock
     name: "If"
-    width: 120
+    width: 110
     height: 50
     color: "lightblue"
 
