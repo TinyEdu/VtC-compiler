@@ -26,7 +26,7 @@ TextField {
     }
 
     background: Rectangle {
-        color: editableField.isConfirmed ? "#eeeeee" : "white"
+        color: "white"
         radius: 4
     }
 }

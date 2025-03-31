@@ -207,9 +207,16 @@ Block* BlockReader::BuildForLoop(QQuickItem* block, QString name)
     result->name = std::move(name);
 
     result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
-    result->rightAnchor = emptyQUuid();
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
 
-    // @TODO: Implement
+    result->fromField = readChildProperty(block, "fromField", "text");
+    result->toField = readChildProperty(block, "toField", "text");
+    result->incrementField = readChildProperty(block, "incrementField", "text");
+
+    result->startAnchor = QUuid(readChildProperty(block, "startAnchor", "anchorId"));
+    result->endAnchor = QUuid(readChildProperty(block, "endAnchor", "anchorId"));
+    result->incrementAnchor = QUuid(readChildProperty(block, "incrementAnchor", "anchorId"));
+
     return result;
 }
 

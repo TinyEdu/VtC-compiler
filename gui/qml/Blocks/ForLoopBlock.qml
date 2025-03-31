@@ -1,69 +1,147 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
-    id: forLoopBlock
+    id: forLoop
     name: "For Loop"
     width: 150
-    height: 70
+    height: 103
     color: "lightblue"
 
     Component.onCompleted: {
-        forLoopBlock.registerSlot(r1Anchor.update)
-        forLoopBlock.registerSlot(r2Anchor.update)
+        forLoop.registerSlot(incrementAnchor.update)
+        forLoop.registerSlot(startAnchor.update)
+        forLoop.registerSlot(endAnchor.update)
     }
 
-    Column {
-        anchors.bottom: parent.bottom
+    Text {
+        text: "Inc"
+        color: "#62717E"
+        font.bold: true
+        font.pointSize: 8
+
+        anchors.verticalCenter: incrementAnchor.verticalCenter
+        anchors.right: incrementAnchor.left
+        anchors.rightMargin: 3
+
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Text {
+        text: "Start"
+        color: "#62717E"
+        font.bold: true
+        font.pointSize: 8
+
+        anchors.verticalCenter: fromField.verticalCenter
+        anchors.right: startAnchor.left
+        anchors.rightMargin: 3
+
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Text {
+        text: "End"
+        color: "#62717E"
+        font.bold: true
+        font.pointSize: 8
+
+        anchors.verticalCenter: toField.verticalCenter
+        anchors.right: endAnchor.left
+        anchors.rightMargin: 3
+
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Anchor {
+        id: incrementAnchor
+        objectName: "incrementAnchor"
+
+        border.width: forLoop.border.width
+
+        anchors.verticalCenter: incrementField.verticalCenter
         anchors.right: parent.right
-        anchors.margins: 3
-        spacing: 3
+        anchors.rightMargin: 3
 
-        Row {
-            spacing: 3
-            anchors.right: parent.right
-            Text {
-                text: "from"
-                color: "#62717E"
-                font.pointSize: 10
-                font.bold: true
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
+        height: 16
+        width: 16
+    }
 
-            TextField {
-                id: startField
-                width: 80
-                placeholderText: "start"
-            }
+    Anchor {
+        id: startAnchor
+        objectName: "startAnchor"
 
-            Anchor {
-                id: r1Anchor
-            }
-        }
+        border.width: forLoop.border.width
 
-        Row {
-            spacing: 3
-            anchors.right: parent.right
-            Text {
-                text: "to"
-                color: "#62717E"
-                font.pointSize: 10
-                font.bold: true
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
+        anchors.verticalCenter: fromField.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 3
 
-            TextField {
-                id: endField
-                width: 80
-                placeholderText: "end"
-            }
+        height: 16
+        width: 16
+    }
 
-            Anchor {
-                id: r2Anchor
-            }
-        }
+    Anchor {
+        id: endAnchor
+        objectName: "endAnchor"
+
+        border.width: forLoop.border.width
+
+        anchors.verticalCenter: toField.verticalCenter
+
+        anchors.right: parent.right
+        anchors.rightMargin: 3
+
+        height: 16
+        width: 16
+    }
+
+    EditableConfirmField {
+        id: fromField
+        objectName: "fromField"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 3
+        anchors.bottom: toField.top
+        anchors.bottomMargin: 3
+
+        placeholderText: "From"
+
+        width: parent.width * 0.6
+        height: 25
+    }
+
+    EditableConfirmField {
+        id: toField
+        objectName: "toField"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 3
+        anchors.bottom: incrementField.top
+        anchors.bottomMargin: 3
+
+        placeholderText: "To"
+
+        width: parent.width * 0.6
+        height: 25
+    }
+
+    EditableConfirmField {
+        id: incrementField
+        objectName: "incrementField"
+
+        anchors.left: parent.left
+        anchors.leftMargin: 3
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 3
+
+        placeholderText: "Increment"
+
+        width: parent.width * 0.6
+        height: 25
     }
 }

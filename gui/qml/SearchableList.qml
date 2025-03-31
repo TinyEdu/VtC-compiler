@@ -12,9 +12,10 @@ Item {
     ListModel {
         id: originalModel
 
+        ListElement { name: "For Loop"; blockDiagramUrl: "Blocks/ForLoopBlock.qml"; previewScaleFactor: 0.9 }
+
         ListElement { name: "Create Variable (by signal)"; blockDiagramUrl: "Blocks/CreateVariableBySignalBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Create Variable (by value)"; blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"; previewScaleFactor: 1.33 }
-
         ListElement { name: "Value"; blockDiagramUrl: "Blocks/ValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Print"; blockDiagramUrl: "Blocks/PrintByValueBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Print"; blockDiagramUrl: "Blocks/PrintBySignalBlock.qml"; previewScaleFactor: 1.33 }
@@ -24,7 +25,6 @@ Item {
         ListElement { name: "Break"; blockDiagramUrl: "Blocks/BreakBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Call Event"; blockDiagramUrl: "Blocks/CallEventBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "End Block"; blockDiagramUrl: "Blocks/EndBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "For Loop"; blockDiagramUrl: "Blocks/ForLoopBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Get Variable"; blockDiagramUrl: "Blocks/GetVariableBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Listen for Event"; blockDiagramUrl: "Blocks/ListenEventBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Set Variable (by signal)"; blockDiagramUrl: "Blocks/SetVariableBySignalBlock.qml"; previewScaleFactor: 1.33 }
