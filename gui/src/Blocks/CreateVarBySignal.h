@@ -8,14 +8,14 @@ class CreateVarBySignal : public Block
 public:
     DEFINE_BLOCK_TYPE(CreateVarBySignal);
 
-    QString variable;
+    QString variableName;
     QUuid value;
 
 public:
     QJsonObject toJson() const override
     {
         QJsonObject json = Block::toJson();
-        json["variable"] =  variable;
+        json["variable"] =  variableName;
         json["value"] =  value.toString();
 
         return json;

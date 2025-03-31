@@ -52,6 +52,9 @@ private:
 
     static Block* BuildPrintByValue(QQuickItem* block, QString name);
     static Block* BuildPrintBySignal(QQuickItem* block, QString name);
+
+    static Block* BuildCreateVarByValue(QQuickItem* block, QString name);
+    static Block* BuildCreateVarBySignal(QQuickItem* block, QString name);
 };
 
 #endif //BLOCKREADER_H

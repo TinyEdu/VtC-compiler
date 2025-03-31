@@ -7,6 +7,7 @@
 #include "Blocks/Break.h"
 #include "Blocks/Call.h"
 #include "Blocks/CreateVarBySignal.h"
+#include "Blocks/CreateVarByValue.h"
 #include "Blocks/End.h"
 #include "Blocks/ForLoop.h"
 #include "Blocks/GetVar.h"
@@ -144,18 +145,46 @@ Block* BlockReader::BuildCall(QQuickItem* block, QString name)
 
 Block* BlockReader::BuildCreateVar(QQuickItem* block, QString name)
 {
+    if (isChildPresent(block, "valueField"))
+    {
+        return BuildCreateVarByValue(block, name);
+    }
+
+    return BuildCreateVarBySignal(block, name);
+}
+
+Block* BlockReader::BuildCreateVarByValue(QQuickItem* block, QString name)
+{
+    const auto result = new CreateVarByValue();
+
+    result->setQmlObj(block);
+    result->name = std::move(name);
+
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
+
+    result->variableName = readChildProperty(block, "variableNameField", "text");
+    result->value = readChildProperty(block, "valueField", "text");
+
+    return result;
+}
+
+Block* BlockReader::BuildCreateVarBySignal(QQuickItem* block, QString name)
+{
     const auto result = new CreateVarBySignal();
 
     result->setQmlObj(block);
     result->name = std::move(name);
 
     result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
-    result->rightAnchor = emptyQUuid();
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
 
-    // @TODO: Implement
+    result->variableName = readChildProperty(block, "variableNameField", "text");
+    result->value = QUuid(readChildProperty(block, "valueAnchor", "anchorId"));
 
     return result;
 }
+
 
 Block* BlockReader::BuildEnd(QQuickItem* block, QString name)
 {
@@ -271,7 +300,6 @@ Block* BlockReader::BuildPrintBySignal(QQuickItem* block, QString name)
 
     return result;
 }
-
 
 Block* BlockReader::BuildSetVar(QQuickItem* block, QString name)
 {

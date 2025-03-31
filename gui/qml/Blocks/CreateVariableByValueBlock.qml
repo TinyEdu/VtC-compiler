@@ -1,58 +1,39 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
     id: createVariableByValueBlock
     name: "Create Var"
-    width: 120
-    height: 70
+    width: 110
+    height: 76
     color: "lightblue"
 
-    property bool isFrozen: false
+    EditableConfirmField {
+        id: variableNameField
+        objectName: "variableNameField"
 
-    Column {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: valueField.top
+        anchors.bottomMargin: 4
+
+        placeholderText: "Variable name"
+
+        width: parent.width - 6
+        height: 25
+    }
+
+    EditableConfirmField {
+        id: valueField
+        objectName: "valueField"
+
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.margins: 3
-        spacing: 3
+        anchors.bottomMargin: 3
 
-        Row {
-            spacing: 3
-            Button {
-                id: freezeButton
+        placeholderText: "Initial value"
 
-                width: 20
-                height: 20
-                text: isFrozen ? "X" : "Y"
-                hoverEnabled: false
-                focusPolicy: Qt.NoFocus
-                checkable: true
-                checked: isFrozen
-
-                onClicked: isFrozen = !isFrozen
-
-                background: Rectangle {
-                    color: freezeButton.checked ? "#999999" : "#eeeeee"
-                    border.color: "#84818E"
-                    border.width: 1.5
-                    radius: 5
-                }
-            }
-
-            TextField {
-                id: nameField
-                width: 80
-                placeholderText: "name"
-                enabled: !isFrozen
-            }
-        }
-
-        TextField {
-            id: initialValueField
-            width: 100
-            placeholderText: "Initial value"
-            enabled: !isFrozen
-        }
+        width: parent.width - 6
+        height: 25
     }
 }

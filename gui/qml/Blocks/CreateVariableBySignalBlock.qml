@@ -1,70 +1,58 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
     id: createVariableBySignalBlock
     name: "Create Var"
-    width: 120
+    width: 110
     height: 70
     color: "lightblue"
 
-    property bool isFrozen: false
-
     Component.onCompleted: {
-        createVariableBySignalBlock.registerSlot(signalAnchor.update)
+        createVariableBySignalBlock.registerSlot(valueAnchor.update)
     }
 
-    Column {
-        anchors.horizontalCenter: parent.horizontalCenter
+    EditableConfirmField {
+        id: variableNameField
+        objectName: "variableNameField"
+
+        anchors.left: valueAnchor.left
+        anchors.bottom: valueAnchor.top
+        anchors.bottomMargin: 4
+
+        placeholderText: "Variable name"
+
+        width: parent.width - 6
+        height: 25
+    }
+
+    Anchor {
+        id: valueAnchor
+        objectName: "valueAnchor"
+
+        border.width: parent.border.width
+
+        anchors.left: parent.left
+        anchors.leftMargin: 3
         anchors.bottom: parent.bottom
-        anchors.margins: 3
-        spacing: 3
+        anchors.bottomMargin: 4
 
-        Row {
-            spacing: 3
-            Button {
-                id: freezeButton
+        width: 16
+        height: 16
+    }
 
-                width: 20
-                height: 20
-                text: isFrozen ? "X" : "Y"
-                hoverEnabled: false
-                focusPolicy: Qt.NoFocus
-                checkable: true
-                checked: isFrozen
+    Text {
+        text: "Initial value"
+        color: "#62717E"
+        font.bold: true
+        font.pointSize: 8
 
-                onClicked: isFrozen = !isFrozen
+        anchors.verticalCenter: valueAnchor.verticalCenter
+        anchors.left: valueAnchor.right
+        anchors.leftMargin: 3
 
-                background: Rectangle {
-                    color: freezeButton.checked ? "#999999" : "#eeeeee"
-                    border.color: "#84818E"
-                    border.width: 1.5
-                    radius: 5
-                }
-            }
-
-            TextField {
-                id: nameField
-                width: 80
-                placeholderText: "name"
-                enabled: !isFrozen
-            }
-        }
-
-        Row {
-            spacing: 3
-            Anchor {
-                id: signalAnchor
-            }
-            Text {
-                text: "Initial value"
-                color: "#62717E"
-                font.pointSize: 10
-                font.bold: true
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
-        }
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
     }
 }

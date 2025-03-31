@@ -42,8 +42,8 @@ Rectangle {
         enabled: enableLeftAnchor
         visible: enableLeftAnchor
 
-        height: parent.height * 0.33
-        width: parent.height * 0.33
+        height: 16
+        width: 16
         anchors.top: parent.top
         radius: parent.radius
         border.width: parent.border.width
@@ -58,8 +58,8 @@ Rectangle {
         enabled: enableRightAnchor
         visible: enableRightAnchor
 
-        height: parent.height * 0.33
-        width: parent.height * 0.33
+        height: 16
+        width: 16
         anchors.top: parent.top
         radius: parent.radius
         border.width: parent.border.width
@@ -89,7 +89,7 @@ Rectangle {
     Rectangle {
         id: topBar
         width: parent.width
-        height: parent.height * 0.33
+        height: 16
         color: barColor
         anchors.top: parent.top
         radius: parent.radius
