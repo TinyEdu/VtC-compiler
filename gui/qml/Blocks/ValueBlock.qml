@@ -16,18 +16,17 @@ BlockDiagram {
         valueBlock.registerSlot(passingAnchor.update)
     }
 
-    TextField {
+    EditableConfirmField {
         id: valueField
         objectName: "valueField"
-        placeholderText: "value"
 
-        anchors.bottom: parent.bottom
+        anchors.verticalCenter: passingAnchor.verticalCenter
+
         anchors.left: parent.left
         anchors.leftMargin: 3
-        anchors.bottomMargin: 8
 
         width: valueBlock.width * 0.64
-        height: valueBlock.height * 0.33
+        height: valueBlock.height * 0.5
     }
 
     Anchor {
@@ -36,6 +35,8 @@ BlockDiagram {
         anchors.right: parent.right
         anchors.rightMargin: 3
         anchors.bottomMargin: 8
+
+        border.width: parent.border.width
 
         width: valueBlock.height * 0.33
         height: valueBlock.height * 0.33
