@@ -143,7 +143,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         drag.target: blockDiagram
-        z: 0
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         onPositionChanged: {
             if (typeof draggableCanvas !== "undefined") {
@@ -158,6 +158,12 @@ Rectangle {
             }
 
             updateAnchors();
+        }
+
+        onReleased: function (mouse) {
+            if (mouse.button === Qt.RightButton) {
+                blockDiagram.destroy();
+            }
         }
     }
 }
