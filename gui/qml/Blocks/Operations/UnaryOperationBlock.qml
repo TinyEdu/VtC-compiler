@@ -1,47 +1,63 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../../"
 
 BlockDiagram {
     id: unaryOperationBlock
-    name: "Binary Op"
-    width: 90
+    name: "Unary Op"
+    width: 110
     height: 50
     color: "lightblue"
 
     property string operationName: "."
 
     Component.onCompleted: {
-        unaryOperationBlock.registerSlot(rAnchor.update)
-        unaryOperationBlock.registerSlot(lAnchor.update)
-    }
-
-    Text {
-        text: operationName
-        color: "#62717E"
-        font.bold: true
-        font.pointSize: 12
-
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.margins: 3
+        unaryOperationBlock.registerSlot(inputValue.update)
+        unaryOperationBlock.registerSlot(outputValue.update)
     }
 
     Anchor {
-        id: rAnchor
+        id: outputValue
+        objectName: "outputValue"
+
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        anchors.bottomMargin: 3
         anchors.margins: 3
+
+        border.width: parent.border.width
+
+        width: parent.height * 0.33
+        height: parent.height * 0.33
     }
 
     Anchor {
-        id: lAnchor
+        id: inputValue
+        objectName: "inputValue"
+
         anchors.bottom: parent.bottom
         anchors.left: parent.left
+        anchors.bottomMargin: 3
         anchors.margins: 3
+
+        border.width: parent.border.width
+
+        width: parent.height * 0.33
+        height: parent.height * 0.33
     }
 
+    EditableComboBox {
+        id: operation
+        objectName: "operation"
+        
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: outputValue.verticalCenter
+
+        implicitWidth: parent.width - inputValue.width - outputValue.width - 12
+        implicitHeight: inputValue.height
+
+        borderColor: parent.border.color
+
+        model: ["negate", "not", "sqrt"]
+    }
 }

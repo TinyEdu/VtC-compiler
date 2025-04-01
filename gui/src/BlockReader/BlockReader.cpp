@@ -430,9 +430,12 @@ Block* BlockReader::BuildUnaryOp(QQuickItem* block, QString name)
     result->setQmlObj(block);
     result->name = std::move(name);
 
-    result->leftAnchor = emptyQUuid();
-    result->rightAnchor = emptyQUuid();
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
 
-    // @TODO: Implement
+    result->inputValue = QUuid(readChildProperty(block, "inputValue", "anchorId"));
+    result->operation = readChildProperty(block, "operation", "displayText");
+    result->outputValue = QUuid(readChildProperty(block, "outputValue", "anchorId"));
+
     return result;
 }

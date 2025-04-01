@@ -12,6 +12,10 @@ Item {
     ListModel {
         id: originalModel
 
+        // @TODO: left below
+        ListElement { name: "Binary Operation"; blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"; previewScaleFactor: 1.33 }
+        ListElement { name: "Unary Operation"; blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"; previewScaleFactor: 1.33 }
+
         ListElement { name: "Get Variable"; blockDiagramUrl: "Blocks/GetVariableBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "Listen for Event"; blockDiagramUrl: "Blocks/ListenEventBlock.qml"; previewScaleFactor: 1.33 }
 
@@ -32,10 +36,6 @@ Item {
         ListElement { name: "Print"; blockDiagramUrl: "Blocks/PrintBySignalBlock.qml"; previewScaleFactor: 1.33 }
         ListElement { name: "If"; blockDiagramUrl: "Blocks/IfBlock.qml"; previewScaleFactor: 1.1 }
         ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
-
-        // @TODO: left below
-        ListElement { name: "Adding Binary Operation"; blockDiagramUrl: "Blocks/Operations/AddingBinaryOperationBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Negation Operation"; blockDiagramUrl: "Blocks/Operations/NegationUnaryOperationBlock.qml"; previewScaleFactor: 1.33 }
     }
 
     ListModel {

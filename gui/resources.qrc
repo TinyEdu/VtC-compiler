@@ -9,6 +9,7 @@
         <file>qml/DraggableCanvas.qml</file>
         <file>qml/Anchor.qml</file>
         <file>qml/EditableConfirmField.qml</file>
+        <file>qml/EditableComboBox.qml</file>
 
         <file>qml/Blocks/BreakBlock.qml</file>
         <file>qml/Blocks/CallEventBlock.qml</file>
@@ -30,9 +31,7 @@
         <file>qml/Blocks/ValueBlock.qml</file>
         <file>qml/Blocks/WhileBlock.qml</file>
 
-        <file>qml/Blocks/Operations/AddingBinaryOperationBlock.qml</file>
         <file>qml/Blocks/Operations/BinaryOperationBlock.qml</file>
-        <file>qml/Blocks/Operations/NegationUnaryOperationBlock.qml</file>
         <file>qml/Blocks/Operations/UnaryOperationBlock.qml</file>
     </qresource>
 </RCC>
