@@ -416,10 +416,14 @@ Block* BlockReader::BuildBinaryOp(QQuickItem* block, QString name)
     result->setQmlObj(block);
     result->name = std::move(name);
 
-    result->leftAnchor = emptyQUuid();
-    result->rightAnchor = emptyQUuid();
+    result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
+    result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
 
-    // @TODO: Implement
+    result->rightInputValue = QUuid(readChildProperty(block, "rightInputValue", "anchorId"));
+    result->leftInputValue = QUuid(readChildProperty(block, "leftInputValue", "anchorId"));
+    result->operation = readChildProperty(block, "operation", "displayText");
+    result->outputValue = QUuid(readChildProperty(block, "outputValue", "anchorId"));
+
     return result;
 }
 
@@ -433,6 +437,7 @@ Block* BlockReader::BuildUnaryOp(QQuickItem* block, QString name)
     result->leftAnchor = QUuid(readChildProperty(block, "leftAnchor", "anchorId"));
     result->rightAnchor = QUuid(readChildProperty(block, "rightAnchor", "anchorId"));
 
+    result->inputValue = QUuid(readChildProperty(block, "inputValue", "anchorId"));
     result->inputValue = QUuid(readChildProperty(block, "inputValue", "anchorId"));
     result->operation = readChildProperty(block, "operation", "displayText");
     result->outputValue = QUuid(readChildProperty(block, "outputValue", "anchorId"));

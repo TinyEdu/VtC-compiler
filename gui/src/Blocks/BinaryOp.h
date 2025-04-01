@@ -8,19 +8,19 @@ class BinaryOp : public Block
 public:
     DEFINE_BLOCK_TYPE(BinaryOp);
 
-    QUuid leftValue;
+    QUuid rightInputValue;
+    QUuid leftInputValue;
     QString operation;
-    QUuid rightValue;
-    QUuid result;
+    QUuid outputValue;
 
 public:
     QJsonObject toJson() const override
     {
         QJsonObject json = Block::toJson();
-        json["leftValue"] =  leftValue.toString();
+        json["rightInputValue"] =  rightInputValue.toString();
+        json["leftInputValue"] =  leftInputValue.toString();
         json["operation"] =  operation;
-        json["rightValue"] =  rightValue.toString();
-        json["result"] =  result.toString();
+        json["outputValue"] =  outputValue.toString();
 
         return json;
     }

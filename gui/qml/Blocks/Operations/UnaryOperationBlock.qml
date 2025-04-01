@@ -9,8 +9,6 @@ BlockDiagram {
     height: 50
     color: "lightblue"
 
-    property string operationName: "."
-
     Component.onCompleted: {
         unaryOperationBlock.registerSlot(inputValue.update)
         unaryOperationBlock.registerSlot(outputValue.update)
