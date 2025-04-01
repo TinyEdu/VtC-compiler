@@ -40,5 +40,8 @@ BlockDiagram {
 
         width: parent.height * 0.33
         height: parent.height * 0.33
+
+        anchorType: "data"
+        anchorDirection: "right"
     }
 }

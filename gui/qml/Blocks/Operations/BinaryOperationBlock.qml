@@ -27,6 +27,10 @@ BlockDiagram {
 
         width: 16
         height: 16
+
+
+        anchorType: "data"
+        anchorDirection: "right"
     }
 
     Anchor {
@@ -42,6 +46,9 @@ BlockDiagram {
 
         width: 16
         height: 16
+
+        anchorType: "data"
+        anchorDirection: "left"
     }
 
     Anchor {
@@ -56,6 +63,9 @@ BlockDiagram {
 
         width: 16
         height: 16
+
+        anchorType: "data"
+        anchorDirection: "left"
     }
 
     EditableComboBox {

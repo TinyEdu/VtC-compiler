@@ -48,6 +48,9 @@ Rectangle {
         radius: parent.radius
         border.width: parent.border.width
         border.color: parent.border.color
+
+        anchorType: "anchor"
+        anchorDirection: "left"
     }
 
     Anchor {
@@ -64,6 +67,9 @@ Rectangle {
         radius: parent.radius
         border.width: parent.border.width
         border.color: parent.border.color
+
+        anchorType: "anchor"
+        anchorDirection: "right"
     }
 
     Rectangle {

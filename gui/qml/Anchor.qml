@@ -22,7 +22,14 @@ Rectangle {
     property var anchorLogic
     property BezierConnection connection
 
+    // uuid
     property var anchorId
+
+    // anchor direction - left | right
+    property string anchorDirection: "left"
+
+    // anchor type - anchor | data
+    property string anchorType: "anchor"
 
     Rectangle {
         id: anchorCircle
@@ -35,7 +42,7 @@ Rectangle {
 
     Component.onCompleted: {
         anchorLogic = anchorFactory.newComponent();
-        anchorLogic.Associate(this);
+        anchorLogic.Associate(this, anchorType);
     }
 
     function update() {
@@ -54,7 +61,7 @@ Rectangle {
 
         property bool followMouse: false
 
-        onPressed: function(mouse) {
+        onPressed: function (mouse) {
             followMouse = true;
 
             if (connection == null) {
@@ -74,7 +81,7 @@ Rectangle {
             }
         }
 
-        onReleased: function(mouse) {
+        onReleased: function (mouse) {
             followMouse = false;
 
             const rootItem = (anchor.Window ? anchor.Window.contentItem : anchor.parent);
@@ -87,15 +94,24 @@ Rectangle {
                     item.connection.destroy();
                     item.connection = null;
                 }
-                connection.updateWithAnchors(anchor, item);
-                item.connection = connection;
+
+                // 1. check if the anchor is the opposite direction (if this is "left" anchor, the other should be "right", and vice versa)
+                // 2. check if the anchor is the same type (if this is "anchor" anchor, the other should be "anchor", and the same goes for "data")
+                if (item.anchorDirection != anchor.anchorDirection && item.anchorType == anchor.anchorType) {
+                    connection.updateWithAnchors(anchor, item);
+                    item.connection = connection;
+                }
+                else {
+                    connection.destroy();
+                    connection = null;
+                }
             } else {
                 connection.destroy();
                 connection = null;
             }
         }
 
-        onPositionChanged: function(mouse) {
+        onPositionChanged: function (mouse) {
             if (followMouse && connection) {
                 const rootItem = draggableCanvas;
                 let globalMousePos = dragArea.mapToItem(rootItem, mouse.x, mouse.y);

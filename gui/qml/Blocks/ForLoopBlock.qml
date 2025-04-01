@@ -69,6 +69,9 @@ BlockDiagram {
 
         height: 16
         width: 16
+
+        anchorType: "data"
+        anchorDirection: "right"
     }
 
     Anchor {
@@ -83,6 +86,9 @@ BlockDiagram {
 
         height: 16
         width: 16
+
+        anchorType: "anchor"
+        anchorDirection: "right"
     }
 
     Anchor {
@@ -98,6 +104,9 @@ BlockDiagram {
 
         height: 16
         width: 16
+
+        anchorType: "anchor"
+        anchorDirection: "left"
     }
 
     EditableConfirmField {

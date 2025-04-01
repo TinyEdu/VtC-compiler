@@ -73,6 +73,9 @@ BlockDiagram {
 
         width: whileBlock.height * 0.29
         height: whileBlock.height * 0.29
+
+        anchorType: "data"
+        anchorDirection: "left"
     }
 
     Anchor {
@@ -89,6 +92,9 @@ BlockDiagram {
 
         width: whileBlock.height * 0.29
         height: whileBlock.height * 0.29
+
+        anchorType: "anchor"
+        anchorDirection: "right"
     }
 
     Anchor {
@@ -105,6 +111,9 @@ BlockDiagram {
 
         width: whileBlock.height * 0.29
         height: whileBlock.height * 0.29
+
+        anchorType: "anchor"
+        anchorDirection: "left"
     }
 }
 

@@ -73,6 +73,9 @@ BlockDiagram {
 
         width: ifBlock.height * 0.29
         height: ifBlock.height * 0.29
+
+        anchorType: "data"
+        anchorDirection: "left"
     }
 
     Anchor {
@@ -89,6 +92,9 @@ BlockDiagram {
 
         width: ifBlock.height * 0.29
         height: ifBlock.height * 0.29
+
+        anchorType: "anchor"
+        anchorDirection: "right"
     }
 
     Anchor {
@@ -105,5 +111,8 @@ BlockDiagram {
 
         width: ifBlock.height * 0.29
         height: ifBlock.height * 0.29
+
+        anchorType: "anchor"
+        anchorDirection: "right"
     }
 }

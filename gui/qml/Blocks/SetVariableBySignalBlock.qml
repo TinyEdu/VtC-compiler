@@ -41,6 +41,9 @@ BlockDiagram {
 
         width: 16
         height: 16
+
+        anchorType: "data"
+        anchorDirection: "left"
     }
 
     Text {

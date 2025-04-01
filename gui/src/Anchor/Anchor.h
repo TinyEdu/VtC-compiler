@@ -13,8 +13,15 @@ public:
     {
     }
 
-    Q_INVOKABLE void Associate(QObject* qml)
+    Q_INVOKABLE void Associate(QObject* qml, const QString& type)
     {
+        if(type != "anchor" && type != "data")
+        {
+            throw std::invalid_argument("Invalid type (anchor | data).");
+        }
+
+        m_type = type;
+
         qml_obj = qobject_cast<QQuickItem*>(qml);
         CollisionManager::instance()->registerAnchor(qml_obj);
     }
@@ -22,6 +29,7 @@ public:
     QString qmlName() const { return m_qmlName; }
 
 private:
+    QString m_type;
     QQuickItem* qml_obj;
     const QString m_qmlName = QString("Anchor.qml");
 };

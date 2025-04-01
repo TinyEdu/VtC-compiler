@@ -31,5 +31,8 @@ BlockDiagram {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.margins: 3
+
+        anchorType: "data"
+        anchorDirection: "left"
     }
 }
