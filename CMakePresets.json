@@ -23,7 +23,8 @@
       },
       "environment": {
         "VCPKG_ROOT": "C:/dev/vcpkg",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-dbg"
+        "VCPKG_TARGET_TRIPLET": "x64-windows-dbg",
+        "QT_LOGGING_RULES": "qml.debug=true"
       }
     },
     {

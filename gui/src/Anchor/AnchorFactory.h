@@ -14,9 +14,9 @@ public:
     {
     }
 
-    Q_INVOKABLE QObject* newComponent()
+    Q_INVOKABLE QObject* newComponent(QObject* parent = nullptr)
     {
-        QObject* block = new Anchor();
+        QObject* block = new Anchor(qobject_cast<QQuickItem*>(parent));
         return block;
     };
 

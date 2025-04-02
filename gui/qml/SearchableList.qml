@@ -92,6 +92,7 @@ Item {
 
             delegate: BlockCreator {
                 blockName: model.name
+                parent: root
                 blockDiagramUrl: model.blockDiagramUrl
                 previewScaleFactor: model.previewScaleFactor
                 draggableCanvas: root.draggableCanvas

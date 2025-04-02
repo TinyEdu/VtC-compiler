@@ -40,12 +40,18 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        anchorLogic = anchorFactory.newComponent();
+        anchorLogic = anchorFactory.newComponent(this);
         anchorLogic.Associate(this, anchorType);
     }
 
+    Component.onDestruction: {
+        if (anchorLogic) {
+            anchorLogic.destroy();
+        }
+    }
+
     function update() {
-        if (connection !== null) {
+        if (connection && typeof connection.update === 'function') {
             connection.update();
         }
     }
@@ -100,7 +106,11 @@ Rectangle {
                 // 2. check if the anchor is the same type (if this is "anchor" anchor, the other should be "anchor", and the same goes for "data")
                 if (item.anchorDirection != anchor.anchorDirection && item.anchorType == anchor.anchorType) {
                     if (item.connection) {
+                        let otherAnchor = connection.getOtherAnchor(this);
                         item.connection.destroy();
+                        if (otherAnchor) {
+                            otherAnchor.connection = null;
+                        }
                         item.connection = null;
                     }
                     connection.updateWithAnchors(anchor, item);

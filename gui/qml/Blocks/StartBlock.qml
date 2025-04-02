@@ -1,5 +1,5 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
@@ -8,6 +8,7 @@ BlockDiagram {
     width: 90
     height: 50
     color: "lightblue"
+
     enableLeftAnchor: false
     enableRightAnchor: true
 }

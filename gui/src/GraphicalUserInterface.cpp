@@ -4,6 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QtCore/QUrl>
 #include <QtCore/QString>
+#include <QLoggingCategory>
 
 #include "Anchor/Anchor.h"
 #include "Anchor/AnchorFactory.h"
@@ -20,7 +21,7 @@ int GraphicalUserInterface::run(int argc, char* argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-
+    QLoggingCategory::setFilterRules("qt.qml.debug=true");
     qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
     qmlRegisterType<BlockDiagram>("BlockDiagram", 1, 0, "BlockDiagram");
 

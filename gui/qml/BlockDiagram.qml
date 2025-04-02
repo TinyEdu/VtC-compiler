@@ -119,8 +119,14 @@ Rectangle {
         if (enableRightAnchor) registerSlot(rightAnchor)
 
         if (shouldBeRegistered) {
-            blockDiagramLogic = blockDiagramFactory.newComponent();
+            blockDiagramLogic = blockDiagramFactory.newComponent(this);
             blockDiagramLogic.Associate(this);
+        }
+    }
+
+    Component.onDestruction: {
+        if (blockDiagramLogic) {
+            blockDiagramLogic.destroy();
         }
     }
 
@@ -136,10 +142,15 @@ Rectangle {
 
     function clearAnchors() {
         for (let i = 0; i < registeredSlots.length; i++) {
-            if (registeredSlots[i].connection !== null) {
-                registeredSlots[i].connection.destroy();
+            let anchor = registeredSlots[i];
+            if (anchor.connection) {
+                let otherAnchor = anchor.connection.getOtherAnchor(anchor);
+                anchor.connection.destroy();
+                if (otherAnchor) {
+                    otherAnchor.connection = null;
+                }
             }
-            registeredSlots[i].connection = null;
+            anchor.connection = null;
         }
     }
 
