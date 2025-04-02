@@ -13,7 +13,7 @@ BlockDiagram {
     enableRightAnchor: false
 
     Component.onCompleted: {
-        getVariableBlock.registerSlot(passingAnchor.update)
+        getVariableBlock.registerSlot(passingAnchor)
     }
 
     EditableConfirmField {

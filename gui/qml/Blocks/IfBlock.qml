@@ -13,9 +13,9 @@ BlockDiagram {
     enableRightAnchor: false
 
     Component.onCompleted: {
-        ifBlock.registerSlot(conditionAnchor.update)
-        ifBlock.registerSlot(trueAnchor.update)
-        ifBlock.registerSlot(falseAnchor.update)
+        ifBlock.registerSlot(conditionAnchor)
+        ifBlock.registerSlot(trueAnchor)
+        ifBlock.registerSlot(falseAnchor)
     }
 
     Text {

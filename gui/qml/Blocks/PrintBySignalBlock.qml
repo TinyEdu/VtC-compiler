@@ -12,7 +12,7 @@ BlockDiagram {
     property bool isFrozen: false
 
     Component.onCompleted: {
-        printBlock.registerSlot(valueAnchor.update)
+        printBlock.registerSlot(valueAnchor)
     }
 
     Anchor {

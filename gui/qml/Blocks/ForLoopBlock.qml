@@ -10,9 +10,9 @@ BlockDiagram {
     color: "lightblue"
 
     Component.onCompleted: {
-        forLoop.registerSlot(incrementAnchor.update)
-        forLoop.registerSlot(startAnchor.update)
-        forLoop.registerSlot(endAnchor.update)
+        forLoop.registerSlot(incrementAnchor)
+        forLoop.registerSlot(startAnchor)
+        forLoop.registerSlot(endAnchor)
     }
 
     Text {

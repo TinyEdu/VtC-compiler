@@ -90,14 +90,13 @@ Rectangle {
             const item = CollisionManager.isOverAnAnchor(globalMousePos.x, globalMousePos.y, anchor);
 
             if (item !== null && item.visible && item.enabled) {
-                if (item.connection) {
-                    item.connection.destroy();
-                    item.connection = null;
-                }
-
                 // 1. check if the anchor is the opposite direction (if this is "left" anchor, the other should be "right", and vice versa)
                 // 2. check if the anchor is the same type (if this is "anchor" anchor, the other should be "anchor", and the same goes for "data")
                 if (item.anchorDirection != anchor.anchorDirection && item.anchorType == anchor.anchorType) {
+                    if (item.connection) {
+                        item.connection.destroy();
+                        item.connection = null;
+                    }
                     connection.updateWithAnchors(anchor, item);
                     item.connection = connection;
                 }

@@ -115,8 +115,8 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        if (enableLeftAnchor) registerSlot(leftAnchor.update)
-        if (enableRightAnchor) registerSlot(rightAnchor.update)
+        if (enableLeftAnchor) registerSlot(leftAnchor)
+        if (enableRightAnchor) registerSlot(rightAnchor)
 
         if (shouldBeRegistered) {
             blockDiagramLogic = blockDiagramFactory.newComponent();
@@ -124,14 +124,24 @@ Rectangle {
         }
     }
 
-    function registerSlot(slotFunction) {
-        registeredSlots.push(slotFunction);
+    function registerSlot(slot) {
+        registeredSlots.push(slot);
     }
 
     function updateAnchors() {
-        registeredSlots.forEach(function(slot) {
-            slot();
-        });
+        for (let i = 0; i < registeredSlots.length; i++) {
+            registeredSlots[i].update();
+        }
+    }
+
+    function clearAnchors() {
+        for (let i = 0; i < registeredSlots.length; i++) {
+            if (registeredSlots[i].connection !== null) {
+                registeredSlots[i].connection.destroy();
+            }
+            registeredSlots[i].connections = [];
+            registeredSlots[i].connection = null;
+        }
     }
 
     Connections {
@@ -163,6 +173,7 @@ Rectangle {
         onReleased: function (mouse) {
             if (mouse.button === Qt.RightButton) {
                 blockDiagram.destroy();
+                clearAnchors();
             }
         }
     }

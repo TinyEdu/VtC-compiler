@@ -13,7 +13,7 @@ BlockDiagram {
     enableRightAnchor: true
 
     Component.onCompleted: {
-        sleepBySignalBlock.registerSlot(lAnchor.update)
+        sleepBySignalBlock.registerSlot(lAnchor)
     }
 
     Text {

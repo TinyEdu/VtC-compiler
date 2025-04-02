@@ -10,9 +10,9 @@ BlockDiagram {
     color: "lightblue"
 
     Component.onCompleted: {
-        binaryOperationBlock.registerSlot(rightInputValue.update)
-        binaryOperationBlock.registerSlot(leftInputValue.update)
-        binaryOperationBlock.registerSlot(outputValue.update)
+        binaryOperationBlock.registerSlot(rightInputValue)
+        binaryOperationBlock.registerSlot(leftInputValue)
+        binaryOperationBlock.registerSlot(outputValue)
     }
 
     Anchor {

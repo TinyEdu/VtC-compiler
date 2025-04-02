@@ -11,7 +11,7 @@ BlockDiagram {
 
 
     Component.onCompleted: {
-        setVariableBySignalBlock.registerSlot(valueAnchor.update)
+        setVariableBySignalBlock.registerSlot(valueAnchor)
     }
 
     EditableConfirmField {

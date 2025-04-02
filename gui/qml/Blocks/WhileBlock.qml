@@ -13,9 +13,9 @@ BlockDiagram {
     enableRightAnchor: true
 
     Component.onCompleted: {
-        whileBlock.registerSlot(conditionAnchor.update)
-        whileBlock.registerSlot(startAnchor.update)
-        whileBlock.registerSlot(endAnchor.update)
+        whileBlock.registerSlot(conditionAnchor)
+        whileBlock.registerSlot(startAnchor)
+        whileBlock.registerSlot(endAnchor)
     }
 
     Text {

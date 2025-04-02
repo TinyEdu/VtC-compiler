@@ -10,7 +10,7 @@ BlockDiagram {
     color: "lightblue"
 
     Component.onCompleted: {
-        createVariableBySignalBlock.registerSlot(valueAnchor.update)
+        createVariableBySignalBlock.registerSlot(valueAnchor)
     }
 
     EditableConfirmField {
