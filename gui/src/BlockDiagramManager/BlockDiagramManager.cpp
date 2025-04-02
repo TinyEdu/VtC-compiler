@@ -31,27 +31,6 @@ void BlockDiagramManager::unregisterBlockDiagram(QQuickItem* block)
     m_blocks.removeAll(block);
 }
 
-void BlockDiagramManager::save()
-{
-    QJsonArray blocksArray;
-
-    for (const QPointer<QQuickItem>& item : m_blocks) {
-        if (!item) continue;
-
-        Block const* block = BlockReader::Instance()->extract(item);
-        if (!block) continue;
-
-        blocksArray.append(block->toJson());
-    }
-
-    QJsonObject root;
-    root["Blocks"] = blocksArray;
-
-    // Temporary: print the JSON to the console
-    const QJsonDocument doc(root);
-    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
-}
-
 bool BlockDiagramManager::isColliding(QQuickItem* a, QQuickItem* b)
 {
     if (!a || !b || !a->parentItem() || !b->parentItem() || !a->window() || !b->window())

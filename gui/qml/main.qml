@@ -30,7 +30,7 @@ Window {
 
             width: parent.width * 0.25
 
-            onClicked: CollisionManager.save()
+            onClicked: ProgramSerializator.save()
         }
     }
 

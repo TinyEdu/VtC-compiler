@@ -76,6 +76,8 @@ add_library(${PROJECT_NAME} SHARED
         src/Serialization/ConnectionReader.cpp
         src/Serialization/ConnectionReader.h
         src/Serialization/ConnectionReaderException.h
+        src/Serialization/ProgramSerializator.cpp
+        src/Serialization/ProgramSerializator.h
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_GUI_EXPORTS)

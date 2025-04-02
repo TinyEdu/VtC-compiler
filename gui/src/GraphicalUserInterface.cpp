@@ -12,6 +12,7 @@
 #include "Collision/CollisionManager.h"
 #include "MovableBlock/MovableBlock.h"
 #include "MovableBlock/MovableBlockFactory.h"
+#include "Serialization/ProgramSerializator.h"
 
 
 int GraphicalUserInterface::run(int argc, char* argv[])
@@ -22,6 +23,9 @@ int GraphicalUserInterface::run(int argc, char* argv[])
 
     qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
     qmlRegisterType<BlockDiagram>("BlockDiagram", 1, 0, "BlockDiagram");
+
+    ProgramSerializator serializator(&engine);
+    engine.rootContext()->setContextProperty("ProgramSerializator", &serializator);
 
     BlockDiagramFactory blockDiagramFactory(&engine);
     engine.rootContext()->setContextProperty("blockDiagramFactory", &blockDiagramFactory);
