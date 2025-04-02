@@ -18,7 +18,6 @@ Rectangle {
     color: "white"
 
     property bool isLeft: true
-    property var connections: []
     property var anchorLogic
     property BezierConnection connection
 
@@ -51,6 +50,14 @@ Rectangle {
         }
     }
 
+    function getOtherAnchor() {
+        if (connection) {
+            return connection.getOtherAnchor(this);
+        }
+
+        return null;
+    }
+
     MouseArea {
         id: dragArea
         anchors.fill: parent
@@ -76,7 +83,6 @@ Rectangle {
                         endPointX: anchorCenter.x,
                         endPointY: anchorCenter.y
                     });
-                    connections.push(connection);
                 }
             }
         }

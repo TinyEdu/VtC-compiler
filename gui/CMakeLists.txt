@@ -48,9 +48,9 @@ add_library(${PROJECT_NAME} SHARED
         src/BlockDiagramManager/BlockDiagramManager.h
         src/BlockDiagramManager/BlockDiagramManager.cpp
 
-        src/BlockReader/BlockReader.h
-        src/BlockReader/BlockReader.cpp
-        src/BlockReader/BlockReaderException.h
+        src/Serialization/BlockReader.h
+        src/Serialization/BlockReader.cpp
+        src/Serialization/BlockReaderException.h
 
         src/Blocks/BinaryOp.h
         src/Blocks/Block.h
@@ -72,6 +72,10 @@ add_library(${PROJECT_NAME} SHARED
         src/Blocks/UnaryOp.h
         src/Blocks/Value.h
         src/Blocks/While.h
+        src/Blocks/Connection.h
+        src/Serialization/ConnectionReader.cpp
+        src/Serialization/ConnectionReader.h
+        src/Serialization/ConnectionReaderException.h
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_GUI_EXPORTS)

@@ -14,6 +14,8 @@ public:
     void registerAnchor(QQuickItem* anchor);
     void unregisterAnchor(QQuickItem* anchor);
 
+    Q_INVOKABLE void save();
+
     Q_INVOKABLE QQuickItem* checkCollision(QQuickItem* movable);
     Q_INVOKABLE QQuickItem* isOverAnAnchor(int x, int y, QQuickItem* excludeItem);
 

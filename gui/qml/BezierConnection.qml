@@ -43,6 +43,15 @@ Item {
         update();
     }
 
+    function getOtherAnchor(anchor) {
+        if (anchor === leftAnchor) {
+            return rightAnchor;
+        } else if (anchor === rightAnchor) {
+            return leftAnchor;
+        }
+        return null;
+    }
+
     // External access to canvas if needed
     property alias canvas: connectionCanvas
 

@@ -1,6 +1,6 @@
 #include "BlockDiagramManager.h"
 
-#include "BlockReader/BlockReader.h"
+#include "Serialization/BlockReader.h"
 #include <QJsonArray>
 #include <QJsonDocument>
 

@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
-import BlockDiagramManager
+import CollisionManager
 
 Window {
     width: 1280
@@ -30,7 +30,7 @@ Window {
 
             width: parent.width * 0.25
 
-            onClicked: BlockDiagramManager.save()
+            onClicked: CollisionManager.save()
         }
     }
 

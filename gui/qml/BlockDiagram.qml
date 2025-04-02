@@ -139,7 +139,6 @@ Rectangle {
             if (registeredSlots[i].connection !== null) {
                 registeredSlots[i].connection.destroy();
             }
-            registeredSlots[i].connections = [];
             registeredSlots[i].connection = null;
         }
     }

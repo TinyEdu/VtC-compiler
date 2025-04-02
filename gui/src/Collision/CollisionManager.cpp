@@ -1,6 +1,12 @@
 #include "CollisionManager.h"
 
 #include <QUuid>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
+
+#include "Blocks/Connection.h"
+#include "Serialization/ConnectionReader.h"
 
 CollisionManager* CollisionManager::instance()
 {
@@ -94,4 +100,25 @@ bool CollisionManager::isColliding(int x, int y, QQuickItem* b)
 
     QRectF rectB = b->mapRectToScene(b->boundingRect());
     return rectB.contains(x, y);
+}
+
+void CollisionManager::save()
+{
+    QJsonArray connectionsArray;
+
+    for (const QPointer<QQuickItem>& item : m_anchors) {
+        if (!item) continue;
+        Connection const* conn = ConnectionReader::Instance()->extract(item);
+        if (conn)
+        {
+            connectionsArray.append(conn->toJson());
+        }
+    }
+
+    QJsonObject root;
+    root["Connections"] = connectionsArray;
+
+    // Temporary: print the JSON to the console
+    const QJsonDocument doc(root);
+    qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
 }
