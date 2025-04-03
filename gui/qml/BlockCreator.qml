@@ -1,5 +1,5 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 
 Rectangle {
     id: blockCreator
@@ -50,7 +50,7 @@ Rectangle {
             if (blockDiagramComponent.status === Component.Ready) {
                 createPreviewBlock();
             } else if (blockDiagramComponent.status === Component.Loading) {
-                blockDiagramComponent.statusChanged.connect(function() {
+                blockDiagramComponent.statusChanged.connect(function () {
                     if (blockDiagramComponent.status === Component.Ready) {
                         createPreviewBlock();
                     } else if (blockDiagramComponent.status === Component.Error) {
@@ -67,22 +67,20 @@ Rectangle {
         if (previewBlock) previewBlock.destroy();
 
         previewBlock = blockDiagramComponent.createObject(blockHolder, {
-            "anchors.centerIn": blockHolder,
-            "scale": previewScaleFactor,
-            "shouldBeRegistered": false
-    });
-
-    if (previewBlock) {
-        Qt.callLater(() => {
-            blockHolder.implicitHeight = previewBlock.implicitHeight || previewBlock.height;
-            blockCreator.height = label.height + blockHolder.implicitHeight + 20; // includes spacing and margins
+            "anchors.centerIn": blockHolder, "scale": previewScaleFactor, "shouldBeRegistered": false
         });
-    } else {
-        console.error("Failed to create previewBlock.");
-    }
-}
 
-MouseArea {
+        if (previewBlock) {
+            Qt.callLater(() => {
+                blockHolder.implicitHeight = previewBlock.implicitHeight || previewBlock.height;
+                blockCreator.height = label.height + blockHolder.implicitHeight + 20;
+            });
+        } else {
+            console.error("Failed to create previewBlock.");
+        }
+    }
+
+    MouseArea {
         anchors.fill: parent
         preventStealing: true
         hoverEnabled: true
@@ -95,9 +93,7 @@ MouseArea {
 
             if (blockDiagramComponent) {
                 currentBlock = blockDiagramComponent.createObject(rootObj, {
-                    x: scenePos.x,
-                    y: scenePos.y,
-                    z: 1000
+                    x: scenePos.x, y: scenePos.y, z: 1000
                 });
 
                 if (currentBlock) {
@@ -118,48 +114,21 @@ MouseArea {
             currentBlock.y = scenePos.y - pressOffset.y;
         }
 
-        onReleased: function(mouse) {
-            const dropTarget = findCanvasDropTarget(mouse.x, mouse.y);
-
-            if (dropTarget) {
+        onReleased: function (mouse) {
+            if (draggableCanvas) {
                 const globalPos = blockCreator.mapToGlobal(mouse.x, mouse.y);
-                const contentItem = dropTarget.contentItem;
+                const contentItem = draggableCanvas.contentItem;
                 const localPos = contentItem.mapFromGlobal(globalPos.x, globalPos.y);
 
                 currentBlock.parent = contentItem;
-                currentBlock.x = localPos.x - pressOffset.x / dropTarget.currentScale;
-                currentBlock.y = localPos.y - pressOffset.y / dropTarget.currentScale;
+                currentBlock.x = localPos.x - pressOffset.x / draggableCanvas.currentScale;
+                currentBlock.y = localPos.y - pressOffset.y / draggableCanvas.currentScale;
                 currentBlock.z = 3;
             } else {
                 currentBlock.destroy();
             }
 
             currentBlock = null;
-        }
-
-        function findCanvasDropTarget(x, y) {
-            function findIn(item) {
-                if (!item || !item.visible || !item.enabled) return null;
-
-                if (item.typeName === "draggableCanvas") {
-                    const localPos = item.mapFromItem(blockCreator, x, y);
-                    if (localPos.x >= 0 && localPos.x <= item.width &&
-                        localPos.y >= 0 && localPos.y <= item.height) {
-                        return item;
-                    }
-                }
-
-                if (item.children) {
-                    for (let i = item.children.length - 1; i >= 0; --i) {
-                        const result = findIn(item.children[i]);
-                        if (result) return result;
-                    }
-                }
-
-                return null;
-            }
-
-            return findIn(rootObj);
         }
     }
 }

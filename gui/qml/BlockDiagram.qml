@@ -143,16 +143,17 @@ Rectangle {
     function clearAnchors() {
         for (let i = 0; i < registeredSlots.length; i++) {
             let anchor = registeredSlots[i];
-            if (anchor.connection) {
+            if (anchor && anchor.connection) {
                 let otherAnchor = anchor.connection.getOtherAnchor(anchor);
                 anchor.connection.destroy();
-                if (otherAnchor) {
+                if (otherAnchor && otherAnchor.connection) {
                     otherAnchor.connection = null;
                 }
+                anchor.connection = null;
             }
-            anchor.connection = null;
         }
     }
+
 
     Connections {
         target: blockDiagram
@@ -182,8 +183,8 @@ Rectangle {
 
         onReleased: function (mouse) {
             if (mouse.button === Qt.RightButton) {
-                blockDiagram.destroy();
                 clearAnchors();
+                blockDiagram.destroy();
             }
         }
     }

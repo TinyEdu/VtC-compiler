@@ -5,7 +5,7 @@ Item {
     id: bezierConnection
     width: draggableCanvas.width
     height: draggableCanvas.height
-    z: 115
+    z: 100
     visible: true
     clip: false
 

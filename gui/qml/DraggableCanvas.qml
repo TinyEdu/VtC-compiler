@@ -13,7 +13,6 @@ Item {
     readonly property real minScale: Math.max(width / canvasWidth, height / canvasHeight)
     property alias contentItem: canvasGroup
 
-    // Manual offsets for transform
     property real offsetX: 0
     property real offsetY: 0
 
@@ -23,7 +22,6 @@ Item {
         interactive: false
         clip: true
 
-        // Fixed large surface
         contentWidth: canvasWidth * maxScale
         contentHeight: canvasHeight * maxScale
 
@@ -40,10 +38,11 @@ Item {
                 width: canvasWidth
                 height: canvasHeight
 
-                transform: [
-                    Translate { x: offsetX; y: offsetY },
-                    Scale { xScale: currentScale; yScale: currentScale; origin.x: 0; origin.y: 0 }
-                ]
+                transform: [Translate {
+                    x: offsetX; y: offsetY
+                }, Scale {
+                    xScale: currentScale; yScale: currentScale; origin.x: 0; origin.y: 0
+                }]
 
                 Rectangle {
                     anchors.fill: parent
@@ -75,8 +74,12 @@ Item {
             }
         }
 
-        ScrollBar.vertical: ScrollBar { policy: ScrollBar.AlwaysOff }
-        ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
+        ScrollBar.vertical: ScrollBar {
+            policy: ScrollBar.AlwaysOff
+        }
+        ScrollBar.horizontal: ScrollBar {
+            policy: ScrollBar.AlwaysOff
+        }
 
         MouseArea {
             anchors.fill: parent
@@ -88,7 +91,7 @@ Item {
             property real lastY: 0
             property bool dragging: false
 
-            onPressed: function(mouse) {
+            onPressed: function (mouse) {
                 if (mouse.button === Qt.MiddleButton) {
                     dragging = true;
                     lastX = mouse.x;
@@ -96,11 +99,11 @@ Item {
                 }
             }
 
-            onReleased: function(mouse) {
+            onReleased: function (mouse) {
                 dragging = false;
             }
 
-            onPositionChanged: function(mouse) {
+            onPositionChanged: function (mouse) {
                 if (dragging) {
                     const dx = (mouse.x - lastX);
                     const dy = (mouse.y - lastY);
@@ -113,7 +116,7 @@ Item {
                 updateAllAnchors()
             }
 
-            onWheel: function(wheel) {
+            onWheel: function (wheel) {
                 wheel.accepted = true;
 
                 if (wheel.modifiers & Qt.ControlModifier) {
@@ -124,7 +127,6 @@ Item {
                         const mouseX = wheel.x;
                         const mouseY = wheel.y;
 
-                        // Zoom relative to mouse pointer
                         const sx = (mouseX - offsetX * currentScale) / currentScale;
                         const sy = (mouseY - offsetY * currentScale) / currentScale;
 
@@ -143,11 +145,13 @@ Item {
     }
 
     function updateAllAnchors() {
-        for (let i = 0; i < contentItem.children.length; ++i) {
-            const child = contentItem.children[i];
+        var childrenCopy = contentItem.children.slice();
+        for (var i = 0; i < childrenCopy.length; i++) {
+            var child = childrenCopy[i];
             if (child && child.typeName === "blockDiagram" && typeof child.updateAnchors === "function") {
                 child.updateAnchors();
             }
         }
     }
+
 }
