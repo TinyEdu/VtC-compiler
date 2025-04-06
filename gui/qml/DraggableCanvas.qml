@@ -1,9 +1,11 @@
+// DraggableCanvas.qml
 import QtQuick
 import QtQuick.Controls
 
-Item {
+Rectangle {
     id: root
     anchors.fill: parent
+    visible: true
 
     property string typeName: "draggableCanvas"
     property real canvasWidth: 2000
@@ -16,22 +18,23 @@ Item {
     property real offsetX: 0
     property real offsetY: 0
 
+    property var dragTarget: dragTarget
+
     Flickable {
         id: flickable
         anchors.fill: parent
         interactive: false
         clip: true
+        visible: true
 
         contentWidth: canvasWidth * maxScale
         contentHeight: canvasHeight * maxScale
-
-        onContentXChanged: updateAllAnchors()
-        onContentYChanged: updateAllAnchors()
 
         Item {
             id: canvasContainer
             width: flickable.contentWidth
             height: flickable.contentHeight
+            visible: true
 
             Item {
                 id: canvasGroup
@@ -44,10 +47,19 @@ Item {
                     xScale: currentScale; yScale: currentScale; origin.x: 0; origin.y: 0
                 }]
 
+
                 Rectangle {
                     anchors.fill: parent
                     color: "#eeeeee"
                     border.color: "black"
+                    visible: true
+
+                    DropArea {
+                        id: dragTarget
+                        objectName: "dragTarget"
+                        anchors.fill: parent
+                        visible: true
+                    }
 
                     Canvas {
                         anchors.fill: parent
@@ -112,8 +124,6 @@ Item {
                     lastX = mouse.x;
                     lastY = mouse.y;
                 }
-
-                updateAllAnchors()
             }
 
             onWheel: function (wheel) {
@@ -138,20 +148,7 @@ Item {
                     offsetX -= wheel.angleDelta.x / currentScale;
                     offsetY -= wheel.angleDelta.y / currentScale;
                 }
-
-                updateAllAnchors()
             }
         }
     }
-
-    function updateAllAnchors() {
-        var childrenCopy = contentItem.children.slice();
-        for (var i = 0; i < childrenCopy.length; i++) {
-            var child = childrenCopy[i];
-            if (child && child.typeName === "blockDiagram" && typeof child.updateAnchors === "function") {
-                child.updateAnchors();
-            }
-        }
-    }
-
 }

@@ -1,8 +1,8 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 
 Item {
-    id: root
+    id: searchableList
     anchors.fill: parent
 
     property string searchText: ""
@@ -12,30 +12,66 @@ Item {
     ListModel {
         id: originalModel
 
-        // @TODO: left below
-        ListElement { name: "Binary Operation"; blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Unary Operation"; blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"; previewScaleFactor: 1.33 }
-
-        ListElement { name: "Get Variable"; blockDiagramUrl: "Blocks/GetVariableBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Listen for Event"; blockDiagramUrl: "Blocks/ListenEventBlock.qml"; previewScaleFactor: 1.33 }
-
-        ListElement { name: "Skip"; blockDiagramUrl: "Blocks/SkipBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Start Block"; blockDiagramUrl: "Blocks/StartBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "End Block"; blockDiagramUrl: "Blocks/EndBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Break"; blockDiagramUrl: "Blocks/BreakBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Call Event"; blockDiagramUrl: "Blocks/CallEventBlock.qml"; previewScaleFactor: 1.33 }
-
-        ListElement { name: "Set Variable (by signal)"; blockDiagramUrl: "Blocks/SetVariableBySignalBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Set Variable (by value)"; blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"; previewScaleFactor: 1.33 }
-
-        ListElement { name: "For Loop"; blockDiagramUrl: "Blocks/ForLoopBlock.qml"; previewScaleFactor: 0.9 }
-        ListElement { name: "Create Variable (by signal)"; blockDiagramUrl: "Blocks/CreateVariableBySignalBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Create Variable (by value)"; blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Value"; blockDiagramUrl: "Blocks/ValueBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Print"; blockDiagramUrl: "Blocks/PrintByValueBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "Print"; blockDiagramUrl: "Blocks/PrintBySignalBlock.qml"; previewScaleFactor: 1.33 }
-        ListElement { name: "If"; blockDiagramUrl: "Blocks/IfBlock.qml"; previewScaleFactor: 1.1 }
-        ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; previewScaleFactor: 1.33 }
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
+        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
     }
 
     ListModel {
@@ -49,9 +85,9 @@ Item {
             if (searchText === "" ||
                 item.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1) {
                 filteredModel.append({
-                    "name": item.name,
+                    "name": "name",
                     "blockDiagramUrl": item.blockDiagramUrl,
-                    "previewScaleFactor": item.previewScaleFactor
+                    "previewScaleFactor": 1.0
                 });
             }
         }
@@ -91,12 +127,13 @@ Item {
             clip: true
 
             delegate: BlockCreator {
-                blockName: model.name
-                parent: root
+                parent: searchableList
+                blockName: "name"
                 blockDiagramUrl: model.blockDiagramUrl
-                previewScaleFactor: model.previewScaleFactor
-                draggableCanvas: root.draggableCanvas
-                rootObj: root.rootObj
+                previewScaleFactor: 1.0
+
+                draggableCanvas: searchableList.draggableCanvas
+                rootObj: searchableList.rootObj
             }
         }
     }

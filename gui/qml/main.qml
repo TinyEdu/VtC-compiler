@@ -1,8 +1,7 @@
+// main.qml
 import QtQuick
-import QtQuick.Window
 import QtQuick.Controls
-
-import CollisionManager
+import QtQuick.Layouts
 
 Window {
     width: 1280
@@ -10,54 +9,39 @@ Window {
     visible: true
 
     Rectangle {
-        id: menuBar
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.top: parent.top
-        width: parent.width
-
-        border.color: "black"
-        border.width: 1
-
-        height: 40
-
-        Button {
-            id: saveButton
-            text: "Save"
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-
-            width: parent.width * 0.25
-
-            onClicked: ProgramSerializator.save()
+        id: draggableCanvasContainer
+        border.width: 2
+        anchors {
+            right: parent.right
+            top: parent.top
+            bottom: parent.bottom
         }
-    }
-
-    Rectangle {
-        id: searchableContainer2
-        width: parent.width * 0.75
-        height: parent.height - 40
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        width: parent.width * 0.5
+        height: parent.height
 
         DraggableCanvas {
             id: draggableCanvas
+            anchors.fill: parent
         }
     }
 
     Rectangle {
-        id: searchableContainer
-        width: parent.width * 0.25
-        height: parent.height - 40
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        z: 2
-
-        SearchableList {
-            anchors.fill: parent
-            draggableCanvas : draggableCanvas
-            rootObj: searchableContainer.parent
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
         }
+        width: parent.width * 0.5
+        height: parent.height
+        color: "blue"
+    }
+
+    BlockCreator {
+        id: blockCreator
+        x: 30
+        y: 40
+        width: 42
+        height: 383
+        color: "gray"
     }
 }
