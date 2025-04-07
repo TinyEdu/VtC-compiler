@@ -14,13 +14,14 @@
 #include "MovableBlock/MovableBlock.h"
 #include "MovableBlock/MovableBlockFactory.h"
 #include "Serialization/ProgramSerializator.h"
-
+#include "BezierConnection/BezierConnectionFactory.h"
 
 int GraphicalUserInterface::run(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
     QLoggingCategory::setFilterRules("qt.qml.debug=true");
     qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
     qmlRegisterType<BlockDiagram>("BlockDiagram", 1, 0, "BlockDiagram");
@@ -30,6 +31,9 @@ int GraphicalUserInterface::run(int argc, char* argv[])
 
     BlockDiagramFactory blockDiagramFactory(&engine);
     engine.rootContext()->setContextProperty("blockDiagramFactory", &blockDiagramFactory);
+
+    BezierConnectionFactory bezierConnectionFactory(&engine);
+    engine.rootContext()->setContextProperty("bezierConnectionFactory", &bezierConnectionFactory);
 
     AnchorFactory anchorFactory(&engine);
     engine.rootContext()->setContextProperty("anchorFactory", &anchorFactory);

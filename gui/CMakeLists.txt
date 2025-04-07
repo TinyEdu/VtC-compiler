@@ -52,6 +52,11 @@ add_library(${PROJECT_NAME} SHARED
         src/Serialization/BlockReader.cpp
         src/Serialization/BlockReaderException.h
 
+        src/BezierConnection/BezierConnection.h
+        src/BezierConnection/BezierConnectionFactory.h
+        src/BezierConnection/BezierConnectionManager.h
+        src/BezierConnection/BezierConnectionManager.cpp
+
         src/Blocks/BinaryOp.h
         src/Blocks/Block.h
         src/Blocks/Break.h

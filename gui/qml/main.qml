@@ -8,32 +8,26 @@ Window {
     height: 720
     visible: true
 
+    BezierConnectionFactory {
+        id: bezierFactory
+        draggableCanvas: draggableCanvas
+    }
+
     Rectangle {
         id: draggableCanvasContainer
-        border.width: 2
+        width: parent.width * 0.5
+        height: parent.height
+
         anchors {
             right: parent.right
             top: parent.top
             bottom: parent.bottom
         }
-        width: parent.width * 0.5
-        height: parent.height
 
         DraggableCanvas {
             id: draggableCanvas
             anchors.fill: parent
         }
-    }
-
-    Rectangle {
-        anchors {
-            left: parent.left
-            top: parent.top
-            bottom: parent.bottom
-        }
-        width: parent.width * 0.5
-        height: parent.height
-        color: "blue"
     }
 
     BlockCreator {

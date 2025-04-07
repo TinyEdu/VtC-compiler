@@ -17,14 +17,67 @@ Rectangle {
     property var blockDiagramLogic
     property var model
 
-    height: 60
-    width: 60
+    height: 100
+    width: 100
     visible: true
     Drag.active: mouseArea.drag.active
 
     radius: 4
     color: blockColor
     border.color: borderColor
+
+    Anchor {
+        id: leftAnchor
+        objectName: "leftAnchor"
+
+        anchors.left: parent.left
+        anchors.top: parent.top
+        z: 2
+
+        anchorType: "anchor"
+        anchorDirection: "left"
+
+        enabled: enableLeftAnchor
+        visible: enableLeftAnchor
+    }
+
+    Anchor {
+        id: rightAnchor
+        objectName: "rightAnchor"
+
+        anchors.right: parent.right
+        anchors.top: parent.top
+        z: 2
+
+        anchorType: "anchor"
+        anchorDirection: "right"
+
+        enabled: enableRightAnchor
+        visible: enableRightAnchor
+    }
+
+    Rectangle {
+        id: topBar
+        width: parent.width
+        height: 16
+        z: 1
+        color: barColor
+        anchors.top: parent.top
+        radius: parent.radius
+        border.width: parent.border.width
+        border.color: parent.border.color
+
+        Text {
+            text: name
+            color: "#62717E"
+            font.bold: true
+            anchors.centerIn: parent
+            font.pixelSize: Math.max(10, topBar.height * 0.6)
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.NoWrap
+        }
+    }
 
     MouseArea {
         id: mouseArea
@@ -58,8 +111,7 @@ Rectangle {
     }
 
     function shouldBeRemoved(mouse) {
-        return mouse.button === Qt.RightButton || Drag.target === null
-            || Drag.target.objectName === null || Drag.target.objectName !== "dragTarget";
+        return mouse.button === Qt.RightButton;
     }
 
     function removeIfNeeded(mouse) {

@@ -5,9 +5,11 @@
         <file>qml/BlockDiagram.qml</file>
         <file>qml/BlockCreator.qml</file>
         <file>qml/DraggableCanvas.qml</file>
-<!--        <file>qml/BezierConnection.qml</file>-->
+        <file>qml/Anchor.qml</file>
+        <file>qml/BezierConnection.qml</file>
+        <file>qml/BezierConnectionFactory.qml</file>
+
 <!--        <file>qml/SearchableList.qml</file>-->
-<!--        <file>qml/Anchor.qml</file>-->
 <!--        <file>qml/EditableConfirmField.qml</file>-->
 <!--        <file>qml/EditableComboBox.qml</file>-->
 

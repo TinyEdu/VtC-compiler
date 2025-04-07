@@ -3,10 +3,7 @@ import QtQuick
 import QtQuick.Controls
 
 Rectangle {
-    id: root
-    anchors.fill: parent
-    visible: true
-
+    id: draggableCanvas
     property string typeName: "draggableCanvas"
     property real canvasWidth: 2000
     property real canvasHeight: 2000
@@ -19,6 +16,9 @@ Rectangle {
     property real offsetY: 0
 
     property var dragTarget: dragTarget
+
+    anchors.fill: parent
+    visible: true
 
     Flickable {
         id: flickable
