@@ -123,6 +123,8 @@ Rectangle {
                     offsetY += dy / currentScale;
                     lastX = mouse.x;
                     lastY = mouse.y;
+
+                    bezierFactory.updateAllConnections();
                 }
             }
 
@@ -148,6 +150,8 @@ Rectangle {
                     offsetX -= wheel.angleDelta.x / currentScale;
                     offsetY -= wheel.angleDelta.y / currentScale;
                 }
+
+                bezierFactory.updateAllConnections();
             }
         }
     }

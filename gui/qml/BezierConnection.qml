@@ -8,6 +8,7 @@ Item {
     property var leftAnchor
     property var rightAnchor
     property var model
+    property var bezierConnectionLogic
 
     property int startX
     property int startY
@@ -19,7 +20,11 @@ Item {
     height: draggableCanvas.height
     visible: true
     clip: false
-    z: 100000
+
+    Component.onCompleted: {
+        bezierConnectionLogic = bezierConnectionFactoryCPP.newComponent();
+        bezierConnectionLogic.Associate(this);
+    }
 
     function redraw() {
         connectionCanvas.requestPaint();
@@ -52,6 +57,7 @@ Item {
         leftAnchor.resetConnection();
         rightAnchor.resetConnection();
     }
+
     Canvas {
         id: connectionCanvas
         anchors.fill: parent

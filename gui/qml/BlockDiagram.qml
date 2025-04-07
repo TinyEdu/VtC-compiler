@@ -85,6 +85,8 @@ Rectangle {
         drag.target: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
 
+        onPositionChanged: bezierFactory.updateAllConnections();
+
         onReleased: function (mouse) {
             removeIfNeeded(mouse);
         }
@@ -98,12 +100,10 @@ Rectangle {
     function isIntersecting2(mouse) {
         var localPos = blockCreator.mapToItem(draggableCanvas, Qt.point(mouse.x, mouse.y));
 
-        // Account for scale and offset applied to the draggableCanvas
-        var inverseScale = 1.0 / draggableCanvas.scale.x; // Assuming uniform scale
+        var inverseScale = 1.0 / draggableCanvas.scale.x;
         var offsetX = draggableCanvas.x;
         var offsetY = draggableCanvas.y;
 
-        // Adjust the local position by the inverse of scale and offset
         localPos.x = (localPos.x - offsetX) * inverseScale;
         localPos.y = (localPos.y - offsetY) * inverseScale;
 
@@ -116,7 +116,8 @@ Rectangle {
 
     function removeIfNeeded(mouse) {
         if (shouldBeRemoved(mouse) && !isIntersecting2(mouse)) {
-            model.remove(index)
+            bezierFactory.deleteConnection(index);
+            model.remove(index);
         }
     }
 }

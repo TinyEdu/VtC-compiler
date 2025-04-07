@@ -25,6 +25,7 @@ int GraphicalUserInterface::run(int argc, char* argv[])
     QLoggingCategory::setFilterRules("qt.qml.debug=true");
     qmlRegisterType<Anchor>("Anchor", 1, 0, "Anchor");
     qmlRegisterType<BlockDiagram>("BlockDiagram", 1, 0, "BlockDiagram");
+    qmlRegisterType<BezierConnection>("BezierConnection", 1, 0, "BezierConnection");
 
     ProgramSerializator serializator(&engine);
     engine.rootContext()->setContextProperty("ProgramSerializator", &serializator);
@@ -32,8 +33,8 @@ int GraphicalUserInterface::run(int argc, char* argv[])
     BlockDiagramFactory blockDiagramFactory(&engine);
     engine.rootContext()->setContextProperty("blockDiagramFactory", &blockDiagramFactory);
 
-    BezierConnectionFactory bezierConnectionFactory(&engine);
-    engine.rootContext()->setContextProperty("bezierConnectionFactory", &bezierConnectionFactory);
+    BezierConnectionFactory bezierConnectionFactoryCPP(&engine);
+    engine.rootContext()->setContextProperty("bezierConnectionFactoryCPP", &bezierConnectionFactoryCPP);
 
     AnchorFactory anchorFactory(&engine);
     engine.rootContext()->setContextProperty("anchorFactory", &anchorFactory);

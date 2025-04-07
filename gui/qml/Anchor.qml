@@ -7,11 +7,9 @@ Rectangle {
 
     property var anchorId
     property var draggableCanvas
-    property int connectionIndex
+    property int connectionIndex: -1
     property string anchorDirection: "left"
     property string anchorType: "anchor"
-
-    property BezierConnection connection
 
     width: 16
     height: 16
@@ -23,7 +21,7 @@ Rectangle {
     property var anchorLogic
 
     function resetConnection() {
-        connection = null;
+        connectionIndex = -1;
     }
 
     Component.onCompleted: {

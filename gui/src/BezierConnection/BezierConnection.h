@@ -13,7 +13,7 @@ public:
     {
     }
 
-    Q_INVOKABLE void Associate(QObject* qml, const QString& type)
+    Q_INVOKABLE void Associate(QObject* qml)
     {
         qml_obj = qobject_cast<QQuickItem*>(qml);
         BezierConnectionManager::instance()->registerBezierConnection(qml_obj);
