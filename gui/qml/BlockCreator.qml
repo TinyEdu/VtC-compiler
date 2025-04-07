@@ -9,6 +9,84 @@ Rectangle {
     id: blockCreator
     objectName: "blockCreator"
 
+    property Component blockDiagramDelegate: BlockDiagram { model: itemModel }
+
+    property string blockName: ""
+    property url blockDiagramUrl: "BlockDiagram.qml"
+
+    property Component blockDiagramComponent: null
+    property var previewBlock: null
+    property var previewScaleFactor: 1.0
+
+    color: "#E0E0E0"
+    border.color: "#000000"
+    border.width: 1
+    radius: 8
+
+    Column {
+        id: layoutColumn
+        anchors.fill: parent
+        anchors.margins: 5
+        spacing: 5
+
+        Item {
+            id: blockHolder
+            width: parent.width
+            implicitHeight: previewBlock ? previewBlock.implicitHeight : 0
+        }
+
+        Label {
+            id: label
+            text: blockName
+            font.weight: Font.Bold
+            font.pixelSize: 16
+            height: 22
+            color: "#404040"
+            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    Component.onCompleted: {
+        if (blockDiagramUrl !== "") {
+            blockDiagramComponent = Qt.createComponent(blockDiagramUrl);
+
+            if (blockDiagramComponent.status === Component.Ready) {
+                createPreviewBlock();
+            } else if (blockDiagramComponent.status === Component.Loading) {
+                blockDiagramComponent.statusChanged.connect(function() {
+                    if (blockDiagramComponent.status === Component.Ready) {
+                        createPreviewBlock();
+                    } else if (blockDiagramComponent.status === Component.Error) {
+                        console.error("Error loading component:", blockDiagramComponent.errorString());
+                    }
+                });
+            } else if (blockDiagramComponent.status === Component.Error) {
+                console.error("Component load error:", blockDiagramComponent.errorString());
+            }
+        }
+    }
+
+    function createPreviewBlock() {
+        if (previewBlock) previewBlock.destroy();
+
+        previewBlock = blockDiagramComponent.createObject(blockHolder, {
+            "anchors.centerIn": blockHolder,
+            "scale": previewScaleFactor,
+            "shouldBeRegistered": true,
+            "enabled": true
+        });
+
+        if (previewBlock) {
+            Qt.callLater(() => {
+                blockHolder.implicitHeight = previewBlock.implicitHeight || previewBlock.height;
+                blockCreator.height = 140;
+            });
+        } else {
+            console.error("Failed to create previewBlock.");
+        }
+    }
+
     MouseArea {
         id: spawnerArea
         objectName: "spawnerArea"
@@ -16,6 +94,8 @@ Rectangle {
         anchors.fill: parent
         drag.target: parent
         acceptedButtons: Qt.LeftButton
+        preventStealing: true
+        z: 10
 
         onPressed: function (mouse) {
             itemModel.append({"x": mouse.x, "y": mouse.y});
@@ -45,9 +125,7 @@ Rectangle {
     Instantiator {
         id: instantiator
         model: itemModel
-        delegate: BlockDiagram {
-            model: itemModel
-        }
+        delegate: blockDiagramDelegate
 
         onObjectAdded: (index, object) => {
             object.parent = blockCreator.parent;
@@ -59,6 +137,7 @@ Rectangle {
             object.x = localPos.x;
             object.y = localPos.y;
 
+            object.blockCreator = blockCreator;
             spawnerArea.drag.target = object;
 
             object.Drag.active = true;

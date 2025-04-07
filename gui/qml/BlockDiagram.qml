@@ -13,8 +13,9 @@ Rectangle {
     property color borderColor: "#84818E"
     property bool enableLeftAnchor: true
     property bool enableRightAnchor: true
-    property bool shouldBeRegistered: true
+    property bool shouldBeRegistered: false
     property var blockDiagramLogic
+    property var blockCreator
     property var model
 
     height: 100
@@ -37,8 +38,9 @@ Rectangle {
         anchorType: "anchor"
         anchorDirection: "left"
 
-        enabled: enableLeftAnchor
+        enabled: enableLeftAnchor || blockDiagram.enabled
         visible: enableLeftAnchor
+        isPreview: shouldBeRegistered
     }
 
     Anchor {
@@ -52,8 +54,9 @@ Rectangle {
         anchorType: "anchor"
         anchorDirection: "right"
 
-        enabled: enableRightAnchor
+        enabled: enableRightAnchor || blockDiagram.enabled
         visible: enableRightAnchor
+        isPreview: shouldBeRegistered
     }
 
     Rectangle {
@@ -118,8 +121,7 @@ Rectangle {
         if (shouldBeRemoved(mouse) && !isIntersecting2(mouse)) {
             if (enableLeftAnchor) {
                 bezierFactory.deleteConnection(leftAnchor.connectionIndex);
-            }
-            else if (enableRightAnchor) {
+            } else if (enableRightAnchor) {
                 bezierFactory.deleteConnection(rightAnchor.connectionIndex);
             }
 

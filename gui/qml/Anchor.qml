@@ -10,6 +10,7 @@ Rectangle {
     property int connectionIndex: -1
     property string anchorDirection: "left"
     property string anchorType: "anchor"
+    property bool isPreview: false
 
     width: 16
     height: 16
@@ -44,6 +45,7 @@ Rectangle {
         drag.target: null
         preventStealing: true
         hoverEnabled: true
+        enabled: !anchor.isPreview
 
         property bool followMouse: false
 

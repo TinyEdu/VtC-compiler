@@ -30,12 +30,19 @@ Window {
         }
     }
 
-    BlockCreator {
-        id: blockCreator
-        x: 30
-        y: 40
-        width: 42
-        height: 383
-        color: "gray"
+    Rectangle {
+        id: searchableListContainer
+        width: parent.width * 0.25
+        height: parent.height
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
+        }
+
+        SearchableList {
+            id: searchableList
+            anchors.fill: parent
+        }
     }
 }

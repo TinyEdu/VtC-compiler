@@ -9,11 +9,11 @@
         <file>qml/BezierConnection.qml</file>
         <file>qml/BezierConnectionFactory.qml</file>
 
-<!--        <file>qml/SearchableList.qml</file>-->
-<!--        <file>qml/EditableConfirmField.qml</file>-->
-<!--        <file>qml/EditableComboBox.qml</file>-->
+        <file>qml/SearchableList.qml</file>
+        <file>qml/EditableConfirmField.qml</file>
+        <file>qml/EditableComboBox.qml</file>
 
-<!--        <file>qml/Blocks/BreakBlock.qml</file>-->
+        <file>qml/Blocks/BreakBlock.qml</file>
 <!--        <file>qml/Blocks/CallEventBlock.qml</file>-->
 <!--        <file>qml/Blocks/CreateVariableBySignalBlock.qml</file>-->
 <!--        <file>qml/Blocks/CreateVariableByValueBlock.qml</file>-->

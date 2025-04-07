@@ -1,77 +1,35 @@
+// SearchableList.qml
 import QtQuick
 import QtQuick.Controls
+
+import "Blocks"
 
 Item {
     id: searchableList
     anchors.fill: parent
 
     property string searchText: ""
-    property Item draggableCanvas
-    property Item rootObj
+
+    Component {
+        id: blockDiagram
+        BlockDiagram { model: itemModel }
+    }
+
+    Component {
+        id: breakBlock
+        BreakBlock { model: itemModel }
+    }
+
+    property var delegateMap: ({
+        "blockDiagram": blockDiagram,
+        "breakBlock": breakBlock
+    })
 
     ListModel {
         id: originalModel
 
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CallEventBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/ForLoopBlock.qml"}
-        ListElement { blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"}
+        ListElement { name: "Block 1"; blockDiagramUrl: "BlockDiagram.qml"; delegateKey: "blockDiagram" }
+        ListElement { name: "Block 2"; blockDiagramUrl: "Blocks/BreakBlock.qml"; delegateKey: "breakBlock" }
     }
 
     ListModel {
@@ -85,8 +43,9 @@ Item {
             if (searchText === "" ||
                 item.name.toLowerCase().indexOf(searchText.toLowerCase()) !== -1) {
                 filteredModel.append({
-                    "name": "name",
+                    "name": item.name,
                     "blockDiagramUrl": item.blockDiagramUrl,
+                    "delegateKey": item.delegateKey,
                     "previewScaleFactor": 1.0
                 });
             }
@@ -124,16 +83,21 @@ Item {
             id: listView
             model: filteredModel
             spacing: 6
-            clip: true
+            clip: false
 
-            delegate: BlockCreator {
+            delegate: Item {
                 parent: searchableList
-                blockName: "name"
-                blockDiagramUrl: model.blockDiagramUrl
-                previewScaleFactor: 1.0
+                width: listView.width
+                height: 140
 
-                draggableCanvas: searchableList.draggableCanvas
-                rootObj: searchableList.rootObj
+                BlockCreator {
+                    id: blockCreator
+                    anchors.fill: parent
+                    blockName: model.name
+                    blockDiagramUrl: model.blockDiagramUrl
+                    blockDiagramDelegate: delegateMap[model.delegateKey]
+                    previewScaleFactor: 1.0
+                }
             }
         }
     }
