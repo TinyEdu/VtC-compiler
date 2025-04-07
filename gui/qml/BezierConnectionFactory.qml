@@ -49,6 +49,7 @@ Item {
             var connection = instantiator.objectAt(itemModel.count - 1);
             connection.rightAnchor = item;
             item.connectionIndex = anchor.connectionIndex;
+            connection.update();
             return index;
         }
 
@@ -65,9 +66,11 @@ Item {
     }
 
     function deleteConnection(connectionIndex) {
-        var connection = instantiator.objectAt(connectionIndex);
-        connection.reset();
-        itemModel.remove(connectionIndex);
+        let toDelete = instantiator.objectAt(connectionIndex);
+        if (toDelete) {
+            toDelete.reset();
+            itemModel.remove(connectionIndex);
+        }
     }
 
     function updateAllConnections() {

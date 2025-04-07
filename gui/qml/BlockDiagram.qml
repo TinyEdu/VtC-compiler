@@ -116,7 +116,13 @@ Rectangle {
 
     function removeIfNeeded(mouse) {
         if (shouldBeRemoved(mouse) && !isIntersecting2(mouse)) {
-            bezierFactory.deleteConnection(index);
+            if (enableLeftAnchor) {
+                bezierFactory.deleteConnection(leftAnchor.connectionIndex);
+            }
+            else if (enableRightAnchor) {
+                bezierFactory.deleteConnection(rightAnchor.connectionIndex);
+            }
+
             model.remove(index);
         }
     }
