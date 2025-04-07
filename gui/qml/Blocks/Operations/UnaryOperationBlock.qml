@@ -9,11 +9,6 @@ BlockDiagram {
     height: 50
     color: "lightblue"
 
-    Component.onCompleted: {
-        unaryOperationBlock.registerSlot(inputValue)
-        unaryOperationBlock.registerSlot(outputValue)
-    }
-
     Anchor {
         id: outputValue
         objectName: "outputValue"

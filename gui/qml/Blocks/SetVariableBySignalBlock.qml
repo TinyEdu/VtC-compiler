@@ -9,11 +9,6 @@ BlockDiagram {
     height: 70
     color: "lightblue"
 
-
-    Component.onCompleted: {
-        setVariableBySignalBlock.registerSlot(valueAnchor)
-    }
-
     EditableConfirmField {
         id: variableNameField
         objectName: "variableNameField"

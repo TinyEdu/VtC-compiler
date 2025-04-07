@@ -12,12 +12,6 @@ BlockDiagram {
     enableLeftAnchor: true
     enableRightAnchor: true
 
-    Component.onCompleted: {
-        whileBlock.registerSlot(conditionAnchor)
-        whileBlock.registerSlot(startAnchor)
-        whileBlock.registerSlot(endAnchor)
-    }
-
     Text {
         text: "Condition"
         color: "#62717E"

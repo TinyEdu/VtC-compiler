@@ -1,5 +1,5 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
@@ -11,12 +11,6 @@ BlockDiagram {
 
     enableLeftAnchor: true
     enableRightAnchor: false
-
-    Component.onCompleted: {
-        ifBlock.registerSlot(conditionAnchor)
-        ifBlock.registerSlot(trueAnchor)
-        ifBlock.registerSlot(falseAnchor)
-    }
 
     Text {
         text: "Condition"

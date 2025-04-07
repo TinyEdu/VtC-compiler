@@ -12,10 +12,6 @@ BlockDiagram {
     enableLeftAnchor: false
     enableRightAnchor: false
 
-    Component.onCompleted: {
-        getVariableBlock.registerSlot(passingAnchor)
-    }
-
     EditableConfirmField {
         id: variableField
         objectName: "variableField"

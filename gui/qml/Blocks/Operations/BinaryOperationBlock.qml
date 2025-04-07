@@ -9,12 +9,6 @@ BlockDiagram {
     height: 69
     color: "lightblue"
 
-    Component.onCompleted: {
-        binaryOperationBlock.registerSlot(rightInputValue)
-        binaryOperationBlock.registerSlot(leftInputValue)
-        binaryOperationBlock.registerSlot(outputValue)
-    }
-
     Anchor {
         id: outputValue
         objectName: "outputValue"
@@ -27,7 +21,6 @@ BlockDiagram {
 
         width: 16
         height: 16
-
 
         anchorType: "data"
         anchorDirection: "right"

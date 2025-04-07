@@ -9,12 +9,6 @@ BlockDiagram {
     height: 103
     color: "lightblue"
 
-    Component.onCompleted: {
-        forLoop.registerSlot(incrementAnchor)
-        forLoop.registerSlot(startAnchor)
-        forLoop.registerSlot(endAnchor)
-    }
-
     Text {
         text: "Inc"
         color: "#62717E"

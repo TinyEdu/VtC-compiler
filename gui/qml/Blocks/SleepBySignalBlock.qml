@@ -1,5 +1,5 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
@@ -11,10 +11,6 @@ BlockDiagram {
 
     enableLeftAnchor: true
     enableRightAnchor: true
-
-    Component.onCompleted: {
-        sleepBySignalBlock.registerSlot(lAnchor)
-    }
 
     Text {
         text: "Time"

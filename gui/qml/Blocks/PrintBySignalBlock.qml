@@ -11,10 +11,6 @@ BlockDiagram {
 
     property bool isFrozen: false
 
-    Component.onCompleted: {
-        printBlock.registerSlot(valueAnchor)
-    }
-
     Anchor {
         id: valueAnchor
         objectName: "valueAnchor"

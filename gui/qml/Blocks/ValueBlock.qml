@@ -1,5 +1,5 @@
-import QtQuick 6.0
-import QtQuick.Controls 6.0
+import QtQuick
+import QtQuick.Controls
 import "../"
 
 BlockDiagram {
@@ -11,10 +11,6 @@ BlockDiagram {
 
     enableLeftAnchor: false
     enableRightAnchor: false
-
-    Component.onCompleted: {
-        valueBlock.registerSlot(passingAnchor)
-    }
 
     EditableConfirmField {
         id: valueField
