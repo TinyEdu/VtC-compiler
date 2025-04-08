@@ -27,6 +27,8 @@ BlockDiagram {
 
     Anchor {
         id: passingAnchor
+        objectName: "passingAnchor"
+
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.rightMargin: 3

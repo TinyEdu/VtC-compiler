@@ -8,6 +8,8 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 
+#include "BezierConnection/BezierConnectionManager.h"
+
 
 ProgramSerializator* ProgramSerializator::instance()
 {
@@ -52,7 +54,7 @@ QJsonObject ProgramSerializator::readConnections(QJsonObject root)
 {
     QJsonArray connectionsArray;
 
-    QList<QPointer<QQuickItem>> anchors = CollisionManager::instance()->getAnchors();
+    QList<QPointer<QQuickItem>> anchors = BezierConnectionManager::instance()->getConnections();
     for (const QPointer<QQuickItem>& item : anchors)
     {
         if (!item) continue;

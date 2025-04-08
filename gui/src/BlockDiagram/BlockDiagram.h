@@ -19,6 +19,12 @@ public:
         BlockDiagramManager::instance()->registerBlockDiagram(qml_obj);
     }
 
+    Q_INVOKABLE void Disassociate(QObject* qml)
+    {
+        qml_obj = qobject_cast<QQuickItem*>(qml);
+        BlockDiagramManager::instance()->unregisterBlockDiagram(qml_obj);
+    }
+
     QString qmlName() const { return m_qmlName; }
 
 private:

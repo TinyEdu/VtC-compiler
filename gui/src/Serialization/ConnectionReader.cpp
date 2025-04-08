@@ -28,27 +28,27 @@ std::string ConnectionReader::readProperty(QQuickItem* anchor, QString propertyN
 
 Connection* ConnectionReader::extract(QQuickItem* anchor)
 {
-    if (readProperty(anchor, "anchorDirection") != "left")
-    {
-        return nullptr;
-    }
 
     const auto result = new Connection();
-    // Initialize QVariant for the returned value
-    QVariant vOtherAnchor;
 
-    // Call the getOtherAnchor method via QMetaObject::invokeMethod
-    if (QMetaObject::invokeMethod(anchor, "getOtherAnchor", Qt::DirectConnection, Q_RETURN_ARG(QVariant, vOtherAnchor))) {
-        QQuickItem* otherAnchor = vOtherAnchor.value<QQuickItem*>();
+    QVariant rightAnchor;
+    if (QMetaObject::invokeMethod(anchor, "getRightAnchor", Qt::DirectConnection,
+        Q_RETURN_ARG(QVariant, rightAnchor))) {
 
-        // Read 'anchorId' from both anchor and otherAnchor
+        QQuickItem* anchor = rightAnchor.value<QQuickItem*>();
+
         result->from = readUuidProperty(anchor, "anchorId");
-        result->to = otherAnchor ? readUuidProperty(otherAnchor, "anchorId") : QUuid();
+        result->to = anchor ? readUuidProperty(anchor, "anchorId") : QUuid();
     }
 
-    if(result->from.isNull() || result->to.isNull()) {
-        delete result;
-        return nullptr;
+    QVariant leftAnchor;
+    if (QMetaObject::invokeMethod(anchor, "getLeftAnchor", Qt::DirectConnection,
+        Q_RETURN_ARG(QVariant, leftAnchor))) {
+
+        QQuickItem* anchor = leftAnchor.value<QQuickItem*>();
+
+        result->from = readUuidProperty(anchor, "anchorId");
+        result->to = anchor ? readUuidProperty(anchor, "anchorId") : QUuid();
     }
 
     return result;

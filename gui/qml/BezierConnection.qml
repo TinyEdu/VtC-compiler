@@ -26,8 +26,21 @@ Item {
         bezierConnectionLogic.Associate(this);
     }
 
+    Component.onDestruction: {
+        bezierConnectionLogic.Disassociate(this);
+        bezierConnectionLogic = null;
+    }
+
     function redraw() {
         connectionCanvas.requestPaint();
+    }
+
+    function getLeftAnchor() {
+        return leftAnchor;
+    }
+
+    function getRightAnchor() {
+        return rightAnchor;
     }
 
     function update() {

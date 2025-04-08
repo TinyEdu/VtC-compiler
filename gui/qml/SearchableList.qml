@@ -75,7 +75,6 @@ Item {
     ListModel {
         id: originalModel
 
-        ListElement { name: "blockDiagram"; blockDiagramUrl: "BlockDiagram.qml"; delegateKey: "blockDiagram" }
         ListElement { name: "breakBlock"; blockDiagramUrl: "Blocks/BreakBlock.qml"; delegateKey: "breakBlock" }
         ListElement { name: "callEventBlock"; blockDiagramUrl: "Blocks/CallEventBlock.qml"; delegateKey: "callEventBlock" }
         ListElement { name: "createVariableBySignalBlock"; blockDiagramUrl: "Blocks/CreateVariableBySignalBlock.qml"; delegateKey: "createVariableBySignalBlock" }

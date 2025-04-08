@@ -73,7 +73,7 @@ Rectangle {
         previewBlock = blockDiagramComponent.createObject(blockHolder, {
             "anchors.centerIn": blockHolder,
             "scale": previewScaleFactor,
-            "shouldBeRegistered": true,
+            "shouldBeRegistered": false,
             "enabled": true
         });
 

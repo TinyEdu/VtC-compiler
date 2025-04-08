@@ -12,15 +12,14 @@ BezierConnectionManager::BezierConnectionManager(QObject* parent) : QObject(pare
 {
 }
 
-void BezierConnectionManager::registerBezierConnection(QQuickItem* block)
+void BezierConnectionManager::registerBezierConnection(QQuickItem* connection)
 {
-    if (block && !m_connections.contains(block))
+    if (connection && !m_connections.contains(connection))
     {
-        m_connections.append(block);
+        m_connections.append(connection);
 
-        connect(block, &QObject::destroyed, this, [this, block]() {
-            m_connections.removeAll(block);
-        });
+        connect(connection, &QObject::destroyed, this,
+            [this, connection]() { m_connections.removeAll(connection); });
     }
 }
 

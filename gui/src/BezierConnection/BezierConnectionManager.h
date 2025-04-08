@@ -11,10 +11,10 @@ class BezierConnectionManager : public QObject
 
 public:
     static BezierConnectionManager* instance();
-    void registerBezierConnection(QQuickItem* block);
+    void registerBezierConnection(QQuickItem* connection);
     void unregisterBezierConnection(QQuickItem* block);
 
-    QList<QPointer<QQuickItem>> getBlocks() const { return m_connections; }
+    QList<QPointer<QQuickItem>> getConnections() const { return m_connections; }
 private:
     explicit BezierConnectionManager(QObject* parent = nullptr);
 

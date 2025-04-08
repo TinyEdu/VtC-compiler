@@ -19,6 +19,12 @@ public:
         BezierConnectionManager::instance()->registerBezierConnection(qml_obj);
     }
 
+    Q_INVOKABLE void Disassociate(QObject* qml)
+    {
+        qml_obj = qobject_cast<QQuickItem*>(qml);
+        BezierConnectionManager::instance()->unregisterBezierConnection(qml_obj);
+    }
+
     QString qmlName() const { return m_qmlName; }
 
 private:
