@@ -9,7 +9,6 @@ Rectangle {
     id: blockCreator
     objectName: "blockCreator"
 
-
     property string blockName: ""
     property Component blockDiagramDelegate: BlockDiagram { model: itemModel }
     property url blockDiagramUrl: "BlockDiagram.qml"
@@ -23,27 +22,34 @@ Rectangle {
     border.width: 1
     radius: 8
 
-    Column {
-        id: layoutColumn
-        anchors.fill: parent
-        anchors.margins: 5
-        spacing: 5
-
-        Item {
-            id: blockHolder
-            width: parent.width
-            implicitHeight: previewBlock ? previewBlock.implicitHeight : 0
+    Item {
+        id: blockHolder
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: label.top
+            margins: 5
         }
 
-        Label {
-            id: label
-            text: blockName
-            font.weight: Font.Bold
-            font.pixelSize: 16
-            height: 22
-            color: "#404040"
-            horizontalAlignment: Text.AlignHCenter
-            anchors.horizontalCenter: parent.horizontalCenter
+        onWidthChanged: if (previewBlock) Qt.callLater(createPreviewBlock)
+        onHeightChanged: if (previewBlock) Qt.callLater(createPreviewBlock)
+    }
+
+    // Label aligned at the bottom
+    Label {
+        id: label
+        text: blockName
+        font.weight: Font.Bold
+        font.pixelSize: 16
+        height: 22
+        color: "#404040"
+        horizontalAlignment: Text.AlignHCenter
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            margins: 5
         }
     }
 
@@ -68,29 +74,40 @@ Rectangle {
     }
 
     function createPreviewBlock() {
-        if (previewBlock) previewBlock.destroy();
+        if (previewBlock) {
+            previewBlock.destroy();
+        }
 
         previewBlock = blockDiagramComponent.createObject(blockHolder, {
-            "anchors.centerIn": blockHolder,
-            "scale": previewScaleFactor,
             "shouldBeRegistered": false,
             "enabled": true
         });
 
-        if (previewBlock) {
-            Qt.callLater(() => {
-                blockHolder.implicitHeight = previewBlock.implicitHeight || previewBlock.height;
-                blockCreator.height = 140;
-            });
-        } else {
+        if (!previewBlock) {
             console.error("Failed to create previewBlock.");
+            return;
         }
+
+        Qt.callLater(() => {
+            const pw = previewBlock.implicitWidth || previewBlock.width;
+            const ph = previewBlock.implicitHeight || previewBlock.height;
+
+            const margin = 10;
+            const cw = Math.max(1, blockHolder.width - margin);
+            const ch = Math.max(1, blockHolder.height - margin);
+
+            const scaleW = cw / pw;
+            const scaleH = ch / ph;
+            previewScaleFactor = Math.min(scaleW, scaleH);
+
+            previewBlock.scale = previewScaleFactor;
+            previewBlock.anchors.centerIn = blockHolder;
+        });
     }
 
     MouseArea {
         id: spawnerArea
         objectName: "spawnerArea"
-
         anchors.fill: parent
         drag.target: parent
         acceptedButtons: Qt.LeftButton
@@ -129,7 +146,6 @@ Rectangle {
 
         onObjectAdded: (index, object) => {
             object.parent = dragLayer;
-
             object.model = itemModel;
 
             const itemData = itemModel.get(index);

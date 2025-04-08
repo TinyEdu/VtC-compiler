@@ -75,27 +75,25 @@ Item {
     ListModel {
         id: originalModel
 
-        ListElement { name: "breakBlock"; blockDiagramUrl: "Blocks/BreakBlock.qml"; delegateKey: "breakBlock" }
-        ListElement { name: "callEventBlock"; blockDiagramUrl: "Blocks/CallEventBlock.qml"; delegateKey: "callEventBlock" }
-        ListElement { name: "createVariableBySignalBlock"; blockDiagramUrl: "Blocks/CreateVariableBySignalBlock.qml"; delegateKey: "createVariableBySignalBlock" }
-        ListElement { name: "createVariableByValueBlock"; blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"; delegateKey: "createVariableByValueBlock" }
-        ListElement { name: "endBlock"; blockDiagramUrl: "Blocks/EndBlock.qml"; delegateKey: "endBlock" }
-        ListElement { name: "forLoopBlock"; blockDiagramUrl: "Blocks/ForLoopBlock.qml"; delegateKey: "forLoopBlock" }
-        ListElement { name: "getVariableBlock"; blockDiagramUrl: "Blocks/GetVariableBlock.qml"; delegateKey: "getVariableBlock" }
-        ListElement { name: "ifBlock"; blockDiagramUrl: "Blocks/IfBlock.qml"; delegateKey: "ifBlock" }
-        ListElement { name: "listenEventBlock"; blockDiagramUrl: "Blocks/ListenEventBlock.qml"; delegateKey: "listenEventBlock" }
-        ListElement { name: "printBySignalBlock"; blockDiagramUrl: "Blocks/PrintBySignalBlock.qml"; delegateKey: "printBySignalBlock" }
-        ListElement { name: "printByValueBlock"; blockDiagramUrl: "Blocks/PrintByValueBlock.qml"; delegateKey: "printByValueBlock" }
-        ListElement { name: "setVariableBySignalBlock"; blockDiagramUrl: "Blocks/SetVariableBySignalBlock.qml"; delegateKey: "setVariableBySignalBlock" }
-        ListElement { name: "setVariableByValueBlock"; blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"; delegateKey: "setVariableByValueBlock" }
-        ListElement { name: "skipBlock"; blockDiagramUrl: "Blocks/SkipBlock.qml"; delegateKey: "skipBlock" }
-        ListElement { name: "sleepBySignalBlock"; blockDiagramUrl: "Blocks/SleepBySignalBlock.qml"; delegateKey: "sleepBySignalBlock" }
-        ListElement { name: "sleepByValueBlock"; blockDiagramUrl: "Blocks/SleepByValueBlock.qml"; delegateKey: "sleepByValueBlock" }
-        ListElement { name: "startBlock"; blockDiagramUrl: "Blocks/StartBlock.qml"; delegateKey: "startBlock" }
-        ListElement { name: "valueBlock"; blockDiagramUrl: "Blocks/ValueBlock.qml"; delegateKey: "valueBlock" }
-        ListElement { name: "whileBlock"; blockDiagramUrl: "Blocks/WhileBlock.qml"; delegateKey: "whileBlock" }
-        ListElement { name: "binaryOperationBlock"; blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"; delegateKey: "binaryOperationBlock" }
-        ListElement { name: "unaryOperationBlock"; blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"; delegateKey: "unaryOperationBlock" }
+        ListElement { name: "Break"; blockDiagramUrl: "Blocks/BreakBlock.qml"; delegateKey: "breakBlock" }
+        ListElement { name: "Call Event"; blockDiagramUrl: "Blocks/CallEventBlock.qml"; delegateKey: "callEventBlock" }
+        ListElement { name: "Create Variable (By Signal)"; blockDiagramUrl: "Blocks/CreateVariableBySignalBlock.qml"; delegateKey: "createVariableBySignalBlock" }
+        ListElement { name: "Create Variable (By Value)"; blockDiagramUrl: "Blocks/CreateVariableByValueBlock.qml"; delegateKey: "createVariableByValueBlock" }
+        ListElement { name: "End"; blockDiagramUrl: "Blocks/EndBlock.qml"; delegateKey: "endBlock" }
+        ListElement { name: "For Loop"; blockDiagramUrl: "Blocks/ForLoopBlock.qml"; delegateKey: "forLoopBlock" }
+        ListElement { name: "Get Variables"; blockDiagramUrl: "Blocks/GetVariableBlock.qml"; delegateKey: "getVariableBlock" }
+        ListElement { name: "If Condition"; blockDiagramUrl: "Blocks/IfBlock.qml"; delegateKey: "ifBlock" }
+        ListElement { name: "Listen Event"; blockDiagramUrl: "Blocks/ListenEventBlock.qml"; delegateKey: "listenEventBlock" }
+        ListElement { name: "Print (By Signal)"; blockDiagramUrl: "Blocks/PrintBySignalBlock.qml"; delegateKey: "printBySignalBlock" }
+        ListElement { name: "Print (By Value)"; blockDiagramUrl: "Blocks/PrintByValueBlock.qml"; delegateKey: "printByValueBlock" }
+        ListElement { name: "Ser Variable (By Signal)"; blockDiagramUrl: "Blocks/SetVariableBySignalBlock.qml"; delegateKey: "setVariableBySignalBlock" }
+        ListElement { name: "Ser Variable (By Value)"; blockDiagramUrl: "Blocks/SetVariableByValueBlock.qml"; delegateKey: "setVariableByValueBlock" }
+        ListElement { name: "Skip"; blockDiagramUrl: "Blocks/SkipBlock.qml"; delegateKey: "skipBlock" }
+        ListElement { name: "Start"; blockDiagramUrl: "Blocks/StartBlock.qml"; delegateKey: "startBlock" }
+        ListElement { name: "Value"; blockDiagramUrl: "Blocks/ValueBlock.qml"; delegateKey: "valueBlock" }
+        ListElement { name: "While Loop"; blockDiagramUrl: "Blocks/WhileBlock.qml"; delegateKey: "whileBlock" }
+        ListElement { name: "Binary Operation"; blockDiagramUrl: "Blocks/Operations/BinaryOperationBlock.qml"; delegateKey: "binaryOperationBlock" }
+        ListElement { name: "Unary Operation"; blockDiagramUrl: "Blocks/Operations/UnaryOperationBlock.qml"; delegateKey: "unaryOperationBlock" }
     }
 
     // --- Search input ---
