@@ -24,29 +24,69 @@ Window {
     Rectangle {
         id: menuBar
         anchors {
-            right: parent.right
             left: parent.left
+            right: parent.right
             top: parent.top
         }
 
         height: 40
-        width: parent.width
-
+        color: "#84818E"
         border.color: "black"
         border.width: 1
 
-        Button {
+        // Button width and spacing
+        property int buttonWidth: width * 0.125
+        property int buttonSpacing: 4
+
+        EditableButton {
+            id: runButton
+            text: "RUN"
+            width: menuBar.buttonWidth
+            height: parent.height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            onClicked: ProgramSerializator.run()
+
+            backgroundColor: "#50C878"
+            pressedBackgroundColor: "#00A86B"
+            borderColor: "#50C878"
+            textColor: "#ffffff"
+        }
+
+        EditableButton {
+            id: centerButton
+            text: "Center"
+            width: menuBar.buttonWidth
+            height: parent.height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: runButton.left
+            anchors.rightMargin: menuBar.buttonSpacing
+            onClicked: ProgramSerializator.center()
+        }
+
+        EditableButton {
+            id: loadButton
+            text: "Load"
+            width: menuBar.buttonWidth
+            height: parent.height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: centerButton.left
+            anchors.rightMargin: menuBar.buttonSpacing
+            onClicked: ProgramSerializator.load()
+        }
+
+        EditableButton {
             id: saveButton
             text: "Save"
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-
-            width: parent.width * 0.25
-
+            width: menuBar.buttonWidth
+            height: parent.height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: loadButton.left
+            anchors.rightMargin: menuBar.buttonSpacing
             onClicked: ProgramSerializator.save()
         }
     }
+
 
     Rectangle {
         id: draggableCanvasContainer
