@@ -100,13 +100,18 @@ Item {
     }
 
     // --- Search input ---
-    TextField {
+    EditableConfirmField {
         id: searchField
         placeholderText: "Search..."
         text: searchText
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
+
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+
+            margins: 4
+        }
 
         height: 40
         font.pixelSize: 18

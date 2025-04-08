@@ -8,6 +8,8 @@ class ProgramSerializator : public QObject {
     Q_OBJECT
 
 public:
+    static ProgramSerializator* instance();
+
     explicit ProgramSerializator(QQmlEngine* engine, QObject* parent = nullptr)
     : QObject(parent), m_engine(engine)
     {
@@ -17,6 +19,8 @@ public:
     Q_INVOKABLE void load();
 
 private:
+    ProgramSerializator(QObject* parent) : QObject(parent) {}
+    ProgramSerializator() {}
     QJsonObject readBlocks(QJsonObject root);
     QJsonObject readConnections(QJsonObject root);
 

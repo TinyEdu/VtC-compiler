@@ -3,6 +3,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import ProgramSerializator
+
 Window {
     width: 1280
     height: 720
@@ -11,7 +13,7 @@ Window {
     Item {
         id: dragLayer
         anchors.fill: parent
-        z: 9999  // always on top
+        z: 999999
     }
 
     BezierConnectionFactory {
@@ -20,13 +22,40 @@ Window {
     }
 
     Rectangle {
-        id: draggableCanvasContainer
-        width: parent.width * 0.75
-        height: parent.height
-
+        id: menuBar
         anchors {
             right: parent.right
+            left: parent.left
             top: parent.top
+        }
+
+        height: 40
+        width: parent.width
+
+        border.color: "black"
+        border.width: 1
+
+        Button {
+            id: saveButton
+            text: "Save"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            width: parent.width * 0.25
+
+            onClicked: ProgramSerializator.save()
+        }
+    }
+
+    Rectangle {
+        id: draggableCanvasContainer
+        width: parent.width * 0.75
+        height: parent.height - 40
+        border.color: "black"
+        border.width: 1
+        anchors {
+            right: parent.right
             bottom: parent.bottom
         }
 
@@ -39,10 +68,13 @@ Window {
     Rectangle {
         id: searchableListContainer
         width: parent.width * 0.25
-        height: parent.height
+        height: parent.height - 39
+
+        border.color: "black"
+        border.width: 1
+
         anchors {
             left: parent.left
-            top: parent.top
             bottom: parent.bottom
         }
 

@@ -27,9 +27,6 @@ int GraphicalUserInterface::run(int argc, char* argv[])
     qmlRegisterType<BlockDiagram>("BlockDiagram", 1, 0, "BlockDiagram");
     qmlRegisterType<BezierConnection>("BezierConnection", 1, 0, "BezierConnection");
 
-    ProgramSerializator serializator(&engine);
-    engine.rootContext()->setContextProperty("ProgramSerializator", &serializator);
-
     BlockDiagramFactory blockDiagramFactory(&engine);
     engine.rootContext()->setContextProperty("blockDiagramFactory", &blockDiagramFactory);
 
@@ -43,6 +40,8 @@ int GraphicalUserInterface::run(int argc, char* argv[])
                                                    CollisionManager::instance());
     qmlRegisterSingletonInstance<BlockDiagramManager>("BlockDiagramManager", 1, 0, "BlockDiagramManager",
                                                    BlockDiagramManager::instance());
+    qmlRegisterSingletonInstance<ProgramSerializator>("ProgramSerializator", 1, 0, "ProgramSerializator",
+                                               ProgramSerializator::instance());
 
     auto url = QUrl(QStringLiteral("qrc:qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

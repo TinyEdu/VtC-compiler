@@ -9,6 +9,12 @@
 #include <QJsonDocument>
 
 
+ProgramSerializator* ProgramSerializator::instance()
+{
+    static ProgramSerializator instance;
+    return &instance;
+}
+
 void ProgramSerializator::save()
 {
     QJsonObject root;

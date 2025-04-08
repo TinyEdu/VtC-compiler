@@ -1,8 +1,6 @@
 #include "BlockDiagramManager.h"
 
 #include "Serialization/BlockReader.h"
-#include <QJsonArray>
-#include <QJsonDocument>
 
 BlockDiagramManager* BlockDiagramManager::instance()
 {
