@@ -13,6 +13,7 @@
         <file>qml/EditableConfirmField.qml</file>
         <file>qml/EditableComboBox.qml</file>
         <file>qml/EditableButton.qml</file>
+        <file>qml/TextDisplay.qml</file>
 
         <file>qml/Blocks/BreakBlock.qml</file>
         <file>qml/Blocks/CallEventBlock.qml</file>

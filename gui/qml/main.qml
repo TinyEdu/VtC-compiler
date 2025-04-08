@@ -123,4 +123,26 @@ Window {
             anchors.fill: parent
         }
     }
+
+    Rectangle {
+        id: textDisplayContainer
+        height: parent.height * 0.25
+
+        border.color: "black"
+        border.width: 1
+
+        anchors {
+            left: searchableListContainer.right
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        TextDisplay {
+            id: textDisplay
+            anchors.fill: parent
+            backgroundColor: "#ffffff"
+            textColor: "#333333"
+            displayText: "Here will be the code result..."
+        }
+    }
 }

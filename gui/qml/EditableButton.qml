@@ -19,7 +19,7 @@ Rectangle {
     radius: 8
     color: pressed ? backgroundColor : pressedBackgroundColor
     border.color: borderColor
-    border.width: 3
+    border.width: 1
 
     MouseArea {
         id: mouseArea
