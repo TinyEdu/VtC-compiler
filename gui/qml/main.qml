@@ -8,6 +8,12 @@ Window {
     height: 720
     visible: true
 
+    Item {
+        id: dragLayer
+        anchors.fill: parent
+        z: 9999  // always on top
+    }
+
     BezierConnectionFactory {
         id: bezierFactory
         draggableCanvas: draggableCanvas
@@ -15,7 +21,7 @@ Window {
 
     Rectangle {
         id: draggableCanvasContainer
-        width: parent.width * 0.5
+        width: parent.width * 0.75
         height: parent.height
 
         anchors {

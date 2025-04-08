@@ -9,9 +9,9 @@ Rectangle {
     id: blockCreator
     objectName: "blockCreator"
 
-    property Component blockDiagramDelegate: BlockDiagram { model: itemModel }
 
     property string blockName: ""
+    property Component blockDiagramDelegate: BlockDiagram { model: itemModel }
     property url blockDiagramUrl: "BlockDiagram.qml"
 
     property Component blockDiagramComponent: null
@@ -128,12 +128,12 @@ Rectangle {
         delegate: blockDiagramDelegate
 
         onObjectAdded: (index, object) => {
-            object.parent = blockCreator.parent;
+            object.parent = dragLayer;
 
             object.model = itemModel;
 
             const itemData = itemModel.get(index);
-            var localPos = blockCreator.mapToItem(blockCreator.parent, Qt.point(itemData.x, itemData.y));
+            var localPos = blockCreator.mapToItem(dragLayer, Qt.point(itemData.x, itemData.y));
             object.x = localPos.x;
             object.y = localPos.y;
 

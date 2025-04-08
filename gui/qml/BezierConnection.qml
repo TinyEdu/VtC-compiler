@@ -31,6 +31,10 @@ Item {
     }
 
     function update() {
+        // check if the anchors are valid
+        if (leftAnchor === null || rightAnchor === null) {
+            return;
+        }
         let leftGlobal = leftAnchor.mapToItem(draggableCanvas, leftAnchor.width / 2, leftAnchor.height / 2);
         let rightGlobal = rightAnchor.mapToItem(draggableCanvas, rightAnchor.width / 2, rightAnchor.height / 2);
 

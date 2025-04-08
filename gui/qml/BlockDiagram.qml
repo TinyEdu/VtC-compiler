@@ -26,7 +26,9 @@ Rectangle {
     radius: 4
     color: blockColor
     border.color: borderColor
-
+    Component.onDestruction: {
+        console.log("Block Diagram is being destroyed")
+    }
     Anchor {
         id: leftAnchor
         objectName: "leftAnchor"

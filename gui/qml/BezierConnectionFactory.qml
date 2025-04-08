@@ -18,7 +18,7 @@ Item {
         model: itemModel
         delegate: BezierConnection { }
 
-        onObjectAdded: function(index, connection) {
+        onObjectAdded: function (index, connection) {
             const itemData = itemModel.get(index);
             connection.leftAnchor = itemData.leftAnchor;
         }
@@ -29,7 +29,7 @@ Item {
             deleteConnection(anchor.connectionIndex);
         }
 
-        itemModel.append({ "leftAnchor": anchor });
+        itemModel.append({"leftAnchor": anchor});
         return itemModel.count - 1;
     }
 
@@ -39,8 +39,7 @@ Item {
         const item = CollisionManager.isOverAnAnchor(globalMousePos.x, globalMousePos.y, anchor);
         const index = itemModel.count - 1;
 
-        if (item !== null && item.visible && item.enabled && item.anchorDirection !== anchor.anchorDirection &&
-            item.anchorType === anchor.anchorType) {
+        if (item !== null && item.visible && item.enabled && item.anchorDirection !== anchor.anchorDirection && item.anchorType === anchor.anchorType) {
             // in case there is already a connection
             if (item.connectionIndex >= 0 && item.connectionIndex < itemModel.count) {
                 deleteConnection(item.connectionIndex);
@@ -62,7 +61,9 @@ Item {
         let mousePos = anchor.mapToItem(draggableCanvas, mouse.x, mouse.y);
 
         var connection = instantiator.objectAt(connectionIndex);
-        connection.updateWithMousePosition(mousePos.x, mousePos.y);
+        if (connection) {
+            connection.updateWithMousePosition(mousePos.x, mousePos.y);
+        }
     }
 
     function deleteConnection(connectionIndex) {
