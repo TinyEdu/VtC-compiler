@@ -43,6 +43,8 @@ int GraphicalUserInterface::run(int argc, char* argv[])
     qmlRegisterSingletonInstance<ProgramSerializator>("ProgramSerializator", 1, 0, "ProgramSerializator",
                                                ProgramSerializator::instance());
 
+    ProgramSerializator::instance()->parser = this->parser;
+
     auto url = QUrl(QStringLiteral("qrc:qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject* obj, const QUrl& objUrl)

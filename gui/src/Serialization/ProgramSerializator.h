@@ -1,6 +1,7 @@
 #ifndef PROGRAMSERIALIZATOR_H
 #define PROGRAMSERIALIZATOR_H
 
+#include <IParser.h>
 #include <QQmlEngine>
 
 
@@ -18,6 +19,7 @@ public:
     Q_INVOKABLE void save();
     Q_INVOKABLE void load();
 
+    std::shared_ptr<vtc::parser::IParser> parser;
 private:
     ProgramSerializator(QObject* parent) : QObject(parent) {}
     ProgramSerializator() {}

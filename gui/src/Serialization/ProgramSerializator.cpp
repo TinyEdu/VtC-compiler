@@ -25,6 +25,8 @@ void ProgramSerializator::save()
 
     // Temporary: print the JSON to the console
     const QJsonDocument doc(root);
+    parser->parse(QString::fromUtf8(doc.toJson()).toStdString());
+
     qDebug().noquote() << doc.toJson(QJsonDocument::Indented);
 }
 
