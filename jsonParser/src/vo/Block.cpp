@@ -10,6 +10,9 @@ static std::string getStringField(const QJsonObject& obj, const char* key) {
 // ------------------------------------------------------------
 void Break::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
 }
@@ -22,6 +25,9 @@ std::shared_ptr<Expression> Break::buildAST() {
 // ------------------------------------------------------------
 void Call::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
 }
@@ -33,6 +39,8 @@ std::shared_ptr<Expression> Call::buildAST() {
 // ------------------------------------------------------------
 void CreateVar::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
@@ -59,6 +67,9 @@ std::shared_ptr<Expression> CreateVar::buildAST() {
 // ------------------------------------------------------------
 void End::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
 }
@@ -70,6 +81,8 @@ std::shared_ptr<Expression> End::buildAST() {
 // ------------------------------------------------------------
 void ForLoop::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
@@ -103,6 +116,9 @@ std::shared_ptr<Expression> ForLoop::buildAST() {
 // GetVar
 void GetVar::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string passingUuid = getStringField(obj, "passingAnchor");
     passing = new Anchor(passingUuid, this);
     variableName = getStringField(obj, "variable");
@@ -115,6 +131,8 @@ std::shared_ptr<Expression> GetVar::buildAST() {
 // ------------------------------------------------------------
 void If::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
@@ -137,6 +155,9 @@ std::shared_ptr<Expression> If::buildAST() {
 // ------------------------------------------------------------
 void Listen::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string rightUuid = getStringField(obj, "rightAnchor");
     right = new Anchor(rightUuid, this);
     variableName = getStringField(obj, "variableName");
@@ -149,6 +170,8 @@ std::shared_ptr<Expression> Listen::buildAST() {
 // ------------------------------------------------------------
 void Print::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
@@ -174,6 +197,8 @@ std::shared_ptr<Expression> Print::buildAST() {
 void SetVar::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
 
+    name = getStringField(obj, "blockType");
+
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
 
@@ -198,6 +223,9 @@ std::shared_ptr<Expression> SetVar::buildAST() {
 // ------------------------------------------------------------
 void Skip::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
 }
@@ -209,6 +237,9 @@ std::shared_ptr<Expression> Skip::buildAST() {
 // ------------------------------------------------------------
 void Start::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string rightUuid = getStringField(obj, "rightAnchor");
     right = new Anchor(rightUuid, this);
 }
@@ -220,6 +251,9 @@ std::shared_ptr<Expression> Start::buildAST() {
 // ------------------------------------------------------------
 void Value::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
+
     std::string passingUuid = getStringField(obj, "passingAnchor");
     passing = new Anchor(passingUuid, this);
     valueStr = getStringField(obj, "value");
@@ -232,6 +266,8 @@ std::shared_ptr<Expression> Value::buildAST() {
 // ------------------------------------------------------------
 void While::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
@@ -256,6 +292,8 @@ std::shared_ptr<Expression> While::buildAST() {
 // ------------------------------------------------------------
 void BinaryOp::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
@@ -282,6 +320,8 @@ std::shared_ptr<Expression> BinaryOp::buildAST() {
 // ------------------------------------------------------------
 void UnaryOp::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
+
+    name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);

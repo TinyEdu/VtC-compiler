@@ -52,7 +52,7 @@ std::vector<std::shared_ptr<Block>> JsonReader::parseBlocksFromJson(const QJsonO
         blocks.push_back(extract(&block));
     }
 
-    return {};
+    return blocks;
 }
 
 std::vector<Connection> JsonReader::parseConnectionsFromJson(const QJsonObject& json) {
@@ -175,14 +175,14 @@ std::shared_ptr<Block> JsonReader::extractPrintByValue(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractSetVarBySignal(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<SetVar>();
     block->fromJson(*value);
 
     return block;
 }
 std::shared_ptr<Block> JsonReader::extractSkip(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<Skip>();
     block->fromJson(*value);
 
     return block;
@@ -190,7 +190,7 @@ std::shared_ptr<Block> JsonReader::extractSkip(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractStart(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<Start>();
     block->fromJson(*value);
 
     return block;
@@ -198,7 +198,7 @@ std::shared_ptr<Block> JsonReader::extractStart(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractValue(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<Value>();
     block->fromJson(*value);
 
     return block;
@@ -206,7 +206,7 @@ std::shared_ptr<Block> JsonReader::extractValue(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractWhile(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<While>();
     block->fromJson(*value);
 
     return block;
@@ -214,7 +214,7 @@ std::shared_ptr<Block> JsonReader::extractWhile(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractBinaryOp(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<BinaryOp>();
     block->fromJson(*value);
 
     return block;
@@ -222,7 +222,7 @@ std::shared_ptr<Block> JsonReader::extractBinaryOp(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractUnaryOp(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<UnaryOp>();
     block->fromJson(*value);
 
     return block;

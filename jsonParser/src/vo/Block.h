@@ -12,6 +12,9 @@ class Block {
 public:
     Block() = default;
     virtual ~Block() = default;
+
+    std::string name;
+
     // Reads properties from the provided QJsonValue.
     virtual void fromJson(const QJsonValue& json) = 0;
     // Builds the AST from this b.

@@ -14,6 +14,8 @@ std::vector<std::shared_ptr<Statement>> JsonParser::parse(const std::string& inp
     std::vector<std::shared_ptr<Block>> blocks = reader.parseBlocksFromJson(json);
     std::vector<Connection> connections = reader.parseConnectionsFromJson(json);
 
+    Anchor::loadConnections(connections);
+
     BlockExtractor extractor(blocks, connections);
     return extractor.buildAST();
 }

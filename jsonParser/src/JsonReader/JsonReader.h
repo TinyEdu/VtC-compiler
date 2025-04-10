@@ -32,6 +32,7 @@ private:
     std::map<std::string, Handler> functionMap;
 
     std::shared_ptr<Block> extract(QJsonValue* block);
+
     static std::shared_ptr<Block> extractBreak(QJsonValue* value);
     static std::shared_ptr<Block> extractCall(QJsonValue* value);
     static std::shared_ptr<Block> extractCreateVarBySignal(QJsonValue* value);
