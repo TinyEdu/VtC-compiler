@@ -19,6 +19,16 @@ public:
     virtual void fromJson(const QJsonValue& json) = 0;
     // Builds the AST from this b.
     virtual std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) = 0;
+
+    std::shared_ptr<Statement> runNext(std::vector<std::shared_ptr<Statement>>& result, Anchor* anchor)
+    {
+        auto nextBlock = Anchor::getNextBlock(*anchor);
+        if (nextBlock == nullptr) {
+            throw std::runtime_error("reference not found");
+        }
+
+        return nextBlock->buildAST(result);
+    }
 };
 
 // Break block.

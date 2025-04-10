@@ -46,7 +46,6 @@ enum class TokenType
     OR,
     PRINT,
     RETURN,
-    SUPER,
     THIS,
     TRUE,
     VAR,

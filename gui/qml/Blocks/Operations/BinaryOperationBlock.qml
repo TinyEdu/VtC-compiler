@@ -9,6 +9,9 @@ BlockDiagram {
     height: 69
     color: "lightblue"
 
+    enableLeftAnchor: false
+    enableRightAnchor: false
+
     Anchor {
         id: outputValue
         objectName: "outputValue"
@@ -73,6 +76,6 @@ BlockDiagram {
 
         borderColor: parent.border.color
 
-        model: ["add", "subtract", "divide", "multiply"]
+        model: ["add", "subtract", "divide", "multiply", "==", ">=", "<", "<=", "and", "or", "mod"]
     }
 }

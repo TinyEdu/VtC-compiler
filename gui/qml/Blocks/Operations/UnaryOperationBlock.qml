@@ -9,6 +9,9 @@ BlockDiagram {
     height: 50
     color: "lightblue"
 
+    enableLeftAnchor: false
+    enableRightAnchor: false
+
     Anchor {
         id: outputValue
         objectName: "outputValue"
@@ -57,6 +60,6 @@ BlockDiagram {
 
         borderColor: parent.border.color
 
-        model: ["negate", "not", "sqrt"]
+        model: ["negate", "not"]
     }
 }

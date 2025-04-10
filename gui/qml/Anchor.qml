@@ -22,7 +22,6 @@ Rectangle {
     property var anchorLogic
 
     function resetConnection() {
-        console.log("resetConnection")
         connectionIndex = -1;
     }
 

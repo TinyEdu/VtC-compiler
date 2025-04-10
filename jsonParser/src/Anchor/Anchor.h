@@ -17,9 +17,10 @@ public:
     static Block* getNextBlock(const Anchor& input);
     static void loadConnections(std::vector<Connection> _connections);
     static std::string findTheEndOf(const std::string& value);
+    static void clearAnchors();
 
 private:
-    static std::vector<Anchor*> anchors;
+    static std::vector<Anchor> anchors;
     static std::vector<Connection> connections;
 
     std::string uuid;

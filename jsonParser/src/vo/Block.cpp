@@ -6,10 +6,10 @@
 
 #include <QJsonObject>
 #include <QString>
+#include <Expressions/Unary.h>
 
 #include "Statements/ExpressionStatement.h"
 
-// Utility helper: convert a QJsonObject field to std::string.
 static std::string getStringField(const QJsonObject& obj, const char* key) {
     return obj.value(key).toString().toStdString();
 }
@@ -57,12 +57,11 @@ void CreateVar::fromJson(const QJsonValue& json) {
 
     variableName = getStringField(obj, "variable");
 
-    // Decide whether the value is an Anchor (signal) or a literal string (value)
     QString blockType = obj.value("blockType").toString();
     QString valueField = obj.value("value").toString();
     if (blockType == "CreateVarBySignal") {
         value = new Anchor(valueField.toStdString(), this);
-    } else { // CreateVarByValue: store literal string
+    } else {
         value = valueField.toStdString();
     }
 }
@@ -101,14 +100,12 @@ void ForLoop::fromJson(const QJsonValue& json) {
     to = getStringField(obj, "toField");
     increment = getStringField(obj, "incrementField");
 
-    // For additional anchors, use the corresponding keys.
     std::string startUuid = getStringField(obj, "startAnchor");
     start = new Anchor(startUuid, this);
 
     std::string endUuid = getStringField(obj, "endAnchor");
     end = new Anchor(endUuid, this);
 
-    // For the incremental anchor: if an increment field is provided.
     if (!increment.empty())
         inc = new Anchor(increment, this);
     else
@@ -195,29 +192,30 @@ void Print::fromJson(const QJsonValue& json) {
     }
 }
 
-std::shared_ptr<Statement> Print::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-
+std::shared_ptr<Statement> Print::buildAST(std::vector<std::shared_ptr<Statement>>& result)
+{
     if (this->name == "PrintBySignal")
     {
-        if (Anchor* anchorPtr = std::get<Anchor*>(this->value))
-        {
-            Block* block = Anchor::getNextBlock(*anchorPtr);
+        Anchor const* anchorPtr = std::get<Anchor*>(this->value);
+        Block* block = Anchor::getNextBlock(*anchorPtr);
 
-            const std::shared_ptr<Statement> expr = block->buildAST(result);
-            const std::shared_ptr<ExpressionStatement> exprStatement = std::dynamic_pointer_cast<ExpressionStatement>(expr);
-            const std::shared_ptr<PrintStatement> statement = std::make_shared<PrintStatement>(exprStatement->expression);
-            result.push_back(statement);
-            return statement;
-        }
+        const std::shared_ptr<Statement> expr = block->buildAST(result);
+        const std::shared_ptr<ExpressionStatement> exprStatement = std::dynamic_pointer_cast<
+            ExpressionStatement>(expr);
+        const auto statement = std::make_shared<PrintStatement>(exprStatement->expression);
+        result.push_back(statement);
+
+        return runNext(result, right);
     }
     else if (this->name == "PrintByValue")
     {
-            std::string strVal = std::get<std::string>(this->value);
-            std::shared_ptr<Expression> expr = std::make_shared<LiteralString>(strVal);
+        auto strVal = std::get<std::string>(this->value);
+        std::shared_ptr<Expression> expr = std::make_shared<LiteralString>(strVal);
 
-            std::shared_ptr<PrintStatement> statement = std::make_shared<PrintStatement>(expr);
-            result.push_back(statement);
-            return statement;
+        auto statement = std::make_shared<PrintStatement>(expr);
+        result.push_back(statement);
+
+        return runNext(result, right);
     }
 
     throw std::runtime_error("Unknown print block type");
@@ -274,9 +272,9 @@ void Start::fromJson(const QJsonValue& json) {
     right = new Anchor(rightUuid, this);
 }
 
-std::shared_ptr<Statement> Start::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    auto nextBlock = Anchor::getNextBlock(*right);
-    return nextBlock->buildAST(result);
+std::shared_ptr<Statement> Start::buildAST(std::vector<std::shared_ptr<Statement>>& result)
+{
+    return runNext(result, right);
 }
 
 // ------------------------------------------------------------
@@ -291,8 +289,9 @@ void Value::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> Value::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    std::shared_ptr<LiteralString> literal = std::make_shared<LiteralString>(valueStr);
-    std::shared_ptr<ExpressionStatement> expr = std::make_shared<ExpressionStatement>(literal);
+    auto literal = std::make_shared<LiteralString>(valueStr);
+    auto expr = std::make_shared<ExpressionStatement>(literal);
+
     return expr;
 }
 
@@ -372,5 +371,25 @@ void UnaryOp::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> UnaryOp::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    // input value
+    Block* block = Anchor::getNextBlock(*this->inputValue);
+    const std::shared_ptr<Statement> expr = block->buildAST(result);
+    const auto exprStatement = std::dynamic_pointer_cast<ExpressionStatement>(expr);
+    const auto inputValueStmt = std::make_shared<ExpressionStatement>(exprStatement->expression);
+
+    // output value
+    Block* block2 = Anchor::getNextBlock(*this->inputValue);
+    const std::shared_ptr<Statement> expr2 = block2->buildAST(result);
+    const auto exprStatement2 = std::dynamic_pointer_cast<ExpressionStatement>(expr2);
+    const auto outputValueStmt = std::make_shared<ExpressionStatement>(exprStatement2->expression);
+
+    // operation  -  ["negate", "not"]
+    auto op = Token(operation == "negate" ? TokenType::MINUS : TokenType::BANG, operation, "", 0);
+
+    auto unary = std::make_shared<Unary>(op, inputValueStmt->expression);
+
+    std::shared_ptr<Statement> statement = std::make_shared<ExpressionStatement>(unary);
+    result.push_back(statement);
+
+    return runNext(result, right);
 }
