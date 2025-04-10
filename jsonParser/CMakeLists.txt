@@ -34,6 +34,13 @@ add_library(${PROJECT_NAME} SHARED
 
         src/vo/Connection.h
         src/vo/Block.h
+        src/vo/Block.cpp
+
+        src/BlockExtractor/BlockExtractor.cpp
+        src/BlockExtractor/BlockExtractor.h
+
+        src/Anchor/Anchor.h
+        src/Anchor/Anchor.cpp
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_JSON_PARSER_EXPORTS)

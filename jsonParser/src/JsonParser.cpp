@@ -1,18 +1,19 @@
 #include "JsonParser.h"
 
-#include <QCoreApplication>
-#include <QJsonDocument>
-
+#include "BlockExtractor/BlockExtractor.h"
 #include "JsonReader/JsonReader.h"
 #include "vo/Block.h"
 #include "vo/Connection.h"
 
+#include <QCoreApplication>
+
 std::vector<std::shared_ptr<Statement>> JsonParser::parse(const std::string& input)
 {
-    QJsonObject json = JsonReader::readJson(input);
-    std::vector<Block> blocks = JsonReader::parseBlocksFromJson(json);
-    std::vector<Connection> connections = JsonReader::parseConnectionsFromJson(json);
+    JsonReader reader;
+    QJsonObject json = reader.readJson(input);
+    std::vector<std::shared_ptr<Block>> blocks = reader.parseBlocksFromJson(json);
+    std::vector<Connection> connections = reader.parseConnectionsFromJson(json);
 
-    JsonReader::print(blocks, connections);
-    return {};
+    BlockExtractor extractor(blocks, connections);
+    return extractor.buildAST();
 }
