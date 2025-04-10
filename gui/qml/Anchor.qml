@@ -22,6 +22,7 @@ Rectangle {
     property var anchorLogic
 
     function resetConnection() {
+        console.log("resetConnection")
         connectionIndex = -1;
     }
 
@@ -30,6 +31,11 @@ Rectangle {
         anchorLogic.Associate(this, anchorType);
     }
 
+    Component.onDestruction: {
+        if (connectionIndex !== -1) {
+            bezierFactory.deleteConnection(connectionIndex);
+        }
+    }
     Rectangle {
         id: circle
         anchors.centerIn: parent

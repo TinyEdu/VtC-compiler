@@ -72,6 +72,16 @@ Item {
             toDelete.reset();
             itemModel.remove(connectionIndex);
         }
+
+        for (let i = connectionIndex; i < instantiator.count; ++i) {
+            let connection = instantiator.objectAt(i);
+            if (connection.leftAnchor) {
+                connection.leftAnchor.connectionIndex = i;
+            }
+            if (connection.rightAnchor) {
+                connection.rightAnchor.connectionIndex = i;
+            }
+        }
     }
 
     function updateAllConnections() {

@@ -71,8 +71,8 @@ Item {
     }
 
     function reset() {
-        leftAnchor.resetConnection();
-        rightAnchor.resetConnection();
+        if (leftAnchor) leftAnchor.resetConnection();
+        if (rightAnchor) rightAnchor.resetConnection();
     }
 
     Canvas {
