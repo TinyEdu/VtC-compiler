@@ -1,13 +1,24 @@
 #include "BlockExtractor.h"
 
+#include "ReachedEnd.h"
 #include <iostream>
 
 std::vector<std::shared_ptr<Statement>> BlockExtractor::buildAST()
 {
-    auto startBlock = BlockExtractor::findStartBlock();
+    auto startBlock = findStartBlock();
 
-    std::cout << "startBlock:" << startBlock->buildAST()<< std::endl;
-    return {};
+    std::vector<std::shared_ptr<Statement>> result = {};
+
+    try
+    {
+        auto a = startBlock->buildAST(result);
+    }
+    catch(const ReachedEnd e)
+    {
+        std::cout<< "Reached end of block: " << e.what() << std::endl;
+    }
+
+    return result;
 }
 
 Block* BlockExtractor::findNodeWithName(std::string name)

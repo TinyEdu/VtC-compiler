@@ -16,7 +16,23 @@ Block* Anchor::getNextBlock(const std::string& uuid)
 {
     std::string oppositeUuid = findTheEndOf(uuid);
 
-    for (Anchor* anchor : anchors)
+    for (const Anchor* anchor : anchors)
+    {
+        if (anchor->uuid == oppositeUuid)
+        {
+            return anchor->reference;
+        }
+    }
+
+    throw std::runtime_error("Anchor not found");
+}
+
+Block* Anchor::getNextBlock(const Anchor& input)
+{
+    const std::string uuid = input.uuid;
+    const std::string oppositeUuid = findTheEndOf(uuid);
+
+    for (const Anchor* anchor : anchors)
     {
         if (anchor->uuid == oppositeUuid)
         {
@@ -36,14 +52,14 @@ std::string Anchor::findTheEndOf(const std::string& value)
 {
     for (Connection connection : connections)
     {
-        if (value == connection.from.toString())
+        if (value == connection.from)
         {
-            return connection.to.toString().toStdString();
+            return connection.to;
         }
 
-        if (value == connection.to.toString())
+        if (value == connection.to)
         {
-            return connection.from.toString().toStdString();
+            return connection.from;
         }
     }
 

@@ -1,4 +1,7 @@
 #include "Block.h"
+
+#include "../BlockExtractor/ReachedEnd.h"
+
 #include <QJsonObject>
 #include <QString>
 
@@ -17,7 +20,7 @@ void Break::fromJson(const QJsonValue& json) {
     left = new Anchor(leftUuid, this);
 }
 
-std::shared_ptr<Expression> Break::buildAST() {
+std::shared_ptr<Statement> Break::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     // Build an AST node corresponding to a break statement.
     return nullptr;
 }
@@ -32,7 +35,7 @@ void Call::fromJson(const QJsonValue& json) {
     left = new Anchor(leftUuid, this);
 }
 
-std::shared_ptr<Expression> Call::buildAST() {
+std::shared_ptr<Statement> Call::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -60,7 +63,7 @@ void CreateVar::fromJson(const QJsonValue& json) {
     }
 }
 
-std::shared_ptr<Expression> CreateVar::buildAST() {
+std::shared_ptr<Statement> CreateVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -74,8 +77,8 @@ void End::fromJson(const QJsonValue& json) {
     left = new Anchor(leftUuid, this);
 }
 
-std::shared_ptr<Expression> End::buildAST() {
-    return nullptr;
+std::shared_ptr<Statement> End::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
+    throw ReachedEnd("End block reached");
 }
 
 // ------------------------------------------------------------
@@ -108,7 +111,7 @@ void ForLoop::fromJson(const QJsonValue& json) {
         inc = nullptr;
 }
 
-std::shared_ptr<Expression> ForLoop::buildAST() {
+std::shared_ptr<Statement> ForLoop::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -124,7 +127,7 @@ void GetVar::fromJson(const QJsonValue& json) {
     variableName = getStringField(obj, "variable");
 }
 
-std::shared_ptr<Expression> GetVar::buildAST() {
+std::shared_ptr<Statement> GetVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -147,7 +150,7 @@ void If::fromJson(const QJsonValue& json) {
     condition = new Anchor(condUuid, this);
 }
 
-std::shared_ptr<Expression> If::buildAST() {
+std::shared_ptr<Statement> If::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     // Build an AST node representing a conditional.
     return nullptr;
 }
@@ -163,7 +166,7 @@ void Listen::fromJson(const QJsonValue& json) {
     variableName = getStringField(obj, "variableName");
 }
 
-std::shared_ptr<Expression> Listen::buildAST() {
+std::shared_ptr<Statement> Listen::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -188,7 +191,7 @@ void Print::fromJson(const QJsonValue& json) {
     }
 }
 
-std::shared_ptr<Expression> Print::buildAST() {
+std::shared_ptr<Statement> Print::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     // Build an AST node for a print statement.
     return nullptr;
 }
@@ -216,7 +219,7 @@ void SetVar::fromJson(const QJsonValue& json) {
     }
 }
 
-std::shared_ptr<Expression> SetVar::buildAST() {
+std::shared_ptr<Statement> SetVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -230,7 +233,7 @@ void Skip::fromJson(const QJsonValue& json) {
     left = new Anchor(leftUuid, this);
 }
 
-std::shared_ptr<Expression> Skip::buildAST() {
+std::shared_ptr<Statement> Skip::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -244,8 +247,9 @@ void Start::fromJson(const QJsonValue& json) {
     right = new Anchor(rightUuid, this);
 }
 
-std::shared_ptr<Expression> Start::buildAST() {
-    return nullptr;
+std::shared_ptr<Statement> Start::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
+    auto nextBlock = Anchor::getNextBlock(*right);
+    return nextBlock->buildAST(result);
 }
 
 // ------------------------------------------------------------
@@ -259,7 +263,7 @@ void Value::fromJson(const QJsonValue& json) {
     valueStr = getStringField(obj, "value");
 }
 
-std::shared_ptr<Expression> Value::buildAST() {
+std::shared_ptr<Statement> Value::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -285,7 +289,7 @@ void While::fromJson(const QJsonValue& json) {
     end = new Anchor(endUuid, this);
 }
 
-std::shared_ptr<Expression> While::buildAST() {
+std::shared_ptr<Statement> While::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -313,7 +317,7 @@ void BinaryOp::fromJson(const QJsonValue& json) {
     outputValue = new Anchor(outputUuid, this);
 }
 
-std::shared_ptr<Expression> BinaryOp::buildAST() {
+std::shared_ptr<Statement> BinaryOp::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }
 
@@ -338,6 +342,6 @@ void UnaryOp::fromJson(const QJsonValue& json) {
     outputValue = new Anchor(outputUuid, this);
 }
 
-std::shared_ptr<Expression> UnaryOp::buildAST() {
+std::shared_ptr<Statement> UnaryOp::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     return nullptr;
 }

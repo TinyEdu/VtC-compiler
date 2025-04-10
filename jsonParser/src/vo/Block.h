@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Anchor/Anchor.h"
-#include "Expressions/Expression.h"
+#include "Statements/Statement.h"
 
 #include <memory>
 #include <string>
@@ -18,7 +18,7 @@ public:
     // Reads properties from the provided QJsonValue.
     virtual void fromJson(const QJsonValue& json) = 0;
     // Builds the AST from this b.
-    virtual std::shared_ptr<Expression> buildAST() = 0;
+    virtual std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) = 0;
 };
 
 // Break block.
@@ -26,7 +26,7 @@ class Break : public Block {
 public:
     Break() : left(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
 };
@@ -36,7 +36,7 @@ class Call : public Block {
 public:
     Call() : left(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
 };
@@ -46,7 +46,7 @@ class CreateVar : public Block {
 public:
     CreateVar() : left(nullptr), right(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;
@@ -60,7 +60,7 @@ class End : public Block {
 public:
     End() : left(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
 };
@@ -70,7 +70,7 @@ class ForLoop : public Block {
 public:
     ForLoop() : left(nullptr), right(nullptr), start(nullptr), end(nullptr), inc(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;
@@ -88,7 +88,7 @@ class GetVar : public Block {
 public:
     GetVar() : passing(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* passing;
     std::string variableName;
@@ -99,7 +99,7 @@ class If : public Block {
 public:
     If() : left(nullptr), trueAnchor(nullptr), falseAnchor(nullptr), condition(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* trueAnchor;
@@ -112,7 +112,7 @@ class Listen : public Block {
 public:
     Listen() : right(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* right;
     std::string variableName;
@@ -123,7 +123,7 @@ class Print : public Block {
 public:
     Print() : left(nullptr), right(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;
@@ -135,7 +135,7 @@ class SetVar : public Block {
 public:
     SetVar() : left(nullptr), right(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;
@@ -148,7 +148,7 @@ class Skip : public Block {
 public:
     Skip() : left(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
 };
@@ -158,7 +158,7 @@ class Start : public Block {
 public:
     Start() : right(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* right;
 };
@@ -168,7 +168,7 @@ class Value : public Block {
 public:
     Value() : passing(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* passing;
     std::string valueStr;
@@ -179,7 +179,7 @@ class While : public Block {
 public:
     While() : left(nullptr), right(nullptr), condition(nullptr), start(nullptr), end(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;
@@ -194,7 +194,7 @@ public:
     BinaryOp() : left(nullptr), right(nullptr), leftInputValue(nullptr),
                  rightInputValue(nullptr), outputValue(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;
@@ -209,7 +209,7 @@ class UnaryOp : public Block {
 public:
     UnaryOp() : left(nullptr), right(nullptr), inputValue(nullptr), outputValue(nullptr) {}
     void fromJson(const QJsonValue& json) override;
-    std::shared_ptr<Expression> buildAST() override;
+    std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;

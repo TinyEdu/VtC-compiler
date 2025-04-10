@@ -28,7 +28,6 @@ std::string ConnectionReader::readProperty(QQuickItem* anchor, QString propertyN
 
 Connection* ConnectionReader::extract(QQuickItem* anchor)
 {
-
     const auto result = new Connection();
 
     QVariant rightAnchor;
@@ -36,9 +35,7 @@ Connection* ConnectionReader::extract(QQuickItem* anchor)
         Q_RETURN_ARG(QVariant, rightAnchor))) {
 
         QQuickItem* anchor = rightAnchor.value<QQuickItem*>();
-
         result->from = readUuidProperty(anchor, "anchorId");
-        result->to = anchor ? readUuidProperty(anchor, "anchorId") : QUuid();
     }
 
     QVariant leftAnchor;
@@ -46,8 +43,6 @@ Connection* ConnectionReader::extract(QQuickItem* anchor)
         Q_RETURN_ARG(QVariant, leftAnchor))) {
 
         QQuickItem* anchor = leftAnchor.value<QQuickItem*>();
-
-        result->from = readUuidProperty(anchor, "anchorId");
         result->to = anchor ? readUuidProperty(anchor, "anchorId") : QUuid();
     }
 

@@ -63,8 +63,8 @@ std::vector<Connection> JsonReader::parseConnectionsFromJson(const QJsonObject& 
         QJsonObject obj = val.toObject();
         Connection c;
 
-        c.from = QUuid(obj["from"].toString());
-        c.to = QUuid(obj["to"].toString());
+        c.from = obj["from"].toString().toStdString();
+        c.to = obj["to"].toString().toStdString();
 
         connections.push_back(c);
     }
@@ -103,7 +103,7 @@ std::shared_ptr<Block> JsonReader::extractCall(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractCreateVarBySignal(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<CreateVar>();
     block->fromJson(*value);
 
     return block;
@@ -111,7 +111,7 @@ std::shared_ptr<Block> JsonReader::extractCreateVarBySignal(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractCreateVarByValue(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<CreateVar>();
     block->fromJson(*value);
 
     return block;
@@ -119,7 +119,7 @@ std::shared_ptr<Block> JsonReader::extractCreateVarByValue(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractEnd(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<End>();
     block->fromJson(*value);
 
     return block;
@@ -127,7 +127,7 @@ std::shared_ptr<Block> JsonReader::extractEnd(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractForLoop(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<ForLoop>();
     block->fromJson(*value);
 
     return block;
@@ -135,7 +135,7 @@ std::shared_ptr<Block> JsonReader::extractForLoop(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractGetVar(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<GetVar>();
     block->fromJson(*value);
 
     return block;
@@ -143,7 +143,7 @@ std::shared_ptr<Block> JsonReader::extractGetVar(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractIf(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<If>();
     block->fromJson(*value);
 
     return block;
@@ -151,7 +151,7 @@ std::shared_ptr<Block> JsonReader::extractIf(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractListen(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<Listen>();
     block->fromJson(*value);
 
     return block;
@@ -159,7 +159,7 @@ std::shared_ptr<Block> JsonReader::extractListen(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractPrintBySignal(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<Print>();
     block->fromJson(*value);
 
     return block;
@@ -167,7 +167,7 @@ std::shared_ptr<Block> JsonReader::extractPrintBySignal(QJsonValue* value)
 
 std::shared_ptr<Block> JsonReader::extractPrintByValue(QJsonValue* value)
 {
-    auto block = std::make_shared<Call>();
+    auto block = std::make_shared<Print>();
     block->fromJson(*value);
 
     return block;

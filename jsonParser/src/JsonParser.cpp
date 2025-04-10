@@ -1,5 +1,7 @@
 #include "JsonParser.h"
 
+#include <iostream>
+
 #include "BlockExtractor/BlockExtractor.h"
 #include "JsonReader/JsonReader.h"
 #include "vo/Block.h"
@@ -9,6 +11,8 @@
 
 std::vector<std::shared_ptr<Statement>> JsonParser::parse(const std::string& input)
 {
+    std::cout << "Parsing JSON input..." << std::endl;
+    std::cout << input << std::endl;
     JsonReader reader;
     QJsonObject json = reader.readJson(input);
     std::vector<std::shared_ptr<Block>> blocks = reader.parseBlocksFromJson(json);

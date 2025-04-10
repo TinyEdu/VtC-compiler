@@ -1,12 +1,10 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-#include <QUuid>
-
 struct Connection
 {
-    QUuid from;
-    QUuid to;
+    std::string from;
+    std::string to;
 };
 
 #endif //CONNECTION_H

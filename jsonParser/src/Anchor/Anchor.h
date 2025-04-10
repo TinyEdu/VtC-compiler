@@ -14,6 +14,7 @@ public:
     Anchor(const std::string& uuid, Block* reference);
 
     static Block* getNextBlock(const std::string& uuid);
+    static Block* getNextBlock(const Anchor& input);
     static void loadConnections(static std::vector<Connection> _connections);
     static std::string findTheEndOf(const std::string& value);
 

@@ -38,6 +38,7 @@ add_library(${PROJECT_NAME} SHARED
 
         src/BlockExtractor/BlockExtractor.cpp
         src/BlockExtractor/BlockExtractor.h
+        src/BlockExtractor/ReachedEnd.h
 
         src/Anchor/Anchor.h
         src/Anchor/Anchor.cpp
