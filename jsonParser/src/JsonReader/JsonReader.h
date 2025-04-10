@@ -29,27 +29,27 @@ private:
     static JsonReader* instance;
 
     using Handler = std::function<std::shared_ptr<Block>(QJsonValue*)>;
-    std::map<QString, Handler> functionMap;
+    std::map<std::string, Handler> functionMap;
 
-    static std::shared_ptr<Block> extract(QJsonValue* block);
-    static std::shared_ptr<Block> Break(QJsonValue* block);
-    static std::shared_ptr<Block> Call(QJsonValue* block);
-    static std::shared_ptr<Block> CreateVarBySignal(QJsonValue* block);
-    static std::shared_ptr<Block> CreateVarByValue(QJsonValue* block);
-    static std::shared_ptr<Block> End(QJsonValue* block);
-    static std::shared_ptr<Block> ForLoop(QJsonValue* block);
-    static std::shared_ptr<Block> GetVar(QJsonValue* block);
-    static std::shared_ptr<Block> If(QJsonValue* block);
-    static std::shared_ptr<Block> Listen(QJsonValue* block);
-    static std::shared_ptr<Block> PrintBySignal(QJsonValue* block);
-    static std::shared_ptr<Block> PrintByValue(QJsonValue* block);
-    static std::shared_ptr<Block> SetVarBySignal(QJsonValue* block);
-    static std::shared_ptr<Block> Skip(QJsonValue* block);
-    static std::shared_ptr<Block> Start(QJsonValue* block);
-    static std::shared_ptr<Block> Value(QJsonValue* block);
-    static std::shared_ptr<Block> While(QJsonValue* block);
-    static std::shared_ptr<Block> BinaryOp(QJsonValue* block);
-    static std::shared_ptr<Block> UnaryOp(QJsonValue* block);
+    std::shared_ptr<Block> extract(QJsonValue* block);
+    static std::shared_ptr<Block> extractBreak(QJsonValue* value);
+    static std::shared_ptr<Block> extractCall(QJsonValue* value);
+    static std::shared_ptr<Block> extractCreateVarBySignal(QJsonValue* value);
+    static std::shared_ptr<Block> extractCreateVarByValue(QJsonValue* value);
+    static std::shared_ptr<Block> extractEnd(QJsonValue* value);
+    static std::shared_ptr<Block> extractForLoop(QJsonValue* value);
+    static std::shared_ptr<Block> extractGetVar(QJsonValue* value);
+    static std::shared_ptr<Block> extractIf(QJsonValue* value);
+    static std::shared_ptr<Block> extractListen(QJsonValue* value);
+    static std::shared_ptr<Block> extractPrintBySignal(QJsonValue* value);
+    static std::shared_ptr<Block> extractPrintByValue(QJsonValue* value);
+    static std::shared_ptr<Block> extractSetVarBySignal(QJsonValue* value);
+    static std::shared_ptr<Block> extractSkip(QJsonValue* value);
+    static std::shared_ptr<Block> extractStart(QJsonValue* value);
+    static std::shared_ptr<Block> extractValue(QJsonValue* value);
+    static std::shared_ptr<Block> extractWhile(QJsonValue* value);
+    static std::shared_ptr<Block> extractBinaryOp(QJsonValue* value);
+    static std::shared_ptr<Block> extractUnaryOp(QJsonValue* value);
 };
 
 #endif //JSONREADER_H

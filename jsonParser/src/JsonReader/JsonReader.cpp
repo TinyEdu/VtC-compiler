@@ -5,24 +5,24 @@
 
 JsonReader::JsonReader()
 {
-    functionMap["Break"] = &JsonReader::Break;
-    functionMap["Call"] = &JsonReader::Call;
-    functionMap["CreateVarBySignal"] = &JsonReader::CreateVarBySignal;
-    functionMap["CreateVarByValue"] = &JsonReader::CreateVarByValue;
-    functionMap["End"] = &JsonReader::End;
-    functionMap["ForLoop"] = &JsonReader::ForLoop;
-    functionMap["GetVar"] = &JsonReader::GetVar;
-    functionMap["If"] = &JsonReader::If;
-    functionMap["Listen"] = &JsonReader::Listen;
-    functionMap["PrintBySignal"] = &JsonReader::PrintBySignal;
-    functionMap["PrintByValue"] = &JsonReader::PrintByValue;
-    functionMap["SetVarBySignal"] = &JsonReader::SetVarBySignal;
-    functionMap["Skip"] = &JsonReader::Skip;
-    functionMap["Start"] = &JsonReader::Start;
-    functionMap["Value"] = &JsonReader::Value;
-    functionMap["While"] = &JsonReader::While;
-    functionMap["BinaryOp"] = &JsonReader::BinaryOp;
-    functionMap["UnaryOp"] = &JsonReader::UnaryOp;
+    functionMap["Break"] = &JsonReader::extractBreak;
+    functionMap["Call"] = &JsonReader::extractCall;
+    functionMap["CreateVarBySignal"] = &JsonReader::extractCreateVarBySignal;
+    functionMap["CreateVarByValue"] = &JsonReader::extractCreateVarByValue;
+    functionMap["End"] = &JsonReader::extractEnd;
+    functionMap["ForLoop"] = &JsonReader::extractForLoop;
+    functionMap["GetVar"] = &JsonReader::extractGetVar;
+    functionMap["If"] = &JsonReader::extractIf;
+    functionMap["Listen"] = &JsonReader::extractListen;
+    functionMap["PrintBySignal"] = &JsonReader::extractPrintBySignal;
+    functionMap["PrintByValue"] = &JsonReader::extractPrintByValue;
+    functionMap["SetVarBySignal"] = &JsonReader::extractSetVarBySignal;
+    functionMap["Skip"] = &JsonReader::extractSkip;
+    functionMap["Start"] = &JsonReader::extractStart;
+    functionMap["Value"] = &JsonReader::extractValue;
+    functionMap["While"] = &JsonReader::extractWhile;
+    functionMap["BinaryOp"] = &JsonReader::extractBinaryOp;
+    functionMap["UnaryOp"] = &JsonReader::extractUnaryOp;
 }
 
 QJsonObject JsonReader::readJson(const std::string& input) {
@@ -74,96 +74,156 @@ std::vector<Connection> JsonReader::parseConnectionsFromJson(const QJsonObject& 
 
 std::shared_ptr<Block> JsonReader::extract(QJsonValue* block)
 {
-    return {};
+    const std::string blockName = block->toObject()["blockType"].toString().toStdString();
+
+    const auto it = functionMap.find(blockName);
+    if (it == functionMap.end())
+    {
+        throw std::invalid_argument("Function not found: " + blockName);
+    }
+
+    return it->second(block);
 }
 
-std::shared_ptr<Block> JsonReader::Break(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractBreak(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Break>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::Call(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractCall(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::CreateVarBySignal(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractCreateVarBySignal(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::CreateVarByValue(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractCreateVarByValue(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::End(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractEnd(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::ForLoop(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractForLoop(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::GetVar(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractGetVar(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::If(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractIf(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::Listen(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractListen(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::PrintBySignal(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractPrintBySignal(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::PrintByValue(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractPrintByValue(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::SetVarBySignal(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractSetVarBySignal(QJsonValue* value)
 {
-    return {};
-}
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
 
-std::shared_ptr<Block> JsonReader::Skip(QJsonValue* block)
+    return block;
+}
+std::shared_ptr<Block> JsonReader::extractSkip(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::Start(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractStart(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::Value(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractValue(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::While(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractWhile(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::BinaryOp(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractBinaryOp(QJsonValue* value)
 {
-    return {};
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
+
+    return block;
 }
 
-std::shared_ptr<Block> JsonReader::UnaryOp(QJsonValue* block)
+std::shared_ptr<Block> JsonReader::extractUnaryOp(QJsonValue* value)
 {
-    return {};
-}
+    auto block = std::make_shared<Call>();
+    block->fromJson(*value);
 
+    return block;
+}
