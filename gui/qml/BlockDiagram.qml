@@ -133,6 +133,7 @@ Rectangle {
 
     function removeIfNeeded(mouse) {
         if (shouldBeRemoved(mouse) && !isIntersecting2(mouse)) {
+            console.log("Called removeIfNeeded");
             if (enableLeftAnchor) {
                 bezierFactory.deleteConnection(leftAnchor.connectionIndex);
             }

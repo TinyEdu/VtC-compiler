@@ -1,9 +1,13 @@
 #include "Block.h"
 
 #include "../BlockExtractor/ReachedEnd.h"
+#include <Expressions/Literals/LiteralString.h>
+#include "Statements/PrintStatement.h"
 
 #include <QJsonObject>
 #include <QString>
+
+#include "Statements/ExpressionStatement.h"
 
 // Utility helper: convert a QJsonObject field to std::string.
 static std::string getStringField(const QJsonObject& obj, const char* key) {
@@ -192,8 +196,31 @@ void Print::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> Print::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    // Build an AST node for a print statement.
-    return nullptr;
+
+    if (this->name == "PrintBySignal")
+    {
+        if (Anchor* anchorPtr = std::get<Anchor*>(this->value))
+        {
+            Block* block = Anchor::getNextBlock(*anchorPtr);
+
+            const std::shared_ptr<Statement> expr = block->buildAST(result);
+            const std::shared_ptr<ExpressionStatement> exprStatement = std::dynamic_pointer_cast<ExpressionStatement>(expr);
+            const std::shared_ptr<PrintStatement> statement = std::make_shared<PrintStatement>(exprStatement->expression);
+            result.push_back(statement);
+            return statement;
+        }
+    }
+    else if (this->name == "PrintByValue")
+    {
+            std::string strVal = std::get<std::string>(this->value);
+            std::shared_ptr<Expression> expr = std::make_shared<LiteralString>(strVal);
+
+            std::shared_ptr<PrintStatement> statement = std::make_shared<PrintStatement>(expr);
+            result.push_back(statement);
+            return statement;
+    }
+
+    throw std::runtime_error("Unknown print block type");
 }
 
 // ------------------------------------------------------------
@@ -264,7 +291,9 @@ void Value::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> Value::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    std::shared_ptr<LiteralString> literal = std::make_shared<LiteralString>(valueStr);
+    std::shared_ptr<ExpressionStatement> expr = std::make_shared<ExpressionStatement>(literal);
+    return expr;
 }
 
 // ------------------------------------------------------------
