@@ -20,11 +20,6 @@ BlockDiagram {
         anchors.right: parent.right
         anchors.rightMargin: 3
 
-        border.width: parent.border.width
-
-        width: 16
-        height: 16
-
         anchorType: "data"
         anchorDirection: "right"
     }
@@ -38,11 +33,6 @@ BlockDiagram {
         anchors.bottomMargin: 3
         anchors.margins: 3
 
-        border.width: parent.border.width
-
-        width: 16
-        height: 16
-
         anchorType: "data"
         anchorDirection: "left"
     }
@@ -54,11 +44,6 @@ BlockDiagram {
         anchors.bottom: outputValue.top
         anchors.left: parent.left
         anchors.leftMargin: 3
-
-        border.width: parent.border.width
-
-        width: 16
-        height: 16
 
         anchorType: "data"
         anchorDirection: "left"

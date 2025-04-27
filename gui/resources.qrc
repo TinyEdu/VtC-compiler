@@ -2,6 +2,8 @@
 <RCC version="1.0">
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>qml/Theme.qml</file>
+
         <file>qml/BlockDiagram.qml</file>
         <file>qml/BlockCreator.qml</file>
         <file>qml/DraggableCanvas.qml</file>

@@ -2,11 +2,15 @@
 import QtQuick
 import QtQuick.Controls
 
-Rectangle {
-    id: anchor
+import Theme
+
+Item {
+    id: root
 
     property var anchorId
     property var draggableCanvas
+    property var anchorLogic
+
     property int connectionIndex: -1
     property string anchorDirection: "left"
     property string anchorType: "anchor"
@@ -14,12 +18,32 @@ Rectangle {
 
     width: 16
     height: 16
-    color: "white"
-    border.width: parent.border.width
-    border.color: parent.border.color
-    radius: parent.radius
 
-    property var anchorLogic
+    Rectangle {
+        id: outerCircle
+        height: 100
+        width: 100
+        radius: 100
+        scale:0.1
+
+        anchors.centerIn: parent
+        color: Theme.lightAccentColor
+        layer.smooth: true
+
+        border.width: 8
+        border.color: Theme.darkAccentColor
+
+        Rectangle {
+            id: innerCircle
+            width: 37.5
+            height: 37.5
+            radius: 37.5
+
+            anchors.centerIn: parent
+            color: Theme.darkMode ? Theme.darkAccentColor : Theme.lightAccentColor
+            layer.smooth: true
+        }
+    }
 
     function resetConnection() {
         connectionIndex = -1;
@@ -35,14 +59,6 @@ Rectangle {
             bezierFactory.deleteConnection(connectionIndex);
         }
     }
-    Rectangle {
-        id: circle
-        anchors.centerIn: parent
-        height: width
-        width: Math.min(parent.width, parent.height) * 0.3
-        radius: width / 2
-        color: parent.border.color
-    }
 
     MouseArea {
         id: dragArea
@@ -50,20 +66,20 @@ Rectangle {
         drag.target: null
         preventStealing: true
         hoverEnabled: true
-        enabled: !anchor.isPreview
+        enabled: !isPreview
 
         property bool followMouse: false
 
         onPressed: function (mouse) {
-            connectionIndex = bezierFactory.startConnection(anchor, draggableCanvas);
+            connectionIndex = bezierFactory.startConnection(root, draggableCanvas);
         }
 
         onReleased: function (mouse) {
-            connectionIndex = bezierFactory.releaseConnection(anchor, mouse);
+            connectionIndex = bezierFactory.releaseConnection(root, mouse);
         }
 
         onPositionChanged: function (mouse) {
-            bezierFactory.updateConnectionPosition(connectionIndex, mouse, anchor);
+            bezierFactory.updateConnectionPosition(connectionIndex, mouse, root);
         }
     }
 }

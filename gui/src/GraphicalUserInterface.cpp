@@ -27,6 +27,8 @@ int GraphicalUserInterface::run(int argc, char* argv[])
     qmlRegisterType<BlockDiagram>("BlockDiagram", 1, 0, "BlockDiagram");
     qmlRegisterType<BezierConnection>("BezierConnection", 1, 0, "BezierConnection");
 
+    qmlRegisterSingletonType(QUrl("qrc:/qml/Theme.qml"), "Theme", 1, 0, "Theme");
+
     BlockDiagramFactory blockDiagramFactory(&engine);
     engine.rootContext()->setContextProperty("blockDiagramFactory", &blockDiagramFactory);
 

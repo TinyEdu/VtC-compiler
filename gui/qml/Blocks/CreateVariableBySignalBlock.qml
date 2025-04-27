@@ -27,15 +27,10 @@ BlockDiagram {
         id: valueAnchor
         objectName: "valueAnchor"
 
-        border.width: parent.border.width
-
         anchors.left: parent.left
         anchors.leftMargin: 3
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 4
-
-        width: 16
-        height: 16
 
         anchorType: "data"
         anchorDirection: "left"

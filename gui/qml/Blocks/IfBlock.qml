@@ -58,15 +58,10 @@ BlockDiagram {
         id: conditionAnchor
         objectName: "conditionAnchor"
 
-        border.width: ifBlock.border.width
-
         anchors.left: parent.left
         anchors.leftMargin: 1.5
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 1.5
-
-        width: ifBlock.height * 0.29
-        height: ifBlock.height * 0.29
 
         anchorType: "data"
         anchorDirection: "left"
@@ -76,16 +71,10 @@ BlockDiagram {
         id: trueAnchor
         objectName: "trueAnchor"
 
-        border.width: ifBlock.border.width
-
         anchors.right: parent.right
         anchors.rightMargin: 1.5
-
         anchors.bottom: falseAnchor.top
         anchors.bottomMargin: 1.5
-
-        width: ifBlock.height * 0.29
-        height: ifBlock.height * 0.29
 
         anchorType: "anchor"
         anchorDirection: "right"
@@ -95,16 +84,10 @@ BlockDiagram {
         id: falseAnchor
         objectName: "falseAnchor"
 
-        border.width: ifBlock.border.width
-
         anchors.right: parent.right
         anchors.rightMargin: 1.5
-
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 1.5
-
-        width: ifBlock.height * 0.29
-        height: ifBlock.height * 0.29
 
         anchorType: "anchor"
         anchorDirection: "right"

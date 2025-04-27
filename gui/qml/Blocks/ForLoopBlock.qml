@@ -55,14 +55,9 @@ BlockDiagram {
         id: incrementAnchor
         objectName: "incrementAnchor"
 
-        border.width: forLoop.border.width
-
         anchors.verticalCenter: incrementField.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 3
-
-        height: 16
-        width: 16
 
         anchorType: "data"
         anchorDirection: "right"
@@ -72,14 +67,9 @@ BlockDiagram {
         id: startAnchor
         objectName: "startAnchor"
 
-        border.width: forLoop.border.width
-
         anchors.verticalCenter: fromField.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: 3
-
-        height: 16
-        width: 16
 
         anchorType: "anchor"
         anchorDirection: "right"
@@ -89,15 +79,9 @@ BlockDiagram {
         id: endAnchor
         objectName: "endAnchor"
 
-        border.width: forLoop.border.width
-
         anchors.verticalCenter: toField.verticalCenter
-
         anchors.right: parent.right
         anchors.rightMargin: 3
-
-        height: 16
-        width: 16
 
         anchorType: "anchor"
         anchorDirection: "left"
