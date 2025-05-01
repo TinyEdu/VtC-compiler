@@ -1,0 +1,12 @@
+var a = 5;
+if (a > 3) {
+    print "Greater";
+} else {
+    print "Smaller";
+}
+
+if (a < 3) {
+    print "Smaller";
+} else {
+    print "Greater";
+}
