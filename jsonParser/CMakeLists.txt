@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.29.1)
-project(textParser LANGUAGES CXX)
+project(jsonParser LANGUAGES CXX)
 
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Gui Quick Widgets)
 

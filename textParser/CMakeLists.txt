@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.29.1)
-project(jsonParser LANGUAGES CXX)
+project(textParser LANGUAGES CXX)
 
 add_library(${PROJECT_NAME} SHARED
         include/TextParser.h

@@ -4,6 +4,7 @@
   "dependencies": [
     "qtbase",
     "qtquickcontrols2",
-    "qtdeclarative"
+    "qtdeclarative",
+    "gtest"
   ]
 }

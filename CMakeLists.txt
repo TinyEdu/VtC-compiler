@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.29.1)
 project(vtc VERSION 1.0.0 LANGUAGES CXX)
 
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Gui Quick)
+find_package(GTest CONFIG REQUIRED)
 
 # Set necessary paths to ensure correct deployment
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -24,6 +25,8 @@ message(STATUS "QML2_IMPORT_PATH: ${QML2_IMPORT_PATH}")
 qt_standard_project_setup()
 qt_policy(SET QTP0001 OLD)
 
+enable_testing()
+add_subdirectory(tests)
 
 add_subdirectory(ast)
 add_subdirectory(interface)
@@ -36,9 +39,18 @@ add_subdirectory(textParser)
 qt_add_executable(${PROJECT_NAME}
         gui/resources.qrc
         main.cpp
+        tests/JsonParser/test_JsonParser.cpp
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Gui Qt6::Quick
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        Qt6::Gui
+        Qt6::Quick
+
+        GTest::gmock_main
+        GTest::gmock
+        GTest::gtest_main
+        GTest::gtest
+
         ast
         cli
         gui
@@ -48,3 +60,4 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Gui Qt6::Quick
 )
 
 include(cmake/Deployment.cmake)
+include(GoogleTest)
