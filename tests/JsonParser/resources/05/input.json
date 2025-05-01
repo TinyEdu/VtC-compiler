@@ -13,13 +13,27 @@
       "leftAnchor": "{19ca65a4-f9c0-4b87-bfa7-1090a55d0543}",
       "name": "End",
       "rightAnchor": "{00000000-0000-0000-0000-000000000000}",
-      "x": 306.1603655846117,
-      "y": 149.10787614119832
+      "x": 361.2981793582807,
+      "y": 155.5654579345109
+    },
+    {
+      "blockType": "CreateVarByValue",
+      "leftAnchor": "{9c249393-d0c7-499f-9f6c-ef5601aad333}",
+      "name": "Create Var",
+      "rightAnchor": "{49412ba2-388c-4536-81c6-52a0648221ec}",
+      "value": "val",
+      "variable": "var",
+      "x": 227.17917334302155,
+      "y": 152.0882986928664
     }
   ],
   "Connections": [
     {
       "from": "{19ca65a4-f9c0-4b87-bfa7-1090a55d0543}",
+      "to": "{49412ba2-388c-4536-81c6-52a0648221ec}"
+    },
+    {
+      "from": "{9c249393-d0c7-499f-9f6c-ef5601aad333}",
       "to": "{f44bc436-3a0c-49e9-afee-1892bed71ba8}"
     }
   ]

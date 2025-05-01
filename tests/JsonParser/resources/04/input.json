@@ -1,0 +1,54 @@
+{
+  "Blocks": [
+    {
+      "blockType": "Start",
+      "leftAnchor": "{00000000-0000-0000-0000-000000000000}",
+      "name": "Start",
+      "rightAnchor": "{f44bc436-3a0c-49e9-afee-1892bed71ba8}",
+      "x": 58.288573470931475,
+      "y": 178.4153627905746
+    },
+    {
+      "blockType": "End",
+      "leftAnchor": "{19ca65a4-f9c0-4b87-bfa7-1090a55d0543}",
+      "name": "End",
+      "rightAnchor": "{00000000-0000-0000-0000-000000000000}",
+      "x": 337.9515374901506,
+      "y": 184.37620747390548
+    },
+    {
+      "blockType": "CreateVarBySignal",
+      "leftAnchor": "{213ca97a-00ab-4bc9-b0c2-6282b496ff29}",
+      "name": "Create Var",
+      "rightAnchor": "{8f06226f-b8d2-4061-8e28-e151033fc5c8}",
+      "value": "{d6b06b1a-814c-4314-9240-d2b890d81d67}",
+      "variable": "var",
+      "x": 190.9173680969808,
+      "y": 183.8794703716538
+    },
+    {
+      "blockType": "Value",
+      "leftAnchor": "{00000000-0000-0000-0000-000000000000}",
+      "name": "Value",
+      "passingAnchor": "{60b3c9d8-68e2-4576-8034-7dc5f9f97bab}",
+      "rightAnchor": "{00000000-0000-0000-0000-000000000000}",
+      "value": "val",
+      "x": 101.00796049740137,
+      "y": 257.8932921421464
+    }
+  ],
+  "Connections": [
+    {
+      "from": "{d6b06b1a-814c-4314-9240-d2b890d81d67}",
+      "to": "{60b3c9d8-68e2-4576-8034-7dc5f9f97bab}"
+    },
+    {
+      "from": "{f44bc436-3a0c-49e9-afee-1892bed71ba8}",
+      "to": "{213ca97a-00ab-4bc9-b0c2-6282b496ff29}"
+    },
+    {
+      "from": "{8f06226f-b8d2-4061-8e28-e151033fc5c8}",
+      "to": "{19ca65a4-f9c0-4b87-bfa7-1090a55d0543}"
+    }
+  ]
+}
