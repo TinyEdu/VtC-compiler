@@ -22,6 +22,23 @@ static std::string getStringField(const QJsonObject& obj, const char* key) {
     return obj.value(key).toString().toStdString();
 }
 
+bool isBool(const std::string& s, bool& out) {
+    if (s == "true") { out = true; return true; }
+    if (s == "false") { out = false; return true; }
+    return false;
+}
+
+bool isInt(const std::string& s, int& out) {
+    auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), out);
+    return ec == std::errc() && ptr == s.data() + s.size();
+}
+
+bool isDouble(const std::string& s, double& out) {
+    char* end;
+    out = std::strtod(s.c_str(), &end);
+    return end == s.c_str() + s.size();
+}
+
 // ------------------------------------------------------------
 void Break::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
@@ -96,11 +113,24 @@ std::shared_ptr<Statement> CreateVar::buildAST(std::vector<std::shared_ptr<State
             value = *strPtr;
         }
 
-        // @TODO: THIS VALUE NEEDS TO BE PARSED TO A CORRECT LITERAL TYPE
+        std::shared_ptr<Expression> expr;
 
-        const auto statement = std::make_shared<VarStatement>(Token(TokenType::IDENTIFIER,
-            this->variableName, "", 1),
-            std::make_shared<LiteralString>(value));
+        bool bval;
+        int ival;
+        double dval;
+
+        if (isBool(value, bval)) {
+            expr = std::make_shared<LiteralBool>(bval);
+        } else if (isInt(value, ival)) {
+            expr = std::make_shared<LiteralInt>(ival);
+        } else if (isDouble(value, dval)) {
+            expr = std::make_shared<LiteralDouble>(dval);
+        } else {
+            expr = std::make_shared<LiteralString>(value);
+        }
+
+        const auto statement = std::make_shared<VarStatement>(
+        Token(TokenType::IDENTIFIER, this->variableName, "", 1), expr);
 
         result.push_back(statement);
         return runNext(result, right);
@@ -328,23 +358,6 @@ void Value::fromJson(const QJsonValue& json) {
     std::string passingUuid = getStringField(obj, "passingAnchor");
     passing = new Anchor(passingUuid, this);
     valueStr = getStringField(obj, "value");
-}
-
-bool isBool(const std::string& s, bool& out) {
-    if (s == "true") { out = true; return true; }
-    if (s == "false") { out = false; return true; }
-    return false;
-}
-
-bool isInt(const std::string& s, int& out) {
-    auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), out);
-    return ec == std::errc() && ptr == s.data() + s.size();
-}
-
-bool isDouble(const std::string& s, double& out) {
-    char* end;
-    out = std::strtod(s.c_str(), &end);
-    return end == s.c_str() + s.size();
 }
 
 std::shared_ptr<Statement> Value::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
