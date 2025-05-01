@@ -6,9 +6,11 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <Expressions/Literals/LiteralInt.h>
 #include <Expressions/Literals/LiteralString.h>
 
 #include "Statements/PrintStatement.h"
+#include "Statements/VarStatement.h"
 
 JsonParser parser;
 // result of parse is -> const std::vector<std::shared_ptr<Statement>>
@@ -104,9 +106,9 @@ TEST(JsonParserTest, CreateVarBySignal)
 
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
-        std::make_shared<PrintStatement>(
-            std::make_shared<LiteralString>("printing!")
-        )
+        std::make_shared<VarStatement>(
+            Token(TokenType::IDENTIFIER, "var", "", 1),
+            std::make_shared<LiteralString>("val"))
     };
 
     ASSERT_EQ(output.size(), expectedOutput.size());
@@ -116,4 +118,28 @@ TEST(JsonParserTest, CreateVarBySignal)
             << "Parsed result does not match expected output at index " << i;
     }
 }
+
+TEST(JsonParserTest, CreateVarByValue)
+{
+    // GIVEN
+    const std::string input = getFileContent("05/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        std::make_shared<VarStatement>(
+            Token(TokenType::IDENTIFIER, "var", "", 1),
+            std::make_shared<LiteralString>("val"))
+    };
+
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
 

@@ -9,6 +9,7 @@
 #include <Expressions/Unary.h>
 
 #include "Statements/ExpressionStatement.h"
+#include "Statements/VarStatement.h"
 
 static std::string getStringField(const QJsonObject& obj, const char* key) {
     return obj.value(key).toString().toStdString();
@@ -67,7 +68,38 @@ void CreateVar::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> CreateVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    if (this->name == "CreateVarBySignal")
+    {
+        Block* nextBlock = Anchor::getNextBlock(*std::get<Anchor*>(this->value));
+
+        const std::shared_ptr<Statement> parsedNextExpression = nextBlock->buildAST(result);
+        const std::shared_ptr<ExpressionStatement> exprStatement =
+            std::dynamic_pointer_cast<ExpressionStatement>(parsedNextExpression);
+        const auto statement = std::make_shared<VarStatement>(Token(TokenType::IDENTIFIER,
+            this->variableName, "", 1), exprStatement->expression);
+
+        result.push_back(statement);
+        return runNext(result, right);
+    }
+
+    if (this->name == "CreateVarByValue")
+    {
+        std::string value;
+        if (const std::string* strPtr = std::get_if<std::string>(&this->value)) {
+            value = *strPtr;
+        }
+
+        // @TODO: THIS VALUE NEEDS TO BE PARSED TO A CORRECT LITERAL TYPE
+
+        const auto statement = std::make_shared<VarStatement>(Token(TokenType::IDENTIFIER,
+            this->variableName, "", 1),
+            std::make_shared<LiteralString>(value));
+
+        result.push_back(statement);
+        return runNext(result, right);
+    }
+
+    throw std::runtime_error("Unknown CreateVar block type");
 }
 
 // ------------------------------------------------------------
@@ -196,18 +228,18 @@ std::shared_ptr<Statement> Print::buildAST(std::vector<std::shared_ptr<Statement
 {
     if (this->name == "PrintBySignal")
     {
-        Anchor const* anchorPtr = std::get<Anchor*>(this->value);
-        Block* block = Anchor::getNextBlock(*anchorPtr);
+        Block* nextBlock = Anchor::getNextBlock(*std::get<Anchor*>(this->value));
 
-        const std::shared_ptr<Statement> expr = block->buildAST(result);
-        const std::shared_ptr<ExpressionStatement> exprStatement = std::dynamic_pointer_cast<
-            ExpressionStatement>(expr);
+        const std::shared_ptr<Statement> expr = nextBlock->buildAST(result);
+        const std::shared_ptr<ExpressionStatement> exprStatement =
+            std::dynamic_pointer_cast<ExpressionStatement>(expr);
         const auto statement = std::make_shared<PrintStatement>(exprStatement->expression);
-        result.push_back(statement);
 
+        result.push_back(statement);
         return runNext(result, right);
     }
-    else if (this->name == "PrintByValue")
+
+    if (this->name == "PrintByValue")
     {
         auto strVal = std::get<std::string>(this->value);
         std::shared_ptr<Expression> expr = std::make_shared<LiteralString>(strVal);
