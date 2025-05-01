@@ -14,7 +14,7 @@ std::shared_ptr<Expression> LiteralString::accept(Visitor& visitor)
 
 std::shared_ptr<Expression> LiteralString::process(std::shared_ptr<Literal> expr, Token token)
 {
-    return expr->process(std::dynamic_pointer_cast<LiteralBool>(shared_from_this()), token);
+    return expr->process(std::dynamic_pointer_cast<LiteralString>(shared_from_this()), token);
 }
 
 std::shared_ptr<Expression> LiteralString::process(std::shared_ptr<LiteralInt> expr, Token token)

@@ -10,7 +10,8 @@ target_link_libraries(runTests PRIVATE
         GTest::gmock
         GTest::gtest_main
         GTest::gtest
-        jsonParser)
+        jsonParser
+        ast)
 
 target_include_directories(runTests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/../jsonParser/include
