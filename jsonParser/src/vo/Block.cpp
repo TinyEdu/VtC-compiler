@@ -1,12 +1,19 @@
 #include "Block.h"
 
+#include <charconv>
+
 #include "../BlockExtractor/ReachedEnd.h"
 #include <Expressions/Literals/LiteralString.h>
 #include "Statements/PrintStatement.h"
 
 #include <QJsonObject>
 #include <QString>
+#include <Expressions/Binary.h>
 #include <Expressions/Unary.h>
+#include <Expressions/Variable.h>
+#include <Expressions/Literals/LiteralBool.h>
+#include <Expressions/Literals/LiteralDouble.h>
+#include <Expressions/Literals/LiteralInt.h>
 
 #include "Statements/ExpressionStatement.h"
 #include "Statements/VarStatement.h"
@@ -161,7 +168,10 @@ void GetVar::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> GetVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    auto literal = std::make_shared<Variable>(Token(TokenType::VAR, this->variableName, "", 1));
+    auto expr = std::make_shared<ExpressionStatement>(literal);
+
+    return expr;
 }
 
 // ------------------------------------------------------------
@@ -320,11 +330,41 @@ void Value::fromJson(const QJsonValue& json) {
     valueStr = getStringField(obj, "value");
 }
 
-std::shared_ptr<Statement> Value::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    auto literal = std::make_shared<LiteralString>(valueStr);
-    auto expr = std::make_shared<ExpressionStatement>(literal);
+bool isBool(const std::string& s, bool& out) {
+    if (s == "true") { out = true; return true; }
+    if (s == "false") { out = false; return true; }
+    return false;
+}
 
-    return expr;
+bool isInt(const std::string& s, int& out) {
+    auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), out);
+    return ec == std::errc() && ptr == s.data() + s.size();
+}
+
+bool isDouble(const std::string& s, double& out) {
+    char* end;
+    out = std::strtod(s.c_str(), &end);
+    return end == s.c_str() + s.size();
+}
+
+std::shared_ptr<Statement> Value::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
+    std::shared_ptr<Expression> expr;
+
+    bool bval;
+    int ival;
+    double dval;
+
+    if (isBool(this->valueStr, bval)) {
+        expr = std::make_shared<LiteralBool>(bval);
+    } else if (isInt(this->valueStr, ival)) {
+        expr = std::make_shared<LiteralInt>(ival);
+    } else if (isDouble(this->valueStr, dval)) {
+        expr = std::make_shared<LiteralDouble>(dval);
+    } else {
+        expr = std::make_shared<LiteralString>(this->valueStr);
+    }
+
+    return std::make_shared<ExpressionStatement>(expr);
 }
 
 // ------------------------------------------------------------
@@ -377,8 +417,34 @@ void BinaryOp::fromJson(const QJsonValue& json) {
     outputValue = new Anchor(outputUuid, this);
 }
 
+const std::map<std::string, TokenType> operationMapper = {
+    {"add", TokenType::PLUS},
+    {"subtract", TokenType::MINUS},
+    {"divide", TokenType::SLASH},
+    {"multiply", TokenType::STAR},
+    {"==", TokenType::EQUAL_EQUAL},
+    {">=", TokenType::GREATER_EQUAL},
+    {"<", TokenType::LESS},
+    {"<=", TokenType::LESS_EQUAL},
+    {"and", TokenType::AND},
+    {"or", TokenType::OR},
+    {"mod", TokenType::MODULO}
+};
+
 std::shared_ptr<Statement> BinaryOp::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    // left input value
+    const std::shared_ptr<Statement> leftInputExpression = Anchor::getNextBlock(*this->leftInputValue)->buildAST(result);
+    const auto leftInputStatement = std::dynamic_pointer_cast<ExpressionStatement>(leftInputExpression);
+
+    // right input value
+    const std::shared_ptr<Statement> rightInputExpression = Anchor::getNextBlock(*this->rightInputValue)->buildAST(result);
+    const auto rightInputStatement = std::dynamic_pointer_cast<ExpressionStatement>(rightInputExpression);
+
+    // operations
+    auto op = Token(operationMapper.at(this->operation), operation, "", 0);
+    auto binary = std::make_shared<Binary>(leftInputStatement->expression, op, rightInputStatement->expression);
+
+    return std::make_shared<ExpressionStatement>(binary);
 }
 
 // ------------------------------------------------------------
@@ -404,24 +470,12 @@ void UnaryOp::fromJson(const QJsonValue& json) {
 
 std::shared_ptr<Statement> UnaryOp::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
     // input value
-    Block* block = Anchor::getNextBlock(*this->inputValue);
-    const std::shared_ptr<Statement> expr = block->buildAST(result);
-    const auto exprStatement = std::dynamic_pointer_cast<ExpressionStatement>(expr);
-    const auto inputValueStmt = std::make_shared<ExpressionStatement>(exprStatement->expression);
+    const std::shared_ptr<Statement> inputExpression = Anchor::getNextBlock(*this->inputValue)->buildAST(result);
+    const auto inputStatement = std::dynamic_pointer_cast<ExpressionStatement>(inputExpression);
 
-    // output value
-    Block* block2 = Anchor::getNextBlock(*this->inputValue);
-    const std::shared_ptr<Statement> expr2 = block2->buildAST(result);
-    const auto exprStatement2 = std::dynamic_pointer_cast<ExpressionStatement>(expr2);
-    const auto outputValueStmt = std::make_shared<ExpressionStatement>(exprStatement2->expression);
-
-    // operation  -  ["negate", "not"]
+    // operations
     auto op = Token(operation == "negate" ? TokenType::MINUS : TokenType::BANG, operation, "", 0);
+    auto binary = std::make_shared<Unary>(op, inputStatement->expression);
 
-    auto unary = std::make_shared<Unary>(op, inputValueStmt->expression);
-
-    std::shared_ptr<Statement> statement = std::make_shared<ExpressionStatement>(unary);
-    result.push_back(statement);
-
-    return runNext(result, right);
+    return std::make_shared<ExpressionStatement>(binary);
 }

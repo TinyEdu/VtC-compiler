@@ -39,7 +39,6 @@ Block* Anchor::getNextBlock(const Anchor& input)
     const std::string uuid = input.uuid;
     const std::string oppositeUuid = findTheEndOf(uuid);
 
-    std::cout << "Found opposite UUID: " << oppositeUuid << std::endl;
     std::vector<Anchor> a = anchors;
 
     for (auto anchor : anchors)

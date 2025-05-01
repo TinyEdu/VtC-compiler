@@ -6,6 +6,8 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <Expressions/Binary.h>
+#include <Expressions/Variable.h>
 #include <Expressions/Literals/LiteralInt.h>
 #include <Expressions/Literals/LiteralString.h>
 
@@ -132,6 +134,55 @@ TEST(JsonParserTest, CreateVarByValue)
         std::make_shared<VarStatement>(
             Token(TokenType::IDENTIFIER, "var", "", 1),
             std::make_shared<LiteralString>("val"))
+    };
+
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
+TEST(JsonParserTest, GetVarPrint)
+{
+    // GIVEN
+    const std::string input = getFileContent("06/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        std::make_shared<PrintStatement>(
+            std::make_shared<Variable>(Token(TokenType::VAR, "hello", "", 1))
+        )
+    };
+
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
+TEST(JsonParserTest, BinaryOperation)
+{
+    // GIVEN
+    const std::string input = getFileContent("07/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        std::make_shared<VarStatement>(
+            Token(TokenType::IDENTIFIER, "var", "", 1),
+            std::make_shared<Binary>(
+                std::make_shared<LiteralInt>(99),
+                Token(TokenType::PLUS, "add", "", 0),
+                std::make_shared<LiteralInt>(1)))
     };
 
     ASSERT_EQ(output.size(), expectedOutput.size());
