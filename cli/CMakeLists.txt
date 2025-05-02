@@ -4,9 +4,9 @@ project(cli LANGUAGES CXX)
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Core)
 
 add_library(${PROJECT_NAME} SHARED
-        moduleA.cpp
+        src/moduleA.cpp
         #    moduleA.h  # If it's private, keep it commented
-        CommandLineUserInterface.cpp
+        src/CommandLineUserInterface.cpp
         include/CommandLineUserInterface.h
 )
 
