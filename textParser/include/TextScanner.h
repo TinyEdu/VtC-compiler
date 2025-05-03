@@ -1,22 +1,26 @@
 // Scanner.h
+#ifndef TEXT_SCANNER_H
+#define TEXT_SCANNER_H
 
-#ifndef SCANNER_H
-#define SCANNER_H
+#if defined(VTC_TEXT_SCANNER_EXPORTS)
+#  if defined(_WIN32)
+#    define VTC_TEXT_SCANNER_API __declspec(dllexport)
+#  else
+#    define VTC_TEXT_SCANNER_API __attribute__((visibility("default")))
+#  endif
+#else
+#  define VTC_TEXT_SCANNER_API __declspec(dllimport)
+#endif
 
-#include <sstream>
 #include <string>
-#include <utility>
 #include <vector>
-#include <unordered_set>
 
-#include "ErrorHandler.h"
-#include "LogManager/LogManager.h"
 #include "Token/Token.h"
 
-class Scanner
+class VTC_TEXT_SCANNER_API TextScanner
 {
 public:
-    Scanner() = default;
+    TextScanner() = default;
 
     std::vector<Token> scan(std::string_view inputSource);
     void reset();

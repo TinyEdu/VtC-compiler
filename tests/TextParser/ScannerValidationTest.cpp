@@ -1,31 +1,30 @@
 #include <gtest/gtest.h>
-#include "Scanner/Scanner.h"
+#include "TextScanner.h"
 
 TEST(ScannerValidation, IsSingleCharacterTokenWorkingCorrectly)
 {
-    using enum TokenType;
     // given
     const std::string input = "+){.},-(;/***";
 
-    const std::vector<Token> expectedOutput = {
-        Token(PLUS, "+", "", 1),
-        Token(RIGHT_PAREN, ")", "", 1),
-        Token(LEFT_BRACE, "{", "", 1),
-        Token(DOT, ".", "", 1),
-        Token(RIGHT_BRACE, "}", "", 1),
-        Token(COMMA, ",", "", 1),
-        Token(MINUS, "-", "", 1),
-        Token(LEFT_PAREN, "(", "", 1),
-        Token(SEMICOLON, ";", "", 1),
-        Token(SLASH, "/", "", 1),
-        Token(STAR, "*", "", 1),
-        Token(STAR, "*", "", 1),
-        Token(STAR, "*", "", 1),
-        Token(END_OF_FILE, "", "", 1),
+    const std::vector expectedOutput = {
+        Token(TokenType::PLUS, "+", "", 1),
+        Token(TokenType::RIGHT_PAREN, ")", "", 1),
+        Token(TokenType::LEFT_BRACE, "{", "", 1),
+        Token(TokenType::DOT, ".", "", 1),
+        Token(TokenType::RIGHT_BRACE, "}", "", 1),
+        Token(TokenType::COMMA, ",", "", 1),
+        Token(TokenType::MINUS, "-", "", 1),
+        Token(TokenType::LEFT_PAREN, "(", "", 1),
+        Token(TokenType::SEMICOLON, ";", "", 1),
+        Token(TokenType::SLASH, "/", "", 1),
+        Token(TokenType::STAR, "*", "", 1),
+        Token(TokenType::STAR, "*", "", 1),
+        Token(TokenType::STAR, "*", "", 1),
+        Token(TokenType::END_OF_FILE, "", "", 1),
     };
 
     // when
-    Scanner scanner;
+    TextScanner scanner;
     const std::vector<Token> output = scanner.scan(input);
 
     // then
@@ -35,18 +34,17 @@ TEST(ScannerValidation, IsSingleCharacterTokenWorkingCorrectly)
 
 TEST(ScannerValidation, IsNewLineAndCommentsAndBlankspacesWorkingCorrecltly)
 {
-    using enum TokenType;
     // given
     const std::string input = "// Here is a comment\n \t/                      /";
 
     const std::vector expectedOutput = {
-        Token(SLASH, "/", "", 2),
-        Token(SLASH, "/", "", 2),
-        Token(END_OF_FILE, "", "", 2),
+        Token(TokenType::SLASH, "/", "", 2),
+        Token(TokenType::SLASH, "/", "", 2),
+        Token(TokenType::END_OF_FILE, "", "", 2),
     };
 
     // when
-    Scanner scanner;
+    TextScanner scanner;
     const std::vector<Token> output = scanner.scan(input);
 
     // then
@@ -55,18 +53,17 @@ TEST(ScannerValidation, IsNewLineAndCommentsAndBlankspacesWorkingCorrecltly)
 
 TEST(ScannerValidation, AreMultipleRunsWorkingCorrectly)
 {
-    using enum TokenType;
     // given
     const std::string input = "// Here is a comment\n \t/                      /\n";
 
     const std::vector expectedOutput = {
-        Token(SLASH, "/", "", 2),
-        Token(SLASH, "/", "", 2),
-        Token(END_OF_FILE, "", "", 3),
+        Token(TokenType::SLASH, "/", "", 2),
+        Token(TokenType::SLASH, "/", "", 2),
+        Token(TokenType::END_OF_FILE, "", "", 3),
     };
 
     // when
-    Scanner scanner;
+    TextScanner scanner;
     const std::vector<Token> output1 = scanner.scan(input);
     const std::vector<Token> output2 = scanner.scan(input);
 
@@ -77,20 +74,19 @@ TEST(ScannerValidation, AreMultipleRunsWorkingCorrectly)
 
 TEST(ScannerValidation, IsLineCountingCorrect)
 {
-    using enum TokenType;
     // given
     const std::string input = "+\n+\n+\n+\n";
 
     const std::vector expectedOutput = {
-        Token(PLUS, "+", "", 1),
-        Token(PLUS, "+", "", 2),
-        Token(PLUS, "+", "", 3),
-        Token(PLUS, "+", "", 4),
-        Token(END_OF_FILE, "", "", 5)
+        Token(TokenType::PLUS, "+", "", 1),
+        Token(TokenType::PLUS, "+", "", 2),
+        Token(TokenType::PLUS, "+", "", 3),
+        Token(TokenType::PLUS, "+", "", 4),
+        Token(TokenType::END_OF_FILE, "", "", 5)
     };
 
     // when
-    Scanner scanner;
+    TextScanner scanner;
     const std::vector<Token> output = scanner.scan(input);
 
     // then
@@ -99,22 +95,21 @@ TEST(ScannerValidation, IsLineCountingCorrect)
 
 TEST(ScannerValidation, IsDoubleCharacterTokenWorkingCorrectly)
 {
-    using enum TokenType;
     // given
     const std::string input = "<= +> >= != ==";
 
     const std::vector expectedOutput = {
-        Token(LESS_EQUAL, "<=", "", 1),
-        Token(PLUS, "+", "", 1),
-        Token(GREATER, ">", "", 1),
-        Token(GREATER_EQUAL, ">=", "", 1),
-        Token(BANG_EQUAL, "!=", "", 1),
-        Token(EQUAL_EQUAL, "==", "", 1),
-        Token(END_OF_FILE, "", "", 1)
+        Token(TokenType::LESS_EQUAL, "<=", "", 1),
+        Token(TokenType::PLUS, "+", "", 1),
+        Token(TokenType::GREATER, ">", "", 1),
+        Token(TokenType::GREATER_EQUAL, ">=", "", 1),
+        Token(TokenType::BANG_EQUAL, "!=", "", 1),
+        Token(TokenType::EQUAL_EQUAL, "==", "", 1),
+        Token(TokenType::END_OF_FILE, "", "", 1)
     };
 
     // when
-    Scanner scanner;
+    TextScanner scanner;
     const std::vector<Token> output = scanner.scan(input);
 
     // then
@@ -123,21 +118,20 @@ TEST(ScannerValidation, IsDoubleCharacterTokenWorkingCorrectly)
 
 TEST(ScannerValidation, IsHandlingLiteralsCorrect)
 {
-    using enum TokenType;
     // given
     const std::string input = "var variable = \"special string\";";
 
     const std::vector expectedOutput = {
-        Token(VAR, "var", "", 1),
-        Token(IDENTIFIER, "variable", "", 1),
-        Token(EQUAL, "=", "", 1),
-        Token(STRING, "\"special string\"", "special string", 1),
-        Token(SEMICOLON, ";", "", 1),
-        Token(END_OF_FILE, "", "", 1)
+        Token(TokenType::VAR, "var", "", 1),
+        Token(TokenType::IDENTIFIER, "variable", "", 1),
+        Token(TokenType::EQUAL, "=", "", 1),
+        Token(TokenType::STRING, "\"special string\"", "special string", 1),
+        Token(TokenType::SEMICOLON, ";", "", 1),
+        Token(TokenType::END_OF_FILE, "", "", 1)
     };
 
     // when
-    Scanner scanner;
+    TextScanner scanner;
     const std::vector<Token> output = scanner.scan(input);
 
     // then
@@ -146,20 +140,19 @@ TEST(ScannerValidation, IsHandlingLiteralsCorrect)
 
 TEST(ScannerValidation, AreNumbersCorrectlyParsed)
 {
-    using enum TokenType;
     // given
     const std::string input = "123 456.789 0.001 \"000\"";
 
-    const std::vector<Token> expectedOutput = {
-        Token(NUMBER, "123", "123", 1),
-        Token(NUMBER, "456.789", "456.789", 1),
-        Token(NUMBER, "0.001", "0.001", 1),
-        Token(STRING, "\"000\"", "000", 1),
-        Token(END_OF_FILE, "", "", 1)
+    const std::vector expectedOutput = {
+        Token(TokenType::NUMBER, "123", "123", 1),
+        Token(TokenType::NUMBER, "456.789", "456.789", 1),
+        Token(TokenType::NUMBER, "0.001", "0.001", 1),
+        Token(TokenType::STRING, "\"000\"", "000", 1),
+        Token(TokenType::END_OF_FILE, "", "", 1)
     };
 
     // when
-    Scanner scanner;
+    TextScanner scanner;
     const std::vector<Token> output = scanner.scan(input);
 
     // then

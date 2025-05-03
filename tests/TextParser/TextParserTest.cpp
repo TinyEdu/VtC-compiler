@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
-#include "Parser/Parser.h"
-#include "Scanner/Scanner.h"
+#include "TextParser.h"
+#include "TextScanner.h"
+
 #include "Expressions/ExpressionsWorld.h"
 #include "Statements/StatementsWorld.h"
 
@@ -10,10 +11,8 @@ TEST(ParserValidation, IsParsingVariableAndSimpleExpressionWorkingCorrectly)
     const std::string input = "var a = 1; a = 2;";
 
     // when
-    Scanner scanner;
-    const std::vector<Token> tokens = scanner.scan(input);
-    Parser parser(tokens);
-    const std::vector<std::shared_ptr<Statement>> statements = parser.parse();
+    TextParser parser;
+    const std::vector<std::shared_ptr<Statement>> statements = parser.parse(input);
 
     // then
     std::vector<std::shared_ptr<Statement>> expectedStatements;
@@ -45,10 +44,8 @@ TEST(ParserValidation, IsParsingComplexExpressionWorkingCorrectly)
     const std::string input = "var a = 1 + ( 2 / 3 );";
 
     // when
-    Scanner scanner;
-    const std::vector<Token> tokens = scanner.scan(input);
-    Parser parser(tokens);
-    const std::vector<std::shared_ptr<Statement>> statements = parser.parse();
+    TextParser parser;
+    const std::vector<std::shared_ptr<Statement>> statements = parser.parse(input);
 
     // then
     std::vector<std::shared_ptr<Statement>> expectedStatements;
@@ -82,12 +79,10 @@ TEST(ParserValidation, IsParsingBlockAndReturnWorkingCorrectly)
 {
     // given
     const std::string input = "{ var a = 1; return a; }";
-    Scanner scanner;
-    const std::vector<Token> tokens = scanner.scan(input);
-    Parser parser(tokens);
 
     // when
-    const std::vector<std::shared_ptr<Statement>> statements = parser.parse();
+    TextParser parser;
+    const std::vector<std::shared_ptr<Statement>> statements = parser.parse(input);
 
     // then
     std::vector<std::shared_ptr<Statement>> blockStatements;
@@ -128,12 +123,10 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
                                          a = a + 6;
                                      }
                                  })";
-    Scanner scanner;
-    const std::vector<Token> tokens = scanner.scan(input);
-    Parser parser(tokens);
 
     // when
-    const std::vector<std::shared_ptr<Statement>> statements = parser.parse();
+    TextParser parser;
+    const std::vector<std::shared_ptr<Statement>> statements = parser.parse(input);
 
     // then
     std::vector<std::shared_ptr<Statement>> expectedStatements;
@@ -148,10 +141,9 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
 
     // 2. While - 'while ( a > 9 ) { ... }'
     {
-        using enum TokenType;
         auto whileCondition = std::make_shared<Binary>(
-            std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 2)),
-            Token(GREATER, ">", "", 2),
+            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 2)),
+            Token(TokenType::GREATER, ">", "", 2),
             std::make_shared<LiteralInt>(9)
         );
 
@@ -161,10 +153,10 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
         whileBodyStatements.push_back(
             std::make_shared<ExpressionStatement>(
                 std::make_shared<Assign>(
-                    Token(IDENTIFIER, "a", "", 4),
+                    Token(TokenType::IDENTIFIER, "a", "", 4),
                     std::make_shared<Binary>(
-                        std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 4)),
-                        Token(PLUS, "+", "", 4),
+                        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 4)),
+                        Token(TokenType::PLUS, "+", "", 4),
                         std::make_shared<LiteralInt>(1)
                     )
                 )
@@ -173,8 +165,8 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
 
         // 2.2 If - 'if ( a == 3 ) { ... }'
         auto ifCondition = std::make_shared<Binary>(
-            std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 5)),
-            Token(EQUAL_EQUAL, "==", "", 5),
+            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 5)),
+            Token(TokenType::EQUAL_EQUAL, "==", "", 5),
             std::make_shared<LiteralInt>(3)
         );
 
@@ -182,10 +174,10 @@ TEST(ParserValidation, IsParserWhileAndIfWorkingCorrectly)
         ifBodyStatements.push_back(
             std::make_shared<ExpressionStatement>(
                 std::make_shared<Assign>(
-                    Token(IDENTIFIER, "a", "", 7),
+                    Token(TokenType::IDENTIFIER, "a", "", 7),
                     std::make_shared<Binary>(
-                        std::make_shared<Variable>(Token(IDENTIFIER, "a", "", 7)),
-                        Token(PLUS, "+", "", 7),
+                        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 7)),
+                        Token(TokenType::PLUS, "+", "", 7),
                         std::make_shared<LiteralInt>(6)
                     )
                 )
@@ -216,12 +208,10 @@ TEST(ParserValidation, IsParserPrintWorkingCorrectly)
 {
     // given
     const std::string input = "print(1);";
-    Scanner scanner;
-    const std::vector<Token> tokens = scanner.scan(input);
-    Parser parser(tokens);
 
     // when
-    const std::vector<std::shared_ptr<Statement>> statements = parser.parse();
+    TextParser parser;
+    const std::vector<std::shared_ptr<Statement>> statements = parser.parse(input);
 
     // then
     std::vector<std::shared_ptr<Statement>> expectedStatements;

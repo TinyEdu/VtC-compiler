@@ -39,7 +39,7 @@ add_subdirectory(textParser)
 qt_add_executable(${PROJECT_NAME}
         gui/resources.qrc
         main.cpp
-        tests/JsonParser/test_JsonParser.cpp
+        tests/JsonParser/JsonParserTest.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

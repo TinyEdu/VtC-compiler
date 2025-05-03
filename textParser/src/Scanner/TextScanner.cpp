@@ -1,12 +1,16 @@
 // Scanner.cpp
-#include "Scanner.h"
+#include "TextScanner.h"
+
+#include <unordered_set>
+
+#include "ErrorHandler.h"
 #include "Token/TokenTypeMappings.h"
 
 static const std::unordered_set validChars = {
     '(', ')', '{', '}', ',', '.', '-', '+', ';', '*', '/', '<', '>', '=', '!'
 };
 
-std::vector<Token> Scanner::scan(const std::string_view inputSource)
+std::vector<Token> TextScanner::scan(const std::string_view inputSource)
 {
     reset();
     source = inputSource;
@@ -23,7 +27,7 @@ std::vector<Token> Scanner::scan(const std::string_view inputSource)
     return tokens;
 }
 
-void Scanner::reset()
+void TextScanner::reset()
 {
     currentIndex = 0;
     startIndex = 0;
@@ -31,23 +35,23 @@ void Scanner::reset()
     tokens.clear();
 }
 
-bool Scanner::isAtEnd() const
+bool TextScanner::isAtEnd() const
 {
     return currentIndex == source.length();
 }
 
-bool Scanner::isNewLine(const char c)
+bool TextScanner::isNewLine(const char c)
 {
     return c == '\n';
 }
 
 
-bool Scanner::isStartingString(const char c)
+bool TextScanner::isStartingString(const char c)
 {
     return c == '"';
 }
 
-bool Scanner::handleLiterals(const char c)
+bool TextScanner::handleLiterals(const char c)
 {
     if (isStartingString(c))
     {
@@ -74,7 +78,7 @@ bool Scanner::handleLiterals(const char c)
     return false;
 }
 
-void Scanner::scanToken()
+void TextScanner::scanToken()
 {
     char c = getNextChar();
 
@@ -123,22 +127,22 @@ void Scanner::scanToken()
     ErrorHandler::error(lineNumber, "invalid character");
 }
 
-bool Scanner::isWhitespace(const char c)
+bool TextScanner::isWhitespace(const char c)
 {
     return (c == '\r' || c == '\t' || c == ' ' || c == '\0');
 }
 
-bool Scanner::isComment(const char c) const
+bool TextScanner::isComment(const char c) const
 {
     return (c == '/' && peek() == '/');
 }
 
-bool Scanner::isSingleCharacterToken(const char c)
+bool TextScanner::isSingleCharacterToken(const char c)
 {
     return validChars.find(c) != validChars.end();
 }
 
-bool Scanner::isDoubleCharacterTokens(const char c, TokenType& tokenType)
+bool TextScanner::isDoubleCharacterTokens(const char c, TokenType& tokenType)
 {
 
     // Check if the character is part of a double-character token
@@ -163,23 +167,23 @@ bool Scanner::isDoubleCharacterTokens(const char c, TokenType& tokenType)
     return false;
 }
 
-char Scanner::getNextChar()
+char TextScanner::getNextChar()
 {
     return source[currentIndex++];
 }
 
-void Scanner::addToken(const TokenType tokenType)
+void TextScanner::addToken(const TokenType tokenType)
 {
     addToken(tokenType, "");
 }
 
-void Scanner::addToken(TokenType type, const std::string& literal)
+void TextScanner::addToken(TokenType type, const std::string& literal)
 {
     std::string text = source.substr(startIndex, currentIndex - startIndex);
     tokens.emplace_back(type, text, literal, lineNumber);
 }
 
-bool Scanner::match(const char expected)
+bool TextScanner::match(const char expected)
 {
     if (isAtEnd())
     {
@@ -194,7 +198,7 @@ bool Scanner::match(const char expected)
     return true;
 }
 
-char Scanner::peek() const
+char TextScanner::peek() const
 {
     if (isAtEnd())
     {
@@ -204,7 +208,7 @@ char Scanner::peek() const
     return source[currentIndex];
 }
 
-char Scanner::peekNext() const
+char TextScanner::peekNext() const
 {
     if (currentIndex + 1 >= source.length())
     {
@@ -214,7 +218,7 @@ char Scanner::peekNext() const
     return source[currentIndex + 1];
 }
 
-void Scanner::handleStringLiteral()
+void TextScanner::handleStringLiteral()
 {
     while (peek() != '"' && !isAtEnd())
     {
@@ -240,7 +244,7 @@ void Scanner::handleStringLiteral()
     addToken(TokenType::STRING, value);
 }
 
-void Scanner::handleNumberLiteral()
+void TextScanner::handleNumberLiteral()
 {
     while (isDigit(peek()))
     {
@@ -263,22 +267,22 @@ void Scanner::handleNumberLiteral()
     addToken(TokenType::NUMBER, ss.str());
 }
 
-bool Scanner::isDigit(const char c)
+bool TextScanner::isDigit(const char c)
 {
     return c >= '0' && c <= '9';
 }
 
-bool Scanner::isAlphabetic(const char c)
+bool TextScanner::isAlphabetic(const char c)
 {
     return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_');
 }
 
-bool Scanner::isAlphanumeric(const char c)
+bool TextScanner::isAlphanumeric(const char c)
 {
     return isAlphabetic(c) || isDigit(c);
 }
 
-void Scanner::handleIdentifierLiteral()
+void TextScanner::handleIdentifierLiteral()
 {
     while (isAlphanumeric(peek()))
     {

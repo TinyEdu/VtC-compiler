@@ -3,6 +3,7 @@ project(textParser LANGUAGES CXX)
 
 add_library(${PROJECT_NAME} SHARED
         include/TextParser.h
+        include/TextScanner.h
 
         src/TextParser.cpp
         src/Parser/ParseError.h
@@ -13,11 +14,10 @@ add_library(${PROJECT_NAME} SHARED
 
         src/Scanner/ErrorHandler.cpp
         src/Scanner/ErrorHandler.h
-        src/Scanner/Scanner.cpp
-        src/Scanner/Scanner.h
+        src/Scanner/TextScanner.cpp
 )
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_TEXT_PARSER_EXPORTS)
+target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_TEXT_PARSER_EXPORTS VTC_TEXT_SCANNER_EXPORTS)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
