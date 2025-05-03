@@ -49,6 +49,7 @@ public:
     std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
+    std::string eventName;
 };
 
 // CreateVar block representing both CreateVarBySignal and CreateVarByValue.
@@ -123,9 +124,9 @@ public:
     Listen() : right(nullptr) {}
     void fromJson(const QJsonValue& json) override;
     std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
-private:
+public:
     Anchor* right;
-    std::string variableName;
+    std::string eventName;
 };
 
 // Print block representing PrintBySignal and PrintByValue.

@@ -61,15 +61,17 @@ std::shared_ptr<Statement> Break::buildAST(std::vector<std::shared_ptr<Statement
 // ------------------------------------------------------------
 void Call::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
-
     name = getStringField(obj, "blockType");
 
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
+
+    eventName = getStringField(obj, "eventName");
 }
 
 std::shared_ptr<Statement> Call::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    Listen* listenBlock = Anchor::findCallEventBlock(eventName);
+    return runNext(result, listenBlock->right);
 }
 
 // ------------------------------------------------------------
@@ -307,11 +309,11 @@ void Listen::fromJson(const QJsonValue& json) {
 
     std::string rightUuid = getStringField(obj, "rightAnchor");
     right = new Anchor(rightUuid, this);
-    variableName = getStringField(obj, "variableName");
+    eventName = getStringField(obj, "eventName");
 }
 
 std::shared_ptr<Statement> Listen::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    throw std::runtime_error("Not allowed block access");
 }
 
 // ------------------------------------------------------------

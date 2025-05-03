@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 
+class Listen;
 struct Connection;
 class Block;
 
@@ -18,6 +19,7 @@ public:
     static void loadConnections(std::vector<Connection> _connections);
     static std::string findTheEndOf(const std::string& value);
     static void clearAnchors();
+    static Listen* findCallEventBlock(const std::string& eventName);
 
 private:
     static std::vector<Anchor> anchors;

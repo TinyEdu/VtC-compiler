@@ -484,7 +484,10 @@ TEST(JsonParserTest, CallAndListen)
     const std::vector<std::shared_ptr<Statement>> result = parser.parse(input);
 
     // THEN
-    const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        std::make_shared<PrintStatement>(std::make_shared<LiteralString>("Call!")),
+        std::make_shared<PrintStatement>(std::make_shared<LiteralString>("Listen!"))
+    };
 
     ASSERT_FALSE(result.empty());
     ASSERT_EQ(result.size(), expectedOutput.size());

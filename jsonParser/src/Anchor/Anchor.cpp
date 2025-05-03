@@ -1,7 +1,6 @@
 #include "Anchor.h"
 
-#include <iostream>
-
+#include "../vo/Block.h"
 #include "../vo/Connection.h"
 
 std::vector<Anchor> Anchor::anchors;
@@ -73,4 +72,18 @@ std::string Anchor::findTheEndOf(const std::string& value)
 void Anchor::clearAnchors()
 {
     anchors = {};
+}
+
+Listen* Anchor::findCallEventBlock(const std::string& eventName) {
+    for (auto& anchor : anchors) {
+        Block* block = anchor.reference;
+        if (block && block->name == "Listen") {
+            auto listenBlock = dynamic_cast<Listen*>(block);
+            if (listenBlock && listenBlock->eventName == eventName) {
+                return listenBlock;
+            }
+        }
+    }
+
+    throw std::runtime_error("No Listen block found for event: " + eventName);
 }
