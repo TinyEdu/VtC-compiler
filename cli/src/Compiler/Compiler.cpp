@@ -56,12 +56,12 @@ void Compiler::runPrompt()
 
     for (;;)
     {
-        LogManager::log() << ">> ";
+        LogManager::LOG() << ">> ";
         std::getline(std::cin, line);
 
         if (std::cin.eof())
         {
-            LogManager::log() << "Ending REPL compilation...\n";
+            LogManager::LOG() << "Ending REPL compilation...\n";
             break;
         }
 
@@ -94,6 +94,6 @@ void Compiler::run(const std::string& source)
 
 void Compiler::runtimeError(const std::runtime_error& error)
 {
-    LogManager::log() << error.what() << "\n";
+    LogManager::LOG() << error.what() << "\n";
     hadRuntimeError = true;
 }

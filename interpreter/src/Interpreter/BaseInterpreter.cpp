@@ -1,8 +1,7 @@
-#include "Interpreter.h"
+#include "BaseInterpreter.h"
 
 #include "LogManager/LogManager.h"
 #include "Token/Token.h"
-#include "Compiler/Compiler.h"
 
 #include "Callable/Callable.h"
 #include "Callable/Return.h"
@@ -17,7 +16,7 @@
 #include <iostream>
 
 
-Interpreter::Interpreter()
+BaseInterpreter::BaseInterpreter()
 {
     environment = std::make_shared<Environment>();
 
@@ -25,14 +24,14 @@ Interpreter::Interpreter()
     environment->define("clock", std::make_shared<ClockCallable>());
 }
 
-Interpreter::~Interpreter() = default;
+BaseInterpreter::~BaseInterpreter() = default;
 
-std::shared_ptr<Expression> Interpreter::evaluateExpression(const std::shared_ptr<Expression>& expression)
+std::shared_ptr<Expression> BaseInterpreter::evaluateExpression(const std::shared_ptr<Expression>& expression)
 {
     return expression->accept(*this);
 }
 
-std::shared_ptr<Literal> Interpreter::evaluateLiteral(const std::shared_ptr<Expression>& expression)
+std::shared_ptr<Literal> BaseInterpreter::evaluateLiteral(const std::shared_ptr<Expression>& expression)
 {
     // Evaluate the expression first
     auto result = expression->accept(*this);
@@ -64,21 +63,21 @@ std::shared_ptr<Literal> Interpreter::evaluateLiteral(const std::shared_ptr<Expr
     return castedResult;
 }
 
-void Interpreter::interpret(const std::shared_ptr<Expression>& expression)
+void BaseInterpreter::interpret(const std::shared_ptr<Expression>& expression)
 {
     try
     {
         const auto value = evaluateLiteral(expression);
 
-        LogManager::log() << value;
+        LogManager::LOG() << value;
     }
     catch (std::runtime_error& e)
     {
-        Compiler::runtimeError(e);
+        throw std::runtime_error("Runtime error: " + std::string(e.what()));
     }
 }
 
-void Interpreter::interpret(const std::vector<std::shared_ptr<Statement>>& statements)
+void BaseInterpreter::interpret(const std::vector<std::shared_ptr<Statement>>& statements)
 {
     try
     {
@@ -89,12 +88,12 @@ void Interpreter::interpret(const std::vector<std::shared_ptr<Statement>>& state
     }
     catch (std::exception& e)
     {
-        LogManager::crit() << e.what();
+        LogManager::CRIT() << e.what();
     }
 }
 
 
-void Interpreter::execute(const std::vector<std::shared_ptr<Statement>>& statements,
+void BaseInterpreter::execute(const std::vector<std::shared_ptr<Statement>>& statements,
                           const std::shared_ptr<Environment>& env)
 {
     const std::shared_ptr<Environment> previous = environment;
@@ -119,21 +118,21 @@ void Interpreter::execute(const std::vector<std::shared_ptr<Statement>>& stateme
     environment = previous;
 }
 
-void Interpreter::execute(const std::shared_ptr<Statement>& statement)
+void BaseInterpreter::execute(const std::shared_ptr<Statement>& statement)
 {
     statement->accept(this);
 }
 
 // ______________________________________________________________
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Assign> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Assign> expression)
 {
     const auto value = evaluateLiteral(expression->value);
     environment->assign(expression->name.lexeme, value);
     return value;
 }
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Binary> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Binary> expression)
 {
     const auto left = evaluateLiteral(expression->left);
     const auto right = evaluateLiteral(expression->right);
@@ -143,17 +142,17 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Binary> expressio
     return result;
 }
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Literal> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Literal> expression)
 {
     return expression;
 }
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Grouping> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Grouping> expression)
 {
     return evaluateLiteral(expression->expression);
 }
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Unary> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Unary> expression)
 {
     const auto right = evaluateLiteral(expression->right);
 
@@ -166,17 +165,17 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Unary> expression
         break;
     }
 
-    LogManager::log() << "Unreachable code reached in Interpreter::visit(Unary* expr) ";
+    LogManager::LOG() << "Unreachable code reached in BaseInterpreter::visit(Unary* expr) ";
     return {};
 }
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Variable> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Variable> expression)
 {
     return std::any_cast<std::shared_ptr<Expression>>(
         environment->lookup<std::shared_ptr<Expression>>(expression->name.lexeme));
 }
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Logical> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Logical> expression)
 {
     const auto left = evaluateLiteral(expression->left);
 
@@ -198,7 +197,7 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Logical> expressi
     return evaluateLiteral(expression->right);
 }
 
-std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Call> expression)
+std::shared_ptr<Expression> BaseInterpreter::visit(std::shared_ptr<Call> expression)
 {
     // Look up the function
     const auto variableExpr = std::dynamic_pointer_cast<Variable>(expression->callee);
@@ -227,15 +226,15 @@ std::shared_ptr<Expression> Interpreter::visit(std::shared_ptr<Call> expression)
     // Validate argument count
     if (arguments.size() != function->arity())
     {
-        throw ArityMismatchException(
-            std::format("Expected {} arguments but got {}.", function->arity(), arguments.size())
-        );
+        std::stringstream ss;
+        ss << "Expected " << function->arity() << " arguments but got " << arguments.size() << ".";
+        throw ArityMismatchException(ss.str());
     }
 
     return function->call(*this, arguments);
 }
 
-std::any Interpreter::visit(std::shared_ptr<IfStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<IfStatement> statement)
 {
     const auto r = evaluateLiteral(statement->condition);
 
@@ -259,14 +258,14 @@ std::any Interpreter::visit(std::shared_ptr<IfStatement> statement)
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<ExpressionStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<ExpressionStatement> statement)
 {
     evaluateLiteral(statement->expression);
 
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<PrintStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<PrintStatement> statement)
 {
     std::stringstream ss;
     const auto lit = evaluateLiteral(statement->expression);
@@ -307,7 +306,7 @@ std::any Interpreter::visit(std::shared_ptr<PrintStatement> statement)
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<VarStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<VarStatement> statement)
 {
     if (statement->initializer != nullptr)
     {
@@ -322,7 +321,7 @@ std::any Interpreter::visit(std::shared_ptr<VarStatement> statement)
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<BlockStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<BlockStatement> statement)
 {
     auto newEnv = std::make_shared<Environment>(environment);
 
@@ -331,7 +330,7 @@ std::any Interpreter::visit(std::shared_ptr<BlockStatement> statement)
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<FunctionStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<FunctionStatement> statement)
 {
     const auto function = std::make_shared<FunctionCallable>(statement);
 
@@ -340,12 +339,12 @@ std::any Interpreter::visit(std::shared_ptr<FunctionStatement> statement)
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<ClassStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<ClassStatement> statement)
 {
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<WhileStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<WhileStatement> statement)
 {
     while (std::dynamic_pointer_cast<LiteralBool>(evaluateLiteral(statement->condition))->value)
     {
@@ -355,7 +354,7 @@ std::any Interpreter::visit(std::shared_ptr<WhileStatement> statement)
     return {};
 }
 
-std::any Interpreter::visit(std::shared_ptr<ReturnStatement> statement)
+std::any BaseInterpreter::visit(std::shared_ptr<ReturnStatement> statement)
 {
     if (statement->value != nullptr)
     {

@@ -34,7 +34,7 @@ int main(const int argc, char* argv[])
 #ifdef _WIN32
     enableAnsiSupport();
 #endif
-    LogManager::log() << "Running compiler...";
+    LogManager::LOG() << "Running compiler...";
 
     // Wrap arguments in a std::span
     const std::span args(argv, argc);
@@ -49,13 +49,13 @@ int main(const int argc, char* argv[])
 
     if (const auto filename = isCorrectFilename(args))
     {
-        LogManager::log() << "Compiling file: " << *filename << "...";
+        LogManager::LOG() << "Compiling file: " << *filename << "...";
         Compiler::runFile(*filename);
     }
     else
     {
-        LogManager::log() << "Real life compilation...";
-        LogManager::log() << "Prompting :>";
+        LogManager::LOG() << "Real life compilation...";
+        LogManager::LOG() << "Prompting :>";
 
         Compiler::runPrompt();
     }

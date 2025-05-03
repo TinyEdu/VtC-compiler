@@ -7,11 +7,11 @@
 #include <memory>
 
 
-class Interpreter final : public Visitor, public StatementVisitor
+class BaseInterpreter final : public Visitor, public StatementVisitor
 {
 public:
-    Interpreter();
-    ~Interpreter() override;
+    BaseInterpreter();
+    ~BaseInterpreter() override;
 
     std::shared_ptr<Environment> environment;
 
