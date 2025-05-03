@@ -2,21 +2,20 @@
 #define FUNCTIONCALLABLE_H
 
 #include "Callable/Callable.h"
+#include <memory>
+#include <vector>
 
-// Forward declaration
 class FunctionStatement;
-
 
 class FunctionCallable final : public Callable
 {
 public:
     explicit FunctionCallable(std::shared_ptr<FunctionStatement> declaration);
-
     ~FunctionCallable() override = default;
 
     int arity() override;
     std::shared_ptr<Expression>
-    call(Interpreter& interpreter, std::span<std::shared_ptr<Expression> const> arguments) override;
+    call(BaseInterpreter& interpreter, const std::vector<std::shared_ptr<Expression>>& arguments) override;
 
     friend std::ostream& operator<<(std::ostream& os, const FunctionCallable& expr);
     friend std::ostream& operator<<(std::ostream& os, const FunctionCallable* expr);

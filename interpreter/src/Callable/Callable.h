@@ -2,10 +2,9 @@
 #define CALLABLE_H
 
 #include <memory>
-#include <span>
+#include <vector>
 
-
-class Interpreter;
+class BaseInterpreter;
 class Expression;
 
 class Callable
@@ -15,8 +14,8 @@ public:
     virtual ~Callable();
 
     virtual int arity() = 0;
-    virtual std::shared_ptr<Expression> call(Interpreter& interpreter,
-                                             std::span<std::shared_ptr<Expression> const> arguments) = 0;
+    virtual std::shared_ptr<Expression> call(BaseInterpreter& interpreter,
+                                             const std::vector<std::shared_ptr<Expression>>& arguments) = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const Callable& expr);
     friend std::ostream& operator<<(std::ostream& os, const Callable* expr);

@@ -4,7 +4,6 @@
 #include "LogManager/LogManager.h"
 #include "Expressions/ExpressionsWorld.h"
 
-
 ClockCallable::ClockCallable() = default;
 ClockCallable::~ClockCallable() = default;
 
@@ -13,8 +12,8 @@ int ClockCallable::arity()
     return 0;
 }
 
-std::shared_ptr<Expression> ClockCallable::call(Interpreter& interpreter,
-                                                std::span<std::shared_ptr<Expression> const> arguments)
+std::shared_ptr<Expression> ClockCallable::call(BaseInterpreter& interpreter,
+                                               const std::vector<std::shared_ptr<Expression>>& arguments)
 {
     LogManager::LOG() << "ClockCallable::call\n";
     const auto result = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(
