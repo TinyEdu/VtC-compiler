@@ -3,9 +3,17 @@
 
 TEST(E2E, IsTestingToolWorkingCorrectly)
 {
-    const bool result = E2ETester::runTest("this path does not exist", "this path does not exist");
+    try {
+        E2ETester::runTest("this path does not exist", "this path does not exist");
 
-    ASSERT_FALSE(result);
+        FAIL() << "Expected std::runtime_error but no exception was thrown.";
+    }
+    catch (const std::runtime_error& e) {
+        SUCCEED() << "Caught expected std::runtime_error: " << e.what();
+    }
+    catch (...) {
+        FAIL() << "Caught unexpected exception type.";
+    }
 }
 
 TEST(E2E, VariableAssignment)

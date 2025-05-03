@@ -11,10 +11,33 @@
 
 E2ETester::E2ETester() = default;
 
+std::filesystem::path E2ETester::getCurrentWorkingDirectory()
+{
+    return std::filesystem::current_path() / ".." / ".." / "tests" / "E2E" / "resources";
+}
+
+std::string E2ETester::getFileContent(const std::filesystem::path& filename)
+{
+    const std::filesystem::path filePath = getCurrentWorkingDirectory() / filename;
+
+    std::cout << "Current path: " << filePath << std::endl;
+
+    std::ifstream fileStream(filePath, std::ios::in);
+    if (!fileStream)
+    {
+        throw std::runtime_error("Failed to open file: " + filePath.string());
+    }
+
+    std::ostringstream contentStream;
+    contentStream << fileStream.rdbuf();
+
+    return contentStream.str();
+}
+
 bool E2ETester::runTest(const std::string& requestFile, const std::string& expectedFile)
 {
     // Read the request content
-    const std::string requestContent = readFile(requestFile);
+    const std::string requestContent = getFileContent(requestFile);
     if (requestContent.empty())
     {
         LogManager::LOG() << "Request file is empty or missing.\n";
@@ -44,7 +67,7 @@ bool E2ETester::runTest(const std::string& requestFile, const std::string& expec
     std::cout.rdbuf(originalBuffer);
 
     // Compare outputs
-    const std::string expectedOutput = readFile(expectedFile);
+    const std::string expectedOutput = getFileContent(expectedFile);
     if (expectedOutput.empty())
     {
         LogManager::WARN() << "Expected output file is empty or missing.\n";
@@ -52,23 +75,6 @@ bool E2ETester::runTest(const std::string& requestFile, const std::string& expec
     }
 
     return compareOutput(outputCapture.str(), expectedOutput);
-}
-
-std::string E2ETester::readFile(const std::string& filename)
-{
-    std::filesystem::path basePath = std::filesystem::current_path() / ".." / ".." / "resources" / "E2E" / "tests";
-    std::filesystem::path filePath = basePath / filename;
-
-    std::ifstream fileStream(filePath);
-    if (!fileStream)
-    {
-        LogManager::LOG() << "File " << filePath << " does not exist or cannot be opened.\n";
-        return "";
-    }
-
-    std::stringstream buffer;
-    buffer << fileStream.rdbuf();
-    return buffer.str();
 }
 
 bool E2ETester::compareOutput(const std::string& actual, const std::string& expected)
