@@ -45,6 +45,7 @@ private:
     static std::shared_ptr<Block> extractPrintBySignal(QJsonValue* value);
     static std::shared_ptr<Block> extractPrintByValue(QJsonValue* value);
     static std::shared_ptr<Block> extractSetVarBySignal(QJsonValue* value);
+    static std::shared_ptr<Block> extractSetVarByValue(QJsonValue* value);
     static std::shared_ptr<Block> extractSkip(QJsonValue* value);
     static std::shared_ptr<Block> extractStart(QJsonValue* value);
     static std::shared_ptr<Block> extractValue(QJsonValue* value);

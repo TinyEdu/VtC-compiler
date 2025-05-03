@@ -6,7 +6,7 @@
 class SetVarByValue : public Block
 {
 public:
-    DEFINE_BLOCK_TYPE(SetVarBySignal);
+    DEFINE_BLOCK_TYPE(SetVarByValue);
 
     QString variableName;
     QString value;

@@ -242,7 +242,7 @@ void GetVar::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> GetVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    auto literal = std::make_shared<Variable>(Token(TokenType::VAR, this->variableName, ""));
+    auto literal = std::make_shared<Variable>(Token(TokenType::IDENTIFIER, this->variableName, ""));
     auto expr = std::make_shared<ExpressionStatement>(literal);
 
     return expr;
@@ -390,7 +390,56 @@ void SetVar::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> SetVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    if (this->name == "SetVarBySignal")
+    {
+        // Get the next block producing the value (signal)
+        Block* valueBlock = Anchor::getNextBlock(*std::get<Anchor*>(this->value));
+        const std::shared_ptr<Statement> exprStmt = valueBlock->buildAST(result);
+        const std::shared_ptr<ExpressionStatement> exprStatement =
+            std::dynamic_pointer_cast<ExpressionStatement>(exprStmt);
+        const auto assignExpr = std::make_shared<Assign>(
+            Token(TokenType::IDENTIFIER, this->variableName, ""),
+            exprStatement->expression
+        );
+
+        const auto statement = std::make_shared<ExpressionStatement>(assignExpr);
+        result.push_back(statement);
+
+        return runNext(result, right);
+    }
+
+    if (this->name == "SetVarByValue")
+    {
+        // Literal value handling
+        std::string valueStr = std::get<std::string>(this->value);
+
+        std::shared_ptr<Expression> expr;
+        bool bval;
+        int ival;
+        double dval;
+
+        if (isBool(valueStr, bval)) {
+            expr = std::make_shared<LiteralBool>(bval);
+        } else if (isInt(valueStr, ival)) {
+            expr = std::make_shared<LiteralInt>(ival);
+        } else if (isDouble(valueStr, dval)) {
+            expr = std::make_shared<LiteralDouble>(dval);
+        } else {
+            expr = std::make_shared<LiteralString>(valueStr);
+        }
+
+        const auto assignExpr = std::make_shared<Assign>(
+            Token(TokenType::IDENTIFIER, this->variableName, ""),
+            expr
+        );
+
+        const auto statement = std::make_shared<ExpressionStatement>(assignExpr);
+        result.push_back(statement);
+
+        return runNext(result, right);
+    }
+
+    throw std::runtime_error("Unknown set var block type");
 }
 
 // ------------------------------------------------------------

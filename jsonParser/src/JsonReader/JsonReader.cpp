@@ -17,6 +17,7 @@ JsonReader::JsonReader()
     functionMap["PrintBySignal"] = &JsonReader::extractPrintBySignal;
     functionMap["PrintByValue"] = &JsonReader::extractPrintByValue;
     functionMap["SetVarBySignal"] = &JsonReader::extractSetVarBySignal;
+    functionMap["SetVarByValue"] = &JsonReader::extractSetVarBySignal;
     functionMap["Skip"] = &JsonReader::extractSkip;
     functionMap["Start"] = &JsonReader::extractStart;
     functionMap["Value"] = &JsonReader::extractValue;
@@ -180,6 +181,15 @@ std::shared_ptr<Block> JsonReader::extractSetVarBySignal(QJsonValue* value)
 
     return block;
 }
+
+std::shared_ptr<Block> JsonReader::extractSetVarByValue(QJsonValue* value)
+{
+    auto block = std::make_shared<SetVar>();
+    block->fromJson(*value);
+
+    return block;
+}
+
 std::shared_ptr<Block> JsonReader::extractSkip(QJsonValue* value)
 {
     auto block = std::make_shared<Skip>();

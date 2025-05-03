@@ -1,0 +1,54 @@
+{
+  "Blocks": [
+    {
+      "blockType": "CreateVarByValue",
+      "leftAnchor": "{9f069bd4-45fc-4494-b2d3-9539df3e3b17}",
+      "name": "Create Var",
+      "rightAnchor": "{c9284dd8-a222-46bf-b35b-12e51c89a305}",
+      "value": "0",
+      "variable": "a",
+      "x": 200.6131564704795,
+      "y": 101.01840550717107
+    },
+    {
+      "blockType": "SetVarByValue",
+      "leftAnchor": "{bb499780-6c51-41b0-883d-2e6205309e82}",
+      "name": "Set Var",
+      "rightAnchor": "{c7cbddb6-e730-4f77-8c45-ca2854535806}",
+      "value": "100",
+      "variable": "a",
+      "x": 326.25992164285867,
+      "y": 100.77331623082016
+    },
+    {
+      "blockType": "Start",
+      "leftAnchor": "{00000000-0000-0000-0000-000000000000}",
+      "name": "Start",
+      "rightAnchor": "{1a361753-c4f1-4c63-b756-f7218c1932ad}",
+      "x": 101.05940169062328,
+      "y": 100.59453212766724
+    },
+    {
+      "blockType": "End",
+      "leftAnchor": "{3624d800-ca35-42ac-a3e3-36c1811be6b0}",
+      "name": "End",
+      "rightAnchor": "{00000000-0000-0000-0000-000000000000}",
+      "x": 443.8449393820044,
+      "y": 100.20163990753426
+    }
+  ],
+  "Connections": [
+    {
+      "from": "{9f069bd4-45fc-4494-b2d3-9539df3e3b17}",
+      "to": "{1a361753-c4f1-4c63-b756-f7218c1932ad}"
+    },
+    {
+      "from": "{c9284dd8-a222-46bf-b35b-12e51c89a305}",
+      "to": "{bb499780-6c51-41b0-883d-2e6205309e82}"
+    },
+    {
+      "from": "{c7cbddb6-e730-4f77-8c45-ca2854535806}",
+      "to": "{3624d800-ca35-42ac-a3e3-36c1811be6b0}"
+    }
+  ]
+}

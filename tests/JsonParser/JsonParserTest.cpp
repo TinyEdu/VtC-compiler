@@ -10,6 +10,7 @@
 #include <Expressions/Binary.h>
 #include <Expressions/Unary.h>
 #include <Expressions/Variable.h>
+#include <Expressions/Literals/LiteralBool.h>
 #include <Expressions/Literals/LiteralInt.h>
 #include <Expressions/Literals/LiteralString.h>
 
@@ -168,7 +169,7 @@ TEST(JsonParserTest, GetVarPrint)
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
         std::make_shared<PrintStatement>(
-            std::make_shared<Variable>(Token(TokenType::VAR, "hello", "", 0))
+            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "hello", "", 0))
         )
     };
 
@@ -288,7 +289,7 @@ TEST(JsonParserTest, CreateVarWithBinaryUsingGetVar)
             std::make_shared<Binary>(
                 std::make_shared<LiteralInt>(1),
                 Token(TokenType::PLUS, "add", ""),
-                std::make_shared<Variable>(Token(TokenType::VAR, "var", ""))))
+                std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "var", ""))))
     };
 
     ASSERT_FALSE(result.empty());
@@ -443,7 +444,7 @@ TEST(JsonParserTest, ForLoopWithPrintingIncrement)
     // loop body: print(a)
     std::vector<std::shared_ptr<Statement>> bodyStatements = {
         std::make_shared<PrintStatement>(
-            std::make_shared<Variable>(Token(TokenType::VAR, "a", "", 0))
+            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "a", "", 0))
         ),
         std::make_shared<ExpressionStatement>(increment)
     };
@@ -508,11 +509,45 @@ TEST(JsonParserTest, ComplexExpressionOperations)
     const std::vector<std::shared_ptr<Statement>> result = parser.parse(input);
 
     // THEN
-    const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
+    // Base values
+    auto one = std::make_shared<LiteralInt>(1);
+    auto two = std::make_shared<LiteralInt>(2);
+    auto ninetyEight = std::make_shared<LiteralInt>(98);
+
+    // Unary negate ( -2 )
+    auto negTwo = std::make_shared<Unary>(
+        Token(TokenType::MINUS, "negate", "", 0),
+        two
+    );
+
+    // Unary negate ( -98 )
+    auto negNinetyEight = std::make_shared<Unary>(
+        Token(TokenType::MINUS, "negate", "", 0),
+        std::make_shared<Unary>(Token(TokenType::MINUS, "negate", "", 0), ninetyEight)
+        );
+
+    // Multiply: 1 * -2
+    auto multiply = std::make_shared<Binary>(
+        one,
+        Token(TokenType::STAR, "multiply", "", 0),
+        two
+    );
+
+    // Add: (1 * -2) + (-98)
+    auto add = std::make_shared<Binary>(
+        multiply,
+        Token(TokenType::PLUS, "add", "", 0),
+        negNinetyEight
+    );
+
+    // Create variable: var = ...
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        std::make_shared<VarStatement>(Token(TokenType::IDENTIFIER, "var", "", 0), add)
+    };
 
     ASSERT_FALSE(result.empty());
     ASSERT_EQ(result.size(), expectedOutput.size());
-    for (size_t i = 0; i < result.size(); i ++)
+    for (size_t i = 0; i < result.size(); i++)
     {
         ASSERT_TRUE(*result[i] == *expectedOutput[i])
             << "Parsed result does not match expected result at index " << i;
@@ -529,7 +564,72 @@ TEST(JsonParserTest, ComplexExampleWithCallListenGetSetCreatePrintBinaryOperatio
     const std::vector<std::shared_ptr<Statement>> result = parser.parse(input);
 
     // THEN
-    const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
+    // CreateVarBySignal: var = true
+    auto createVar = std::make_shared<VarStatement>(
+        Token(TokenType::IDENTIFIER, "var", "", 0),
+        std::make_shared<LiteralBool>(true)
+    );
+
+    // PrintBySignal: print var
+    auto printVar = std::make_shared<PrintStatement>(
+        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "var", "", 0))
+    );
+
+    // UnaryOp: negate var → -var
+    auto negVar = std::make_shared<Unary>(
+        Token(TokenType::MINUS, "negate", "", 0),
+        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "var", "", 0))
+    );
+
+    // SetVarBySignal: var = -var
+    auto setVar = std::make_shared<ExpressionStatement>(
+        std::make_shared<Assign>(
+            Token(TokenType::IDENTIFIER, "var", "", 0),
+            negVar
+        )
+    );
+
+    // PrintBySignal after set: print var
+    auto printAfterSet = std::make_shared<PrintStatement>(
+        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, "var", "", 0))
+    );
+
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        createVar,
+        printVar,
+        setVar,
+        printAfterSet
+    };
+
+    ASSERT_FALSE(result.empty());
+    ASSERT_EQ(result.size(), expectedOutput.size());
+    for (size_t i = 0; i < result.size(); i++)
+    {
+        ASSERT_TRUE(*result[i] == *expectedOutput[i])
+            << "Parsed result does not match expected result at index " << i;
+    }
+}
+
+TEST(JsonParserTest, SetVarByValue)
+{
+    // GIVEN
+    const std::string input = getFileContent("17/input.json");
+
+    // WHEN
+    JsonParser parser;
+    const std::vector<std::shared_ptr<Statement>> result = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        std::make_shared<VarStatement>(
+            Token(TokenType::IDENTIFIER, "a", ""),
+            std::make_shared<LiteralInt>(0)),
+        std::make_shared<ExpressionStatement>(
+            std::make_shared<Assign>(
+                Token(TokenType::IDENTIFIER, "a", ""),
+                std::make_shared<LiteralInt>(100)
+            ))
+    };
 
     ASSERT_FALSE(result.empty());
     ASSERT_EQ(result.size(), expectedOutput.size());
