@@ -5,7 +5,7 @@ add_executable(${PROJECT_NAME}
         JsonParser/JsonParserTest.cpp
 
         TextParser/TextParserTest.cpp
-        TextParser/ScannerValidationTest.cpp
+        TextParser/TextScannerTest.cpp
 
         E2E/tools/E2ETester.h
         E2E/tools/E2ETester.cpp

@@ -15,7 +15,9 @@
 #include <Expressions/Literals/LiteralDouble.h>
 #include <Expressions/Literals/LiteralInt.h>
 
+#include "Statements/BlockStatement.h"
 #include "Statements/ExpressionStatement.h"
+#include "Statements/IfStatement.h"
 #include "Statements/VarStatement.h"
 
 static std::string getStringField(const QJsonObject& obj, const char* key) {
@@ -224,9 +226,39 @@ void If::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> If::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    // Build an AST node representing a conditional.
-    return nullptr;
+    // Build the condition expression
+    Block* condBlock = Anchor::getNextBlock(*this->condition);
+    auto condStatement = condBlock->buildAST(result);
+    auto condExprStmt = std::dynamic_pointer_cast<ExpressionStatement>(condStatement);
+    auto conditionExpr = condExprStmt->expression;
+
+    // Build the 'then' (true) branch
+    std::vector<std::shared_ptr<Statement>> thenStatements;
+    try {
+        runNext(thenStatements, this->trueAnchor);
+    } catch (const ReachedEnd&) {
+        // true branch reached end
+    }
+
+    auto thenBranch = std::make_shared<BlockStatement>(thenStatements);
+
+    // Build the 'else' (false) branch
+    std::vector<std::shared_ptr<Statement>> elseStatements;
+    try {
+        Anchor::getNextBlock(*this->falseAnchor)->buildAST(elseStatements);
+    } catch (const ReachedEnd&) {
+        // false branch reached end
+    }
+
+    auto elseBranch = std::make_shared<BlockStatement>(elseStatements);
+
+    auto ifStmt = std::make_shared<IfStatement>(conditionExpr, thenBranch, elseBranch);
+    result.push_back(ifStmt);
+
+    // Continue on the mainline (left anchor)
+    throw ReachedEnd("If block reached end");
 }
+
 
 // ------------------------------------------------------------
 void Listen::fromJson(const QJsonValue& json) {

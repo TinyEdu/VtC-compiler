@@ -6,12 +6,16 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <Expressions/Assign.h>
 #include <Expressions/Binary.h>
 #include <Expressions/Unary.h>
 #include <Expressions/Variable.h>
 #include <Expressions/Literals/LiteralInt.h>
 #include <Expressions/Literals/LiteralString.h>
 
+#include "Statements/BlockStatement.h"
+#include "Statements/ExpressionStatement.h"
+#include "Statements/IfStatement.h"
 #include "Statements/PrintStatement.h"
 #include "Statements/VarStatement.h"
 
@@ -68,6 +72,7 @@ TEST(JsonParserTest, PrintStringByValue)
         )
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -91,6 +96,7 @@ TEST(JsonParserTest, PrintStringBySignal)
         )
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -114,6 +120,7 @@ TEST(JsonParserTest, CreateVarBySignal)
             std::make_shared<LiteralString>("val"))
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -137,6 +144,7 @@ TEST(JsonParserTest, CreateVarByValue)
             std::make_shared<LiteralString>("val"))
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -160,6 +168,7 @@ TEST(JsonParserTest, GetVarPrint)
         )
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -186,6 +195,7 @@ TEST(JsonParserTest, BinaryOperation)
                 std::make_shared<LiteralInt>(1)))
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -215,6 +225,7 @@ TEST(JsonParserTest, DoubleBinaryOperation)
                     std::make_shared<LiteralInt>(1))))
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -243,6 +254,7 @@ TEST(JsonParserTest, UnaryWithBinaryOperation)
                     std::make_shared<LiteralInt>(1))))
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -271,6 +283,7 @@ TEST(JsonParserTest, CreateVarWithBinaryUsingGetVar)
                 std::make_shared<Variable>(Token(TokenType::VAR, "var", "", 1))))
     };
 
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
@@ -288,8 +301,128 @@ TEST(JsonParserTest, IfStatement)
     const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
 
     // THEN
+    // This would look like this in text: 'if ( 100 >= 10 ) { print("TRU") } else { print("FLS") }'
+    auto ifCondition = std::make_shared<Binary>(
+        std::make_shared<LiteralInt>(100),
+        Token(TokenType::GREATER_EQUAL, ">=", "", 0),
+        std::make_shared<LiteralInt>(10)
+    );
+
+    std::vector<std::shared_ptr<Statement>> ifBodyStatements = {
+        std::make_shared<PrintStatement>(std::make_shared<LiteralString>("TRU"))
+    };
+    std::vector<std::shared_ptr<Statement>> elseBodyStatements = {
+        std::make_shared<PrintStatement>(std::make_shared<LiteralString>("FLS"))
+    };
+
+    auto ifTrueBranch = std::make_shared<BlockStatement>(ifBodyStatements);
+    auto ifFalseBranch = std::make_shared<BlockStatement>(elseBodyStatements);
+
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {
+        std::make_shared<IfStatement>(ifCondition, ifTrueBranch, ifFalseBranch)
+    };
+
+    ASSERT_FALSE(output.empty());
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
+TEST(JsonParserTest, PlainForLoop)
+{
+    // GIVEN
+    const std::string input = getFileContent("12/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
 
+    ASSERT_FALSE(output.empty());
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
+TEST(JsonParserTest, ForLoopWithPrintingIncrement)
+{
+    // GIVEN
+    const std::string input = getFileContent("13/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
+
+    ASSERT_FALSE(output.empty());
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
+TEST(JsonParserTest, CallAndListen)
+{
+    // GIVEN
+    const std::string input = getFileContent("14/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
+
+    ASSERT_FALSE(output.empty());
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
+TEST(JsonParserTest, ComplexExpressionOperations)
+{
+    // GIVEN
+    const std::string input = getFileContent("15/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
+
+    ASSERT_FALSE(output.empty());
+    ASSERT_EQ(output.size(), expectedOutput.size());
+    for (size_t i = 0; i < output.size(); i ++)
+    {
+        ASSERT_TRUE(*output[i] == *expectedOutput[i])
+            << "Parsed result does not match expected output at index " << i;
+    }
+}
+
+TEST(JsonParserTest, ComplexExampleWithCallListenGetSetCreatePrintBinaryOperation)
+{
+    // GIVEN
+    const std::string input = getFileContent("16/input.json");
+
+    // WHEN
+    const std::vector<std::shared_ptr<Statement>> output = parser.parse(input);
+
+    // THEN
+    const std::vector<std::shared_ptr<Statement>> expectedOutput = {};
+
+    ASSERT_FALSE(output.empty());
     ASSERT_EQ(output.size(), expectedOutput.size());
     for (size_t i = 0; i < output.size(); i ++)
     {
