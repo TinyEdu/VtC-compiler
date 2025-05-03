@@ -104,7 +104,7 @@ std::shared_ptr<Statement> CreateVar::buildAST(std::vector<std::shared_ptr<State
         const std::shared_ptr<ExpressionStatement> exprStatement =
             std::dynamic_pointer_cast<ExpressionStatement>(parsedNextExpression);
         const auto statement = std::make_shared<VarStatement>(Token(TokenType::IDENTIFIER,
-            this->variableName, "", 1), exprStatement->expression);
+            this->variableName, ""), exprStatement->expression);
 
         result.push_back(statement);
         return runNext(result, right);
@@ -134,7 +134,7 @@ std::shared_ptr<Statement> CreateVar::buildAST(std::vector<std::shared_ptr<State
         }
 
         const auto statement = std::make_shared<VarStatement>(
-        Token(TokenType::IDENTIFIER, this->variableName, "", 1), expr);
+        Token(TokenType::IDENTIFIER, this->variableName, ""), expr);
 
         result.push_back(statement);
         return runNext(result, right);
@@ -180,15 +180,15 @@ std::shared_ptr<Statement> ForLoop::buildAST(std::vector<std::shared_ptr<Stateme
     // Build initializer
     int fromValue = std::stoi(this->from);
     auto initializer = std::make_shared<VarStatement>(
-        Token(TokenType::IDENTIFIER, this->indexName, "", 0),
+        Token(TokenType::IDENTIFIER, this->indexName, ""),
         std::make_shared<LiteralInt>(fromValue)
     );
 
     // Build condition
     int toValue = std::stoi(this->to);
     auto condition = std::make_shared<Binary>(
-        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, this->indexName, "", 0)),
-        Token(TokenType::LESS_EQUAL, "<=", "", 0),
+        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, this->indexName, "")),
+        Token(TokenType::LESS_EQUAL, "<=", ""),
         std::make_shared<LiteralInt>(toValue)
     );
 
@@ -197,8 +197,8 @@ std::shared_ptr<Statement> ForLoop::buildAST(std::vector<std::shared_ptr<Stateme
     auto increment = std::make_shared<Assign>(
         Token(TokenType::IDENTIFIER, this->indexName, "", 0),
         std::make_shared<Binary>(
-            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, this->indexName, "", 0)),
-            Token(TokenType::PLUS, "+", "", 0),
+            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, this->indexName, "")),
+            Token(TokenType::PLUS, "+", ""),
             std::make_shared<LiteralInt>(stepValue)
         )
     );
@@ -240,7 +240,7 @@ void GetVar::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> GetVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    auto literal = std::make_shared<Variable>(Token(TokenType::VAR, this->variableName, "", 0));
+    auto literal = std::make_shared<Variable>(Token(TokenType::VAR, this->variableName, ""));
     auto expr = std::make_shared<ExpressionStatement>(literal);
 
     return expr;
@@ -525,7 +525,7 @@ std::shared_ptr<Statement> BinaryOp::buildAST(std::vector<std::shared_ptr<Statem
     const auto rightInputStatement = std::dynamic_pointer_cast<ExpressionStatement>(rightInputExpression);
 
     // operations
-    auto op = Token(operationMapper.at(this->operation), operation, "", 0);
+    auto op = Token(operationMapper.at(this->operation), operation, "");
     auto binary = std::make_shared<Binary>(leftInputStatement->expression, op, rightInputStatement->expression);
 
     return std::make_shared<ExpressionStatement>(binary);
@@ -558,7 +558,7 @@ std::shared_ptr<Statement> UnaryOp::buildAST(std::vector<std::shared_ptr<Stateme
     const auto inputStatement = std::dynamic_pointer_cast<ExpressionStatement>(inputExpression);
 
     // operations
-    auto op = Token(operation == "negate" ? TokenType::MINUS : TokenType::BANG, operation, "", 0);
+    auto op = Token(operation == "negate" ? TokenType::MINUS : TokenType::BANG, operation, "");
     auto binary = std::make_shared<Unary>(op, inputStatement->expression);
 
     return std::make_shared<ExpressionStatement>(binary);

@@ -9,6 +9,11 @@ Token::Token(const TokenType type, std::string lexeme, std::string literal, cons
 {
 }
 
+Token::Token(const TokenType type, std::string lexeme, std::string literal)
+    : type(type), lexeme(std::move(lexeme)), literal(std::move(literal)), line(0)
+{
+}
+
 Token::Token(const TokenType type)
 {
     this->type = type;

@@ -12,6 +12,7 @@ class Token
 public:
     explicit Token(TokenType type);
     Token(TokenType type, std::string lexeme, std::string literal, int line);
+    Token(TokenType type, std::string lexeme, std::string literal);
     /**
      * Constructor to initialize a Token with all its attributes.
      * @param type The type of the token.

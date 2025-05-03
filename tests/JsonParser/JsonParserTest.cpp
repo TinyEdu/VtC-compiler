@@ -118,7 +118,7 @@ TEST(JsonParserTest, CreateVarBySignal)
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
         std::make_shared<VarStatement>(
-            Token(TokenType::IDENTIFIER, "var", "", 1),
+            Token(TokenType::IDENTIFIER, "var", ""),
             std::make_shared<LiteralString>("val"))
     };
 
@@ -143,7 +143,7 @@ TEST(JsonParserTest, CreateVarByValue)
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
         std::make_shared<VarStatement>(
-            Token(TokenType::IDENTIFIER, "var", "", 1),
+            Token(TokenType::IDENTIFIER, "var", ""),
             std::make_shared<LiteralString>("val"))
     };
 
@@ -193,7 +193,7 @@ TEST(JsonParserTest, BinaryOperation)
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
         std::make_shared<VarStatement>(
-            Token(TokenType::IDENTIFIER, "var", "", 1),
+            Token(TokenType::IDENTIFIER, "var", ""),
             std::make_shared<Binary>(
                 std::make_shared<LiteralInt>(99),
                 Token(TokenType::PLUS, "add", "", 0),
@@ -221,13 +221,13 @@ TEST(JsonParserTest, DoubleBinaryOperation)
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
         std::make_shared<VarStatement>(
-            Token(TokenType::IDENTIFIER, "var", "", 1),
+            Token(TokenType::IDENTIFIER, "var", ""),
             std::make_shared<Binary>(
                 std::make_shared<LiteralInt>(99),
-                Token(TokenType::PLUS, "add", "", 0),
+                Token(TokenType::PLUS, "add", ""),
                 std::make_shared<Binary>(
                     std::make_shared<LiteralInt>(2),
-                    Token(TokenType::MINUS, "subtract", "", 0),
+                    Token(TokenType::MINUS, "subtract", ""),
                     std::make_shared<LiteralInt>(1))))
     };
 
@@ -252,12 +252,12 @@ TEST(JsonParserTest, UnaryWithBinaryOperation)
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
         std::make_shared<VarStatement>(
-            Token(TokenType::IDENTIFIER, "var", "", 1),
+            Token(TokenType::IDENTIFIER, "var", ""),
             std::make_shared<Binary>(
                 std::make_shared<LiteralInt>(99),
-                Token(TokenType::PLUS, "add", "", 0),
+                Token(TokenType::PLUS, "add", ""),
                 std::make_shared<Unary>(
-                    Token(TokenType::MINUS, "negate", "", 0),
+                    Token(TokenType::MINUS, "negate", ""),
                     std::make_shared<LiteralInt>(1))))
     };
 
@@ -282,13 +282,13 @@ TEST(JsonParserTest, CreateVarWithBinaryUsingGetVar)
     // THEN
     const std::vector<std::shared_ptr<Statement>> expectedOutput = {
         std::make_shared<VarStatement>(
-            Token(TokenType::IDENTIFIER, "var", "", 1),
+            Token(TokenType::IDENTIFIER, "var", ""),
             std::make_shared<LiteralInt>(99)),
         std::make_shared<PrintStatement>(
             std::make_shared<Binary>(
                 std::make_shared<LiteralInt>(1),
-                Token(TokenType::PLUS, "add", "", 0),
-                std::make_shared<Variable>(Token(TokenType::VAR, "var", "", 1))))
+                Token(TokenType::PLUS, "add", ""),
+                std::make_shared<Variable>(Token(TokenType::VAR, "var", ""))))
     };
 
     ASSERT_FALSE(result.empty());
