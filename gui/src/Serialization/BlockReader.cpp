@@ -211,11 +211,10 @@ Block* BlockReader::BuildForLoop(QQuickItem* block, QString name)
 
     result->fromField = readChildProperty(block, "fromField", "text");
     result->toField = readChildProperty(block, "toField", "text");
-    result->incrementField = readChildProperty(block, "incrementField", "text");
+    result->stepField = readChildProperty(block, "stepField", "text");
+    result->indexName = readChildProperty(block, "indexName", "text");
 
     result->startAnchor = QUuid(readChildProperty(block, "startAnchor", "anchorId"));
-    result->endAnchor = QUuid(readChildProperty(block, "endAnchor", "anchorId"));
-    result->incrementAnchor = QUuid(readChildProperty(block, "incrementAnchor", "anchorId"));
 
     return result;
 }

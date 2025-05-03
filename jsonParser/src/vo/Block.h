@@ -78,19 +78,19 @@ private:
 // ForLoop block.
 class ForLoop : public Block {
 public:
-    ForLoop() : left(nullptr), right(nullptr), start(nullptr), end(nullptr), inc(nullptr) {}
+    ForLoop() : left(nullptr), right(nullptr), start(nullptr),
+    from(""), to(""), step(""), indexName("") {}
     void fromJson(const QJsonValue& json) override;
     std::shared_ptr<Statement> buildAST(std::vector<std::shared_ptr<Statement>>& result) override;
 private:
     Anchor* left;
     Anchor* right;
+    Anchor* start;
+
     std::string from;
     std::string to;
-    std::string increment;
-    // Additional anchors for loop boundaries.
-    Anchor* start;
-    Anchor* end;
-    Anchor* inc;
+    std::string step;
+    std::string indexName;
 };
 
 // GetVar block.

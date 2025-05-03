@@ -8,6 +8,7 @@
 
 #include <QJsonObject>
 #include <QString>
+#include <Expressions/Assign.h>
 #include <Expressions/Binary.h>
 #include <Expressions/Unary.h>
 #include <Expressions/Variable.h>
@@ -19,6 +20,7 @@
 #include "Statements/ExpressionStatement.h"
 #include "Statements/IfStatement.h"
 #include "Statements/VarStatement.h"
+#include "Statements/WhileStatement.h"
 
 static std::string getStringField(const QJsonObject& obj, const char* key) {
     return obj.value(key).toString().toStdString();
@@ -160,31 +162,69 @@ void ForLoop::fromJson(const QJsonValue& json) {
     QJsonObject obj = json.toObject();
 
     name = getStringField(obj, "blockType");
-
     std::string leftUuid = getStringField(obj, "leftAnchor");
     left = new Anchor(leftUuid, this);
-
     std::string rightUuid = getStringField(obj, "rightAnchor");
     right = new Anchor(rightUuid, this);
-
-    from = getStringField(obj, "fromField");
-    to = getStringField(obj, "toField");
-    increment = getStringField(obj, "incrementField");
 
     std::string startUuid = getStringField(obj, "startAnchor");
     start = new Anchor(startUuid, this);
 
-    std::string endUuid = getStringField(obj, "endAnchor");
-    end = new Anchor(endUuid, this);
-
-    if (!increment.empty())
-        inc = new Anchor(increment, this);
-    else
-        inc = nullptr;
+    from = getStringField(obj, "fromField");
+    to = getStringField(obj, "toField");
+    step = getStringField(obj, "stepField");
+    indexName = getStringField(obj, "indexName");
 }
 
 std::shared_ptr<Statement> ForLoop::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    return nullptr;
+    // Build initializer
+    int fromValue = std::stoi(this->from);
+    auto initializer = std::make_shared<VarStatement>(
+        Token(TokenType::IDENTIFIER, this->indexName, "", 0),
+        std::make_shared<LiteralInt>(fromValue)
+    );
+
+    // Build condition
+    int toValue = std::stoi(this->to);
+    auto condition = std::make_shared<Binary>(
+        std::make_shared<Variable>(Token(TokenType::IDENTIFIER, this->indexName, "", 0)),
+        Token(TokenType::LESS_EQUAL, "<=", "", 0),
+        std::make_shared<LiteralInt>(toValue)
+    );
+
+    // Build increment
+    int stepValue = std::stoi(this->step);
+    auto increment = std::make_shared<Assign>(
+        Token(TokenType::IDENTIFIER, this->indexName, "", 0),
+        std::make_shared<Binary>(
+            std::make_shared<Variable>(Token(TokenType::IDENTIFIER, this->indexName, "", 0)),
+            Token(TokenType::PLUS, "+", "", 0),
+            std::make_shared<LiteralInt>(stepValue)
+        )
+    );
+
+    // Build loop body
+    std::vector<std::shared_ptr<Statement>> bodyStatements;
+    try {
+        runNext(bodyStatements, this->start);
+    } catch (const ReachedEnd&) {
+        // body reached end
+    }
+
+    // Add increment at the end of body
+    bodyStatements.push_back(std::make_shared<ExpressionStatement>(increment));
+
+    // Wrap body into while loop
+    auto whileLoop = std::make_shared<WhileStatement>(condition, std::make_shared<BlockStatement>(bodyStatements));
+
+    // Combine initializer + while into a block
+    auto fullLoop = std::make_shared<BlockStatement>(std::vector<std::shared_ptr<Statement>>{
+        initializer, whileLoop
+    });
+
+    result.push_back(fullLoop);
+
+    return runNext(result, right);
 }
 
 // ------------------------------------------------------------
@@ -200,7 +240,7 @@ void GetVar::fromJson(const QJsonValue& json) {
 }
 
 std::shared_ptr<Statement> GetVar::buildAST(std::vector<std::shared_ptr<Statement>>& result) {
-    auto literal = std::make_shared<Variable>(Token(TokenType::VAR, this->variableName, "", 1));
+    auto literal = std::make_shared<Variable>(Token(TokenType::VAR, this->variableName, "", 0));
     auto expr = std::make_shared<ExpressionStatement>(literal);
 
     return expr;
@@ -258,7 +298,6 @@ std::shared_ptr<Statement> If::buildAST(std::vector<std::shared_ptr<Statement>>&
     // Continue on the mainline (left anchor)
     throw ReachedEnd("If block reached end");
 }
-
 
 // ------------------------------------------------------------
 void Listen::fromJson(const QJsonValue& json) {

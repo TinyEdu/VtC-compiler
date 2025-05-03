@@ -8,25 +8,23 @@ class ForLoop : public Block
 public:
     DEFINE_BLOCK_TYPE(ForLoop);
 
+    QUuid startAnchor;
+
     QString fromField;
     QString toField;
-    QString incrementField;
-
-    QUuid startAnchor;
-    QUuid endAnchor;
-    QUuid incrementAnchor;
+    QString stepField;
+    QString indexName;
 
 public:
     QJsonObject toJson() const override
     {
         QJsonObject json = Block::toJson();
         json["startAnchor"] =  startAnchor.toString();
-        json["endAnchor"] =  endAnchor.toString();
-        json["condition"] =  incrementAnchor.toString();
 
         json["fromField"] =  fromField;
         json["toField"] =  toField;
-        json["incrementField"] =  incrementField;
+        json["stepField"] =  stepField;
+        json["indexName"] = indexName;
 
         return json;
     }
