@@ -3,11 +3,9 @@
 #include "BlockReader.h"
 #include "ConnectionReader.h"
 #include "BlockDiagramManager/BlockDiagramManager.h"
-#include "Collision/CollisionManager.h"
 
 #include <QJsonArray>
 #include <QJsonDocument>
-
 #include "BezierConnection/BezierConnectionManager.h"
 
 
@@ -17,19 +15,14 @@ ProgramSerializator* ProgramSerializator::instance()
     return &instance;
 }
 
-void ProgramSerializator::save()
+std::string ProgramSerializator::saveToJson()
 {
     QJsonObject root;
     root = readBlocks(root);
     root = readConnections(root);
 
-    // Temporary: print the JSON to the console
     const QJsonDocument doc(root);
-    parser->parse(QString::fromUtf8(doc.toJson()).toStdString());
-}
-
-void ProgramSerializator::load()
-{
+    return QString::fromUtf8(doc.toJson()).toStdString();
 }
 
 QJsonObject ProgramSerializator::readBlocks(QJsonObject root)

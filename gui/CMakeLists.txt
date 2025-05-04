@@ -83,6 +83,9 @@ add_library(${PROJECT_NAME} SHARED
         src/Serialization/ConnectionReaderException.h
         src/Serialization/ProgramSerializator.cpp
         src/Serialization/ProgramSerializator.h
+
+        src/GuiController/GuiController.cpp
+        src/GuiController/GuiController.h
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE VTC_GUI_EXPORTS)
@@ -93,6 +96,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/../interface
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Gui Qt6::Quick Qt6::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+        Qt6::Gui
+        Qt6::Quick
+        Qt6::Widgets
+        interpreter
+        ast)
 
 include(../cmake/Deployment.cmake)

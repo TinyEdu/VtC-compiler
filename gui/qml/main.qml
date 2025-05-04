@@ -3,7 +3,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import ProgramSerializator
+import GuiController
 
 Window {
     width: 1280
@@ -45,7 +45,9 @@ Window {
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            onClicked: ProgramSerializator.run()
+            onClicked: {
+                textDisplay.append(GuiController.run())
+            }
 
             backgroundColor: "#50C878"
             pressedBackgroundColor: "#00A86B"
@@ -61,7 +63,7 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: runButton.left
             anchors.rightMargin: menuBar.buttonSpacing
-            onClicked: ProgramSerializator.center()
+            onClicked: GuiController.center()
         }
 
         EditableButton {
@@ -72,7 +74,7 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: centerButton.left
             anchors.rightMargin: menuBar.buttonSpacing
-            onClicked: ProgramSerializator.load()
+            onClicked: GuiController.load()
         }
 
         EditableButton {
@@ -83,7 +85,7 @@ Window {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: loadButton.left
             anchors.rightMargin: menuBar.buttonSpacing
-            onClicked: ProgramSerializator.save()
+            onClicked: GuiController.save()
         }
     }
 
@@ -91,12 +93,13 @@ Window {
     Rectangle {
         id: draggableCanvasContainer
         width: parent.width * 0.75
-        height: parent.height - 40
+        height: parent.height * 0.75 - 40
         border.color: "black"
         border.width: 1
         anchors {
             right: parent.right
-            bottom: parent.bottom
+            top: parent.top
+            topMargin: 40
         }
 
         DraggableCanvas {
@@ -137,12 +140,11 @@ Window {
             bottom: parent.bottom
         }
 
-        TextDisplay {
+        TerminalDisplay {
             id: textDisplay
             anchors.fill: parent
             backgroundColor: "#ffffff"
             textColor: "#333333"
-            displayText: "Here will be the code result..."
         }
     }
 }

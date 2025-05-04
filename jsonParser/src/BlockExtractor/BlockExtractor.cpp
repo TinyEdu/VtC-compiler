@@ -1,7 +1,6 @@
 #include "BlockExtractor.h"
 
 #include "ReachedEnd.h"
-#include <iostream>
 
 std::vector<std::shared_ptr<Statement>> BlockExtractor::buildAST()
 {
@@ -15,7 +14,7 @@ std::vector<std::shared_ptr<Statement>> BlockExtractor::buildAST()
     }
     catch(const ReachedEnd e)
     {
-        std::cout<< "Reached end of block: " << e.what() << std::endl;
+        // Reached end block
     }
 
     return result;

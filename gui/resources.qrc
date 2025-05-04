@@ -4,6 +4,7 @@
         <file>qml/main.qml</file>
         <file>qml/Theme.qml</file>
 
+        <file>qml/TerminalDisplay.qml</file>
         <file>qml/BlockDiagram.qml</file>
         <file>qml/BlockCreator.qml</file>
         <file>qml/DraggableCanvas.qml</file>
