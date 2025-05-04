@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.29.1)
 project(runTests VERSION 1.0.0 LANGUAGES CXX)
 
 add_executable(${PROJECT_NAME}
+        Interpreter/InterpreterTest.cpp
+
         JsonParser/JsonParserTest.cpp
 
         TextParser/TextParserTest.cpp
@@ -24,6 +26,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         ast)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../interpreter/include
         ${CMAKE_CURRENT_SOURCE_DIR}/../jsonParser/include
         ${CMAKE_CURRENT_SOURCE_DIR}/../textParser/include
 )
