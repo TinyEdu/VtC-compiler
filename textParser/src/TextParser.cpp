@@ -6,7 +6,7 @@
 std::vector<std::shared_ptr<Statement>> TextParser::parse(const std::string& input)
 {
     TextScanner scanner;
-    const std::vector<Token> tokens = scanner.scan(input);
+    const auto tokens = scanner.scan(input);
 
     Parser parser(tokens);
     const auto statements = parser.parse();

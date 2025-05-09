@@ -13,20 +13,22 @@ BlockDiagram {
     enableRightAnchor: true
 
     Text {
+        id: conditionText
         text: "Condition"
         color: "#62717E"
         font.bold: true
         font.pointSize: 8
 
-        anchors.left: conditionAnchor.left
-        anchors.bottom: conditionAnchor.top
-        anchors.bottomMargin: 2
+        anchors.right: startText.left
+        anchors.verticalCenter: startText.verticalCenter
+        anchors.rightMargin: 8
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
 
     Text {
+        id: startText
         text: "Start"
         color: "#62717E"
         font.bold: true
@@ -40,28 +42,13 @@ BlockDiagram {
         verticalAlignment: Text.AlignVCenter
     }
 
-    Text {
-        text: "End"
-        color: "#62717E"
-        font.bold: true
-        font.pointSize: 8
-
-        anchors.verticalCenter: endAnchor.verticalCenter
-        anchors.right: endAnchor.left
-        anchors.rightMargin: 2
-
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-    }
-
     Anchor {
         id: conditionAnchor
         objectName: "conditionAnchor"
 
-        anchors.left: parent.left
-        anchors.leftMargin: 1.5
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 1.5
+        anchors.right: conditionText.left
+        anchors.rightMargin: 1.5
+        anchors.verticalCenter: startAnchor.verticalCenter
 
         anchorType: "data"
         anchorDirection: "left"
@@ -80,19 +67,4 @@ BlockDiagram {
         anchorType: "anchor"
         anchorDirection: "right"
     }
-
-    Anchor {
-        id: endAnchor
-        objectName: "endAnchor"
-
-        anchors.right: parent.right
-        anchors.rightMargin: 1.5
-
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 1.5
-
-        anchorType: "anchor"
-        anchorDirection: "left"
-    }
 }
-

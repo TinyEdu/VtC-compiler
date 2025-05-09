@@ -48,6 +48,8 @@ Rectangle {
             property alias lineColor: lineTextItem.color
             width: parent.width
             wrapMode: Text.Wrap
+            font.pointSize: 16
+            padding: 10
         }
     }
 }

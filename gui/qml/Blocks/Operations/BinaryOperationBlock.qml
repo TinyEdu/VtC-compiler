@@ -61,6 +61,6 @@ BlockDiagram {
 
         borderColor: parent.border.color
 
-        model: ["add", "subtract", "divide", "multiply", "==", ">=", "<", "<=", "and", "or", "mod"]
+        model: ["add", "subtract", "divide", "multiply", "==", ">", ">=", "<", "<=", "and", "or", "mod"]
     }
 }

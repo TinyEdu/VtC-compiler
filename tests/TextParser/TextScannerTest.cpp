@@ -116,7 +116,7 @@ TEST(ScannerValidation, IsDoubleCharacterTokenWorkingCorrectly)
     EXPECT_EQ(output, expectedOutput);
 }
 
-TEST(ScannerValidation, IsHandlingLiteralsCorrect)
+TEST(ScannerValidation, IsHandlingVariableWithStringCorrectly)
 {
     // given
     const std::string input = "var variable = \"special string\";";

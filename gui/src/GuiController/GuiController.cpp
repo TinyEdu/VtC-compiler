@@ -48,7 +48,9 @@ QString GuiController::run()
     auto executionTime = duration_cast<milliseconds>(end - start).count(); // duration in ms
 
     output = "Parsed Project to json. \nProject: \n" + projectAsJson + "\nFinished extracting AST.\n" +
-        "Finished building project.\n" + "Executing build project...\n-+-----\nResult:\n-+-----\n" + output + "\n-+-----\n  Finished in " +
+        "Finished building project.\n" + "Executing build project...\n-----------------------------------"
+                                         "\nResult:\n-----------------------------------\n" + output +
+                                             "\n-----------------------------------\n  Finished in " +
             std::to_string(executionTime) + " ms.\n";
 
     LogManager::LOG() << output;
